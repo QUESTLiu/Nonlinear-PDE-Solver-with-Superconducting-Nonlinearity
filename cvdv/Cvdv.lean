@@ -17,3 +17,9 @@ import Cvdv.QuadraticClosure
 import Cvdv.CircuitScaling
 import Cvdv.DuffingLadder
 import Cvdv.LLEAlgebra
+import Cvdv.LLEFinite
+import Cvdv.LLEDisplacement
+import Cvdv.LLENormalizedExpectation
+import Cvdv.LLEExactLCHS
+import Cvdv.StrangBound
+import Cvdv.LLEHardwareCompilation
