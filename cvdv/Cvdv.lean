@@ -23,3 +23,10 @@ import Cvdv.LLENormalizedExpectation
 import Cvdv.LLEExactLCHS
 import Cvdv.StrangBound
 import Cvdv.LLEHardwareCompilation
+import Cvdv.SiteLift
+import Cvdv.KroneckerDilation
+import Cvdv.DuffingStrang
+import Cvdv.SGClassical
+import Cvdv.FiniteSineGordon
+import Cvdv.LLEMeanField
+import Cvdv.LLEMultimodeCompilation

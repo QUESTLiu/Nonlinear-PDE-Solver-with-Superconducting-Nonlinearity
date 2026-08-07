@@ -239,3 +239,46 @@ end LLEFinite
 end
 
 end Cvdv
+
+namespace Cvdv
+
+noncomputable section
+
+section LLEEffective
+
+variable {ι σ : Type*} [Fintype ι] [Fintype σ] [DecidableEq σ]
+
+/-- The non-Hermitian effective Hamiltonian of the postselected no-photon-loss branch,
+manuscript Sec. `subsec:lle-scope`: `H_eff = H_LLE - i (κ/2) N_tot`, built from the same
+total-number matrix that defines the loss operator `L = (κ/2) N_tot`. -/
+def finiteLLEEffectiveHamiltonian (a : ι → Matrix σ σ ℂ) (next : ι → ι)
+    (delta dispersion g kappa : ℝ) (F : ι → ℂ) : Matrix σ σ ℂ :=
+  finiteLLEHamiltonian a next delta dispersion g F
+    - (Complex.I * (kappa / 2 : ℝ)) • finiteLLETotalNumber a
+
+/-- The generator identity of manuscript Sec. `subsec:lle-scope`: the postselected
+state-vector generator `-i H_eff` coincides with the negated LCHS generator
+`-(L + i H_LLE)`, so the map `e^{-T(L + i H_LLE)}` is exactly the no-photon-loss branch
+`e^{-i T H_eff}` of the effective Hamiltonian `H_eff = H_LLE - i (κ/2) N_tot`. -/
+theorem finiteLLE_neg_I_smul_effectiveHamiltonian (a : ι → Matrix σ σ ℂ) (next : ι → ι)
+    (delta dispersion g kappa : ℝ) (F : ι → ℂ) :
+    (-Complex.I) • finiteLLEEffectiveHamiltonian a next delta dispersion g kappa F =
+      -(finiteLLELoss a kappa +
+          Complex.I • finiteLLEHamiltonian a next delta dispersion g F) := by
+  unfold finiteLLEEffectiveHamiltonian finiteLLELoss
+  have hreal : (kappa / 2 : ℝ) • finiteLLETotalNumber a =
+      ((kappa / 2 : ℝ) : ℂ) • finiteLLETotalNumber a := by
+    ext i j
+    simp [Complex.real_smul, smul_eq_mul]
+  rw [hreal, smul_sub, smul_smul]
+  have hscalar : -Complex.I * (Complex.I * ((kappa / 2 : ℝ) : ℂ))
+      = ((kappa / 2 : ℝ) : ℂ) := by
+    rw [← mul_assoc, neg_mul, Complex.I_mul_I, neg_neg, one_mul]
+  rw [hscalar, neg_smul, neg_add]
+  abel
+
+end LLEEffective
+
+end
+
+end Cvdv

@@ -133,3 +133,92 @@ theorem fock_add_pow_four_split_sandwich (N : ℕ) :
   simpa only [map_add, map_smul, fockSandwichCLM_one] using h
 
 end Cvdv
+
+namespace Cvdv
+
+/-- The manuscript's strict-sandwich convention is not vacuous: the sandwich is genuinely
+nonmultiplicative, `(Π_N q̂ Π_N)^4 ≠ Π_N q̂^4 Π_N` (the sentence following the display
+defining `Ĥ₄^{(N)} = Π_N λ (â + â†)⁴ Π_N`).  The witness is the smallest cutoff `N = 1`,
+whose retained space is spanned by `|0⟩`: the sandwiched matrix of `â + â†` is the `1 × 1`
+zero matrix (the `(0,0)` entry of `â + â†` vanishes), so its fourth power is zero, while the
+sandwich of `(â + â†)⁴` has `(0,0)` entry `⟨0|(â + â†)⁴|0⟩ = 3`.  The physical quadrature is
+`q̂ = (â + â†)/√(2ω₀)`; its scalar prefactor is irrelevant to nonmultiplicativity, so the
+witness is stated for `â + â†` itself. -/
+theorem cutoffSandwich_pow_four_ne :
+    (fockSandwichMatrix 1 (lowering + raising)) ^ 4 ≠
+      fockSandwichMatrix 1 ((lowering + raising) ^ 4) := by
+  have hA0 : (lowering + raising) (Finsupp.single 0 1) = Finsupp.single 1 1 := by
+    simp
+  have hA1 : (lowering + raising) (Finsupp.single 1 1) =
+      Finsupp.single 0 1 + (Real.sqrt 2 : ℂ) • Finsupp.single 2 1 := by
+    simp
+    norm_num
+  have hA2 : (lowering + raising) (Finsupp.single 2 1) =
+      (Real.sqrt 2 : ℂ) • Finsupp.single 1 1 + (Real.sqrt 3 : ℂ) • Finsupp.single 3 1 := by
+    simp
+    norm_num
+  have hA3 : (lowering + raising) (Finsupp.single 3 1) =
+      (Real.sqrt 3 : ℂ) • Finsupp.single 2 1 + (Real.sqrt 4 : ℂ) • Finsupp.single 4 1 := by
+    simp
+    norm_num
+  have hpow : (((lowering + raising) ^ 4) (Finsupp.single 0 1)) 0 = 3 := by
+    have h4 : (lowering + raising) ^ 4 =
+        (((lowering + raising) * (lowering + raising)) * (lowering + raising)) *
+          (lowering + raising) := by
+      rw [pow_succ, pow_succ, pow_succ, pow_one]
+    rw [h4]
+    simp only [Module.End.mul_apply]
+    simp only [map_add, map_smul, hA0, hA1, hA2, hA3]
+    simp
+    rw [← Complex.ofReal_mul, Real.mul_self_sqrt (by norm_num : (0 : ℝ) ≤ 2)]
+    norm_num
+  have hL : fockSandwichMatrix 1 (lowering + raising) = 0 := by
+    ext i j
+    have hi : i = 0 := Subsingleton.elim i 0
+    have hj : j = 0 := Subsingleton.elim j 0
+    subst hi
+    subst hj
+    rw [fockSandwichMatrix_apply, Matrix.zero_apply]
+    simp [hA0]
+  intro hcontra
+  have h00 : ((fockSandwichMatrix 1 (lowering + raising)) ^ 4) 0 0 = 3 := by
+    rw [hcontra, fockSandwichMatrix_apply]
+    simpa using hpow
+  rw [hL, zero_pow (by norm_num : (4 : ℕ) ≠ 0)] at h00
+  norm_num [Matrix.zero_apply] at h00
+
+/-- Nonzero-scalar transfer of sandwich nonmultiplicativity: if the strict sandwich of a
+fourth power differs from the fourth power of the sandwich for `A`, the same holds for
+`c • A` with any nonzero scalar `c`, because both sides simply pick up `c⁴`. -/
+theorem cutoffSandwich_pow_four_ne_smul {N : ℕ} {A : Module.End ℂ FockAlg} {c : ℂ}
+    (hc : c ≠ 0)
+    (hA : (fockSandwichMatrix N A) ^ 4 ≠ fockSandwichMatrix N (A ^ 4)) :
+    (fockSandwichMatrix N (c • A)) ^ 4 ≠ fockSandwichMatrix N ((c • A) ^ 4) := by
+  intro hcontra
+  apply hA
+  have hL : (fockSandwichMatrix N (c • A)) ^ 4
+      = c ^ 4 • (fockSandwichMatrix N A) ^ 4 := by
+    rw [map_smul, smul_pow]
+  have hR : fockSandwichMatrix N ((c • A) ^ 4)
+      = c ^ 4 • fockSandwichMatrix N (A ^ 4) := by
+    rw [smul_pow, map_smul]
+  rw [hL, hR] at hcontra
+  exact smul_right_injective _ (pow_ne_zero 4 hc) hcontra
+
+/-- Manuscript lines 1215-1217 for the physical quadrature itself: with
+`q̂ = (â + â†)/√(2ω₀)` at any `ω₀ > 0`, the strict sandwich is genuinely
+nonmultiplicative, `(Π_N q̂ Π_N)⁴ ≠ Π_N q̂⁴ Π_N`, again at the smallest cutoff `N = 1`.
+The two `(0,0)` entries are `0` and `3/(4ω₀²)`; the statement follows from the unscaled
+witness `cutoffSandwich_pow_four_ne` by the nonzero-scalar transfer lemma with
+`c = 1/√(2ω₀)`. -/
+theorem cutoffSandwich_pow_four_ne_quadrature (omega0 : ℝ) (h : 0 < omega0) :
+    (fockSandwichMatrix 1
+        (((1 / Real.sqrt (2 * omega0) : ℝ) : ℂ) • (lowering + raising))) ^ 4 ≠
+      fockSandwichMatrix 1
+        ((((1 / Real.sqrt (2 * omega0) : ℝ) : ℂ) • (lowering + raising)) ^ 4) := by
+  have hs : (0 : ℝ) < Real.sqrt (2 * omega0) := Real.sqrt_pos.mpr (by linarith)
+  have hc : ((1 / Real.sqrt (2 * omega0) : ℝ) : ℂ) ≠ 0 := by
+    exact_mod_cast (one_div_pos.mpr hs).ne'
+  exact cutoffSandwich_pow_four_ne_smul hc cutoffSandwich_pow_four_ne
+
+end Cvdv
