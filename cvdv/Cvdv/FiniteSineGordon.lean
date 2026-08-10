@@ -31,7 +31,7 @@ exhibited concretely at the cutoff by the truncated generator
 `sgDispGen N α = α·(sandwich of â†) − α*·(sandwich of â)`, proved
 skew-Hermitian (`sgDispGen_conjTranspose`), so its exponential is
 unitary (`sgDispGen_disp_mem_unitaryGroup`).  Layered products in the
-ansatz of Eqs. `eq:snapd-ansatz` / `eq:df-ansatz` are unitary, unitary
+ansatz of Eq. `eq:snapd-ansatz` are unitary, unitary
 matrices are `ℓ²`-operator-norm contractions, and the phase-aligned
 telescoping bound of Eq. `eq:sg-spectral-composition` is instantiated
 for the concrete compiled objects with both contraction premises proved
@@ -346,8 +346,8 @@ theorem sgSpectral_norm_le_one_of_mem_unitaryGroup {d : ℕ}
   nlinarith [norm_nonneg U, hsq, hone]
 
 /-- The `L`-layer SNAP+displacement ansatz of manuscript
-Eqs. `eq:snapd-ansatz` / `eq:df-ansatz`,
-`U_SD(θ, α) = ∏_{ℓ=1}^{L} D(α_ℓ) SNAP(θ_ℓ)`, with the displacement of layer
+Eq. `eq:snapd-ansatz`,
+`U_comp(θ, α) = ∏_{ℓ=1}^{L} D(α_ℓ) SNAP(θ_ℓ)`, with the displacement of layer
 `ℓ` given as the exponential of a generator `S ℓ`. -/
 def sgSpectralAnsatz {d L : ℕ} (theta : Fin L → Fin d → ℝ)
     (S : Fin L → Matrix (Fin d) (Fin d) ℂ) : Matrix (Fin d) (Fin d) ℂ :=
@@ -384,14 +384,16 @@ theorem sgSpectralDeltaH2Loc_isHermitian (N : ℕ) (lambda : ℝ) {omega : ℝ}
 /-- Manuscript Eq. `eq:sg-spectral-composition` for the concrete compiled
 objects: with `U_target^{(loc)} = exp(−i ΔH_loc Δt)` the exact local double
 sine-Gordon deformation block (Eqs. `eq:sg-deformations`,
-`eq:sg-double-target`) and `U_comp = U_SD(θ, α)` the `L`-layer
-SNAP+displacement ansatz of Eqs. `eq:snapd-ansatz` / `eq:df-ansatz`, and with
-the global phase `ϑ_HS` fixed by the Hilbert–Schmidt overlap, `r` repetitions
+`eq:sg-double-target`) and `U_comp(θ, α)` the `L`-layer SNAP+displacement
+ansatz of Eq. `eq:snapd-ansatz`, and with a supplied phase `ϑ_HS`, `r`
+repetitions
 obey the telescoping bound
 
 `‖(U_target^{(loc)})^r − e^{i r ϑ_HS} U_comp^r‖₂ ≤ r ε₂`,
 
-where `ε₂ = ‖U_target^{(loc)} − e^{i ϑ_HS} U_comp‖₂`.  Both contraction
+where `ε₂ = ‖U_target^{(loc)} − e^{i ϑ_HS} U_comp‖₂`.  Here `thetaHS` is a free
+real parameter: the Hilbert--Schmidt overlap relation used to choose `ϑ_HS`
+in the manuscript is not encoded.  Both contraction
 premises of the telescoping lemma are proved, not assumed: the target block is
 the exponential of `−i Δt` times a Hermitian generator, and the ansatz is a
 product of SNAP and displacement unitaries. -/
@@ -506,8 +508,8 @@ theorem sgDispGen_disp_mem_unitaryGroup (N : ℕ) (alpha : ℂ) :
     sgDisp (sgDispGen N alpha) ∈ Matrix.unitaryGroup (Fin N) ℂ :=
   sgDisp_mem_unitaryGroup (sgDispGen_conjTranspose N alpha)
 
-/-- The `L`-layer SNAP+displacement ansatz of Eqs. `eq:snapd-ansatz` /
-`eq:df-ansatz` with the concrete truncated displacement generators
+/-- The `L`-layer SNAP+displacement ansatz of Eq. `eq:snapd-ansatz` with the
+concrete truncated displacement generators
 `αℓ â† − αℓ* â` is unitary. -/
 theorem sgSpectralAnsatz_disp_mem_unitaryGroup {N L : ℕ}
     (theta : Fin L → Fin N → ℝ) (alpha : Fin L → ℂ) :

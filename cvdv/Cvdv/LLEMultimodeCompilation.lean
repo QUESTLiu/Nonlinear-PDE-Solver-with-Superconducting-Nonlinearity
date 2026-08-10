@@ -24,10 +24,11 @@ single-site lift of `Cvdv.SiteLift`.
 * The multisite loss layer of Eq. `eq:lle-number-controlled-displacements`
   factorizes into one number-controlled displacement per site, with the
   multimode number matrices `siteLift j (lleCutoffNumberMatrix n)`.
-* The multimode cutoff ladder matrices `lleMM_lowering`/`lleMM_raising` obey
-  the exact norm identity `‖siteLift j a‖ = ‖a‖ ≤ √n_cut`, giving the
-  manuscript estimate `C_LCHS ≤ κ √n_cut ∑_j |F_j|` after
-  Eq. `eq:lle-mixed-commutator` for the genuine multimode ladder family.
+* The two-sided-cutoff multimode ladder matrices
+  `lleMM_lowering`/`lleMM_raising` obey the exact norm identity
+  `‖siteLift j (Π a Π)‖ = ‖Π a Π‖ ≤ √n_cut`, giving the manuscript estimate
+  `C_LCHS ≤ κ √n_cut ∑_j |F_j|` after Eq. `eq:lle-mixed-commutator` for the
+  genuine multimode ladder family.
 * The mixed commutator `[L_loss, H_F]` of Eq. `eq:lle-mixed-commutator` is
   proved to be *exactly* `finiteLLEMixedCommutator` for the concrete multimode
   cutoff ladders: the strict-cutoff number-ladder commutators
@@ -268,23 +269,24 @@ theorem lleMM_raising_eq_conjTranspose (j : ι) (n : ℕ) :
   rw [lleMM_raising, lleMM_lowering, siteLift_conjTranspose,
     fockSandwichMatrix_raising_eq_lowering_conjTranspose]
 
-/-- Multimode form of the manuscript bound `‖ā_j Π_sys‖ ≤ √n_cut`: the exact
-norm preservation of the single-site lift transfers the single-mode cutoff
-bound with no loss. -/
+/-- Multimode form of the manuscript bound `‖Π_sys a_j Π_sys‖ ≤ √n_cut`: the
+exact norm preservation of the single-site lift transfers the single-mode
+two-sided-cutoff bound with no loss. -/
 theorem lleMM_norm_lowering_le_sqrt_cutoff (j : ι) (n : ℕ) :
     ‖lleMM_lowering j n‖ ≤ Real.sqrt n := by
   rw [lleMM_lowering, siteLift_l2_opNorm]
   exact norm_fockSandwichMatrix_lowering_le_sqrt_cutoff n
 
-/-- Multimode form of the manuscript bound `‖ā_j† Π_sys‖ ≤ √n_cut`. -/
+/-- Multimode form of the manuscript bound
+`‖Π_sys a_j† Π_sys‖ ≤ √n_cut`. -/
 theorem lleMM_norm_raising_le_sqrt_cutoff (j : ι) (n : ℕ) :
     ‖lleMM_raising j n‖ ≤ Real.sqrt n := by
   rw [lleMM_raising, siteLift_l2_opNorm]
   exact norm_fockSandwichMatrix_raising_le_sqrt_cutoff n
 
 /-- The manuscript estimate `C_LCHS ≤ κ √n_cut ∑_j |F_j|` after
-Eq. `eq:lle-mixed-commutator`, for the genuine multimode cutoff ladder
-family. -/
+Eq. `eq:lle-mixed-commutator`, with every operator defined in the two-sided
+truncated model, for the genuine multimode cutoff ladder family. -/
 theorem lleMM_norm_mixedCommutator_le_sqrt_cutoff
     (kappa : ℝ) (n : ℕ) (F : ι → ℂ) (hkappa : 0 ≤ kappa) :
     ‖finiteLLEMixedCommutator (fun j : ι => lleMM_lowering j n) kappa F‖ ≤
@@ -531,9 +533,23 @@ theorem lleMM_loss_hamiltonian_commutator_eq_mixedCommutator
   rw [← Ring.lie_def]
   exact lleMM_loss_lie_hamiltonian_eq_mixedCommutator n next delta dispersion g kappa F
 
+/-- In the unpumped case `F_j = 0`, the two-sided-truncated accretive loss
+sector and Hermitian number-conserving sector commute exactly, as stated after
+manuscript Eq. `eq:lle-mixed-commutator`. -/
+theorem lleMM_loss_hamiltonian_commutator_eq_zero_of_unpumped
+    (n : ℕ) (next : ι → ι) (delta dispersion g kappa : ℝ) :
+    finiteLLELoss (fun j : ι => lleMM_lowering j n) kappa *
+        finiteLLEHamiltonian (fun j : ι => lleMM_lowering j n)
+          next delta dispersion g (0 : ι → ℂ) -
+      finiteLLEHamiltonian (fun j : ι => lleMM_lowering j n)
+          next delta dispersion g (0 : ι → ℂ) *
+        finiteLLELoss (fun j : ι => lleMM_lowering j n) kappa = 0 := by
+  rw [lleMM_loss_hamiltonian_commutator_eq_mixedCommutator]
+  simp [finiteLLEMixedCommutator]
+
 /-- The manuscript estimate `C_LCHS ≤ κ √n_cut ∑_j |F_j|` applied to the actual
-loss--Hamiltonian commutator of the concrete multimode model, not merely to the
-closed-form surrogate. -/
+two-sided-truncated loss--Hamiltonian commutator of the concrete multimode
+model, not merely to the closed-form surrogate. -/
 theorem lleMM_norm_loss_hamiltonian_commutator_le
     (n : ℕ) (next : ι → ι) (delta dispersion g kappa : ℝ) (F : ι → ℂ)
     (hkappa : 0 ≤ kappa) :
@@ -555,8 +571,8 @@ variable {ι : Type*} [Fintype ι] [DecidableEq ι] {n : ℕ}
   {ιa : Type*} [Fintype ιa] [DecidableEq ιa]
 
 /-- At the manuscript identification `τ = κ Δt / 2`, the displacement parameter
-of Eq. (eq:lle-number-controlled-displacements) takes literally the displayed
-form `-i κ Δt/(2√2) · n̂` (main.tex 2053-2056). -/
+of Eq. `eq:lle-number-controlled-displacements` takes literally the displayed
+form `-i κ Δt/(2√2) · n̂`. -/
 theorem lleLossDisplacementParameter_kappa_deltaT {σ : Type*}
     (kappa deltaT : ℝ) (m : Matrix σ σ ℂ) :
     lleLossDisplacementParameter (kappa * deltaT / 2) m =
@@ -579,7 +595,8 @@ theorem lleMM_controlled_displacements_commute_kappa_deltaT
 
 /-- The optimized multimode spectral compiler at `τ = κ Δt / 2`: the compiled
 gate is the number-controlled displacement whose parameter is literally the
-manuscript's `-i κ Δt/(2√2) n̂_j` (main.tex 2053-2056). -/
+one in Eq. `eq:lle-number-controlled-displacements`,
+`-i κ Δt/(2√2) n̂_j`. -/
 theorem lleMM_optimized_spectral_compilation_kappa_deltaT
     (b : Matrix ιa ιa ℂ) (j : ι) (kappa deltaT : ℝ) :
     lleMM_optimizedSpectralDisplacementCompilation (n := n) b j (kappa * deltaT / 2) =

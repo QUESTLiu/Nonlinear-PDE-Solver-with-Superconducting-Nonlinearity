@@ -205,7 +205,7 @@ theorem cutoffSandwich_pow_four_ne_smul {N : ℕ} {A : Module.End ℂ FockAlg} {
   rw [hL, hR] at hcontra
   exact smul_right_injective _ (pow_ne_zero 4 hc) hcontra
 
-/-- Manuscript lines 1215-1217 for the physical quadrature itself: with
+/-- The manuscript's sandwich-convention sentence, following the display defining `Ĥ₄^{(N)}`, for the physical quadrature itself: with
 `q̂ = (â + â†)/√(2ω₀)` at any `ω₀ > 0`, the strict sandwich is genuinely
 nonmultiplicative, `(Π_N q̂ Π_N)⁴ ≠ Π_N q̂⁴ Π_N`, again at the smallest cutoff `N = 1`.
 The two `(0,0)` entries are `0` and `3/(4ω₀²)`; the statement follows from the unscaled

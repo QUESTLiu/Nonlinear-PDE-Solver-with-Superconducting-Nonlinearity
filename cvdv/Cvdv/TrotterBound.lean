@@ -11,10 +11,8 @@ import Cvdv.Telescoping
 /-!
 # First-order Trotter product-formula error bound
 
-This file formalizes the first-order (Lie) product-formula error estimate that
-backs the manuscript's cost claim for Hamiltonian simulation (Sec. 2.2,
-Eq. (eta-C)): a single splitting step of length `t/r` carries an error of order
-`‖[H₁, H₂]‖ (t/r)²`, so `r = O(‖[H₁, H₂]‖ t² / δ)` steps reach accuracy `δ`.
+This file formalizes the first-order (Lie) product-formula error estimate used
+by the correction-cost discussion surrounding manuscript Eq. `eq:df-C-N`.
 
 The estimates are proved in a real Banach algebra `A` with the normed-algebra
 exponential, then specialized to bounded operators on a complex Hilbert space.
@@ -295,8 +293,8 @@ theorem norm_exp_mul_exp_sub_exp_add_le [NormOneClass A] (X Y : A) :
 /-- T4, the first-order Trotter bound in a Banach algebra.  The hypotheses
 `hS` and `hT` state that one exact step and one split step are contractions,
 which holds for the unitary exponentials of the manuscript.  Combined with the
-telescoping bound, `r` steps of length `1/r` give the `1/(2r)` error decay of
-manuscript Eq. (eta-C). -/
+telescoping bound, `r` steps of length `1/r` give explicit `1/(2r)` error decay
+for the two-term split used around Eq. `eq:df-C-N`. -/
 theorem norm_trotter_pow_sub_exp_le [NormOneClass A] (X Y : A) (r : ℕ) (hr : 1 ≤ r)
     (hS : ‖exp ((r : ℝ)⁻¹ • (X + Y))‖ ≤ 1)
     (hT : ‖exp ((r : ℝ)⁻¹ • X) * exp ((r : ℝ)⁻¹ • Y)‖ ≤ 1) :
@@ -362,7 +360,8 @@ lemma norm_exp_neg_I_smul_le_one (H : E →L[ℂ] E)
       = ‖v‖ := isometry_exp_of_skew _ (skew_of_selfAdjoint H hH) u v
     _ ≤ 1 * ‖v‖ := le_of_eq (one_mul _).symm
 
-/-- T5, the paper-facing Trotter bound (manuscript Sec. 2.2, Eq. (eta-C)):
+/-- T5, the paper-facing Trotter bound supporting the correction-cost
+discussion surrounding manuscript Eq. `eq:df-C-N`:
 for symmetric `H₁`, `H₂` on a complex Hilbert space, `r` first-order Trotter
 steps for time `t` deviate from the exact evolution by at most
 `(t²/(2r)) ‖[H₁, H₂]‖ exp(|t| (‖H₁‖ + ‖H₂‖)/r)`. -/

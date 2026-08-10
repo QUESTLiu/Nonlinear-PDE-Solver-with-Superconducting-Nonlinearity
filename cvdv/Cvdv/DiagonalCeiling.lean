@@ -1,6 +1,7 @@
 import Mathlib.Analysis.SpecialFunctions.Complex.Arg
 import Mathlib.Analysis.Complex.Trigonometric
 import Mathlib.Data.Complex.BigOperators
+import Mathlib.Data.Matrix.Mul
 
 /-!
 # Fidelity ceiling of number-diagonal unitaries
@@ -29,6 +30,47 @@ namespace Cvdv
 
 variable {ι : Type*} [Fintype ι] (c d : ι → ℂ)
 
+section NumberDiagonalUnitary
+
+variable [DecidableEq ι]
+
+/-- A finite number-diagonal unitary: a diagonal matrix whose entries all have
+unit modulus. -/
+def IsNumberDiagonalUnitary (U : Matrix ι ι ℂ) : Prop :=
+  ∃ z : ι → ℂ, (∀ n, ‖z n‖ = 1) ∧ U = Matrix.diagonal z
+
+omit [Fintype ι] in
+/-- Every number-diagonal unitary is a real phase profile on the number basis. -/
+theorem IsNumberDiagonalUnitary.exists_phaseProfile {U : Matrix ι ι ℂ}
+    (hU : IsNumberDiagonalUnitary U) :
+    ∃ θ : ι → ℝ, U = Matrix.diagonal fun n => Complex.exp (θ n * Complex.I) := by
+  rcases hU with ⟨z, hz, rfl⟩
+  refine ⟨fun n => (z n).arg, ?_⟩
+  congr 1
+  funext n
+  rw [← Complex.norm_mul_exp_arg_mul_I (z n), hz n]
+  simp
+
+/-- Consequently a number-diagonal unitary acts coefficientwise by its phase
+profile. -/
+theorem IsNumberDiagonalUnitary.exists_phaseProfile_mulVec {U : Matrix ι ι ℂ}
+    (hU : IsNumberDiagonalUnitary U) :
+    ∃ θ : ι → ℝ, ∀ v n,
+      Matrix.mulVec U v n = Complex.exp (θ n * Complex.I) * v n := by
+  rcases hU.exists_phaseProfile with ⟨θ, rfl⟩
+  exact ⟨θ, fun v n => Matrix.mulVec_diagonal _ _ _⟩
+
+omit [Fintype ι] in
+/-- Conversely, every real phase profile defines a number-diagonal unitary. -/
+theorem isNumberDiagonalUnitary_diagonal_phaseProfile (θ : ι → ℝ) :
+    IsNumberDiagonalUnitary
+      (Matrix.diagonal fun n => Complex.exp (θ n * Complex.I)) := by
+  refine ⟨fun n => Complex.exp (θ n * Complex.I), ?_, rfl⟩
+  intro n
+  exact Complex.norm_exp_ofReal_mul_I (θ n)
+
+end NumberDiagonalUnitary
+
 /-- Multiplying a complex number by the unit phase cancelling its argument yields its modulus,
 viewed as a complex number. -/
 lemma mul_exp_neg_arg_mul_I (z : ℂ) :
@@ -52,6 +94,15 @@ theorem diag_overlap_le (θ : ι → ℝ) :
       ∑ n, ‖c n‖ * ‖d n‖ := by
   refine le_trans (norm_sum_le _ _) (le_of_eq (Finset.sum_congr rfl fun n _ => ?_))
   rw [norm_mul, norm_mul, Complex.norm_exp_ofReal_mul_I, mul_one, Complex.norm_conj]
+
+/-- The phase-profile bound therefore applies to every number-diagonal
+unitary acting on the coefficient vector `d`. -/
+theorem numberDiagonalUnitary_overlap_le [DecidableEq ι]
+    (U : Matrix ι ι ℂ) (hU : IsNumberDiagonalUnitary U) :
+    ‖∑ n, (starRingEnd ℂ) (c n) * Matrix.mulVec U d n‖ ≤
+      ∑ n, ‖c n‖ * ‖d n‖ := by
+  rcases hU.exists_phaseProfile_mulVec with ⟨θ, hθ⟩
+  simpa only [hθ, mul_assoc] using diag_overlap_le c d θ
 
 /-- The upper bound of `diag_overlap_le` is attained: the phase choice
 `θ n = -arg (conj (c n) * d n)` aligns every term of the overlap sum along the positive

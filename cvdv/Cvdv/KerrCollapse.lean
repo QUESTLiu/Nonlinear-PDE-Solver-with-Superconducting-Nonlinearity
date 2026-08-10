@@ -296,15 +296,45 @@ theorem kerr_collapse_time_exp (xi : ℂ) (K : ℝ) (hK : K ≠ 0) (hxi : xi ≠
       = Real.exp (-1) := by
   rw [kerr_collapse_time xi K hK hxi]
 
+/-- The coherent-state Kerr-energy series is summable. -/
+lemma kerr_energy_cohAmp_summable (xi : ℂ) (omega K : ℝ) :
+    Summable fun n : ℕ => kerrEnergy omega K n * ‖cohAmp xi n‖ ^ 2 := by
+  refine (((cohNExpect_summable xi).mul_left omega).add
+    ((cohNSqExpect_summable xi).mul_left K)).congr fun n => ?_
+  simp only [kerrEnergy]
+  ring
+
+/-- The Kerr-energy series remains summable after number-diagonal evolution. -/
+theorem kerr_energyExpect_summable (xi : ℂ) (omega K t : ℝ) :
+    Summable fun n : ℕ =>
+      kerrEnergy omega K n * ‖kerrState xi omega K t n‖ ^ 2 :=
+  (kerr_energy_cohAmp_summable xi omega K).congr fun n => by
+    rw [kerr_norm_kerrState]
+
+/-- Summable form of number-diagonal energy conservation: termwise equality
+transfers summability and equality of the two energy sums. -/
+theorem kerr_energyExpect_invariant_of_summable (xi : ℂ) (omega K t s : ℝ)
+    (ht : Summable fun n : ℕ =>
+      kerrEnergy omega K n * ‖kerrState xi omega K t n‖ ^ 2) :
+    Summable (fun n : ℕ =>
+      kerrEnergy omega K n * ‖kerrState xi omega K s n‖ ^ 2) ∧
+      (∑' n : ℕ, kerrEnergy omega K n * ‖kerrState xi omega K t n‖ ^ 2) =
+        ∑' n : ℕ, kerrEnergy omega K n * ‖kerrState xi omega K s n‖ ^ 2 := by
+  have hterm : ∀ n : ℕ,
+      kerrEnergy omega K n * ‖kerrState xi omega K t n‖ ^ 2 =
+        kerrEnergy omega K n * ‖kerrState xi omega K s n‖ ^ 2 := fun n => by
+    rw [kerr_norm_kerrState, kerr_norm_kerrState]
+  exact ⟨ht.congr hterm, tsum_congr hterm⟩
+
 /-- Manuscript l.311 ("even though no energy has been lost"), energy version of the
 conservation sentence: because the Kerr evolution is number-diagonal, each Fock
-amplitude keeps its modulus, so the energy expectation
-`⟨H_K⟩ = ∑ₙ (ω n + K n²) |ψₙ|²` is the same at any two times `t` and `s`.
-The equality is termwise, so it holds with no summability hypothesis. -/
+amplitude keeps its modulus, so the summable energy expectation
+`⟨H_K⟩ = ∑ₙ (ω n + K n²) |ψₙ|²` is the same at any two times `t` and `s`. -/
 theorem kerr_energyExpect_invariant (xi : ℂ) (omega K t s : ℝ) :
     (∑' n : ℕ, kerrEnergy omega K n * ‖kerrState xi omega K t n‖ ^ 2)
       = ∑' n : ℕ, kerrEnergy omega K n * ‖kerrState xi omega K s n‖ ^ 2 :=
-  tsum_congr fun n => by rw [kerr_norm_kerrState, kerr_norm_kerrState]
+  (kerr_energyExpect_invariant_of_summable xi omega K t s
+    (kerr_energyExpect_summable xi omega K t)).2
 
 /-- The time-invariant energy expectation evaluated against the initial coherent
 amplitudes: `⟨H_K⟩(t) = ∑ₙ (ω n + K n²) |⟨n|ξ⟩|²` for every `t`. -/

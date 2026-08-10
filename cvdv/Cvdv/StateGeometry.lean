@@ -93,6 +93,24 @@ theorem scaled_moment_recovery (O : E →L[ℂ] E) (v psiCond Psi : E)
       push_cast
       ring
 
+/-- Postselection form of `scaled_moment_recovery`: when `psiCond` is
+normalized, `v = √p • psiCond` also proves that `p = ⟪v, v⟫`, so the scalar in
+the recovered moment is the postselection probability rather than an
+independent parameter. -/
+theorem scaled_moment_recovery_postselection (O : E →L[ℂ] E)
+    (v psiCond Psi : E) (alpha : ℂ) (p : ℝ) (hp : 0 ≤ p)
+    (hpsiCond : ‖psiCond‖ = 1)
+    (hcond : v = (Real.sqrt p : ℂ) • psiCond) (hPsi : Psi = alpha • v) :
+    inner ℂ v v = (p : ℂ) ∧
+      inner ℂ Psi (O Psi) =
+        ((‖alpha‖ ^ 2 * p : ℝ) : ℂ) * inner ℂ psiCond (O psiCond) := by
+  constructor
+  · rw [hcond, inner_smul_left, inner_smul_right, Complex.conj_ofReal,
+      inner_self_eq_norm_sq_to_K, hpsiCond]
+    norm_num
+    rw [← Complex.ofReal_mul, Real.mul_self_sqrt hp]
+  · exact scaled_moment_recovery O v psiCond Psi alpha p hp hcond hPsi
+
 /-- Concrete phase alignment (manuscript, Sec. on multi-site Strang validation):
 the specific global phase `θ⋆ = -arg ⟪ψ_ref, ψ_Δt⟫` achieves
 `‖u - e^{iθ⋆} • v‖ ^ 2 = 2 - 2 * ‖⟪u, v⟫‖` for unit vectors `u v`. This is the

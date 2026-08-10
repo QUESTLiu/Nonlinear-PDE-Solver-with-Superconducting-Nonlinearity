@@ -13,9 +13,11 @@ import Cvdv.StateGeometry
 /-!
 # Duhamel bound for the rotating-wave-approximation error
 
-This file formalizes the Duhamel-principle error estimate of the manuscript,
-Eqs. (df-duhamel) and (df-bound), for bounded operators on a complex Hilbert
-space (the finite Fock space of the paper).
+This file proves phase-free abstract Duhamel estimates for bounded operators on
+a complex Hilbert space (the finite Fock space of the paper).  The
+energy-shifted statements matching manuscript Eqs. `eq:df-duhamel` and
+`eq:df-bound` are the corollaries in `Cvdv.EnergyShift` and
+`Cvdv.FiniteDuffing`.
 
 * `Cvdv.duhamel_identity` is the Duhamel integral identity
   `exp (t • C) x - exp (t • A) x = ∫ s in 0..t, exp ((t-s) • C) ((C - A) (exp (s • A) x))`.
@@ -24,11 +26,10 @@ space (the finite Fock space of the paper).
 * `Cvdv.isometry_exp_of_skew` shows that a generator with purely imaginary
   quadratic form generates an isometric flow, and
   `Cvdv.skew_of_selfAdjoint` verifies this for `(-I) • H` with `H` symmetric.
-* `Cvdv.duhamel_rwa_bound` is manuscript Eq. (df-duhamel): for symmetric `H`,
-  `V` the norm distance between the `H + λV` and `H` evolutions of `ψ₀` is at
-  most `|λ| ∫ s in 0..t, ‖V (exp ((-I s) • H) ψ₀)‖`.
-* `Cvdv.duhamel_infidelity_bound` is manuscript Eq. (df-bound): the infidelity
-  of the two evolved states is bounded by the square of that integral.
+* `Cvdv.duhamel_rwa_bound` is the phase-free abstract norm estimate for the
+  `H + λV` and `H` evolutions of `ψ₀`.
+* `Cvdv.duhamel_infidelity_bound` is its phase-free, phase-invariant
+  infidelity consequence.
 
 All results are fully proved, with no placeholders.
 -/
@@ -197,7 +198,7 @@ lemma exp_real_smul_neg_I_smul (B : E →L[ℂ] E) (s : ℝ) :
   rw [← smul_one_smul ℂ s ((-Complex.I) • B), Complex.real_smul, mul_one, smul_smul,
     mul_comm ((s : ℂ)) (-Complex.I)]
 
-/-- L5, manuscript Eq. (df-duhamel): the error of dropping the coupling term
+/-- L5, the phase-free abstract form of manuscript Eq. (df-duhamel), whose E₀-phase corollaries live in `Cvdv.EnergyShift` and `Cvdv.FiniteDuffing`: the error of dropping the coupling term
 `λ V` from the generator is bounded by the integral of the interaction norm
 along the unperturbed evolution. -/
 theorem duhamel_rwa_bound (H V : E →L[ℂ] E)
@@ -233,7 +234,7 @@ theorem duhamel_rwa_bound (H V : E →L[ℂ] E)
     _ = |lam| * ∫ s in (0:ℝ)..t, ‖V (exp ((-Complex.I * s) • H) psi0)‖ :=
         intervalIntegral.integral_const_mul _ _
 
-/-- L6, manuscript Eq. (df-bound): the infidelity of the perturbed and
+/-- L6, the phase-free abstract form of manuscript Eq. (df-bound), whose E₀-phase corollaries live in `Cvdv.EnergyShift` and `Cvdv.FiniteDuffing`: the infidelity of the perturbed and
 unperturbed evolutions of a normalized state is bounded by the square of the
 Duhamel integral. -/
 theorem duhamel_infidelity_bound (H V : E →L[ℂ] E)

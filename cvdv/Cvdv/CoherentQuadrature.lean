@@ -11,7 +11,7 @@ import Mathlib.Topology.Algebra.InfiniteSum.Ring
 /-!
 # Coherent-state quadrature moments and the zero-point variance
 
-Formalization of the coherent-state moment computations behind manuscript Eq. (sg-zpf): in a
+Formalization of the coherent-state moment computations behind manuscript Eq. `eq:sg-zpf`: in a
 coherent state the phase quadrature `φ = (a + a†)/√(2 ω_b)` has variance `1/(2 ω_b)`.
 
 We work in the Fock-sequence representation.  The coherent amplitudes are
@@ -206,7 +206,7 @@ theorem nExpect_cohAmp (alpha : ℂ) : nExpect (cohAmp alpha) = ‖alpha‖ ^ 2 
     tsum_mul_left, coh_tsum_exp_real, mul_right_comm, ← Real.exp_add, neg_add_cancel,
     Real.exp_zero, one_mul]
 
-/-- **R4** (manuscript Eq. (sg-zpf)): the coherent-state variance of the phase quadrature
+/-- **R4** (manuscript Eq. `eq:sg-zpf`): the coherent-state variance of the phase quadrature
 `φ = (a + a†)/√(2 ω)` equals the zero-point value `1/(2 ω)`.  The first summand is `⟨φ²⟩` with
 the moments `⟨a²⟩ = α²`, `⟨a†²⟩ = conj α ²`, `⟨a† a⟩ = ‖α‖²` substituted, the second is `⟨φ⟩²`. -/
 theorem cohVariance (alpha : ℂ) {omega : ℝ} (homega : 0 < omega) :
@@ -243,7 +243,7 @@ quadrature `φ = (a + a†)/√(2 ω_b)` acts on Fock-amplitude sequences throug
 moments `⟨φ⟩`, `⟨φ²⟩` are genuine Fock sums (`phiExpect`, `phiSqExpect`).  Evaluated on the
 coherent amplitudes `cohAmp ξ` they give `⟨φ⟩ = (ξ + conj ξ)/√(2 ω)` (`phiExpect_cohAmp`) and
 `⟨φ²⟩ = (ξ² + conj ξ ² + 2 ‖ξ‖² + 1)/(2 ω)` (`phiSqExpect_cohAmp`), whence the zero-point
-variance `⟨φ²⟩ - ⟨φ⟩² = 1/(2 ω)` of manuscript Eq. (sg-zpf) (`cohPhiVariance`) with no scalar
+variance `⟨φ²⟩ - ⟨φ⟩² = 1/(2 ω)` of manuscript Eq. `eq:sg-zpf` (`cohPhiVariance`) with no scalar
 substitution hypotheses left.
 -/
 
@@ -404,6 +404,30 @@ lemma cohNExpect_summable (xi : ℂ) :
   refine ((summable_nat_add_iff (f := cohNTerm (‖xi‖ ^ 2)) 1).mp
       (cohNTerm_succ_summable (‖xi‖ ^ 2))).congr fun n => ?_
   simp only [cohNTerm, norm_cohAmp_sq]
+
+/-- Summability of the second-factorial-moment Poisson weights
+`n (n - 1) ‖⟨n|ξ⟩‖²`. -/
+lemma cohNSecondFactorial_summable (xi : ℂ) :
+    Summable fun n : ℕ =>
+      (n : ℝ) * ((n : ℝ) - 1) * ‖cohAmp xi n‖ ^ 2 := by
+  refine (summable_nat_add_iff (f := fun n : ℕ =>
+    (n : ℝ) * ((n : ℝ) - 1) * ‖cohAmp xi n‖ ^ 2) 2).mp ?_
+  refine ((Real.summable_pow_div_factorial (‖xi‖ ^ 2)).mul_left
+    (Real.exp (-(‖xi‖ ^ 2)) * (‖xi‖ ^ 2) ^ 2)).congr fun n => ?_
+  rw [norm_cohAmp_sq, show n + 2 = n + 1 + 1 by omega,
+    Nat.factorial_succ, Nat.factorial_succ]
+  push_cast
+  rw [pow_add]
+  field_simp
+  ring
+
+/-- Summability of the squared-number-weighted Poisson weights
+`n² ‖⟨n|ξ⟩‖²`. -/
+lemma cohNSqExpect_summable (xi : ℂ) :
+    Summable fun n : ℕ => (n : ℝ) ^ 2 * ‖cohAmp xi n‖ ^ 2 := by
+  refine ((cohNSecondFactorial_summable xi).add (cohNExpect_summable xi)).congr
+    fun n => ?_
+  ring
 
 /-- Normalization of the coherent state: `∑ ‖⟨n|ξ⟩‖² = 1`. -/
 lemma cohAmp_normSq_tsum (xi : ℂ) : ∑' n : ℕ, ‖cohAmp xi n‖ ^ 2 = 1 := by
@@ -592,7 +616,7 @@ theorem phiSqExpect_cohAmp (xi : ℂ) {omega : ℝ} (homega : 0 < omega) :
         rw [phiUp2Term_tsum_cohAmp, phiDiagTerm_tsum_cohAmp, phiDown2Term_tsum_cohAmp]
     _ = (xi ^ 2 + (starRingEnd ℂ) xi ^ 2 + 2 * (‖xi‖ : ℂ) ^ 2 + 1) / (2 * omega) := by ring
 
-/-- **Operator-level zero-point variance** (manuscript Eq. (sg-zpf)): in the coherent state
+/-- **Operator-level zero-point variance** (manuscript Eq. `eq:sg-zpf`): in the coherent state
 `|ξ⟩`, `⟨φ²⟩ - ⟨φ⟩² = 1/(2 ω)` — the coherent-state variance of `φ = (a + a†)/√(2 ω)` is the
 zero-point value `1/(2 ω)`, now derived from the Fock-sum moments themselves rather than from
 substituted scalars (compare `cohVariance`). -/
