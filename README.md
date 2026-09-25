@@ -1,80 +1,79 @@
 # Native nonlinear interactions versus programmable emulation in hybrid oscillator–qubit simulation
 
-This repository contains the manuscript of the same title, the code and numerical records behind its numbers, tables and figures, and a Lean 4 formalization of several of its finite-dimensional statements.
+This repository contains the manuscript, the code and numerical records behind its numbers, tables and figures, and a Lean 4 formalization of several of its statements. Code and data are grouped by benchmark, and each `<topic>_code/` folder writes to the matching `<topic>_data/` folder.
 
-## Contents
-
-| Path | Content |
+| Folder | Content |
 |---|---|
-| `paper/` | Manuscript source `main.tex`, bibliography `references.bib`, figures and the compiled `main.pdf` |
-| `paper/scripts/`, `paper/data/` | Scripts that scan and check the double sine-Gordon circuits, derive further numbers and draw the figures, and the records they write |
-| `pra/` | Simulation pipeline for the sine-Gordon, Duffing and double sine-Gordon comparisons, with its protocols, run manifests, records and results (see `pra/README.md`) |
-| `sine_gordon/`, `duffing/` | Model operators, gates, compilers and metrics used by `pra/` and `paper/scripts/` |
-| `cvdv/` | Lean 4 formalization of the statements listed in Appendix L (see `cvdv/README.md`) |
+| `paper/` | Manuscript source, bibliography, figures, compiled PDF, and the version with changes marked in blue |
+| `sine_gordon_code/`, `sine_gordon_data/` | Sine-Gordon lattice, Sec. III A and Appendix F. The library in `sine_gordon_code/` also serves the double sine-Gordon lattice |
+| `duffing_code/`, `duffing_data/` | Duffing oscillator, Sec. III B and Appendix H |
+| `double_sine_gordon_code/`, `double_sine_gordon_data/` | Double sine-Gordon lattice, Sec. III C and Appendices I, J and K |
+| `common_code/`, `common_data/` | Pipeline infrastructure shared by the benchmarks, the figure script, and records that span several benchmarks |
+| `lean_proof/` | Lean 4 formalization of the statements in Appendix L |
+| `legacy/` | Earlier code by other contributors that the manuscript does not use |
 
 ## Environment
 
-The records were produced with Python 3.13.0, NumPy 2.3.4, SciPy 1.16.3 and Matplotlib 3.10.7, as declared in `.python-version` and `requirements.txt`. One way to set up this environment is
+The records were produced with Python 3.13.0, NumPy 2.3.4, SciPy 1.16.3 and Matplotlib 3.10.7 (`requirements.txt`). Run all Python commands from the repository root, scripts as `python <folder>/<script>.py` and pipeline modules as `python -m <folder>.<module>`. The manuscript compiles with `tectonic main.tex` in `paper/`, and the Lean project builds with `lake exe cache get` and `lake build` in `lean_proof/`.
 
-```sh
-python3.13 -m venv .venv
-.venv/bin/pip install -r requirements.txt
-```
+## Where each result comes from
 
-Run the Python commands below from the repository root with this interpreter.
+The pipeline drivers run the batches listed in the manifests of each data folder, for example `python -m common_code.run_batch duffing_data/manifests/duffing_padding_manifest.json --batch B3-D`, which prints the commands and runs them with `--execute`. The pipeline records the git commit of the checkout in its outputs, so run it from a git repository.
 
-## Manuscript
+### Sine-Gordon lattice
 
-The manuscript uses REVTeX 4.2 and compiles with Tectonic,
+| Code | Data | Manuscript |
+|---|---|---|
+| `sine_gordon_code/sglib.py`, `common.py`, `native_correction.py` | none (operators, gates and diagnostics) | used by all lattice results |
+| `sine_gordon_code/run_classical.py` (experiment E3) | `sine_gordon_data/formal/E3/`, `sine_gordon_data/stage1/E3/` | Fig. 2, mean-field window in Sec. III A |
+| `sine_gordon_code/run_polydeg.py` | `sine_gordon_data/formal/polynomial/` | Fig. 7, Appendix F |
 
-```sh
-cd paper
-tectonic main.tex
-```
+### Duffing oscillator
 
-or with `latexmk -pdf main.tex` in a TeX Live installation. Fig. 1 is a TikZ drawing whose source is `paper/figures/fig_overview.tex`.
+| Code | Data | Manuscript |
+|---|---|---|
+| `duffing_code/duffing_padded_hybrid_validation.py`, `native_comparison.py` | none (model, compiler, padded validation, Kerr replacement) | used by all Duffing results |
+| `common_code/run_pilot.py`, subcommands `e1` and `e1-formal` (experiment E1) | `duffing_data/stage1/E1/`, `duffing_data/formal/E1/`, `E1_retry/` | Fig. 3 |
+| `common_code/run_pilot.py`, subcommand `e2` (development runs of E2) | `duffing_data/stage1/E2/` | inputs to the formal E2 runs |
+| `duffing_code/run_duffing_formal.py` (experiment E2), `verify_e2_action.py` | `duffing_data/formal/E2/` | Figs. 4 and 8 |
+| `duffing_code/run_duffing_refinement.py` | `duffing_data/duffing_refinement/` | Figs. 4 and 8, Table II, Appendix H |
+| `duffing_code/run_duffing_padding.py` | `duffing_data/duffing_padding/` | Table II |
+| `duffing_code/duffing_amplitude_scan.py` | `duffing_data/duffing_amplitude_scan.json` | Fig. 3, numbers in Sec. III B |
+| `duffing_code/kerr_apriori_bound.py` | `duffing_data/kerr_apriori_bound.json` | a priori Kerr bound in Sec. III B |
 
-## Figures and numbers
+### Double sine-Gordon lattice
 
-`python paper/scripts/make_figures.py` redraws Figs. 2–9 from the records in `pra/results/` and `paper/data/` in a few seconds, without running simulations.
+The pipeline modules named `*_sg_*` and the data folders `sg*` belong to this lattice at λ₂ = 0.3 (experiment E4).
 
-The scripts below write the records in `paper/data/`. The docstring of each script gives its commands. Times are approximate and refer to one workstation.
+| Code | Data | Manuscript |
+|---|---|---|
+| `common_code/run_pilot.py`, subcommands `e4-reference`, `e4-refinement`, `e4-reference128` and `e4-compiled` | `double_sine_gordon_data/stage1/E4_reference/`, `stage1_continuation/`, `sg128/reference/`, `sg128/compiled*/` | Fig. 5, Table VI |
+| `double_sine_gordon_code/run_sg_padding160.py` | `double_sine_gordon_data/sg160/` | Table VI, solver margins of the step scans |
+| `double_sine_gordon_code/run_sg_formal.py` | `double_sine_gordon_data/sg_formal/` | Fig. 9 |
+| `double_sine_gordon_code/run_sg_refinement.py`, `run_snapd.py`, `run_snapd_end_to_end.py` | `double_sine_gordon_data/sg_refinement/`, `sg_size/`, `sg_continuation/` | Table V, Appendix I |
+| `double_sine_gordon_code/run_sg_independent.py` | `double_sine_gordon_data/sg_independent/` | second-preparation check of the r = 10 and 20 circuits |
+| `double_sine_gordon_code/run_sg_convention.py`, `check_sg_split.py`, `check_sg_reference_grid.py`, `probe_sg_stationary.py`, `run_scaling.py` | `double_sine_gordon_data/sg128/`, `stage1/B0/`, `common_data/records/` | convention, splitting and reference-grid checks |
+| `double_sine_gordon_code/dsg_step_scan.py`, `dsg_step_scan_lambda.py` | `double_sine_gordon_data/dsg_step_scan*.json`, `dsg_step_scan_parts*/` | Table III, Figs. 5 and 6 |
+| `double_sine_gordon_code/dsg_chain.py` | `double_sine_gordon_data/dsg_chain_*` | three-site rows of Table III, propagator check in Appendix G |
+| `double_sine_gordon_code/dsg_boundary_check.py` | `double_sine_gordon_data/dsg_boundary_check_*.json` | λ₂ = 0.6 entries of Tables III and VII |
+| `double_sine_gordon_code/dsg_protocol_checks.py` | `double_sine_gordon_data/dsg_common_times*`, `dsg_gauss_factor_check.json` | Appendices J and K |
+| `double_sine_gordon_code/dsg_thresholds.py` | `double_sine_gordon_data/dsg_thresholds.json` | Table VII, Fig. 6(c) |
+| `double_sine_gordon_code/splitting_baselines.py`, `splitting_sweep.py` | `double_sine_gordon_data/splitting_*.json` | Fig. 6(b) and 6(c) |
+| `double_sine_gordon_code/dsg_curvature.py`, `dsg_fock_tail.py` | `double_sine_gordon_data/dsg_curvature.json`, `dsg_fock_tail.json` | Sec. III C, Appendix G |
+| `double_sine_gordon_code/trig_counts.py` | primitive counts inside the scan records | Tables III and VII, Appendix J |
 
-| Script | Output in `paper/data/` | Used for | Time |
-|---|---|---|---|
-| `duffing_amplitude_scan.py` | `duffing_amplitude_scan.json` | Fig. 3 | seconds |
-| `kerr_apriori_bound.py` | `kerr_apriori_bound.json` | a priori Kerr bound, Sec. III B | seconds |
-| `derived_numbers.py` | `derived_numbers.json` | numbers in Secs. III A and III B and Appendix F, computed from `pra/results/` | seconds |
-| `class_diagnostics.py` | `class_diagnostics.json` | Table IV | 10 s |
-| `splitting_baselines.py` | `splitting_baselines.json` | Fig. 6(b) | 2 min |
-| `splitting_sweep.py` | `splitting_sweep.json` | Fig. 6(c) | 2 min |
-| `dsg_step_scan.py`, `dsg_step_scan_lambda.py` | `dsg_step_scan*.json`, `dsg_step_scan_parts*/` | Table III, Figs. 5 and 6 | 40 min for the three values of λ₂, run as parallel processes |
-| `dsg_chain.py` | `dsg_chain_N3_cut128_160.json`, `dsg_chain_parts_*/` | three-site rows of Table III | several hours, about 1 h for each three-site hybrid circuit |
-| `dsg_boundary_check.py` | `dsg_boundary_check_lambda0.6*.json` | λ₂ = 0.6 entry of Table III | 5 min |
-| `dsg_protocol_checks.py` | `dsg_common_times.json`, `dsg_common_times_parts/`, `dsg_gauss_factor_check.json` | Appendices J and K | up to 4 min per circuit |
-| `dsg_thresholds.py` | `dsg_thresholds.json` | Table VII, Fig. 6(c) | under 1 s |
-| `dsg_curvature.py` | `dsg_curvature.json` | Sec. III C | 1 min |
-| `dsg_fock_tail.py` | `dsg_fock_tail.json` | Sec. III C, Appendix G | 1 min |
-| `trig_counts.py` | primitive counts inside the scan records | Tables III and VII, Appendix J | seconds |
+The double sine-Gordon scans cache reference trajectories in the directories named by `DSG_SCAN_CACHE` and `DSG_CHAIN_CACHE` (default `/tmp/dsg_scan_cache` and `/tmp/dsg_chain_cache`, about 9 GB for three sites). Each script's docstring gives its commands and cost.
 
-The scans cache reference trajectories in the directories named by the environment variables `DSG_SCAN_CACHE` and `DSG_CHAIN_CACHE`, which default to `/tmp/dsg_scan_cache` and `/tmp/dsg_chain_cache`. The three-site cache takes about 9 GB, and `dsg_fock_tail.py` reads both caches. `python paper/scripts/trig_counts.py verify` checks the rewritten trigonometric gate sequences against the exact gates and the stored counts in a few seconds.
+### Shared
 
-## Simulation pipeline
+| Code | Data | Manuscript |
+|---|---|---|
+| `common_code/run_pilot.py`, `metrics.py`, `records.py`, `run_batch.py` | `common_data/manifests/`, `common_data/formal/`, `common_data/stage1/` (batch execution records) | drivers and metrics for E1 to E4 |
+| `common_code/run_e0.py`, `test_e0.py` | `common_data/records/e0.json`, `e0.log` | small operator checks |
+| `common_code/plot_results.py` | `common_data/analysis_summary.json` | Tables II and V, Fig. 9 |
+| `common_code/derived_numbers.py` | `common_data/derived_numbers.json` | numbers in Secs. III A and III B and Appendix F |
+| `common_code/class_diagnostics.py` | `common_data/class_diagnostics.json` | Table IV |
+| `common_code/make_figures.py` | `paper/figures/*.pdf` | Figs. 2–9 |
+| `lean_proof/` | `common_data/records/lean-build.log`, `lean-axioms.log` | Appendix L |
 
-`pra/results/` holds the records of the sine-Gordon, Duffing and archived double sine-Gordon runs, and `pra/README.md` describes the pipeline, its protocols and how to rerun a batch. `python -m pra.plot_results` rewrites `pra/results/analysis_summary.json`, which the scripts in `paper/scripts/` read, and `python -m unittest pra.test_e0` runs the small operator checks of the pipeline. The pipeline writes the git commit and diff of the checkout into its records, so run it from a git repository.
-
-## Lean formalization
-
-With elan installed, build the formalization from `cvdv/`,
-
-```sh
-cd cvdv
-lake exe cache get
-lake build
-```
-
-where `lake exe cache get` downloads prebuilt Mathlib files. `pra/records/lean-build.log` and `pra/records/lean-axioms.log` record a full build and an axiom audit.
-
-## Data size
-
-`pra/results/` takes 1.2 GB, mostly state trajectories in `.npz` files. The rest of the repository takes a few megabytes.
+`python common_code/make_figures.py` redraws Figs. 2–9 from the data folders in a few seconds. Fig. 1 is drawn with TikZ from `paper/figures/fig_overview.tex`. `paper/mark_changes.py` produces `paper/main_marked.tex` from `paper/main.tex` and the earlier draft.
