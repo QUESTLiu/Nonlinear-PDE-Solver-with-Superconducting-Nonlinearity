@@ -1,6 +1,6 @@
 # Reproducing the finite-model comparisons
 
-This pipeline produced the records in the `*_data/` folders that the manuscript in `../paper/` uses for its sine-Gordon, Duffing and double sine-Gordon comparisons. Its primary outputs are finite-family numerical comparisons, with separate estimates for reference cutoff, numerical solver and circuit padding. A successful optimizer termination or small training loss does not establish physical accuracy. In the records of experiment E4, which treat the double sine-Gordon lattice at λ2 = 0.3, the routes H_trig, H_trig_ret, H_SNAP and G_trig are the hybrid, retuned hybrid, SNAP+D hybrid and kinetic–potential circuits of the manuscript.
+This pipeline produced the records in the `*_data/` folders that the manuscript in `../paper/` uses for its sine-Gordon, Duffing and double sine-Gordon comparisons. Its primary outputs are finite-family numerical comparisons, with separate estimates for reference cutoff, numerical solver and circuit padding. A successful optimizer termination or small training loss does not establish physical accuracy. In the records of experiment E4, which treat the double sine-Gordon lattice at λ2 = 0.3, the routes H_trig, H_trig_ret, H_SNAP and G_trig are the hybrid, retuned hybrid, SNAP+D hybrid and kinetic–potential circuits of the manuscript. In these records the label SG and the folders named `sg*` refer to this double sine-Gordon instance. Experiment E3 is the sine-Gordon calibration of Figs. 2 and 7, E1 the native Duffing grid of Fig. 3, and E2 with its refinements the Duffing compiler of Figs. 4 and 8 and Table II.
 
 ## Environment
 
@@ -12,7 +12,7 @@ Run commands from the repository root. The small independent checks are:
 OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 python -m common_code.run_e0
 ```
 
-`run_e0` and the batch runner write the git commit and diff of the checkout into their records, so they must run inside a git repository. `python -m unittest pra.test_e0` runs the same checks without writing a record.
+`run_e0` rewrites `../common_data/records/e0.json` and `e0.log`. It and the batch runner record the git commit and a SHA-256 hash of the uncommitted diff, so they must run inside a git checkout with at least one commit. `python -m unittest common_code.test_e0` runs the same checks without writing a record.
 
 Rewrite `../common_data/analysis_summary.json`, which `make_figures.py` and `derived_numbers.py` read, from the existing records without running simulations. The same command draws diagnostic figures into `common_data/diagnostic_figures/`.
 
@@ -22,7 +22,7 @@ python -m common_code.plot_results
 
 ## Numerical definitions
 
-`metrics.py` owns phase-insensitive distance, the native-reference residual integral, the three native-error verdicts and exact-reference action sums. `duffing/duffing_padded_hybrid_validation.py` owns the actual finite displacement derivative and the common-phase compiler objective. `duffing/native_comparison.py` constructs the Kerr replacement and measures tails at its actual locations. `sine_gordon/native_correction.py` defines the spectral and physical-sandwich operators, single-ancilla gates, reduced metrics and finite first-moment residuals.
+`metrics.py` owns phase-insensitive distance, the native-reference residual integral, the three native-error verdicts and exact-reference action sums. `../duffing_code/duffing_padded_hybrid_validation.py` owns the actual finite displacement derivative and the common-phase compiler objective. `../duffing_code/native_comparison.py` constructs the Kerr replacement and measures tails at its actual locations. `../sine_gordon_code/native_correction.py` defines the spectral and physical-sandwich operators, single-ancilla gates, reduced metrics and finite first-moment residuals.
 
 The SG spectral model uses the squares and trigonometric functions of finite quadratures. The physical-sandwich comparison uses projected infinite-oscillator matrix elements. Raising a validation cutoff keeps trained gate parameters fixed. The two conventions and the two frequencies `omega_b` and `Omega_time` are recorded independently.
 
@@ -34,7 +34,7 @@ The SG spectral model uses the squares and trigonometric functions of finite qua
 | `../double_sine_gordon_data/stage1/B0/` | B0 cost measurement |
 | `../common_data/stage1/` | Development E1, E2 and E3 data, and the initial SG reference |
 | `../double_sine_gordon_data/stage1_continuation/` | SG cutoff 64 refinement and its failed continuation condition |
-| `../double_sine_gordon_data/sg128/` | Authorized 96/128 reference, compiled pilot and convention check |
+| `../double_sine_gordon_data/sg128/` | 96/128 reference, compiled pilot and convention check |
 | `../double_sine_gordon_data/sg_formal/comparison/` | Fixed formal SG restart and circuit comparison |
 | `../double_sine_gordon_data/sg160/` | Same-parameter 128/160 refinement of three existing trigonometric circuits |
 | `../double_sine_gordon_data/sg_refinement/paired/` | Eighteen paired-frame starts and six full-circuit SNAP comparisons |
@@ -51,7 +51,7 @@ The SG spectral model uses the squares and trigonometric functions of finite qua
 
 The initial failed E1 and formal E2 execution records remain alongside the corrected runs. E1 failed because complex self-overlap roundoff gave a nonzero distance for an identical-state control. E2 stopped after a completed optimizer because its summary constructor repeated the seed field. Recovery reused the completed checkpoint and counted its original cost.
 
-`run_batch.py` prints a manifest's commands unless `--execute` is present. It monitors wall time, resident memory and output size. An existing execution record cannot be overwritten. To reproduce a complete batch, copy its manifest with a new output directory and execution-record name, keeping the protocol unchanged. Manifest commands name the interpreter of the archived runs, so the copy must name the local interpreter. Resource caps do not grant permission to expand a workload.
+`run_batch.py` prints a manifest's commands unless `--execute` is present. It monitors wall time, resident memory and output size. An existing execution record cannot be overwritten. To reproduce a complete batch, copy its manifest with a new output directory and execution-record name, keeping the protocol unchanged. Manifest commands name the interpreter of the archived runs, so the copy must name the local interpreter.
 
 ```sh
 python -m common_code.run_batch common_data/manifests/formal_manifest.json --batch B3-D
@@ -63,13 +63,13 @@ The SG initialization comparison changes only the initial parameterization. Its 
 
 The second SG preparation, with requested site-0 field 0.75 and momentum 0.25, was specified in `../double_sine_gordon_data/manifests/sg_refinement_protocol.json` before the new training. After development selection, the same three representative trigonometric circuits pass all criteria at cutoffs 128/160. No SNAP circuit enters that check because none meets the development selection condition. The reference state-cutoff comparison uses the 21 outer-step times. Observable cutoff comparisons and independent solver comparisons additionally cover the 257-point diagnostic grid. A text-only scope correction, its original metadata copies and the unchanged numerical records are documented in `../double_sine_gordon_data/sg_independent/check/grid_scope_erratum.json`.
 
-Each refinement batch directory includes a source snapshot. Its protocol and manifest state dimensions, initialization, selection, output scope and resource caps. `../common_data/records/refinement-decisions-2026-09-24.md` records the adjudication of the external compiler diagnosis. `check_sg_reference_grid.py` contracts archived original-preparation states on the common circuit times without rerunning trajectories. Its record shows that those observable cutoff differences do not exceed the archived diagnostic-grid estimates.
+Each refinement batch directory includes a source snapshot. Its protocol and manifest state dimensions, initialization, selection, output scope and resource caps. `../common_data/records/refinement-decisions-2026-09-24.md` records the adjudication of the external compiler diagnosis. `../double_sine_gordon_code/check_sg_reference_grid.py` contracts archived original-preparation states on the common circuit times without rerunning trajectories. Its record shows that those observable cutoff differences do not exceed the archived diagnostic-grid estimates.
 
-The Duffing iteration-only arm improves training objective but fails the full input sets. The broader arm uses eight initial phases, 12 layers and three paired-frame starts. Its selected H/S_K pair passes the primary 1e-3 criterion on all ten development and twelve independent coherent inputs. Same-parameter padding checks through 128/160 preserve that verdict. The original failure records and all unsuccessful starts remain part of the comparison. The complete exploration record is `../common_data/records/refinement-exploration-2026-09-24.md`.
+The Duffing iteration-only arm improves training objective but fails the full input sets. The broader arm uses eight initial phases, 12 layers and three paired-frame starts. Its selected pair of circuits, the hybrid circuit H with native Kerr waits and the circuit S_K with every wait replaced by a SNAP gate, passes the primary 1e-3 criterion on all ten development and twelve independent coherent inputs. Same-parameter padding checks through 128/160 preserve that verdict. The original failure records and all unsuccessful starts remain part of the comparison. The complete exploration record is `../common_data/records/refinement-exploration-2026-09-24.md`.
 
 ## Formal proofs
 
-The theorem map is in `../lean_proof/README.md`. The full Lean build and the axiom audit are in `../common_data/records/lean-build.log` and `../common_data/records/lean-axioms.log`. The composition lemmas are conditional finite-space results. The native-reference integral and the classical-transfer estimate are proved in the manuscript.
+The theorem map is in `../lean_proof/README.md`. The full Lean build and the axiom audit are in `../common_data/records/lean-build.log` and `../common_data/records/lean-axioms.log`. The composition lemmas are conditional results for normed groups and rings. The native-reference integral and the classical-transfer estimate are proved in the manuscript.
 
 Physical pulse synthesis, calibrated noise, continuum convergence and experimental readout are separate from these ideal finite-model results. Resource expressions keep pulse durations, native time conversion and measurement costs explicit.
 

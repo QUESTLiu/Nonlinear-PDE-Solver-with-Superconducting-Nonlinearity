@@ -18,7 +18,7 @@ The records were produced with Python 3.13.0, NumPy 2.3.4, SciPy 1.16.3 and Matp
 
 ## Where each result comes from
 
-The pipeline drivers run the batches listed in the manifests of each data folder, for example `python -m common_code.run_batch duffing_data/manifests/duffing_padding_manifest.json --batch B3-D`, which prints the commands and runs them with `--execute`. The pipeline records the git commit of the checkout in its outputs, so run it from a git repository.
+The pipeline drivers run the batches listed in the manifests of each data folder, for example `python -m common_code.run_batch duffing_data/manifests/duffing_padding_manifest.json --batch B3-D`, which prints the commands and runs them with `--execute`. The pipeline records the git commit and a hash of any uncommitted changes in its outputs, so run it from a git checkout with at least one commit. The archived records name the commit and interpreter of the development repository.
 
 ### Sine-Gordon lattice
 
@@ -76,4 +76,4 @@ The double sine-Gordon scans cache reference trajectories in the directories nam
 | `common_code/make_figures.py` | `paper/figures/*.pdf` | Figs. 2–9 |
 | `lean_proof/` | `common_data/records/lean-build.log`, `lean-axioms.log` | Appendix L |
 
-`python common_code/make_figures.py` redraws Figs. 2–9 from the data folders in a few seconds. Fig. 1 is drawn with TikZ from `paper/figures/fig_overview.tex`. `paper/mark_changes.py` produces `paper/main_marked.tex` from `paper/main.tex` and the earlier draft.
+`python common_code/make_figures.py` redraws Figs. 2–9 from the data folders in a few seconds. Fig. 1 is drawn with TikZ, and `tectonic fig_overview.tex` in `paper/figures/` rebuilds it. `paper/mark_changes.py` produces `paper/main_marked.tex` from `paper/main.tex` and the earlier draft.
