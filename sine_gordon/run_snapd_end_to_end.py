@@ -56,8 +56,12 @@ from scipy.linalg import expm
 from scipy.sparse import csr_matrix, eye, kron
 from scipy.sparse.linalg import expm_multiply
 
-import sglib as sg
-from run_snapd import _run_restart, build_ansatz
+if __package__:
+    from . import sglib as sg
+    from .run_snapd import _run_restart, build_ansatz
+else:
+    import sglib as sg
+    from run_snapd import _run_restart, build_ansatz
 
 
 CHECKPOINT_VERSION = 1
@@ -169,6 +173,7 @@ def build_two_site_problem(
     E_J: float,
     kappa: float,
     coupling: float,
+    convention: str = "spectral",
 ) -> dict[str, Any]:
     """Construct mutually consistent local and two-site Hamiltonians."""
     if n_cut < 4:
@@ -193,6 +198,17 @@ def build_two_site_problem(
         @ np.diag(coupling * (1.0 - np.cos(2.0 * basis.lam_phi)))
         @ basis.U_phi.conj().T
     )
+    if convention == "physical_sandwich":
+        if __package__:
+            from .native_correction import cosine_sandwich, sandwich_local_operators
+        else:
+            from native_correction import cosine_sandwich, sandwich_local_operators
+        q2,p2=sandwich_local_operators(basis)
+        phi_sq=csr_matrix(q2)
+        native_local=.5*p2+E_J*(np.eye(n_cut)-cosine_sandwich(n_cut,omega))
+        correction_local=coupling*(np.eye(n_cut)-cosine_sandwich(n_cut,omega,2))
+    elif convention != "spectral":
+        raise ValueError("convention must be spectral or physical_sandwich")
     native_with_gradient_self = csr_matrix(native_local) + 0.5 * kappa * phi_sq
     H_native = (
         kron(native_with_gradient_self, identity, format="csr")
@@ -221,6 +237,9 @@ def build_two_site_problem(
         "correction_local": np.asarray(correction_local),
         "H_native": H_native.tocsr(),
         "H_target": H_target.tocsr(),
+        "native_local_with_bond": native_with_gradient_self.toarray(),
+        "bond_strength": kappa,
+        "operator_convention": convention,
     }
 
 
@@ -722,7 +741,8 @@ def main() -> None:
     parser.add_argument("--seed", type=int, default=20260729)
     parser.add_argument("--alpha-bound", type=float, default=3.0)
     parser.add_argument("--chi-mhz", type=float, default=1.5)
-    parser.add_argument("--t-displacement-us", type=float, default=0.0)
+    parser.add_argument("--t-displacement-us", type=float, required=True,
+                        help="explicit displacement duration, including zero only for an idealized lower bound")
     parser.add_argument("--t2-anc-us", type=float, default=80.0)
     parser.add_argument("--coherence-fraction", type=float, default=0.25)
     parser.add_argument("--native-threshold", type=float, default=1e-2)
@@ -1147,6 +1167,8 @@ def main() -> None:
         "coherence_fraction": args.coherence_fraction,
         "coherence_budget_us": coherence_budget_us,
         "timing_is_snap_only_lower_bound": args.t_displacement_us == 0,
+        "timing_scope": "programmable local correction only; native waits, switching, preparation and readout are additional",
+        "hardware_feasibility": "not_evaluated",
         "site_blocks_assumed_parallel": True,
         "native_threshold": args.native_threshold,
         "hybrid_threshold": args.hybrid_threshold,

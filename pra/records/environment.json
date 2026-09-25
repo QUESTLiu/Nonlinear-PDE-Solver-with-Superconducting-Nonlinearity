@@ -1,0 +1,12 @@
+{
+  "python": "/Users/zhen002/miniconda3/envs/cvdv/bin/python",
+  "version": "3.13.0",
+  "numpy": "2.3.4",
+  "scipy": "1.16.3",
+  "matplotlib": "3.10.7",
+  "lean": "/Users/zhen002/.elan/toolchains/leanprover--lean4---v4.33.0-rc1/bin/lake",
+  "lean_version": "4.33.0-rc1",
+  "tex": "/usr/local/bin/tectonic",
+  "tex_version": "0.16.9",
+  "scope": "current revision environment, not the historical production environment"
+}

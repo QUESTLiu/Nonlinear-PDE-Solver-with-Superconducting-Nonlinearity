@@ -8,10 +8,14 @@ from datetime import datetime, timezone
 import os
 import platform
 import socket
+import sys
 
 import numpy as np
 
-import sglib as sg
+if __package__:
+    from . import sglib as sg
+else:
+    import sglib as sg
 
 
 def base_parser(description: str) -> argparse.ArgumentParser:
@@ -36,6 +40,8 @@ def base_parser(description: str) -> argparse.ArgumentParser:
     )
     parser.add_argument("--phi0", type=float, default=3.0)
     parser.add_argument("--pi0", type=float, default=0.0)
+    parser.add_argument("--omega-time", type=float, default=None,
+                        help="frequency for tau=Omega_time*t, independent of the basis")
     parser.add_argument("--site", type=int, default=0)
     parser.add_argument("--T", type=float, default=5.0)
     parser.add_argument("--dt", type=float, default=0.005)
@@ -84,6 +90,9 @@ def setup(args, default_tag: str):
         if args.omega > 0
         else float(np.sqrt(max(args.E_J + 2.0 * args.kappa, 1e-12)))
     )
+    omega_time = float(np.sqrt(args.E_J + 2 * args.kappa)) if args.omega_time is None else float(args.omega_time)
+    if not np.isfinite(omega_time) or omega_time < 0:
+        raise ValueError("time-scale frequency must be finite and nonnegative")
     basis = sg.build_mode_basis(args.n_cut, omega)
     predicted = sg.estimate_split_memory_gb(args.n_cut, args.n_site)
     limit = float(args.max_memory_gb)
@@ -114,6 +123,10 @@ def setup(args, default_tag: str):
         "n_site": int(args.n_site),
         "n_cut": int(args.n_cut),
         "omega": omega,
+        "omega_b": omega,
+        "Omega_time": omega_time,
+        "lambda2": float(getattr(args,"lambda2",0.)),
+        "operator_convention": "finite spectral: pi_N squared and cos(m phi_N)",
         "T_requested": float(args.T),
         "dt_requested": float(args.dt),
         "n_obs_requested": int(args.n_obs),
@@ -134,6 +147,8 @@ def setup(args, default_tag: str):
         "hostname": socket.gethostname(),
         "platform": platform.platform(),
         "python": platform.python_version(),
+        "python_executable": sys.executable,
+        "numpy_version": np.__version__,
         "lsf_job_id": os.environ.get("LSB_JOBID"),
         "lsf_job_index": os.environ.get("LSB_JOBINDEX"),
         "estimated_split_memory_gib": predicted,
@@ -146,6 +161,7 @@ def setup(args, default_tag: str):
     return {
         "basis": basis,
         "w": omega,
+        "Omega_time": omega_time,
         "phi_op": basis.phi,
         "pi_op": basis.pi,
         "num_op": basis.num,

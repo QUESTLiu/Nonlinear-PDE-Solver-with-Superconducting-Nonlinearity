@@ -18,11 +18,10 @@ Two choices of phi_max are reported:
   spectral  -- max |eigenvalue of the truncated phi|; conservative, since
                the operator acts on the whole truncated space
   accessed  -- max_t |<phi>| + 3 Delta_phi from a native reference run;
-               optimistic, valid only if the state stays put
+               retrospective interval, without a guaranteed support bound
 
-The deliverable is d*(phi_0): the degree needed to reach a target
-infidelity, as a function of amplitude.  Feed d* into run_snapd.py to
-convert it into a non-Gaussian gate count.
+The output is the smallest tested degree that meets the sampled accuracy
+criterion. It is a representation diagnostic, not a primitive gate count.
 
 Example
 -------
@@ -32,13 +31,16 @@ python run_polydeg.py --E-J 1.0 --kappa 0.0 --n-site 1 --n-cut 64 \
 
 import numpy as np
 
-import sglib as sg
-import common
+if __package__:
+    from . import sglib as sg, common
+else:
+    import sglib as sg
+    import common
 
 
 def main():
     p = common.base_parser(__doc__)
-    p.add_argument("--degrees", default="4,6,8,10,12,14,16",
+    p.add_argument("--degrees", default="2,4,6,8,10,12,14,16,20,24",
                    help="comma-separated even polynomial degrees")
     p.add_argument("--phi-max-mode", default="both",
                    choices=["spectral", "accessed", "both"])
@@ -109,7 +111,7 @@ def main():
         min(phi_max_accessed_raw, phi_max_spectral)
     )
     clamp_note = (
-        f" (raw 3-sigma bound {phi_max_accessed_raw:.3f}, "
+        f" (raw 3-sigma range {phi_max_accessed_raw:.3f}, "
         "clamped to finite spectrum)"
         if phi_max_accessed_raw > phi_max_spectral
         else ""
@@ -126,7 +128,7 @@ def main():
     results = {}
     for fam, phi_max in families:
         kind = "taylor" if fam == "taylor" else "chebyshev"
-        max_infid, fin_infid, max_leak, potential_error = [], [], [], []
+        max_infid, fin_infid, max_leak, potential_error, force_error = [], [], [], [], []
         for d in degrees:
             on = sg.onsite_vals_with_offsets(kind, basis.lam_phi, args.E_J,
                                              args.n_site, offsets,
@@ -139,6 +141,16 @@ def main():
             fin_infid.append(series[-1])
             max_leak.append(float(approximate["leak"].max()))
             potential_error.append(float(np.max(np.abs(on - native_on))))
+            x = physical_spectrum
+            if kind == "taylor":
+                derivative = np.zeros_like(x)
+                import math
+                for power in range(2, d+1, 2):
+                    derivative += args.E_J * (-1)**(power//2+1) * x**(power-1) / math.factorial(power-1)
+            else:
+                polynomial = np.polynomial.Chebyshev.interpolate(lambda z: args.E_J*(1-np.cos(z)), deg=d, domain=[-phi_max, phi_max])
+                derivative = polynomial.deriv()(x)
+            force_error.append(float(np.max(np.abs(derivative-args.E_J*np.sin(x)))))
             print(f"[polydeg] {fam:22s} d={d:2d}  "
                   f"max_infid={series.max():.4e}  "
                   f"potential_err={potential_error[-1]:.3e}  "
@@ -147,13 +159,15 @@ def main():
         results[fam + "_final"] = np.array(fin_infid)
         results[fam + "_leakage"] = np.array(max_leak)
         results[fam + "_potential_error"] = np.array(potential_error)
+        results[fam + "_force_error"] = np.array(force_error)
+        results[fam + "_cutoff_limited"] = np.asarray(max_leak) > args.leakage_tol
 
         below = [
             d
             for d, value, leakage in zip(degrees, max_infid, max_leak)
             if value < args.target_infid and leakage <= args.leakage_tol
         ]
-        d_star = below[0] if below else -1
+        d_star = min(below) if below else -1
         ctx["params"][f"d_star_{fam}"] = int(d_star)
         ctx["params"][f"max_leakage_{fam}"] = float(max(max_leak))
         if d_star >= 0:
@@ -179,6 +193,8 @@ def main():
                          degrees=degrees,
                          leakage_tolerance=float(args.leakage_tol),
                          approximation="Chebyshev interpolant (not exact minimax)",
+                         degree_scope="minimum among tested degrees, not a gate count",
+                         accessed_interval_scope="retrospective mean-plus-three-sigma diagnostic, not a support guarantee",
                          max_leakage_reference=float(ref["leak"].max()))
     sg.save_run(args.outdir, ctx["tag"], ctx["params"], write_csv=args.csv,
                 arrays=dict(

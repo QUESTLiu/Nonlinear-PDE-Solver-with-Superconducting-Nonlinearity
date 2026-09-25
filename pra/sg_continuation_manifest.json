@@ -1,0 +1,24 @@
+{
+  "output_root": "pra/results/sg_continuation",
+  "memory_cap_bytes": 4294967296,
+  "storage_cap_bytes": 524288000,
+  "execution": "serial processes, one BLAS thread",
+  "jobs": [
+    {
+      "id": "continued_fit",
+      "batch": "B3-S",
+      "wall_cap_seconds": 1600,
+      "command": [
+        "/Users/zhen002/miniconda3/envs/cvdv/bin/python",
+        "-m",
+        "pra.run_sg_refinement",
+        "--outdir",
+        "./pra/results/sg_continuation/fit",
+        "--protocol",
+        "./pra/sg_continuation_protocol.json",
+        "--reference",
+        "./pra/results/sg128/reference"
+      ]
+    }
+  ]
+}

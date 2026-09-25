@@ -1,0 +1,14 @@
+{
+ "description": "Population of the double sine-Gordon target above Fock level 60 of any mode.",
+ "level": 60,
+ "two_sites": {
+  "cutoff": 128,
+  "times": 21,
+  "max_population_above": 3.800485789073882e-05
+ },
+ "three_sites": {
+  "cutoff": 128,
+  "times": 83,
+  "max_population_above": 8.652009808596262e-08
+ }
+}

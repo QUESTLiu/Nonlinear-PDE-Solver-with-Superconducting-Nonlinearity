@@ -24,7 +24,7 @@ The compiled block approximates exp(-i lambda V_4 dt) with
            D(alpha_0)     SNAP(theta_0).
 
 The same block is reused at every time step.  It is trained on low-energy
-states encountered by exact split trajectories for the requested training
+states encountered by exact target trajectories for the requested training
 coherent amplitudes.  The full hybrid step is
 
     U_hyb(dt) =
@@ -56,9 +56,8 @@ Dependencies
     numpy, scipy
     matplotlib is optional and is used only with --plot.
 
-The compiler uses an analytic reverse-mode gradient.  Displacements are
-applied with scipy.sparse.linalg.expm_multiply during optimization, so the
-optimizer never differentiates a dense matrix exponential.
+The compiler fits a common-phase action objective. Displacement derivatives
+use the divided differences of the actual finite matrix exponential.
 """
 
 from __future__ import annotations
@@ -114,10 +113,10 @@ def parse_args() -> argparse.Namespace:
         default=[1.75, 2.00],
         help="Coherent amplitudes used only for final validation.",
     )
-    p.add_argument("--restarts", type=int, default=4)
+    p.add_argument("--restarts", type=int, default=1)
     p.add_argument("--maxiter", type=int, default=1200)
     p.add_argument("--gtol", type=float, default=1.0e-9)
-    p.add_argument("--ftol", type=float, default=1.0e-13)
+    p.add_argument("--ftol", type=float, default=1.0e-12)
     p.add_argument(
         "--init-scale",
         type=float,
@@ -140,7 +139,7 @@ def parse_args() -> argparse.Namespace:
     p.add_argument(
         "--edge-levels",
         type=int,
-        default=8,
+        default=4,
         help="Number of highest padded levels used for the boundary diagnostic.",
     )
     p.add_argument(
@@ -233,9 +232,9 @@ def ladder(dim: int) -> Array:
     return a
 
 
-def coherent_state(dim: int, xi: float) -> Tuple[Array, float]:
+def coherent_state(dim: int, xi: complex) -> Tuple[Array, float]:
     """Normalized projected coherent state and exact discarded probability."""
-    mu = float(xi * xi)
+    mu = float(abs(xi)**2)
     coeff = np.empty(dim, dtype=np.complex128)
     coeff[0] = math.exp(-0.5 * mu)
     for n in range(1, dim):
@@ -363,19 +362,22 @@ def build_training_snapshots(
     xis: Sequence[float],
     steps: int,
     gates: FixedGates,
+    target_step: Array,
+    reference_dim: int,
 ) -> Tuple[Array, Array, List[dict]]:
     """
     Return states immediately before and after the exact V4 block.
 
-    Snapshots are taken from exact symmetric-split trajectories, not from
-    the N_ref Duffing trajectory.  This gives the compiler the states on
-    which the repeated block will actually act.
+    Each initial state is normalized at the reference cutoff and embedded.
+    Intermediate states follow the exact finite target. The fixed Kerr and
+    quadratic half steps transform them into residual-block inputs.
     """
     before: List[Array] = []
     after: List[Array] = []
     rows: List[dict] = []
     for xi in xis:
-        psi, discarded = coherent_state(dim, xi)
+        psi_ref, discarded = coherent_state(reference_dim, xi)
+        psi = embed_state(psi_ref, dim)
         for step in range(1, steps + 1):
             x = gates.v2_half @ (gates.k_half @ psi)
             y = gates.u4_exact @ x
@@ -390,7 +392,7 @@ def build_training_snapshots(
                     "target_norm": float(np.vdot(y, y).real),
                 }
             )
-            psi = gates.k_half @ (gates.v2_half @ y)
+            psi = target_step @ psi
     return np.column_stack(before), np.column_stack(after), rows
 
 
@@ -399,16 +401,37 @@ def unpack_parameters(
 ) -> Tuple[Array, Array]:
     n_theta = layers * active_dim
     theta = vector[:n_theta].reshape(layers, active_dim)
-    alpha_xy = vector[n_theta:].reshape(layers, 2)
+    expected = n_theta + 2 * layers + 1
+    if np.asarray(vector).size != expected:
+        raise ValueError(f"common-phase ansatz requires {expected} parameters")
+    alpha_xy = vector[n_theta:-1].reshape(layers, 2)
     return theta, alpha_xy
 
 
-def pack_parameters(theta: Array, alpha_xy: Array) -> Array:
-    return np.concatenate([theta.ravel(), alpha_xy.ravel()])
+def pack_parameters(theta: Array, alpha_xy: Array, phase: float = 0.) -> Array:
+    return np.concatenate([theta.ravel(), alpha_xy.ravel(), [phase]])
+
+
+def finite_displacement(alpha: complex, a: Array):
+    """Finite exponential and its exact real/imaginary Frechet derivatives.
+
+    The divided difference of exp is evaluated by sinc at coincident
+    eigenvalues. No canonical commutation relation is assumed at the cutoff.
+    """
+    ad = a.conj().T
+    gx, gy = ad - a, 1j * (ad + a)
+    generator = alpha.real * gx + alpha.imag * gy
+    values, vectors = np.linalg.eigh(-1j * generator)
+    phases = np.exp(1j * values)
+    unitary = (vectors * phases) @ vectors.conj().T
+    difference = values[:, None] - values[None, :]
+    divided = np.exp(.5j * (values[:, None] + values[None, :])) * np.sinc(difference / (2 * np.pi))
+    derivatives = [vectors @ (divided * (vectors.conj().T @ g @ vectors)) @ vectors.conj().T for g in (gx, gy)]
+    return unitary, derivatives[0], derivatives[1]
 
 
 class SnapDisplacementCompiler:
-    """State-subspace compiler with an analytic reverse-mode gradient."""
+    """Common-phase finite-input action fit with finite-matrix derivatives."""
 
     def __init__(
         self,
@@ -426,29 +449,32 @@ class SnapDisplacementCompiler:
         self.targets = np.asarray(targets, dtype=np.complex128)
         self.n_states = self.inputs.shape[1]
         self.alpha_regularization = float(alpha_regularization)
+        if not 1 <= active_dim <= dim or layers < 1 or self.inputs.shape != self.targets.shape or self.inputs.ndim != 2 or self.inputs.shape[0] != dim or self.n_states < 1:
+            raise ValueError("invalid compiler dimensions or target family")
+        if self.alpha_regularization < 0 or not np.isfinite(self.alpha_regularization):
+            raise ValueError("regularization must be finite and nonnegative")
 
         a_dense = ladder(dim)
         ad_dense = a_dense.conj().T
-        self.a = csc_matrix(a_dense)
-        self.ad = csc_matrix(ad_dense)
-        self.ident = sparse_eye(dim, dtype=np.complex128, format="csc")
+        self.a = a_dense
+        self.ad = ad_dense
         self.last_metrics: Dict[str, float] = {}
         self.calls = 0
 
     def _forward(
         self, theta: Array, alpha_xy: Array
-    ) -> Tuple[Array, List[Tuple[Array, Array, Array, Array, csc_matrix]]]:
+    ) -> Tuple[Array, list]:
         x = self.inputs
-        cache: List[Tuple[Array, Array, Array, Array, csc_matrix]] = []
+        cache = []
         for layer in range(self.layers):
             snap = np.ones(self.dim, dtype=np.complex128)
             snap[: self.active_dim] = np.exp(1j * theta[layer])
             after_snap = snap[:, None] * x
             xr, yi = alpha_xy[layer]
             alpha = complex(xr, yi)
-            generator = alpha * self.ad - np.conj(alpha) * self.a
-            after_disp = expm_multiply(generator, after_snap, traceA=0.0)
-            cache.append((x, after_snap, after_disp, snap, generator))
+            displacement, dx, dy = finite_displacement(alpha, self.a)
+            after_disp = displacement @ after_snap
+            cache.append((x, after_snap, snap, displacement, dx, dy))
             x = after_disp
         return x, cache
 
@@ -460,31 +486,22 @@ class SnapDisplacementCompiler:
 
         overlaps = np.sum(np.conj(self.targets) * output, axis=0)
         per_state_fidelity = np.clip(np.abs(overlaps) ** 2, 0.0, 1.0)
-        state_loss = 1.0 - float(np.mean(per_state_fidelity))
-        reg = self.alpha_regularization * float(np.mean(alpha_xy**2))
+        phase = np.exp(-1j * vector[-1])
+        difference = phase * output - self.targets
+        state_loss = float(np.vdot(difference, difference).real / self.n_states)
+        reg = self.alpha_regularization * float(np.sum(alpha_xy**2) / self.layers)
         objective = state_loss + reg
 
         # For real parameters, df = 2 Re Tr(G^dagger dX).
-        adjoint = -(
-            self.targets * overlaps[None, :] / float(self.n_states)
-        )
+        adjoint = np.conj(phase) * difference / self.n_states
+        grad_phase = 2 * float(np.vdot(difference, -1j * phase * output).real) / self.n_states
         grad_theta = np.zeros_like(theta)
         grad_alpha = np.zeros_like(alpha_xy)
 
         for layer in range(self.layers - 1, -1, -1):
-            before, _, after_disp, snap, generator = cache[layer]
-            xr, yi = alpha_xy[layer]
-
-            # Exact Weyl derivatives away from the padded boundary:
-            # dD/dx = (a^dagger-a+i y) D
-            # dD/dy = (i(a^dagger+a)-i x) D.
-            dx_action = (
-                (self.ad - self.a + 1j * yi * self.ident) @ after_disp
-            )
-            dy_action = (
-                (1j * (self.ad + self.a) - 1j * xr * self.ident)
-                @ after_disp
-            )
+            before, after_snap, snap, displacement, dx, dy = cache[layer]
+            dx_action = dx @ after_snap
+            dy_action = dy @ after_snap
             grad_alpha[layer, 0] = 2.0 * float(
                 np.real(np.vdot(adjoint, dx_action))
             )
@@ -492,9 +509,7 @@ class SnapDisplacementCompiler:
                 np.real(np.vdot(adjoint, dy_action))
             )
 
-            after_displacement_adjoint = expm_multiply(
-                -generator, adjoint, traceA=0.0
-            )
+            after_displacement_adjoint = displacement.conj().T @ adjoint
             theta_action = (
                 1j
                 * snap[: self.active_dim, None]
@@ -516,7 +531,7 @@ class SnapDisplacementCompiler:
                 2.0
                 * self.alpha_regularization
                 * alpha_xy
-                / float(alpha_xy.size)
+                / float(self.layers)
             )
 
         coherent_trace = np.sum(overlaps)
@@ -528,6 +543,8 @@ class SnapDisplacementCompiler:
         )
         self.last_metrics = {
             "objective": float(objective),
+            "common_phase_action_mse": state_loss,
+            "regularization": reg,
             "mean_training_infidelity": float(1.0 - np.mean(per_state_fidelity)),
             "max_training_infidelity": float(
                 1.0 - np.min(per_state_fidelity)
@@ -544,7 +561,7 @@ class SnapDisplacementCompiler:
             ))),
         }
         self.calls += 1
-        return float(objective), pack_parameters(grad_theta, grad_alpha)
+        return float(objective), pack_parameters(grad_theta, grad_alpha, grad_phase)
 
     def metrics(self, vector: Array, edge_levels: int) -> Dict[str, float]:
         theta, alpha_xy = unpack_parameters(
@@ -557,6 +574,7 @@ class SnapDisplacementCompiler:
             np.abs(np.sum(overlaps)) ** 2 / self.n_states**2
         )
         return {
+            "common_phase_action_mse": float(np.linalg.norm(np.exp(-1j * vector[-1]) * output - self.targets, 'fro')**2 / self.n_states),
             "mean_training_fidelity": float(np.mean(state_fid)),
             "min_training_fidelity": float(np.min(state_fid)),
             "max_training_infidelity": float(1.0 - np.min(state_fid)),
@@ -636,9 +654,25 @@ def initial_parameters(
     else:
         theta = rng.normal(scale=scale, size=(layers, active_dim))
         alpha = rng.normal(scale=scale, size=(layers, 2))
-        # Zero total displacement is a useful weak prior near the identity.
-        alpha -= np.mean(alpha, axis=0, keepdims=True)
+        theta = (theta + math.pi) % (2 * math.pi) - math.pi
+        alpha = np.clip(alpha, -1.5, 1.5)
     return pack_parameters(theta, alpha)
+
+
+def paired_frame_parameters(target, active_dim, layers, seed):
+    """Initialize a diagonal unitary in cancelling displaced frames."""
+    if layers < 2 or layers % 2 or not 1 <= active_dim <= len(target):
+        raise ValueError("paired frames need a positive active space and an even layer count")
+    rng = np.random.Generator(np.random.PCG64(seed))
+    radii = rng.uniform(.3, .8, layers // 2)
+    phases = rng.uniform(0., 2 * np.pi, layers // 2)
+    beta = radii * np.exp(1j * phases)
+    alpha = np.empty((layers, 2))
+    alpha[::2] = np.column_stack((beta.real, beta.imag))
+    alpha[1::2] = -alpha[::2]
+    theta = np.zeros((layers, active_dim))
+    theta[0] = np.angle(np.diag(target)[:active_dim])
+    return pack_parameters(theta, alpha, 0.)
 
 
 def save_parameters(
@@ -655,6 +689,7 @@ def save_parameters(
         alpha_real=alpha_xy[:, 0],
         alpha_imag=alpha_xy[:, 1],
         parameter_vector=vector,
+        common_phase=float(vector[-1]),
         metadata_json=json.dumps(metadata, sort_keys=True),
     )
 
@@ -674,12 +709,86 @@ def load_parameter_vector(
                 ]
             )
             vector = pack_parameters(theta, alpha)
-    expected = layers * active_dim + 2 * layers
+    expected = layers * active_dim + 2 * layers + 1
     if vector.size != expected:
         raise ValueError(
             f"{path} has {vector.size} parameters; expected {expected}"
         )
     return vector
+
+
+def optimize_common_phase(compiler, seed, seconds, checkpoint, *, initial_vector=None,
+                          maxiter=1200, record_history=False):
+    """One bounded SLSQP restart of the specified common-phase problem.
+
+    The checkpoint records the best evaluated vector and the actual initial
+    arrays. It can be inspected after timeout without treating timeout as
+    convergence. An explicit initial vector records the specified restart or
+    continuation, while the default reproduces the original seed rule.
+    """
+    if seconds <= 0 or seconds > 900:
+        raise ValueError("one restart must have a time budget in (0,900] seconds")
+    if not isinstance(maxiter,int) or maxiter<1:
+        raise ValueError("maxiter must be a positive integer")
+    rng = np.random.Generator(np.random.PCG64(seed))
+    initial = (initial_parameters(rng, compiler.layers, compiler.active_dim, .025,
+                                  identity=seed in (240731, 20260729))
+               if initial_vector is None else np.asarray(initial_vector,dtype=float).copy())
+    bounds = [(-np.pi, np.pi)]*(compiler.layers*compiler.active_dim) + [(-1.5, 1.5)]*(2*compiler.layers) + [(-np.pi, np.pi)]
+    if initial.shape!=(len(bounds),) or not np.all(np.isfinite(initial)) or any(v<lo or v>hi for v,(lo,hi) in zip(initial,bounds)):
+        raise ValueError("initial vector must be finite and satisfy the parameter bounds")
+    started = time.perf_counter()
+    cpu_started = time.process_time()
+    best = initial.copy()
+    best_value = np.inf
+    evaluations = 0
+    history=[]
+    last_vector=None
+    last_value=None
+    class BudgetExpired(Exception):
+        pass
+    def save(status):
+        np.savez_compressed(checkpoint, parameter_vector=best, initial_vector=initial,
+                            seed=seed, objective=best_value, evaluations=evaluations,
+                            elapsed_seconds=time.perf_counter()-started, status=status)
+    def objective(vector):
+        nonlocal evaluations, best, best_value, last_vector, last_value
+        if time.perf_counter()-started >= seconds:
+            raise BudgetExpired
+        value, gradient = compiler.value_and_grad(vector)
+        last_vector,last_value=vector.copy(),float(value)
+        evaluations += 1
+        if value < best_value:
+            best_value, best = value, vector.copy()
+        if time.perf_counter()-started >= seconds:
+            save("budget_limited")
+            raise BudgetExpired
+        return value, gradient
+    def callback(vector):
+        if record_history:
+            history.append(dict(iteration=len(history)+1,evaluations=evaluations,
+                                best_evaluated_objective=float(best_value),
+                                iteration_objective=last_value if np.array_equal(vector,last_vector) else None,
+                                elapsed_seconds=time.perf_counter()-started))
+        save("running")
+    try:
+        result = minimize(objective, initial, method="SLSQP", jac=True, bounds=bounds,
+                          callback=callback, options={"maxiter":maxiter, "ftol":1e-12})
+        status = "solver_success" if result.success else "solver_terminated"
+        message = str(result.message)
+        iterations = int(result.nit)
+    except BudgetExpired:
+        status, message, iterations = "budget_limited", "optimizer wall-time budget reached", None
+    save(status)
+    return best, dict(status=status, message=message, iterations=iterations,
+                      evaluations=evaluations, objective=float(best_value),
+                      elapsed_seconds=time.perf_counter()-started,
+                      cpu_seconds=time.process_time()-cpu_started,
+                      constraint_violation=float(max(max(lo-v, v-hi, 0.) for v,(lo,hi) in zip(best,bounds))),
+                      seed=seed, method="SLSQP", maxiter=maxiter, ftol=1e-12,
+                      initial_rule="specified_vector" if initial_vector is not None else "original_seed_rule",
+                      iteration_history=history,
+                      common_phase=float(best[-1]), regularization=compiler.alpha_regularization)
 
 
 def compile_block(
@@ -691,7 +800,7 @@ def compile_block(
     n_theta = args.layers * args.active_dim
     bounds = [(-math.pi, math.pi)] * n_theta + [
         (-args.alpha_max, args.alpha_max)
-    ] * (2 * args.layers)
+    ] * (2 * args.layers) + [(-math.pi, math.pi)]
 
     checkpoint = output_dir / "best_compiler_parameters.npz"
     resumed_vector: Array | None = None
@@ -715,7 +824,7 @@ def compile_block(
                 args.layers,
                 args.active_dim,
                 args.init_scale,
-                identity=(restart == 0 and resumed_vector is None),
+                identity=(restart == 0 and args.seed in (240731, 20260729) and resumed_vector is None),
             )
             init_kind = "identity" if restart == 0 else "random"
 
@@ -748,16 +857,13 @@ def compile_block(
         result = minimize(
             compiler.value_and_grad,
             x0,
-            method="L-BFGS-B",
+            method="SLSQP",
             jac=True,
             bounds=bounds,
             callback=callback,
             options={
                 "maxiter": args.maxiter,
-                "gtol": args.gtol,
                 "ftol": args.ftol,
-                "maxls": 30,
-                "maxcor": 20,
             },
         )
         elapsed = time.perf_counter() - start
@@ -1316,6 +1422,8 @@ def main() -> None:
         args.train_xi,
         args.steps,
         gates_pad,
+        hermitian_exponential(np.asarray(ops_pad["H_D"]), -1j * dt),
+        args.reference_dim,
     )
     write_csv(
         args.output_dir / "compilation_training_states.csv",

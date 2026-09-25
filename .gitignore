@@ -3,4 +3,5 @@ __pycache__
 */.lake
 .DS_Store
 */.DS_Store
-manuscript
+*/*/.DS_Store
+*/*/*/.DS_Store

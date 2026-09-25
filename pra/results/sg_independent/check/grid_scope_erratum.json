@@ -1,0 +1,11 @@
+{
+  "reason": "The former text described the union of grids for every cutoff metric. The implemented cutoff state comparison uses the 21 outer-step times, including all circuit assessment times. Observable cutoff and independent solver checks use the stated union.",
+  "corrected_scope": "Cutoff state difference covers the 21 outer-step times. Cutoff C12/S2 differences and all DOP853 differences cover the union of the 257 diagnostic times and 21 outer-step times. Original thresholds.",
+  "pre_correction_sha256": {
+    "pra/sg_independent_protocol.json": "543ae359ea302ef3ce966c088e616511ba998c5c2bb51c468a08694f25f68379",
+    "pra/results/sg_independent/check/selection.json": "543ae359ea302ef3ce966c088e616511ba998c5c2bb51c468a08694f25f68379",
+    "pra/results/sg_independent/check/summary.json": "57b7e3cc706103b0a955abfcd9d68da7b266d461bc4146393e9efe9d5ce8cc2d"
+  },
+  "original_metadata_directory": "pra/results/sg_independent/check/metadata_before_grid_scope_correction",
+  "numerical_changes": false
+}

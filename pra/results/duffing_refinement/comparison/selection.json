@@ -1,0 +1,15 @@
+{
+  "criterion": "minimum training objective within each arm",
+  "selected": [
+    {
+      "arm": "iteration_only",
+      "L": 8,
+      "seed": 240732
+    },
+    {
+      "arm": "phase_coverage",
+      "L": 12,
+      "seed": 240733
+    }
+  ]
+}

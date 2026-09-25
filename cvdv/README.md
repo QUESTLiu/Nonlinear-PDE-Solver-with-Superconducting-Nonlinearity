@@ -1,6 +1,35 @@
-# Lean proof coverage
+# Lean formalization
 
-This audit uses the uncommented claims in [`manuscript/main.tex`](../manuscript/main.tex). `Full` means that a Lean theorem matches the stated mathematical result on the scope shown below. `Supporting` means that Lean proves a necessary subresult but not every bridge in the manuscript statement. `Lean-only` marks a formal result that has no separate active manuscript equation. Definitions, numerical outputs, and hardware claims are not counted as proof obligations. The LLE sections below distinguish Lean results, external theorem and hardware assumptions, and later numerical evidence.
+Appendix L of the manuscript `../paper/main.tex` lists the finite-dimensional statements formalized here. The table below gives the declarations that prove them, with equation labels as in the manuscript source.
+
+| Statement in the manuscript | Declarations | Scope |
+|---|---|---|
+| Exact split of the strict-cutoff Duffing Hamiltonian, Eq. `eq:df-split` | `Cvdv.cutoffDuffingHamiltonian_split` in [FiniteDuffing.lean](Cvdv/FiniteDuffing.lean) | Strict finite-Fock operators with real coefficients |
+| Hermiticity of the strict-cutoff Duffing Hamiltonian | `Cvdv.cutoffDuffingHamiltonian_isSymmetric` in [FiniteDuffing.lean](Cvdv/FiniteDuffing.lean) | Strict finite-Fock operators with real coefficients |
+| Phase-aligned bounds, Eqs. `eq:df-duhamel` and `eq:df-bound` | `Cvdv.cutoffDuffing_phase_aligned_bound` and `Cvdv.cutoffDuffing_infidelity_bound` in [FiniteDuffing.lean](Cvdv/FiniteDuffing.lean) | Strict finite-Fock operators and \(t\ge0\), with a normalized input for Eq. `eq:df-bound`. The centered native-reference integral of Theorem `thm:native-residual` is proved in the manuscript |
+| Squeezing identity, Eq. `eq:df-squeezing` | `Cvdv.exp_cutoffV2_eq_exp_squeezeGenerator` in [SqueezingBlock.lean](Cvdv/SqueezingBlock.lean) | Equality of finite matrix exponentials. Physical pulse synthesis is outside the statement |
+| Number-diagonal ceiling, Proposition `prop:diagonal` | `Cvdv.isGreatest_diag_overlap_sq` in [DiagonalCeiling.lean](Cvdv/DiagonalCeiling.lean) | One normalized input and one target state on a finite number-state index set |
+| Gaussian expectation, Eq. `eq:debye-waller` | `integral_cos_gaussianReal` and `integral_sin_gaussianReal` in [GaussianSine.lean](Cvdv/GaussianSine.lean) | The identity for a Gaussian probability measure. The bridge to the quantum spectral measure is not formalized |
+| Kerr first moment and collapse time for a coherent input, Sec. `subsec:encoding` | `Cvdv.kerr_firstMoment` and `Cvdv.kerr_collapse_time` in [KerrCollapse.lean](Cvdv/KerrCollapse.lean) | The coherent-state series, with nonzero Kerr coefficient and amplitude for the collapse time |
+| Hermiticity of the finite sine-Gordon Hamiltonian | `Cvdv.sgCutoffHamiltonian_isHermitian` in [FiniteSineGordon.lean](Cvdv/FiniteSineGordon.lean) | The finite spectral convention with real couplings |
+| Telescoping inequality behind Eq. `eq:action-sum` | `Cvdv.iterate_error_le_action_sum` in [NativeCorrection.lean](Cvdv/NativeCorrection.lean) | An abstract norm bound for a contractive implemented map and exact reference iterates |
+
+Theorem `thm:native-residual`, Eq. `eq:classical-transfer` and the physical gate identities of Appendix J are proved in the manuscript. [NativeCorrection.lean](Cvdv/NativeCorrection.lean) also proves a restricted-input action estimate (`Cvdv.restricted_action_le`) and a five-factor composition bound (`Cvdv.five_factor_error_le`, `Cvdv.five_factor_pow_error_le`), which the manuscript does not use.
+
+The toolchain is Lean 4.33.0-rc1 (`lean-toolchain`), and `lake-manifest.json` pins Mathlib at revision 79d0395. With elan installed, build from this directory with
+
+```sh
+lake exe cache get
+lake build
+```
+
+`../pra/records/lean-build.log` records a successful full build. `../pra/records/lean_axiom_audit.lean` and `../pra/records/lean-axioms.log` list the audited declarations, which depend only on the axioms `propext`, `Classical.choice` and `Quot.sound`. The proofs contain no `sorry`. A build checks the formal statements under their hypotheses, not physical realizability or numerical convergence.
+
+## Module map for an earlier draft
+
+This section maps the modules to the statements of an earlier draft of the manuscript, which also treated the Lugiato–Lefever equation (LLE) and is not part of this repository. Its equation and section labels refer to that draft.
+
+This audit uses the uncommented claims of that draft. `Full` means that a Lean theorem matches the stated mathematical result on the scope shown below. `Supporting` means that Lean proves a necessary subresult but not every bridge in the manuscript statement. `Lean-only` marks a formal result that has no separate active manuscript equation. Definitions, numerical outputs, and hardware claims are not counted as proof obligations. The LLE sections below distinguish Lean results, external theorem and hardware assumptions, and later numerical evidence.
 
 | Manuscript theorem or equation | Coverage | Lean file | Main Lean theorem |
 |---|---|---|---|
@@ -42,7 +71,7 @@ This audit uses the uncommented claims in [`manuscript/main.tex`](../manuscript/
 | Sec. `subsec:lle-resources` and Eq. `eq:lle-strang-step` | Full on the joint finite system--ancilla cutoff space. Lean proves the local \(O(\Delta t^3)\) defect for bounded generators and the fixed-\(T\) global \(O(n_t^{-2})\) error for Hermitian finite truncated terms, including raw finite matrices through `Matrix.toEuclideanCLM`, and instantiates both at the concrete Kronecker dilation \(\hat x_{\rm a}\otimes\hat L_{\rm loss}+I_{\rm a}\otimes\hat H_{\rm LLE}\) of Eq. `eq:lle-dilation`. The result compares with the exponential of the same finite truncated dilation and does not include other LCHS error sources | [`Cvdv/StrangBound.lean`](Cvdv/StrangBound.lean), [`Cvdv/KroneckerDilation.lean`](Cvdv/KroneckerDilation.lean) | `lleFiniteCutoffMatrix_strangDefect_isBigO_cubic`, `lleFiniteCutoffMatrix_strangPow_isBigO_inv_sq`, `lleAncillaX_isHermitian`, `lleDilation_strangDefect_isBigO_cubic`, `lleDilation_strangPow_isBigO_inv_sq` |
 | Sec. `subsec:lle-scope`, the unnumbered \(H_{\rm eff}\) display and no-photon-loss equivalence | Full for the generator identity \(-iH_{\rm eff}=-(\hat L_{\rm loss}+i\hat H_{\rm LLE})\), so the postselected map is the no-photon-loss branch of \(H_{\rm eff}\). Full Lindblad dynamics are a separate program | [`Cvdv/LLEFinite.lean`](Cvdv/LLEFinite.lean) | `finiteLLEEffectiveHamiltonian`, `finiteLLE_neg_I_smul_effectiveHamiltonian` |
 
-## Selected LLE Lean closure
+### Selected LLE Lean closure
 
 These are the five selected Lean items. The status terms have the meanings stated in the coverage table above.
 
@@ -54,14 +83,14 @@ These are the five selected Lean items. The status terms have the meanings state
 | 4 | Sec. `subsec:lle-mean-field`, the unnumbered strict-cutoff CCR display after “The cutoff ladder operators obey,” and Eqs. `eq:lle-normalized-expectation`, `eq:lle-first-moment-exact`, and `eq:lle-mean-field-discrete` | Full in [`Cvdv/LLENormalizedExpectation.lean`](Cvdv/LLENormalizedExpectation.lean) and [`Cvdv/LLEMeanField.lean`](Cvdv/LLEMeanField.lean) | None for the listed displays. The truncated CCR, the exact first-moment equation with the manuscript's connected-moment remainders, and the conditional mean-field corollary are proved |
 | 5 | Sec. `subsec:combined-generator`, Eq. `eq:generator-decomposition`, Eqs. `eq:lle-native-hamiltonian`, `eq:lle-loss-operator`, and `eq:lle-target-generator`, and Sec. `subsec:lle-lchs` with Eqs. `eq:lle-dilation` and `eq:lle-postselected-map` | Full for the finite-matrix prerequisite bundle in [`Cvdv/LLEFinite.lean`](Cvdv/LLEFinite.lean). [`Cvdv/LLEExactLCHS.lean`](Cvdv/LLEExactLCHS.lean) proves the conditional factorized-integral step for one kernel satisfying the exact identity uniformly at every nonnegative time | Kernel admissibility for the chosen kernel and the infinite-dimensional oscillator matrix-element bridge remain external exact-LCHS assumptions |
 
-## External theorem and hardware assumptions
+### External theorem and hardware assumptions
 
 | Manuscript theorem or equation | Closure route outside the selected Lean proofs |
 |---|---|
 | Sec. `subsec:lle-lchs` and Eqs. `eq:lle-dilation` and `eq:lle-postselected-map` | Lean proves the conditional factorized-integral step uniformly for \(t\geq0\) once one exact kernel identity is supplied. The cited exact-LCHS theorem must establish this admissibility for the chosen finite LLE pair, and the oscillator realization requires the infinite-dimensional matrix-element bridge. Numerical work then tests finite approximations |
 | Sec. `subsec:lle-resources`, Eq. `eq:lle-number-controlled-displacements`, its following hardware-compilation paragraph, and Eq. `eq:lle-resource-tuple` | Lean proves the concrete strict-cutoff spectral compilation and its abstract gate-basis counts. The manuscript reports \(G_{\rm nCD}\) in the number-controlled-displacement basis and \(G_{\rm proj}\) in the optimized projector-selective basis. Device support and lower-level pulse compilation determine the physical gate count, depth, and runtime |
 
-## Later numerical verification and resource accounting
+### Later numerical verification and resource accounting
 
 The numerical rows are intended for Python checks. Resource accounting also requires the hardware assumptions above.
 
@@ -74,8 +103,8 @@ The numerical rows are intended for Python checks. Resource accounting also requ
 | Eq. `eq:lle-mixed-commutator` and Eq. `eq:lle-resource-tuple` | Report the realized \(C_{\rm LCHS}\), \(G_{\rm kernel}\), depth \(D\), \(T_{\rm circ}\), \(R_{\rm samp}\), and the chosen gate basis |
 | Eq. `eq:lle-error-budget` | Assemble the separately measured error contributions and state whether \(\epsilon_{\rm synth}\) and \(\epsilon_{\rm readout}\) are measured or idealized. Numerical measurements do not by themselves prove the displayed \(\lesssim\) inequality |
 
-## Outside the selected Lean formalization
+### Outside the selected Lean formalization
 
 Full exact-LCHS kernel formalization, continuum PDE well-posedness, infinite-dimensional oscillator analysis, device-level pulse physics, and full Lindblad dynamics are outside the selected Lean work. This does not remove the manuscript obligations to check the exact-LCHS hypotheses, state the hardware model, and provide the numerical validation listed above. Two active sine--Gordon claims also stay outside the selected scope: that the Hamiltonian density of Eq. `eq:sg-density` generates Eq. `eq:sinegordon`, and the sentence of Sec. `subsec:sg-quantization` that the classical lattice equation is recovered only under the mean-field closure. The corresponding LLE mean-field chain is proved in the coverage table. Two further statements share this status: the symmetric product-formula step of Eq. `eq:sg-deformation-step` has no sine--Gordon Strang instantiation, and for the sentence after Eq. `eq:df-C-N` on symmetric-formula error scaling only the error orders are proved, without the nested-commutator constant.
 
-The formal core now includes scaled moment recovery, multisite quadrature CCR, the Duffing ladder reduction and strict finite-Fock theorem chain, LLE Kerr and number-commutator identities, finite-matrix LLE structural conditions, the uniform conditional exact-LCHS factorized-integral step, local and global finite-cutoff Strang bounds with concrete Duffing and LLE-dilation instantiations, strict-cutoff spectral displacement compilation with full-system projectors and abstract gate counts, the normalized-expectation evolution identity with its exact multimode first-moment specialization and conditional mean-field corollary, the finite Sine--Gordon Hermiticity and compilation-unitarity chain with the lattice Hamilton equations and central-difference consistency, the operator-level coherent-state variance, the Kerr collapse and revival theorems, the multimode quadratic closure with a concrete non-closure witness, the Kronecker dilation norm identities, and the effective-Hamiltonian generator identity. The shared multimode site-lift infrastructure lives in [`Cvdv/SiteLift.lean`](Cvdv/SiteLift.lean). Run `lake build` to check the complete import graph.
+The formal core now includes scaled moment recovery, multisite quadrature CCR, the Duffing ladder reduction and strict finite-Fock theorem chain, LLE Kerr and number-commutator identities, finite-matrix LLE structural conditions, the uniform conditional exact-LCHS factorized-integral step, local and global finite-cutoff Strang bounds with concrete Duffing and LLE-dilation instantiations, strict-cutoff spectral displacement compilation with full-system projectors and abstract gate counts, the normalized-expectation evolution identity with its exact multimode first-moment specialization and conditional mean-field corollary, the finite Sine--Gordon Hermiticity and compilation-unitarity chain with the lattice Hamilton equations and central-difference consistency, the operator-level coherent-state variance, the Kerr collapse and revival theorems, the multimode quadratic closure with a concrete non-closure witness, the Kronecker dilation norm identities, and the effective-Hamiltonian generator identity. The shared multimode site-lift infrastructure lives in [`Cvdv/SiteLift.lean`](Cvdv/SiteLift.lean). Use the absolute build command above to check the complete import graph.

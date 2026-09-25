@@ -1,0 +1,19 @@
+{
+  "protocol": "SG paired-frame initialization comparison, frozen before new training",
+  "authorization": "The user authorized subsequent computations and quality refinements on 2026-09-24.",
+  "training_dimensions": [48, 24, 16],
+  "outer_steps": [10, 20],
+  "layers": [2, 4, 6],
+  "seeds": [20260729, 20260730, 20260731],
+  "initialization": "PCG64(seed), draw L/2 radii uniformly on [0.3,0.8], then L/2 phases uniformly on [0,2pi). Adjacent displacements are beta and minus beta. First SNAP has arg(diag(U_target)) on all active levels; other SNAP phases and common phase are zero.",
+  "objective": "Unchanged common-phase uniform first-16-column action MSE plus 1e-8 mean displacement magnitude squared.",
+  "optimizer": "Unchanged SLSQP, maxiter=1200, ftol=1e-12, original phase and component bounds. Record iteration loss without additional objective calls.",
+  "selection": "Minimum training objective within each r,L. Evaluate all six selected circuits before any further adjustment.",
+  "development_preparation": {"phi0": 1.0, "pi0": 0.0, "excited_site": 0},
+  "future_independent_preparation": {"phi0": 0.75, "pi0": 0.25, "excited_site": 0},
+  "independent_evaluation_rule": "The second coherent preparation is declared before refinement and is not evaluated during tuning. After final development selection, evaluate the fixed representative H_trig r10 order2 s1 and G_trig r20 order1/order2 s1, plus the least-primitive passing H_SNAP if any. Evaluate once at 128/160 without retuning.",
+  "acceptance": "Identical to the formal SG comparison: state amplitude sqrt(1e-3), reference and solver resolutions sqrt(1e-3)/10, boundary 1e-6, C12 total 0.01 and uncertainty 0.001, S2 total 0.02 and uncertainty 0.005.",
+  "optimizer_cap_seconds": 3600,
+  "validation_cap_seconds": 1800,
+  "conditional_followup": "If no circuit passes, inspect same-parameter training-cutoff consistency and primitive populations first. A further bounded training-space or depth comparison must be recorded separately before execution. Lack of improvement under a finite search does not prove insufficient ansatz capacity."
+}

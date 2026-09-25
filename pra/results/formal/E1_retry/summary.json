@@ -1,0 +1,1375 @@
+{
+  "points": [
+    {
+      "beta": 0.0,
+      "xi": 0.5,
+      "T": 1.0,
+      "cutoffs": [
+        48,
+        64,
+        80
+      ],
+      "native_bound": 0.0,
+      "max_native_infidelity": 0.0,
+      "target_cutoff_difference": 1.3456179180951005e-64,
+      "previous_target_cutoff_difference": 8.921330317331567e-46,
+      "native_cutoff_difference": 1.3456179180951005e-64,
+      "quadrature_difference": 0.0,
+      "bound_cutoff_difference": 0.0,
+      "verdicts": [
+        {
+          "verdict": "sufficient",
+          "infidelity_upper": 7.242750325994371e-128,
+          "observed_lower_estimate": 0.0,
+          "threshold": 0.001
+        },
+        {
+          "verdict": "sufficient",
+          "infidelity_upper": 7.242750325994371e-128,
+          "observed_lower_estimate": 0.0,
+          "threshold": 0.01
+        },
+        {
+          "verdict": "sufficient",
+          "infidelity_upper": 7.242750325994371e-128,
+          "observed_lower_estimate": 0.0,
+          "threshold": 0.0001
+        }
+      ],
+      "mean_field_crossing": {
+        "crossed": false,
+        "time": null,
+        "bracket": null,
+        "right_censored_at": 1.0
+      },
+      "evidence": "finite-family numerical estimates; cutoff and quadrature differences are empirical, not rigorous physical margins",
+      "records": [
+        "E1_beta0_xi0.5_N48.npz",
+        "E1_beta0_xi0.5_N64.npz",
+        "E1_beta0_xi0.5_N80.npz"
+      ]
+    },
+    {
+      "beta": 0.0,
+      "xi": 1.0,
+      "T": 1.0,
+      "cutoffs": [
+        48,
+        64,
+        80
+      ],
+      "native_bound": 0.0,
+      "max_native_infidelity": 0.0,
+      "target_cutoff_difference": 1.715972008498042e-45,
+      "previous_target_cutoff_difference": 1.7392976271688968e-31,
+      "native_cutoff_difference": 1.715972008498042e-45,
+      "quadrature_difference": 0.0,
+      "bound_cutoff_difference": 0.0,
+      "verdicts": [
+        {
+          "verdict": "sufficient",
+          "infidelity_upper": 1.1778239735795217e-89,
+          "observed_lower_estimate": 0.0,
+          "threshold": 0.001
+        },
+        {
+          "verdict": "sufficient",
+          "infidelity_upper": 1.1778239735795217e-89,
+          "observed_lower_estimate": 0.0,
+          "threshold": 0.01
+        },
+        {
+          "verdict": "sufficient",
+          "infidelity_upper": 1.1778239735795217e-89,
+          "observed_lower_estimate": 0.0,
+          "threshold": 0.0001
+        }
+      ],
+      "mean_field_crossing": {
+        "crossed": false,
+        "time": null,
+        "bracket": null,
+        "right_censored_at": 1.0
+      },
+      "evidence": "finite-family numerical estimates; cutoff and quadrature differences are empirical, not rigorous physical margins",
+      "records": [
+        "E1_beta0_xi1_N48.npz",
+        "E1_beta0_xi1_N64.npz",
+        "E1_beta0_xi1_N80.npz"
+      ]
+    },
+    {
+      "beta": 0.0,
+      "xi": 1.75,
+      "T": 1.0,
+      "cutoffs": [
+        48,
+        64,
+        80
+      ],
+      "native_bound": 0.0,
+      "max_native_infidelity": 0.0,
+      "target_cutoff_difference": 2.2293849495817585e-30,
+      "previous_target_cutoff_difference": 2.936660092580888e-20,
+      "native_cutoff_difference": 2.2293849495817585e-30,
+      "quadrature_difference": 0.0,
+      "bound_cutoff_difference": 0.0,
+      "verdicts": [
+        {
+          "verdict": "sufficient",
+          "infidelity_upper": 1.9880629013686638e-59,
+          "observed_lower_estimate": 0.0,
+          "threshold": 0.001
+        },
+        {
+          "verdict": "sufficient",
+          "infidelity_upper": 1.9880629013686638e-59,
+          "observed_lower_estimate": 0.0,
+          "threshold": 0.01
+        },
+        {
+          "verdict": "sufficient",
+          "infidelity_upper": 1.9880629013686638e-59,
+          "observed_lower_estimate": 0.0,
+          "threshold": 0.0001
+        }
+      ],
+      "mean_field_crossing": {
+        "crossed": false,
+        "time": null,
+        "bracket": null,
+        "right_censored_at": 1.0
+      },
+      "evidence": "finite-family numerical estimates; cutoff and quadrature differences are empirical, not rigorous physical margins",
+      "records": [
+        "E1_beta0_xi1.75_N48.npz",
+        "E1_beta0_xi1.75_N64.npz",
+        "E1_beta0_xi1.75_N80.npz"
+      ]
+    },
+    {
+      "beta": 0.0,
+      "xi": 2.0,
+      "T": 1.0,
+      "cutoffs": [
+        48,
+        64,
+        80
+      ],
+      "native_bound": 0.0,
+      "max_native_infidelity": 0.0,
+      "target_cutoff_difference": 7.234357740139386e-27,
+      "previous_target_cutoff_difference": 1.1281170210966427e-17,
+      "native_cutoff_difference": 7.234357740139386e-27,
+      "quadrature_difference": 0.0,
+      "bound_cutoff_difference": 0.0,
+      "verdicts": [
+        {
+          "verdict": "sufficient",
+          "infidelity_upper": 2.093437276492586e-52,
+          "observed_lower_estimate": 0.0,
+          "threshold": 0.001
+        },
+        {
+          "verdict": "sufficient",
+          "infidelity_upper": 2.093437276492586e-52,
+          "observed_lower_estimate": 0.0,
+          "threshold": 0.01
+        },
+        {
+          "verdict": "sufficient",
+          "infidelity_upper": 2.093437276492586e-52,
+          "observed_lower_estimate": 0.0,
+          "threshold": 0.0001
+        }
+      ],
+      "mean_field_crossing": {
+        "crossed": false,
+        "time": null,
+        "bracket": null,
+        "right_censored_at": 1.0
+      },
+      "evidence": "finite-family numerical estimates; cutoff and quadrature differences are empirical, not rigorous physical margins",
+      "records": [
+        "E1_beta0_xi2_N48.npz",
+        "E1_beta0_xi2_N64.npz",
+        "E1_beta0_xi2_N80.npz"
+      ]
+    },
+    {
+      "beta": 0.0,
+      "xi": 2.5,
+      "T": 1.0,
+      "cutoffs": [
+        48,
+        64,
+        80
+      ],
+      "native_bound": 0.0,
+      "max_native_infidelity": 0.0,
+      "target_cutoff_difference": 3.812392507066873e-21,
+      "previous_target_cutoff_difference": 1.6847445410967674e-13,
+      "native_cutoff_difference": 3.812392507066873e-21,
+      "quadrature_difference": 0.0,
+      "bound_cutoff_difference": 0.0,
+      "verdicts": [
+        {
+          "verdict": "sufficient",
+          "infidelity_upper": 5.813734651175854e-41,
+          "observed_lower_estimate": 0.0,
+          "threshold": 0.001
+        },
+        {
+          "verdict": "sufficient",
+          "infidelity_upper": 5.813734651175854e-41,
+          "observed_lower_estimate": 0.0,
+          "threshold": 0.01
+        },
+        {
+          "verdict": "sufficient",
+          "infidelity_upper": 5.813734651175854e-41,
+          "observed_lower_estimate": 0.0,
+          "threshold": 0.0001
+        }
+      ],
+      "mean_field_crossing": {
+        "crossed": false,
+        "time": null,
+        "bracket": null,
+        "right_censored_at": 1.0
+      },
+      "evidence": "finite-family numerical estimates; cutoff and quadrature differences are empirical, not rigorous physical margins",
+      "records": [
+        "E1_beta0_xi2.5_N48.npz",
+        "E1_beta0_xi2.5_N64.npz",
+        "E1_beta0_xi2.5_N80.npz"
+      ]
+    },
+    {
+      "beta": 0.02,
+      "xi": 0.5,
+      "T": 1.0,
+      "cutoffs": [
+        48,
+        64,
+        80
+      ],
+      "native_bound": 0.02299059586865371,
+      "max_native_infidelity": 0.0002881657599576795,
+      "target_cutoff_difference": 1.3956581855554163e-14,
+      "previous_target_cutoff_difference": 1.0796777099409722e-13,
+      "native_cutoff_difference": 1.3456179180951005e-64,
+      "quadrature_difference": 2.695755473014483e-09,
+      "bound_cutoff_difference": 0.0,
+      "verdicts": [
+        {
+          "verdict": "sufficient",
+          "infidelity_upper": 0.0005285676223504554,
+          "observed_lower_estimate": 0.00028816575992976636,
+          "threshold": 0.001
+        },
+        {
+          "verdict": "sufficient",
+          "infidelity_upper": 0.0005285676223504554,
+          "observed_lower_estimate": 0.00028816575992976636,
+          "threshold": 0.01
+        },
+        {
+          "verdict": "observed_failure",
+          "infidelity_upper": 0.0005285676223504554,
+          "observed_lower_estimate": 0.00028816575992976636,
+          "threshold": 0.0001
+        }
+      ],
+      "mean_field_crossing": {
+        "crossed": false,
+        "time": null,
+        "bracket": null,
+        "right_censored_at": 1.0
+      },
+      "evidence": "finite-family numerical estimates; cutoff and quadrature differences are empirical, not rigorous physical margins",
+      "records": [
+        "E1_beta0.02_xi0.5_N48.npz",
+        "E1_beta0.02_xi0.5_N64.npz",
+        "E1_beta0.02_xi0.5_N80.npz"
+      ]
+    },
+    {
+      "beta": 0.02,
+      "xi": 1.0,
+      "T": 1.0,
+      "cutoffs": [
+        48,
+        64,
+        80
+      ],
+      "native_bound": 0.053113112681652204,
+      "max_native_infidelity": 0.001436842854331705,
+      "target_cutoff_difference": 8.208441345569821e-14,
+      "previous_target_cutoff_difference": 3.4916760491388974e-11,
+      "native_cutoff_difference": 1.715972008498042e-45,
+      "quadrature_difference": 5.660241712834857e-09,
+      "bound_cutoff_difference": 0.0,
+      "verdicts": [
+        {
+          "verdict": "observed_failure",
+          "infidelity_upper": 0.0028210033400087476,
+          "observed_lower_estimate": 0.0014368428541675362,
+          "threshold": 0.001
+        },
+        {
+          "verdict": "sufficient",
+          "infidelity_upper": 0.0028210033400087476,
+          "observed_lower_estimate": 0.0014368428541675362,
+          "threshold": 0.01
+        },
+        {
+          "verdict": "observed_failure",
+          "infidelity_upper": 0.0028210033400087476,
+          "observed_lower_estimate": 0.0014368428541675362,
+          "threshold": 0.0001
+        }
+      ],
+      "mean_field_crossing": {
+        "crossed": false,
+        "time": null,
+        "bracket": null,
+        "right_censored_at": 1.0
+      },
+      "evidence": "finite-family numerical estimates; cutoff and quadrature differences are empirical, not rigorous physical margins",
+      "records": [
+        "E1_beta0.02_xi1_N48.npz",
+        "E1_beta0.02_xi1_N64.npz",
+        "E1_beta0.02_xi1_N80.npz"
+      ]
+    },
+    {
+      "beta": 0.02,
+      "xi": 1.75,
+      "T": 1.0,
+      "cutoffs": [
+        48,
+        64,
+        80
+      ],
+      "native_bound": 0.15132250335803515,
+      "max_native_infidelity": 0.009644998406394848,
+      "target_cutoff_difference": 3.537129574906176e-10,
+      "previous_target_cutoff_difference": 6.190762774637721e-08,
+      "native_cutoff_difference": 2.2293849495817585e-30,
+      "quadrature_difference": 9.82520481640492e-10,
+      "bound_cutoff_difference": 0.0,
+      "verdicts": [
+        {
+          "verdict": "observed_failure",
+          "infidelity_upper": 0.02289850042694694,
+          "observed_lower_estimate": 0.009644997698968934,
+          "threshold": 0.001
+        },
+        {
+          "verdict": "inconclusive",
+          "infidelity_upper": 0.02289850042694694,
+          "observed_lower_estimate": 0.009644997698968934,
+          "threshold": 0.01
+        },
+        {
+          "verdict": "observed_failure",
+          "infidelity_upper": 0.02289850042694694,
+          "observed_lower_estimate": 0.009644997698968934,
+          "threshold": 0.0001
+        }
+      ],
+      "mean_field_crossing": {
+        "crossed": false,
+        "time": null,
+        "bracket": null,
+        "right_censored_at": 1.0
+      },
+      "evidence": "finite-family numerical estimates; cutoff and quadrature differences are empirical, not rigorous physical margins",
+      "records": [
+        "E1_beta0.02_xi1.75_N48.npz",
+        "E1_beta0.02_xi1.75_N64.npz",
+        "E1_beta0.02_xi1.75_N80.npz"
+      ]
+    },
+    {
+      "beta": 0.02,
+      "xi": 2.0,
+      "T": 1.0,
+      "cutoffs": [
+        48,
+        64,
+        80
+      ],
+      "native_bound": 0.203776005789858,
+      "max_native_infidelity": 0.016264506348708695,
+      "target_cutoff_difference": 4.1993369038429355e-09,
+      "previous_target_cutoff_difference": 5.375946943826363e-07,
+      "native_cutoff_difference": 7.234357740139386e-27,
+      "quadrature_difference": 3.161409550811456e-09,
+      "bound_cutoff_difference": 0.0,
+      "verdicts": [
+        {
+          "verdict": "observed_failure",
+          "infidelity_upper": 0.04152466353555532,
+          "observed_lower_estimate": 0.016264497950034887,
+          "threshold": 0.001
+        },
+        {
+          "verdict": "observed_failure",
+          "infidelity_upper": 0.04152466353555532,
+          "observed_lower_estimate": 0.016264497950034887,
+          "threshold": 0.01
+        },
+        {
+          "verdict": "observed_failure",
+          "infidelity_upper": 0.04152466353555532,
+          "observed_lower_estimate": 0.016264497950034887,
+          "threshold": 0.0001
+        }
+      ],
+      "mean_field_crossing": {
+        "crossed": false,
+        "time": null,
+        "bracket": null,
+        "right_censored_at": 1.0
+      },
+      "evidence": "finite-family numerical estimates; cutoff and quadrature differences are empirical, not rigorous physical margins",
+      "records": [
+        "E1_beta0.02_xi2_N48.npz",
+        "E1_beta0.02_xi2_N64.npz",
+        "E1_beta0.02_xi2_N80.npz"
+      ]
+    },
+    {
+      "beta": 0.02,
+      "xi": 2.5,
+      "T": 1.0,
+      "cutoffs": [
+        48,
+        64,
+        80
+      ],
+      "native_bound": 0.34714721828633943,
+      "max_native_infidelity": 0.04041132661823049,
+      "target_cutoff_difference": 3.6083674665490565e-07,
+      "previous_target_cutoff_difference": 2.4477523958914053e-05,
+      "native_cutoff_difference": 3.812392507066873e-21,
+      "quadrature_difference": 1.1439606872887254e-08,
+      "bound_cutoff_difference": 0.0,
+      "verdicts": [
+        {
+          "verdict": "observed_failure",
+          "infidelity_upper": 0.1205114496334831,
+          "observed_lower_estimate": 0.04041060494473718,
+          "threshold": 0.001
+        },
+        {
+          "verdict": "observed_failure",
+          "infidelity_upper": 0.1205114496334831,
+          "observed_lower_estimate": 0.04041060494473718,
+          "threshold": 0.01
+        },
+        {
+          "verdict": "observed_failure",
+          "infidelity_upper": 0.1205114496334831,
+          "observed_lower_estimate": 0.04041060494473718,
+          "threshold": 0.0001
+        }
+      ],
+      "mean_field_crossing": {
+        "crossed": false,
+        "time": null,
+        "bracket": null,
+        "right_censored_at": 1.0
+      },
+      "evidence": "finite-family numerical estimates; cutoff and quadrature differences are empirical, not rigorous physical margins",
+      "records": [
+        "E1_beta0.02_xi2.5_N48.npz",
+        "E1_beta0.02_xi2.5_N64.npz",
+        "E1_beta0.02_xi2.5_N80.npz"
+      ]
+    },
+    {
+      "beta": 0.05,
+      "xi": 0.5,
+      "T": 1.0,
+      "cutoffs": [
+        48,
+        64,
+        80
+      ],
+      "native_bound": 0.05708992074975189,
+      "max_native_infidelity": 0.0015706633487396699,
+      "target_cutoff_difference": 1.3138054873932443e-11,
+      "previous_target_cutoff_difference": 8.823593043513612e-10,
+      "native_cutoff_difference": 1.3456179180951005e-64,
+      "quadrature_difference": 6.566829822973741e-09,
+      "bound_cutoff_difference": 0.0,
+      "verdicts": [
+        {
+          "verdict": "observed_failure",
+          "infidelity_upper": 0.0032592598025126835,
+          "observed_lower_estimate": 0.0015706633224635601,
+          "threshold": 0.001
+        },
+        {
+          "verdict": "sufficient",
+          "infidelity_upper": 0.0032592598025126835,
+          "observed_lower_estimate": 0.0015706633224635601,
+          "threshold": 0.01
+        },
+        {
+          "verdict": "observed_failure",
+          "infidelity_upper": 0.0032592598025126835,
+          "observed_lower_estimate": 0.0015706633224635601,
+          "threshold": 0.0001
+        }
+      ],
+      "mean_field_crossing": {
+        "crossed": false,
+        "time": null,
+        "bracket": null,
+        "right_censored_at": 1.0
+      },
+      "evidence": "finite-family numerical estimates; cutoff and quadrature differences are empirical, not rigorous physical margins",
+      "records": [
+        "E1_beta0.05_xi0.5_N48.npz",
+        "E1_beta0.05_xi0.5_N64.npz",
+        "E1_beta0.05_xi0.5_N80.npz"
+      ]
+    },
+    {
+      "beta": 0.05,
+      "xi": 1.0,
+      "T": 1.0,
+      "cutoffs": [
+        48,
+        64,
+        80
+      ],
+      "native_bound": 0.13096981222239418,
+      "max_native_infidelity": 0.007139463552721959,
+      "target_cutoff_difference": 2.0974724917471017e-09,
+      "previous_target_cutoff_difference": 9.188098838556296e-08,
+      "native_cutoff_difference": 1.715972008498042e-45,
+      "quadrature_difference": 1.3226122169696097e-08,
+      "bound_cutoff_difference": 0.0,
+      "verdicts": [
+        {
+          "verdict": "observed_failure",
+          "infidelity_upper": 0.01715309572742606,
+          "observed_lower_estimate": 0.0071394593577769755,
+          "threshold": 0.001
+        },
+        {
+          "verdict": "inconclusive",
+          "infidelity_upper": 0.01715309572742606,
+          "observed_lower_estimate": 0.0071394593577769755,
+          "threshold": 0.01
+        },
+        {
+          "verdict": "observed_failure",
+          "infidelity_upper": 0.01715309572742606,
+          "observed_lower_estimate": 0.0071394593577769755,
+          "threshold": 0.0001
+        }
+      ],
+      "mean_field_crossing": {
+        "crossed": false,
+        "time": null,
+        "bracket": null,
+        "right_censored_at": 1.0
+      },
+      "evidence": "finite-family numerical estimates; cutoff and quadrature differences are empirical, not rigorous physical margins",
+      "records": [
+        "E1_beta0.05_xi1_N48.npz",
+        "E1_beta0.05_xi1_N64.npz",
+        "E1_beta0.05_xi1_N80.npz"
+      ]
+    },
+    {
+      "beta": 0.05,
+      "xi": 1.75,
+      "T": 1.0,
+      "cutoffs": [
+        48,
+        64,
+        80
+      ],
+      "native_bound": 0.37164739489449244,
+      "max_native_infidelity": 0.04154545209985036,
+      "target_cutoff_difference": 1.3350084781803708e-06,
+      "previous_target_cutoff_difference": 2.9903127686111313e-05,
+      "native_cutoff_difference": 2.229384949581759e-30,
+      "quadrature_difference": 1.670017657495748e-08,
+      "bound_cutoff_difference": 0.0,
+      "verdicts": [
+        {
+          "verdict": "observed_failure",
+          "infidelity_upper": 0.1381227908516903,
+          "observed_lower_estimate": 0.041542782082894,
+          "threshold": 0.001
+        },
+        {
+          "verdict": "observed_failure",
+          "infidelity_upper": 0.1381227908516903,
+          "observed_lower_estimate": 0.041542782082894,
+          "threshold": 0.01
+        },
+        {
+          "verdict": "observed_failure",
+          "infidelity_upper": 0.1381227908516903,
+          "observed_lower_estimate": 0.041542782082894,
+          "threshold": 0.0001
+        }
+      ],
+      "mean_field_crossing": {
+        "crossed": false,
+        "time": null,
+        "bracket": null,
+        "right_censored_at": 1.0
+      },
+      "evidence": "finite-family numerical estimates; cutoff and quadrature differences are empirical, not rigorous physical margins",
+      "records": [
+        "E1_beta0.05_xi1.75_N48.npz",
+        "E1_beta0.05_xi1.75_N64.npz",
+        "E1_beta0.05_xi1.75_N80.npz"
+      ]
+    },
+    {
+      "beta": 0.05,
+      "xi": 2.0,
+      "T": 1.0,
+      "cutoffs": [
+        48,
+        64,
+        80
+      ],
+      "native_bound": 0.5006951824551582,
+      "max_native_infidelity": 0.06811837471619529,
+      "target_cutoff_difference": 8.503575462914865e-06,
+      "previous_target_cutoff_difference": 0.0001514311633094236,
+      "native_cutoff_difference": 7.234357740139386e-27,
+      "quadrature_difference": 2.3729503806357855e-08,
+      "bound_cutoff_difference": 0.0,
+      "verdicts": [
+        {
+          "verdict": "observed_failure",
+          "infidelity_upper": 0.2507042049675514,
+          "observed_lower_estimate": 0.06810136756526947,
+          "threshold": 0.001
+        },
+        {
+          "verdict": "observed_failure",
+          "infidelity_upper": 0.2507042049675514,
+          "observed_lower_estimate": 0.06810136756526947,
+          "threshold": 0.01
+        },
+        {
+          "verdict": "observed_failure",
+          "infidelity_upper": 0.2507042049675514,
+          "observed_lower_estimate": 0.06810136756526947,
+          "threshold": 0.0001
+        }
+      ],
+      "mean_field_crossing": {
+        "crossed": false,
+        "time": null,
+        "bracket": null,
+        "right_censored_at": 1.0
+      },
+      "evidence": "finite-family numerical estimates; cutoff and quadrature differences are empirical, not rigorous physical margins",
+      "records": [
+        "E1_beta0.05_xi2_N48.npz",
+        "E1_beta0.05_xi2_N64.npz",
+        "E1_beta0.05_xi2_N80.npz"
+      ]
+    },
+    {
+      "beta": 0.05,
+      "xi": 2.5,
+      "T": 1.0,
+      "cutoffs": [
+        48,
+        64,
+        80
+      ],
+      "native_bound": 0.8551280004208034,
+      "max_native_infidelity": 0.1724377152153688,
+      "target_cutoff_difference": 0.00022257240722926605,
+      "previous_target_cutoff_difference": 0.0024932825862608514,
+      "native_cutoff_difference": 3.812392507066873e-21,
+      "quadrature_difference": 5.764903188154591e-08,
+      "bound_cutoff_difference": 0.0,
+      "verdicts": [
+        {
+          "verdict": "observed_failure",
+          "infidelity_upper": 0.7316247010575118,
+          "observed_lower_estimate": 0.17199257040091026,
+          "threshold": 0.001
+        },
+        {
+          "verdict": "observed_failure",
+          "infidelity_upper": 0.7316247010575118,
+          "observed_lower_estimate": 0.17199257040091026,
+          "threshold": 0.01
+        },
+        {
+          "verdict": "observed_failure",
+          "infidelity_upper": 0.7316247010575118,
+          "observed_lower_estimate": 0.17199257040091026,
+          "threshold": 0.0001
+        }
+      ],
+      "mean_field_crossing": {
+        "crossed": false,
+        "time": null,
+        "bracket": null,
+        "right_censored_at": 1.0
+      },
+      "evidence": "finite-family numerical estimates; cutoff and quadrature differences are empirical, not rigorous physical margins",
+      "records": [
+        "E1_beta0.05_xi2.5_N48.npz",
+        "E1_beta0.05_xi2.5_N64.npz",
+        "E1_beta0.05_xi2.5_N80.npz"
+      ]
+    },
+    {
+      "beta": 0.1,
+      "xi": 0.5,
+      "T": 1.0,
+      "cutoffs": [
+        48,
+        64,
+        80
+      ],
+      "native_bound": 0.11295251981589911,
+      "max_native_infidelity": 0.005130110403044812,
+      "target_cutoff_difference": 1.2621807693628021e-08,
+      "previous_target_cutoff_difference": 2.417027572695719e-07,
+      "native_cutoff_difference": 1.3456179180951005e-64,
+      "quadrature_difference": 1.2501931961894641e-08,
+      "bound_cutoff_difference": 0.0,
+      "verdicts": [
+        {
+          "verdict": "observed_failure",
+          "infidelity_upper": 0.012758277408341116,
+          "observed_lower_estimate": 0.005130085159429425,
+          "threshold": 0.001
+        },
+        {
+          "verdict": "inconclusive",
+          "infidelity_upper": 0.012758277408341116,
+          "observed_lower_estimate": 0.005130085159429425,
+          "threshold": 0.01
+        },
+        {
+          "verdict": "observed_failure",
+          "infidelity_upper": 0.012758277408341116,
+          "observed_lower_estimate": 0.005130085159429425,
+          "threshold": 0.0001
+        }
+      ],
+      "mean_field_crossing": {
+        "crossed": false,
+        "time": null,
+        "bracket": null,
+        "right_censored_at": 1.0
+      },
+      "evidence": "finite-family numerical estimates; cutoff and quadrature differences are empirical, not rigorous physical margins",
+      "records": [
+        "E1_beta0.1_xi0.5_N48.npz",
+        "E1_beta0.1_xi0.5_N64.npz",
+        "E1_beta0.1_xi0.5_N80.npz"
+      ]
+    },
+    {
+      "beta": 0.1,
+      "xi": 1.0,
+      "T": 1.0,
+      "cutoffs": [
+        48,
+        64,
+        80
+      ],
+      "native_bound": 0.2569169211008222,
+      "max_native_infidelity": 0.021592738721594396,
+      "target_cutoff_difference": 8.151773097229459e-07,
+      "previous_target_cutoff_difference": 1.0928376800660388e-05,
+      "native_cutoff_difference": 1.715972008498042e-45,
+      "quadrature_difference": 2.6709294664861716e-08,
+      "bound_cutoff_difference": 0.0,
+      "verdicts": [
+        {
+          "verdict": "observed_failure",
+          "infidelity_upper": 0.0660067369384635,
+          "observed_lower_estimate": 0.021591108366974948,
+          "threshold": 0.001
+        },
+        {
+          "verdict": "observed_failure",
+          "infidelity_upper": 0.0660067369384635,
+          "observed_lower_estimate": 0.021591108366974948,
+          "threshold": 0.01
+        },
+        {
+          "verdict": "observed_failure",
+          "infidelity_upper": 0.0660067369384635,
+          "observed_lower_estimate": 0.021591108366974948,
+          "threshold": 0.0001
+        }
+      ],
+      "mean_field_crossing": {
+        "crossed": false,
+        "time": null,
+        "bracket": null,
+        "right_censored_at": 1.0
+      },
+      "evidence": "finite-family numerical estimates; cutoff and quadrature differences are empirical, not rigorous physical margins",
+      "records": [
+        "E1_beta0.1_xi1_N48.npz",
+        "E1_beta0.1_xi1_N64.npz",
+        "E1_beta0.1_xi1_N80.npz"
+      ]
+    },
+    {
+      "beta": 0.1,
+      "xi": 1.75,
+      "T": 1.0,
+      "cutoffs": [
+        48,
+        64,
+        80
+      ],
+      "native_bound": 0.7286193052443091,
+      "max_native_infidelity": 0.13882300309685167,
+      "target_cutoff_difference": 0.00014502751626291666,
+      "previous_target_cutoff_difference": 0.0011115015116040868,
+      "native_cutoff_difference": 2.229384949581759e-30,
+      "quadrature_difference": 7.625522457921363e-08,
+      "bound_cutoff_difference": 0.0,
+      "verdicts": [
+        {
+          "verdict": "observed_failure",
+          "infidelity_upper": 0.5310975638481432,
+          "observed_lower_estimate": 0.13853294806432584,
+          "threshold": 0.001
+        },
+        {
+          "verdict": "observed_failure",
+          "infidelity_upper": 0.5310975638481432,
+          "observed_lower_estimate": 0.13853294806432584,
+          "threshold": 0.01
+        },
+        {
+          "verdict": "observed_failure",
+          "infidelity_upper": 0.5310975638481432,
+          "observed_lower_estimate": 0.13853294806432584,
+          "threshold": 0.0001
+        }
+      ],
+      "mean_field_crossing": {
+        "crossed": false,
+        "time": null,
+        "bracket": null,
+        "right_censored_at": 1.0
+      },
+      "evidence": "finite-family numerical estimates; cutoff and quadrature differences are empirical, not rigorous physical margins",
+      "records": [
+        "E1_beta0.1_xi1.75_N48.npz",
+        "E1_beta0.1_xi1.75_N64.npz",
+        "E1_beta0.1_xi1.75_N80.npz"
+      ]
+    },
+    {
+      "beta": 0.1,
+      "xi": 2.0,
+      "T": 1.0,
+      "cutoffs": [
+        48,
+        64,
+        80
+      ],
+      "native_bound": 0.9824257515008272,
+      "max_native_infidelity": 0.24280197182656452,
+      "target_cutoff_difference": 0.0006173350458805303,
+      "previous_target_cutoff_difference": 0.0039060425044613813,
+      "native_cutoff_difference": 7.234357740139386e-27,
+      "quadrature_difference": 1.3003561871727243e-07,
+      "bound_cutoff_difference": 0.0,
+      "verdicts": [
+        {
+          "verdict": "observed_failure",
+          "infidelity_upper": 0.966373965668527,
+          "observed_lower_estimate": 0.24156730173480345,
+          "threshold": 0.001
+        },
+        {
+          "verdict": "observed_failure",
+          "infidelity_upper": 0.966373965668527,
+          "observed_lower_estimate": 0.24156730173480345,
+          "threshold": 0.01
+        },
+        {
+          "verdict": "observed_failure",
+          "infidelity_upper": 0.966373965668527,
+          "observed_lower_estimate": 0.24156730173480345,
+          "threshold": 0.0001
+        }
+      ],
+      "mean_field_crossing": {
+        "crossed": false,
+        "time": null,
+        "bracket": null,
+        "right_censored_at": 1.0
+      },
+      "evidence": "finite-family numerical estimates; cutoff and quadrature differences are empirical, not rigorous physical margins",
+      "records": [
+        "E1_beta0.1_xi2_N48.npz",
+        "E1_beta0.1_xi2_N64.npz",
+        "E1_beta0.1_xi2_N80.npz"
+      ]
+    },
+    {
+      "beta": 0.1,
+      "xi": 2.5,
+      "T": 1.0,
+      "cutoffs": [
+        48,
+        64,
+        80
+      ],
+      "native_bound": 1.67506396311136,
+      "max_native_infidelity": 0.5793879430398303,
+      "target_cutoff_difference": 0.007450876599112802,
+      "previous_target_cutoff_difference": 0.03210819659366703,
+      "native_cutoff_difference": 3.8123925070668735e-21,
+      "quadrature_difference": 4.6716241697275507e-07,
+      "bound_cutoff_difference": 0.0,
+      "verdicts": [
+        {
+          "verdict": "observed_failure",
+          "infidelity_upper": 1.0,
+          "observed_lower_estimate": 0.5644861898416047,
+          "threshold": 0.001
+        },
+        {
+          "verdict": "observed_failure",
+          "infidelity_upper": 1.0,
+          "observed_lower_estimate": 0.5644861898416047,
+          "threshold": 0.01
+        },
+        {
+          "verdict": "observed_failure",
+          "infidelity_upper": 1.0,
+          "observed_lower_estimate": 0.5644861898416047,
+          "threshold": 0.0001
+        }
+      ],
+      "mean_field_crossing": {
+        "crossed": false,
+        "time": null,
+        "bracket": null,
+        "right_censored_at": 1.0
+      },
+      "evidence": "finite-family numerical estimates; cutoff and quadrature differences are empirical, not rigorous physical margins",
+      "records": [
+        "E1_beta0.1_xi2.5_N48.npz",
+        "E1_beta0.1_xi2.5_N64.npz",
+        "E1_beta0.1_xi2.5_N80.npz"
+      ]
+    },
+    {
+      "beta": 0.1,
+      "xi": 1.75,
+      "T": 6.283185307179586,
+      "cutoffs": [
+        48,
+        64,
+        80
+      ],
+      "native_bound": 4.932663944438844,
+      "max_native_infidelity": 0.6500185128176207,
+      "target_cutoff_difference": 0.00018168450713054585,
+      "previous_target_cutoff_difference": 0.0014262965376222313,
+      "native_cutoff_difference": 2.2293849495817585e-30,
+      "quadrature_difference": 1.5220228259948954e-06,
+      "bound_cutoff_difference": 0.0,
+      "verdicts": [
+        {
+          "verdict": "observed_failure",
+          "infidelity_upper": 1.0,
+          "observed_lower_estimate": 0.6496551438033596,
+          "threshold": 0.001
+        },
+        {
+          "verdict": "observed_failure",
+          "infidelity_upper": 1.0,
+          "observed_lower_estimate": 0.6496551438033596,
+          "threshold": 0.01
+        },
+        {
+          "verdict": "observed_failure",
+          "infidelity_upper": 1.0,
+          "observed_lower_estimate": 0.6496551438033596,
+          "threshold": 0.0001
+        }
+      ],
+      "mean_field_crossing": {
+        "crossed": true,
+        "time": 2.045002324458065,
+        "bracket": [
+          2.0420352248333655,
+          2.057743188101315
+        ],
+        "right_censored_at": null
+      },
+      "evidence": "finite-family numerical estimates; cutoff and quadrature differences are empirical, not rigorous physical margins",
+      "records": [
+        "E1_beta0.1_xi1.75_N48_long.npz",
+        "E1_beta0.1_xi1.75_N64_long.npz",
+        "E1_beta0.1_xi1.75_N80_long.npz"
+      ]
+    },
+    {
+      "beta": 0.1,
+      "xi": 2.0,
+      "T": 6.283185307179586,
+      "cutoffs": [
+        48,
+        64,
+        80
+      ],
+      "native_bound": 7.031373686445805,
+      "max_native_infidelity": 0.8518667431518074,
+      "target_cutoff_difference": 0.0007587396331082235,
+      "previous_target_cutoff_difference": 0.0049439890999604,
+      "native_cutoff_difference": 7.234357740139386e-27,
+      "quadrature_difference": 8.53776458420441e-07,
+      "bound_cutoff_difference": 0.0,
+      "verdicts": [
+        {
+          "verdict": "observed_failure",
+          "infidelity_upper": 1.0,
+          "observed_lower_estimate": 0.850349263885591,
+          "threshold": 0.001
+        },
+        {
+          "verdict": "observed_failure",
+          "infidelity_upper": 1.0,
+          "observed_lower_estimate": 0.850349263885591,
+          "threshold": 0.01
+        },
+        {
+          "verdict": "observed_failure",
+          "infidelity_upper": 1.0,
+          "observed_lower_estimate": 0.850349263885591,
+          "threshold": 0.0001
+        }
+      ],
+      "mean_field_crossing": {
+        "crossed": true,
+        "time": 1.9567276140614942,
+        "bracket": [
+          1.9477874452256718,
+          1.963495408493621
+        ],
+        "right_censored_at": null
+      },
+      "evidence": "finite-family numerical estimates; cutoff and quadrature differences are empirical, not rigorous physical margins",
+      "records": [
+        "E1_beta0.1_xi2_N48_long.npz",
+        "E1_beta0.1_xi2_N64_long.npz",
+        "E1_beta0.1_xi2_N80_long.npz"
+      ]
+    },
+    {
+      "beta": 0.2,
+      "xi": 0.5,
+      "T": 1.0,
+      "cutoffs": [
+        48,
+        64,
+        80
+      ],
+      "native_bound": 0.22140590968711396,
+      "max_native_infidelity": 0.015190216688005359,
+      "target_cutoff_difference": 2.253600777915924e-06,
+      "previous_target_cutoff_difference": 1.756079361843353e-05,
+      "native_cutoff_difference": 1.3456179180951005e-64,
+      "quadrature_difference": 2.201386212208334e-08,
+      "bound_cutoff_difference": 0.0,
+      "verdicts": [
+        {
+          "verdict": "observed_failure",
+          "infidelity_upper": 0.04902158451861583,
+          "observed_lower_estimate": 0.015185709486449527,
+          "threshold": 0.001
+        },
+        {
+          "verdict": "observed_failure",
+          "infidelity_upper": 0.04902158451861583,
+          "observed_lower_estimate": 0.015185709486449527,
+          "threshold": 0.01
+        },
+        {
+          "verdict": "observed_failure",
+          "infidelity_upper": 0.04902158451861583,
+          "observed_lower_estimate": 0.015185709486449527,
+          "threshold": 0.0001
+        }
+      ],
+      "mean_field_crossing": {
+        "crossed": true,
+        "time": 0.6157469275206942,
+        "bracket": [
+          0.615,
+          0.6175
+        ],
+        "right_censored_at": null
+      },
+      "evidence": "finite-family numerical estimates; cutoff and quadrature differences are empirical, not rigorous physical margins",
+      "records": [
+        "E1_beta0.2_xi0.5_N48.npz",
+        "E1_beta0.2_xi0.5_N64.npz",
+        "E1_beta0.2_xi0.5_N80.npz"
+      ]
+    },
+    {
+      "beta": 0.2,
+      "xi": 1.0,
+      "T": 1.0,
+      "cutoffs": [
+        48,
+        64,
+        80
+      ],
+      "native_bound": 0.497535071489255,
+      "max_native_infidelity": 0.06890499337466746,
+      "target_cutoff_difference": 6.876345797594023e-05,
+      "previous_target_cutoff_difference": 0.00039308036915911704,
+      "native_cutoff_difference": 1.715972008498042e-45,
+      "quadrature_difference": 6.402105034997163e-08,
+      "bound_cutoff_difference": 0.0,
+      "verdicts": [
+        {
+          "verdict": "observed_failure",
+          "infidelity_upper": 0.24760964026843554,
+          "observed_lower_estimate": 0.06876746645871558,
+          "threshold": 0.001
+        },
+        {
+          "verdict": "observed_failure",
+          "infidelity_upper": 0.24760964026843554,
+          "observed_lower_estimate": 0.06876746645871558,
+          "threshold": 0.01
+        },
+        {
+          "verdict": "observed_failure",
+          "infidelity_upper": 0.24760964026843554,
+          "observed_lower_estimate": 0.06876746645871558,
+          "threshold": 0.0001
+        }
+      ],
+      "mean_field_crossing": {
+        "crossed": true,
+        "time": 0.40450276232265536,
+        "bracket": [
+          0.4025,
+          0.405
+        ],
+        "right_censored_at": null
+      },
+      "evidence": "finite-family numerical estimates; cutoff and quadrature differences are empirical, not rigorous physical margins",
+      "records": [
+        "E1_beta0.2_xi1_N48.npz",
+        "E1_beta0.2_xi1_N64.npz",
+        "E1_beta0.2_xi1_N80.npz"
+      ]
+    },
+    {
+      "beta": 0.2,
+      "xi": 1.75,
+      "T": 1.0,
+      "cutoffs": [
+        48,
+        64,
+        80
+      ],
+      "native_bound": 1.395656254132641,
+      "max_native_infidelity": 0.46729727486404604,
+      "target_cutoff_difference": 0.004198792216199855,
+      "previous_target_cutoff_difference": 0.015137189833961017,
+      "native_cutoff_difference": 2.2293849495817585e-30,
+      "quadrature_difference": 1.0460113664123583e-08,
+      "bound_cutoff_difference": 0.0,
+      "verdicts": [
+        {
+          "verdict": "observed_failure",
+          "infidelity_upper": 1.0,
+          "observed_lower_estimate": 0.45889969043164636,
+          "threshold": 0.001
+        },
+        {
+          "verdict": "observed_failure",
+          "infidelity_upper": 1.0,
+          "observed_lower_estimate": 0.45889969043164636,
+          "threshold": 0.01
+        },
+        {
+          "verdict": "observed_failure",
+          "infidelity_upper": 1.0,
+          "observed_lower_estimate": 0.45889969043164636,
+          "threshold": 0.0001
+        }
+      ],
+      "mean_field_crossing": {
+        "crossed": false,
+        "time": null,
+        "bracket": null,
+        "right_censored_at": 1.0
+      },
+      "evidence": "finite-family numerical estimates; cutoff and quadrature differences are empirical, not rigorous physical margins",
+      "records": [
+        "E1_beta0.2_xi1.75_N48.npz",
+        "E1_beta0.2_xi1.75_N64.npz",
+        "E1_beta0.2_xi1.75_N80.npz"
+      ]
+    },
+    {
+      "beta": 0.2,
+      "xi": 2.0,
+      "T": 1.0,
+      "cutoffs": [
+        48,
+        64,
+        80
+      ],
+      "native_bound": 1.8721831662584936,
+      "max_native_infidelity": 0.6753710344886614,
+      "target_cutoff_difference": 0.012694563085845273,
+      "previous_target_cutoff_difference": 0.03937136840822012,
+      "native_cutoff_difference": 7.234357740139386e-27,
+      "quadrature_difference": 1.0353562474030298e-06,
+      "bound_cutoff_difference": 0.0,
+      "verdicts": [
+        {
+          "verdict": "observed_failure",
+          "infidelity_upper": 1.0,
+          "observed_lower_estimate": 0.6499819083169709,
+          "threshold": 0.001
+        },
+        {
+          "verdict": "observed_failure",
+          "infidelity_upper": 1.0,
+          "observed_lower_estimate": 0.6499819083169709,
+          "threshold": 0.01
+        },
+        {
+          "verdict": "observed_failure",
+          "infidelity_upper": 1.0,
+          "observed_lower_estimate": 0.6499819083169709,
+          "threshold": 0.0001
+        }
+      ],
+      "mean_field_crossing": {
+        "crossed": false,
+        "time": null,
+        "bracket": null,
+        "right_censored_at": 1.0
+      },
+      "evidence": "finite-family numerical estimates; cutoff and quadrature differences are empirical, not rigorous physical margins",
+      "records": [
+        "E1_beta0.2_xi2_N48.npz",
+        "E1_beta0.2_xi2_N64.npz",
+        "E1_beta0.2_xi2_N80.npz"
+      ]
+    },
+    {
+      "beta": 0.2,
+      "xi": 2.5,
+      "T": 1.0,
+      "cutoffs": [
+        48,
+        64,
+        80
+      ],
+      "native_bound": 3.3193298146356507,
+      "max_native_infidelity": 0.9422420543069656,
+      "target_cutoff_difference": 0.07902508694591125,
+      "previous_target_cutoff_difference": 0.18255268035707636,
+      "native_cutoff_difference": 3.812392507066873e-21,
+      "quadrature_difference": 4.12452330600388e-06,
+      "bound_cutoff_difference": 0.0,
+      "verdicts": [
+        {
+          "verdict": "observed_failure",
+          "infidelity_upper": 1.0,
+          "observed_lower_estimate": 0.7841918804151431,
+          "threshold": 0.001
+        },
+        {
+          "verdict": "observed_failure",
+          "infidelity_upper": 1.0,
+          "observed_lower_estimate": 0.7841918804151431,
+          "threshold": 0.01
+        },
+        {
+          "verdict": "observed_failure",
+          "infidelity_upper": 1.0,
+          "observed_lower_estimate": 0.7841918804151431,
+          "threshold": 0.0001
+        }
+      ],
+      "mean_field_crossing": {
+        "crossed": false,
+        "time": null,
+        "bracket": null,
+        "right_censored_at": 1.0
+      },
+      "evidence": "finite-family numerical estimates; cutoff and quadrature differences are empirical, not rigorous physical margins",
+      "records": [
+        "E1_beta0.2_xi2.5_N48.npz",
+        "E1_beta0.2_xi2.5_N64.npz",
+        "E1_beta0.2_xi2.5_N80.npz"
+      ]
+    }
+  ],
+  "primary_threshold": 0.001,
+  "development": false,
+  "wall_seconds": 1.890403958997922,
+  "cpu_seconds": 1.854868,
+  "peak_memory_bytes": 166576128,
+  "provenance": {
+    "python": "/Users/zhen002/miniconda3/envs/cvdv/bin/python",
+    "python_version": "3.13.0",
+    "numpy": "2.3.4",
+    "scipy": "1.16.3",
+    "head": "d44945f1009e589bb5b1c647b61c209715dec5c1",
+    "tracked_diff_sha256": "88194b225ee44f848b1ad30090cf95817c4ac3ea55ba2674f70174fd944b1fc6",
+    "source_sha256": {
+      "duffing/duffing_correction_validation.py": "b01c476320d8ba2badad8d4b88d3b4c371923463097067fc20d86bfd1d28465c",
+      "duffing/duffing_padded_hybrid_validation.py": "644984ef0d440063e284c0e6ff88ae67c0b529461ddf412fe4a05dba66a1271f",
+      "duffing/native_comparison.py": "27189d4753261fd27b761466bacf729cffa95cdce5b5f4d4cc58bbde9fc99309",
+      "pra/__init__.py": "75e8fe7f1794f38996d5dd4527dc24daef96861783a7fdc59c77dd352b1ae5fa",
+      "pra/metrics.py": "2c9a0de5259f2a5761c5d2f7005ca8106ced05371630784dbfa384f0a8343fd4",
+      "pra/records.py": "dccff4aa71b382bddfc1c1ad236406003abc3e122535c1c39ba5da39519103bf",
+      "pra/run_batch.py": "d054f7369f4278b384252be0a2820baf44de34439a7ddf8436c93d3e96573188",
+      "pra/run_duffing_formal.py": "c10322100f9c7c31f7a9cd186f170f5ab41d90097a15fa627898402c7da745a6",
+      "pra/run_e0.py": "4f1d74f06d2e4d6f29bc64c4ce51f735f6ab176cde1f65b96c9fbda66cdd2981",
+      "pra/run_pilot.py": "c4e80588c6eb141adb45d76e6244c78fd612058af5c74f4da33f556cc4fcfa32",
+      "pra/run_scaling.py": "0fd342cf897b768f2605696062eeee5cb3f4abd67b8c58b3618e4f7ee1e3b99c",
+      "pra/test_e0.py": "2b7a1a40178b48f50ff6339081947cf0429fdd3cd78e94e15a83959af7148077",
+      "sine_gordon/common.py": "67ca0613082d3eef9693836b26dc80f96def49c1ae74cca8ace5f8d5a2c2551e",
+      "sine_gordon/native_correction.py": "3edd790a99c2c0b32c7ad5bca7985ab4ea6103e0dafff945e5c82cb529499f6f",
+      "sine_gordon/run_classical.py": "312b0a570434f84c04eee0a60b13943b9ce152ca884d2553472802f85a2e6109",
+      "sine_gordon/run_multisite.py": "38fca25b7abed58d7006296e0e7bb9d3f12a406afe39d7520d178892ada14bcb",
+      "sine_gordon/run_polydeg.py": "35635dc10c86ce91d66fac1f4b123fa2f6e28e37d4d176289322baac953996ef",
+      "sine_gordon/run_snapd.py": "589662999238629e3e8de34db530a7d031633cc01735c35c177e5c0d9a62ed46",
+      "sine_gordon/run_snapd_end_to_end.py": "37eff7ff0309e9e10f536505016e261f89fbf55ee622e7588bfbbb25ae0592cc",
+      "sine_gordon/run_trotter.py": "01751b2166b3252955dd1e6e45a3c8f2b554f1868f66ebd48479c938a8d613d9",
+      "sine_gordon/sglib.py": "5aaa815b08fdd17f303a0d3e5a86876990f48f705dae479ef850c1c6824bffb8"
+    }
+  }
+}

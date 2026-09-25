@@ -1,0 +1,21 @@
+test_finite_gradient_and_common_phase (pra.test_e0.CompilerChecks.test_finite_gradient_and_common_phase) ... ok
+test_weyl_boundary_falsifier (pra.test_e0.CompilerChecks.test_weyl_boundary_falsifier) ... ok
+test_action_sum_and_outgoing_error (pra.test_e0.ErrorChecks.test_action_sum_and_outgoing_error) ... ok
+test_crossing_bracket_and_censoring (pra.test_e0.ErrorChecks.test_crossing_bracket_and_censoring) ... ok
+test_kerr_replacement_locations (pra.test_e0.ErrorChecks.test_kerr_replacement_locations) ... ok
+test_phase_residual_and_three_verdicts (pra.test_e0.ErrorChecks.test_phase_residual_and_three_verdicts) ... ok
+test_fixed_variance_driver_time_scale (pra.test_e0.RepresentationChecks.test_fixed_variance_driver_time_scale) ... ok
+test_free_kinetic_preservation_and_option_scope (pra.test_e0.RepresentationChecks.test_free_kinetic_preservation_and_option_scope) ... ok
+test_paired_frames_preserve_diagonal_start_and_escape_parity (pra.test_e0.RepresentationChecks.test_paired_frames_preserve_diagonal_start_and_escape_parity) ... ok
+test_physical_cosine_and_quadratic_sandwich (pra.test_e0.RepresentationChecks.test_physical_cosine_and_quadratic_sandwich) ... ok
+test_retuning_and_deformed_classical_force (pra.test_e0.RepresentationChecks.test_retuning_and_deformed_classical_force) ... ok
+test_sandwich_and_finite_ccr (pra.test_e0.RepresentationChecks.test_sandwich_and_finite_ccr) ... ok
+test_sg_evaluation_uses_requested_active_space (pra.test_e0.RepresentationChecks.test_sg_evaluation_uses_requested_active_space) ... ok
+test_joint_conjugation_and_two_ancilla (pra.test_e0.TrigonometricChecks.test_joint_conjugation_and_two_ancilla) ... ok
+test_orders_sign_and_schedule (pra.test_e0.TrigonometricChecks.test_orders_sign_and_schedule) ... ok
+test_route_generators_and_reduced_metrics (pra.test_e0.TrigonometricChecks.test_route_generators_and_reduced_metrics) ... ok
+
+----------------------------------------------------------------------
+Ran 16 tests in 0.421s
+
+OK

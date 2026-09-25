@@ -1,0 +1,40 @@
+{
+  "protocol_sha256": "d4b4819f4d5c09fa349d52ba39226006c71e2ebc7ecd04ad99613ce22f7724b9",
+  "authorization": "User approved subsequent computations in the final plan. This freeze precedes opening the eight E2 independent validation inputs.",
+  "output_root": "pra/results/formal",
+  "memory_cap_bytes": 4294967296,
+  "storage_cap_bytes": 2147483648,
+  "execution": "serial processes, one BLAS thread",
+  "B2_wall_cap_seconds": 4920,
+  "B3D_optimizer_cap_seconds": 16200,
+  "B3D_validation_cap_seconds": 900,
+  "reused_pilot_files": [
+    "pra/results/stage1/E3/E3_EJ1_primary_N48.npz",
+    "pra/results/stage1/E3/E3_EJ1_primary_N64.npz",
+    "pra/results/stage1/E3/E3_EJ8_primary_N48.npz",
+    "pra/results/stage1/E3/E3_EJ8_primary_N64.npz",
+    "pra/results/stage1/E3/E3_EJ8_fixed_variance_N48.npz",
+    "pra/results/stage1/E3/E3_EJ8_fixed_variance_N64.npz"
+  ],
+  "jobs": [
+    {
+      "id": "E2_formal",
+      "batch": "B3-D",
+      "wall_cap_seconds": 17100,
+      "command": [
+        "/Users/zhen002/miniconda3/envs/cvdv/bin/python",
+        "-m",
+        "pra.run_duffing_formal",
+        "--protocol",
+        "./pra/formal_protocol.json",
+        "--pilot",
+        "./pra/results/stage1/E2",
+        "--outdir",
+        "./pra/results/formal/E2",
+        "--resume"
+      ]
+    }
+  ],
+  "execution_record": "B3-D_recovery_execution.json",
+  "recovery": "Preserve the failed execution record and reuse the completed first restart."
+}

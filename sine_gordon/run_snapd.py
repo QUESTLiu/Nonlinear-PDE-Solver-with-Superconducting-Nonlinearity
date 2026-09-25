@@ -48,8 +48,11 @@ import numpy as np
 from scipy.linalg import expm, expm_frechet
 from scipy.optimize import minimize
 
-import sglib as sg
-import common
+if __package__:
+    from . import sglib as sg, common
+else:
+    import sglib as sg
+    import common
 
 
 # ---------------------------------------------------------------------

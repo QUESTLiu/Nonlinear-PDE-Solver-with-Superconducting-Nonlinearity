@@ -26,12 +26,18 @@ from __future__ import annotations
 
 import numpy as np
 
-import common
-import sglib as sg
+if __package__:
+    from . import common, sglib as sg
+    from .native_correction import moment_diagnostics,prepare_moment_diagnostics
+else:
+    import common
+    import sglib as sg
+    from native_correction import moment_diagnostics,prepare_moment_diagnostics
 
 
 def main() -> None:
     parser = common.base_parser(__doc__)
+    parser.add_argument("--lambda2", type=float, default=0.0)
     parser.add_argument(
         "--ehrenfest-tol",
         type=float,
@@ -58,10 +64,14 @@ def main() -> None:
         type=float,
         default=-1.0,
         help=(
-            "fixed scaled horizon tau_max=omega_b*T; <=0 uses --T. "
+            "fixed scaled horizon tau_max=Omega_time*T; <=0 uses --T. "
             "Recommended for E_J scans."
         ),
     )
+    parser.add_argument("--steps", type=int, default=None,
+                        help="exact integration step count at the requested horizon")
+    parser.add_argument("--zero-amplitude-scale", type=float, default=1.,
+                        help="absolute normalization when the classical amplitude is zero")
     parser.add_argument(
         "--leakage-tol",
         type=float,
@@ -74,20 +84,25 @@ def main() -> None:
 
     tau_requested = None
     if args.tau_max > 0:
-        omega_plan = (
-            float(args.omega)
-            if args.omega > 0
-            else float(np.sqrt(max(args.E_J + 2.0 * args.kappa, 1e-12)))
-        )
+        omega_plan = float(args.omega_time) if args.omega_time is not None else float(np.sqrt(args.E_J + 2 * args.kappa))
+        if omega_plan <= 0:
+            raise ValueError("Omega_time must be positive")
         requested_time = args.tau_max / omega_plan
         planned_steps = max(1, int(round(requested_time / args.dt)))
-        args.T = planned_steps * args.dt
+        args.T = requested_time
+        args.dt = args.T / (planned_steps if args.steps is None else args.steps)
         tau_requested = float(args.tau_max)
         print(
             f"[classical] scaled horizon tau_max={args.tau_max:g}: "
             f"T={args.T:g} ({planned_steps} steps)",
             flush=True,
         )
+    if args.steps is not None:
+        if args.steps < 1:
+            raise ValueError("steps must be positive")
+        args.dt = args.T / args.steps
+    if args.zero_amplitude_scale <= 0:
+        raise ValueError("zero-amplitude scale must be positive")
 
     ctx = common.setup(args, "classical")
     basis = ctx["basis"]
@@ -126,14 +141,22 @@ def main() -> None:
             args.n_site,
             local_offsets,
         )
+        onsite += args.lambda2 * (1 - np.cos(2 * (local_basis.lam_phi[None, :] + local_offsets[:, None])))
         store = common.new_store()
-        observer = common.make_observer(
+        basic_observer = common.make_observer(
             local_basis.phi,
             local_basis.pi,
             local_basis.num,
             store,
             local_offsets,
         )
+        hamiltonian = sg.HamiltonianApply(local_basis, args.n_site, args.kappa, onsite, args.pbc, offsets=local_offsets)
+        prepared=prepare_moment_diagnostics(local_basis,args.E_J,args.lambda2,local_offsets)
+        def observer(t, psi):
+            basic_observer(t, psi)
+            diagnostics = moment_diagnostics(psi, local_basis, args.E_J, args.kappa, args.lambda2, hamiltonian, offsets=local_offsets, pbc=args.pbc,prepared=prepared)
+            for key, value in diagnostics.items():
+                store.setdefault(key, []).append(value)
         if args.propagator == "strang":
             propagator = sg.SplitOperator(
                 local_basis,
@@ -187,6 +210,7 @@ def main() -> None:
         args.kappa,
         times,
         args.pbc,
+        lambda2=args.lambda2,
     )
     dw_phi, dw_pi = sg.classical_sine_gordon(
         matched_phis0,
@@ -196,10 +220,14 @@ def main() -> None:
         times,
         args.pbc,
         E_J_eff=ctx["semi"]["E_J_eff"],
+        lambda2=args.lambda2,
+        lambda2_eff=args.lambda2 * np.exp(-2 * basis.delta_phi_sq),
     )
 
     site_amplitudes = 0.5 * np.ptp(classical_phi, axis=0)
-    oscillation_amplitude = max(float(np.max(site_amplitudes)), 1e-12)
+    oscillation_amplitude = float(np.max(site_amplitudes))
+    if oscillation_amplitude == 0:
+        oscillation_amplitude = args.zero_amplitude_scale
     threshold = float(args.ehrenfest_tol * oscillation_amplitude)
     dev_classical = np.max(
         np.abs(quantum["phi"] - classical_phi), axis=1
@@ -209,31 +237,31 @@ def main() -> None:
     def first_crossing(deviation):
         indices = np.flatnonzero(deviation > threshold)
         if indices.size == 0:
-            return None
+            return None,None
         right = int(indices[0])
         if right == 0:
-            return float(times[0])
+            return float(times[0]),[float(times[0]),float(times[0])]
         left = right - 1
         y0 = float(deviation[left])
         y1 = float(deviation[right])
         if y1 <= y0:
-            return float(times[right])
+            return float(times[right]),[float(times[left]),float(times[right])]
         fraction = np.clip((threshold - y0) / (y1 - y0), 0.0, 1.0)
-        return float(times[left] + fraction * (times[right] - times[left]))
+        return float(times[left] + fraction * (times[right] - times[left])),[float(times[left]),float(times[right])]
 
-    t_ehrenfest_classical = first_crossing(dev_classical)
-    t_ehrenfest_dw = first_crossing(dev_dw)
+    t_ehrenfest_classical,bracket_classical = first_crossing(dev_classical)
+    t_ehrenfest_dw,bracket_dw = first_crossing(dev_dw)
     tau_ehrenfest_classical = (
         None
         if t_ehrenfest_classical is None
-        else float(ctx["w"] * t_ehrenfest_classical)
+        else float(ctx["Omega_time"] * t_ehrenfest_classical)
     )
     tau_ehrenfest_dw = (
         None
         if t_ehrenfest_dw is None
-        else float(ctx["w"] * t_ehrenfest_dw)
+        else float(ctx["Omega_time"] * t_ehrenfest_dw)
     )
-    tau_actual = float(ctx["w"] * times[-1])
+    tau_actual = float(ctx["Omega_time"] * times[-1])
 
     cutoff_convergence = None
     cutoff_compared = None
@@ -376,14 +404,20 @@ def main() -> None:
         debye_waller_improvement_pct=dw_improvement_pct,
         initial_representation_error=initial_representation_error,
         cutoff_convergence=cutoff_convergence,
+        cutoff_convergence_normalized=None if cutoff_convergence is None else cutoff_convergence/oscillation_amplitude,
         cutoff_compared=cutoff_compared,
         time_step_convergence=time_step_convergence,
+        time_step_convergence_normalized=None if time_step_convergence is None else time_step_convergence/oscillation_amplitude,
         ehrenfest_fraction=float(args.ehrenfest_tol),
         ehrenfest_threshold=threshold,
         ehrenfest_crossed_classical=t_ehrenfest_classical is not None,
         ehrenfest_crossed_dw=t_ehrenfest_dw is not None,
         t_ehrenfest_classical=t_ehrenfest_classical,
         t_ehrenfest_dw=t_ehrenfest_dw,
+        t_ehrenfest_bracket_classical=bracket_classical,
+        t_ehrenfest_bracket_dw=bracket_dw,
+        tau_ehrenfest_bracket_classical=None if bracket_classical is None else [ctx["Omega_time"]*t for t in bracket_classical],
+        tau_ehrenfest_bracket_dw=None if bracket_dw is None else [ctx["Omega_time"]*t for t in bracket_dw],
         tau_ehrenfest_classical=tau_ehrenfest_classical,
         tau_ehrenfest_dw=tau_ehrenfest_dw,
         tau_max_requested=tau_requested,
@@ -391,6 +425,7 @@ def main() -> None:
         max_leakage=float(quantum["leak"].max()),
         leakage_tolerance=float(args.leakage_tol),
         oscillation_amplitude=oscillation_amplitude,
+        zero_amplitude_scale=args.zero_amplitude_scale,
         deviation_norm="max_over_time_and_sites",
         boundary_condition="periodic" if args.pbc else "open",
     )
@@ -402,6 +437,8 @@ def main() -> None:
         write_csv=args.csv,
         arrays=dict(
             t=times,
+            tau=ctx["Omega_time"] * times,
+            **{key: value for key, value in quantum.items() if key not in ("t", "phi", "pi", "n", "leak")},
             phi_q=quantum["phi"],
             pi_q=quantum["pi"],
             n_q=quantum["n"],

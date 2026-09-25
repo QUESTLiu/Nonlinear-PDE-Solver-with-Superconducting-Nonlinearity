@@ -492,6 +492,8 @@ def classical_sine_gordon(
     times: np.ndarray,
     pbc: bool,
     E_J_eff: float | None = None,
+    lambda2: float = 0.,
+    lambda2_eff: float | None = None,
 ):
     phis0 = np.asarray(phis0, dtype=float)
     pis0 = np.asarray(pis0, dtype=float)
@@ -503,11 +505,12 @@ def classical_sine_gordon(
     if pbc and n_site > 2:
         coupling_pairs.append((n_site - 1, 0))
     strength = float(E_J if E_J_eff is None else E_J_eff)
+    strength2 = float(lambda2 if lambda2_eff is None else lambda2_eff)
 
     def rhs(_t, y):
         phi = y[:n_site]
         pi = y[n_site:]
-        force = -strength * np.sin(phi)
+        force = -strength * np.sin(phi) - 2 * strength2 * np.sin(2 * phi)
         for left, right in coupling_pairs:
             delta = phi[right] - phi[left]
             force[left] += kappa * delta

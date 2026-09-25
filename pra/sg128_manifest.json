@@ -1,0 +1,24 @@
+{
+  "authorization": "User explicitly requested trying cutoff 128 after the disclosed runtime estimate; intermediate 96 supplies the adjacent convergence comparison. Existing subsequent-compute authorization remains.",
+  "output_root": "pra/results/sg128",
+  "memory_cap_bytes": 4294967296,
+  "storage_cap_bytes": 2147483648,
+  "jobs": [
+    {
+      "id": "E4_reference128",
+      "batch": "B1",
+      "wall_cap_seconds": 900,
+      "command": [
+        "/Users/zhen002/miniconda3/envs/cvdv/bin/python",
+        "-m",
+        "pra.run_pilot",
+        "e4-reference128",
+        "--previous-reference",
+        "./pra/results/stage1_continuation/E4_reference64",
+        "--outdir",
+        "./pra/results/sg128/reference"
+      ]
+    }
+  ],
+  "scope": "Two-site EJ=1, lambda2=0.3, same coherent preparation and 257-point horizon; target/native/retuned trajectories, exact split, independent DOP853 and existing diagnostics at 96/128. No optimizer or threshold change."
+}
