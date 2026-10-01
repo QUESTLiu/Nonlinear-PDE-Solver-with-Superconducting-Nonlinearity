@@ -9,12 +9,4 @@ __pycache__
 # diagnostic figures written by common_code/plot_results.py
 common_data/diagnostic_figures/
 # LaTeX intermediate files
-paper/*.aux
-paper/*.log
-paper/*.blg
-paper/*.bbl
-paper/*.out
-paper/*Notes.bib
-paper/*.fls
-paper/*.fdb_latexmk
-paper/*.synctex.gz
+paper/*
