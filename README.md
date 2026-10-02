@@ -1,20 +1,19 @@
 # Hardware-native programmable emulation in hybrid oscillator–qubit simulation of nonlinear dynamics
 
-This repository contains the manuscript, the code and numerical records behind its numbers, tables and figures, and Lean 4 experiments on selected mathematical statements. Code and data are grouped by benchmark, and each `<topic>_code/` folder writes to the matching `<topic>_data/` folder.
+This repository contains the code and numerical records behind the manuscript's numbers, tables and figures, and Lean 4 experiments on selected mathematical statements. Code and data are grouped by benchmark, and each `<topic>_code/` folder writes to the matching `<topic>_data/` folder.
 
 | Folder | Content |
 |---|---|
-| `paper/` | Active manuscript source, bibliography, figures, and compiled PDF with revisions marked in blue |
 | `sine_gordon_code/`, `sine_gordon_data/` | Sine-Gordon lattice, Sec. III A and Appendix F. The library in `sine_gordon_code/` also serves the double sine-Gordon lattice |
 | `duffing_code/`, `duffing_data/` | Duffing oscillator, Sec. III B and Appendix H |
 | `double_sine_gordon_code/`, `double_sine_gordon_data/` | Double sine-Gordon lattice, Sec. III C and Appendices I, J and K |
 | `common_code/`, `common_data/` | Pipeline infrastructure shared by the benchmarks, the figure script, and records that span several benchmarks |
-| `lean_proof/` | Lean 4 formalization experiments |
+| `lean_proof/` | Optional Lean 4 formalization experiments |
 | `legacy/` | Earlier implementations, including the Kerr-lattice calculation used in Appendix L |
 
 ## Environment
 
-The records were produced with Python 3.13.0, NumPy 2.3.4, SciPy 1.16.3 and Matplotlib 3.10.7 (`requirements.txt`). Run all Python commands from the repository root, scripts as `python <folder>/<script>.py` and pipeline modules as `python -m <folder>.<module>`. The active marked manuscript compiles with `tectonic main_reog_marked_tocheck.tex` in `paper/`, and the Lean project builds with `lake exe cache get` and `lake build` in `lean_proof/`.
+The records were produced with Python 3.13.0, NumPy 2.3.4, SciPy 1.16.3 and Matplotlib 3.10.7 (`requirements.txt`). Run all Python commands from the repository root, scripts as `python <folder>/<script>.py` and pipeline modules as `python -m <folder>.<module>`. The optional Lean project builds with `lake exe cache get` and `lake build` in `lean_proof/`.
 
 ## Gaussian circuit evidence
 
@@ -33,7 +32,7 @@ python double_sine_gordon_code/dsg_control_tradeoffs.py
 python common_code/make_figures.py
 ```
 
-The last three commands read stored data and perform no propagation or fitting. To replay the Gaussian comparison, use the bounded manifests `gaussian_revision_two_site.json`, `gaussian_revision_chain.json`, and `gaussian_revision_common.json` under `common_data/manifests/`. For a fresh run, copy a manifest with a new execution-record path and append `--output-dir <new-directory>` to its command. This preserves the evidence shipped with the paper. The archived runs use one BLAS/OpenMP thread and a 4 GiB process cap. The `references` and `scan` commands of the original simulation drivers can rebuild target trajectories and have substantially larger costs.
+The last three commands read stored data and perform no propagation or fitting. To replay the Gaussian comparison, use the bounded manifests `gaussian_revision_two_site.json`, `gaussian_revision_chain.json`, and `gaussian_revision_common.json` under `common_data/manifests/`. Copy a manifest, set `output_root` to a new run directory, keep `execution_record` as a filename inside that directory, and append `--output-dir <new-run-directory>` to the comparison command using the same directory. The job log, execution receipt, and candidate records then all go into the new location. Each replay needs its own run directory. The runner refuses to overwrite an existing execution receipt or job log. The archived runs use one BLAS/OpenMP thread and a 4 GiB process cap. The `references` and `scan` commands of the original simulation drivers can rebuild target trajectories and have substantially larger costs.
 
 ## Where each result comes from
 
@@ -125,6 +124,6 @@ The reported error is the maximum infidelity, 1 − |overlap|², over the 81 sto
 | `legacy/nlse_fock_cutoff_hybrid.py`, `common_code/check_number_diagonal.py` | `common_data/number_diagonal_check/` | Appendix L, analytic number-diagonal correction and the cutoff check at W = 0.3 |
 | `lean_proof/` | `common_data/records/lean-build.log`, `lean-axioms.log` | Formalization experiments |
 
-`python common_code/make_figures.py` redraws the benchmark figures from the data folders in a few seconds. `python double_sine_gordon_code/dsg_control_tradeoffs.py` reads the stored two-site step scan and regenerates the conditional duration comparison in Fig. 7, including its JSON record. Fig. 1 is drawn with TikZ, and `tectonic fig_overview.tex` in `paper/figures/` rebuilds it.
+`python common_code/make_figures.py` redraws the benchmark figures from the data folders in a few seconds. `python double_sine_gordon_code/dsg_control_tradeoffs.py` reads the stored two-site step scan and regenerates the conditional duration comparison in Fig. 7, including its JSON record.
 
 Figures 2–6 and 8–10 are drawn from the archived benchmark data. Their plotting script controls panel layout, labels, and visual encodings. The polynomial plot shows the full stored infidelity range. Figure 6 separates splitting-error ratios from compiled primitive ratios, and Figure 10 separates the two outer-step counts. Redrawing these figures reads the stored results and performs no propagation or optimization.

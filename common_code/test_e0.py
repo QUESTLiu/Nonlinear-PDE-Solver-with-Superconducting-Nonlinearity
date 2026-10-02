@@ -6,6 +6,8 @@ import contextlib
 import io
 import json
 from pathlib import Path
+import subprocess
+import sys
 import tempfile
 import numpy as np
 from scipy.linalg import expm
@@ -28,6 +30,108 @@ def independent_ladder(n):
 
 
 class RepresentationChecks(unittest.TestCase):
+    def test_batch_replay_preserves_existing_job_log(self):
+        from common_code.records import ROOT
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory)
+            log = output / 'archived_job.log'
+            original = b'archived scientific run\n'
+            log.write_bytes(original)
+            manifest = dict(output_root=str(output), execution_record='fresh_receipt.json',
+                            memory_cap_bytes=256 * 1024**2, storage_cap_bytes=1024**2,
+                            jobs=[dict(id='archived_job', batch='B0', wall_cap_seconds=5,
+                                       command=[sys.executable, '-c', "print('new run')"])])
+            path = output / 'manifest.json'
+            path.write_text(json.dumps(manifest))
+            result = subprocess.run([sys.executable, '-m', 'common_code.run_batch',
+                                     str(path), '--batch', 'B0', '--execute'],
+                                    cwd=ROOT, capture_output=True, text=True, timeout=10)
+            self.assertEqual(log.read_bytes(), original)
+            self.assertNotEqual(result.returncode, 0)
+            self.assertIn('FileExistsError', result.stderr)
+            self.assertIn(str(log), result.stderr)
+            self.assertFalse((output / 'fresh_receipt.json').exists())
+
+    def test_gaussian_boundary_checkpoints_cover_complete_prefixes(self):
+        """Dense complete circuits determine every monitored state and boundary maximum."""
+        from double_sine_gordon_code.gaussian_sequence import merged_gaussian_readouts
+        n, steps, h = 6, 3, .8
+        a = independent_ladder(n)
+        q = (a + a.conj().T) / np.sqrt(2)
+        p = 1j * (a.conj().T - a) / np.sqrt(2)
+        q_values, q_basis = np.linalg.eigh(q)
+        p_values, p_basis = np.linalg.eigh(p)
+        q_coefficient = lambda tau: .5 * np.tan(tau / 2)
+        p_coefficient = lambda tau: .5 * np.sin(tau)
+        half = (q_coefficient(h / 2) * q_values**2, p_coefficient(h / 2) * p_values**2)
+        full = (q_coefficient(h) * q_values**2, p_coefficient(h) * p_values**2)
+
+        def position(state, generator):
+            return q_basis @ (np.exp(-1j * generator)[:, None] * (q_basis.conj().T @ state))
+
+        def momentum(state, generator):
+            return p_basis @ (np.exp(-1j * generator)[:, None] * (p_basis.conj().T @ state))
+
+        cosine = (expm(1j * q) + expm(-1j * q)) / 2
+        sine = (expm(1j * q) - expm(-1j * q)) / (2j)
+        y, z = np.array([[0, -1j], [1j, 0]]), np.diag([1, -1])
+        blocks = [expm(.2j * (np.kron(cosine, z) + sign * np.kron(sine, y)))
+                  for sign in (1, -1)]
+
+        def potential(state, observe):
+            for block in blocks:
+                state = (block @ state.ravel()).reshape(n, 2)
+                observe(state)
+            return state
+
+        initial = np.zeros((n, 2), complex)
+        initial[0, 0], initial[1, 1], initial[2, 0] = 1., .3j, .2
+        initial /= np.linalg.norm(initial)
+
+        def dense_position(coefficient):
+            return np.kron(expm(-1j * coefficient * (q @ q)), np.eye(2))
+
+        def dense_momentum(coefficient):
+            return np.kron(expm(-1j * coefficient * (p @ p)), np.eye(2))
+
+        def complete_circuit(count):
+            state = dense_momentum(p_coefficient(h / 2)) @ dense_position(q_coefficient(h / 2)) @ initial.ravel()
+            checkpoints = []
+            for j in range(1, count + 1):
+                left = q_coefficient(h / 2 if j == 1 else h)
+                right = q_coefficient(h / 2 if j == count else h)
+                state = dense_position(left + right) @ state
+                checkpoints.append(state.copy())
+                for block in blocks:
+                    state = block @ state
+                    checkpoints.append(state.copy())
+                state = dense_momentum(p_coefficient(h / 2 if j == count else h)) @ state
+            state = dense_position(q_coefficient(h / 2)) @ state
+            checkpoints.append(state.copy())
+            return checkpoints, state
+
+        for final_only in (False, True):
+            with self.subTest(final_only=final_only):
+                observed = []
+                actual = list(merged_gaussian_readouts(initial, steps, half, full, position,
+                              momentum, potential, lambda state: observed.append(state.ravel().copy()),
+                              final_only=final_only))
+                counts = [steps] if final_only else range(1, steps + 1)
+                expected, readouts = [], [initial.ravel()]
+                for count in counts:
+                    checkpoints, state = complete_circuit(count)
+                    expected.extend(checkpoints)
+                    readouts.append(state)
+                np.testing.assert_allclose(np.array(actual).reshape(-1, 2 * n), readouts, atol=3e-12, rtol=0)
+                if final_only:
+                    np.testing.assert_allclose(observed, expected, atol=3e-12, rtol=0)
+                else:
+                    distances = np.linalg.norm(np.array(expected)[:, None, :] - np.array(observed)[None, :, :], axis=2)
+                    self.assertLess(float(np.max(np.min(distances, axis=1))), 3e-12)
+                    self.assertLess(float(np.max(np.min(distances, axis=0))), 3e-12)
+                boundary = lambda states: max(float(np.sum(abs(state.reshape(n, 2)[-4:])**2)) for state in states)
+                self.assertAlmostEqual(boundary(observed), boundary(expected), places=12)
+
     def test_gaussian_error_intervals_and_unresolved_selection(self):
         """Partial trace contracts Bures distance; overlapping bounds cannot select a winner."""
         from double_sine_gordon_code.audit_gaussian_sequence import distance, interval

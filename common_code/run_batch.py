@@ -45,7 +45,7 @@ def main():
                 continue
         started=time.monotonic()
         command=[str(ROOT/x[2:]) if x.startswith("./") else x for x in job["command"]]
-        with (output/(job["id"]+".log")).open("w") as log:
+        with (output/(job["id"]+".log")).open("x") as log:
             process=subprocess.Popen(command,cwd=ROOT,env=env,stdout=log,stderr=subprocess.STDOUT)
             reason=None;peak=0
             while process.poll() is None:
