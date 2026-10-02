@@ -47,6 +47,7 @@ import os
 from pathlib import Path
 import platform
 import socket
+import sys
 import tempfile
 import time
 from typing import Any
@@ -56,12 +57,12 @@ from scipy.linalg import expm
 from scipy.sparse import csr_matrix, eye, kron
 from scipy.sparse.linalg import expm_multiply
 
-if __package__:
-    from sine_gordon_code import sglib as sg
-    from .run_snapd import _run_restart, build_ansatz
-else:
-    import sglib as sg
-    from run_snapd import _run_restart, build_ansatz
+if not __package__:
+    # Use the same package imports for direct scripts and python -m invocations.
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+
+from sine_gordon_code import sglib as sg
+from double_sine_gordon_code.run_snapd import _run_restart, build_ansatz
 
 
 CHECKPOINT_VERSION = 1
@@ -199,26 +200,29 @@ def build_two_site_problem(
         @ basis.U_phi.conj().T
     )
     if convention == "physical_sandwich":
-        if __package__:
-            from sine_gordon_code.native_correction import cosine_sandwich, sandwich_local_operators
-        else:
-            from native_correction import cosine_sandwich, sandwich_local_operators
-        q2,p2=sandwich_local_operators(basis)
-        phi_sq=csr_matrix(q2)
-        native_local=.5*p2+E_J*(np.eye(n_cut)-cosine_sandwich(n_cut,omega))
-        correction_local=coupling*(np.eye(n_cut)-cosine_sandwich(n_cut,omega,2))
+        from sine_gordon_code.native_correction import (
+            cosine_sandwich,
+            sandwich_local_operators,
+        )
+
+        q2, p2 = sandwich_local_operators(basis)
+        phi_sq = csr_matrix(q2)
+        native_local = 0.5 * p2 + E_J * (np.eye(n_cut) - cosine_sandwich(n_cut, omega))
+        correction_local = coupling * (np.eye(n_cut) - cosine_sandwich(n_cut, omega, 2))
     elif convention != "spectral":
         raise ValueError("convention must be spectral or physical_sandwich")
     native_with_gradient_self = csr_matrix(native_local) + 0.5 * kappa * phi_sq
+    # Expand kappa*(phi2-phi1)^2/2 into two local squares and one cross term.
+    # The selected convention must apply to BOTH the kinetic and local-square
+    # pieces; mixing physical sandwiches with finite powers defines another model.
     H_native = (
         kron(native_with_gradient_self, identity, format="csr")
         + kron(identity, native_with_gradient_self, format="csr")
         - kappa * kron(phi, phi, format="csr")
     )
     correction_local_sparse = csr_matrix(correction_local)
-    H_correction = (
-        kron(correction_local_sparse, identity, format="csr")
-        + kron(identity, correction_local_sparse, format="csr")
+    H_correction = kron(correction_local_sparse, identity, format="csr") + kron(
+        identity, correction_local_sparse, format="csr"
     )
     H_target = H_native + H_correction
 
@@ -341,12 +345,8 @@ def trajectory_phi(states: np.ndarray, phi: np.ndarray) -> np.ndarray:
     tensors = _unit_norm(states).reshape(-1, phi.shape[0], phi.shape[0])
     output = np.empty((tensors.shape[0], 2), dtype=float)
     for index, tensor in enumerate(tensors):
-        output[index, 0] = float(
-            np.real(np.vdot(tensor, phi @ tensor))
-        )
-        output[index, 1] = float(
-            np.real(np.vdot(tensor, tensor @ phi.T))
-        )
+        output[index, 0] = float(np.real(np.vdot(tensor, phi @ tensor)))
+        output[index, 1] = float(np.real(np.vdot(tensor, tensor @ phi.T)))
     return output
 
 
@@ -354,9 +354,7 @@ def embed_trajectory(states: np.ndarray, low_cut: int, high_cut: int) -> np.ndar
     if low_cut > high_cut:
         raise ValueError("low_cut cannot exceed high_cut")
     low = _unit_norm(states).reshape(-1, low_cut, low_cut)
-    high = np.zeros(
-        (low.shape[0], high_cut, high_cut), dtype=np.complex128
-    )
+    high = np.zeros((low.shape[0], high_cut, high_cut), dtype=np.complex128)
     high[:, :low_cut, :low_cut] = low
     return _unit_norm(high.reshape(low.shape[0], -1))
 
@@ -394,12 +392,10 @@ def resize_ansatz_vector(
     for index in range(layer):
         old_start = index * (old_cut + 2)
         new_start = index * (new_cut + 2)
-        destination[new_start : new_start + 2] = source[
-            old_start : old_start + 2
+        destination[new_start : new_start + 2] = source[old_start : old_start + 2]
+        destination[new_start + 2 : new_start + 2 + common] = source[
+            old_start + 2 : old_start + 2 + common
         ]
-        destination[
-            new_start + 2 : new_start + 2 + common
-        ] = source[old_start + 2 : old_start + 2 + common]
     return destination
 
 
@@ -514,9 +510,7 @@ def compile_local_block(
         )
         x0 = np.concatenate(
             [
-                np.concatenate(
-                    [rng.normal(0.0, 0.3, 2), rng.normal(0.0, 0.5, n_cut)]
-                )
+                np.concatenate([rng.normal(0.0, 0.3, 2), rng.normal(0.0, 0.5, n_cut)])
                 for _ in range(layer)
             ]
         )
@@ -627,9 +621,7 @@ def evaluate_point(
     n_cut = problem["basis"].n_cut
     dt = T / r
     U_exact_local = expm(-1j * problem["correction_local"] * dt)
-    U_compiled_local = build_ansatz(
-        compiled_x, layer, n_cut, problem["a"]
-    )
+    U_compiled_local = build_ansatz(compiled_x, layer, n_cut, problem["a"])
     exact_correction, compiled_correction = product_formula_trajectories(
         problem["H_native"],
         psi0,
@@ -638,27 +630,15 @@ def evaluate_point(
         [U_exact_local, U_compiled_local],
     )
 
-    native_infidelity = trajectory_infidelity(
-        target_trajectory, native_trajectory
-    )
-    exact_infidelity = trajectory_infidelity(
-        target_trajectory, exact_correction
-    )
-    hybrid_infidelity = trajectory_infidelity(
-        target_trajectory, compiled_correction
-    )
-    compilation_only = trajectory_infidelity(
-        exact_correction, compiled_correction
-    )
+    native_infidelity = trajectory_infidelity(target_trajectory, native_trajectory)
+    exact_infidelity = trajectory_infidelity(target_trajectory, exact_correction)
+    hybrid_infidelity = trajectory_infidelity(target_trajectory, compiled_correction)
+    compilation_only = trajectory_infidelity(exact_correction, compiled_correction)
     target_leakage = trajectory_leakage(target_trajectory, n_cut)
     hybrid_leakage = trajectory_leakage(compiled_correction, n_cut)
     native_max = float(np.max(native_infidelity))
     hybrid_max = float(np.max(hybrid_infidelity))
-    improvement = (
-        float(native_max / hybrid_max)
-        if hybrid_max > 0
-        else float("inf")
-    )
+    improvement = float(native_max / hybrid_max) if hybrid_max > 0 else float("inf")
     row = {
         "lambda": coupling,
         "n_cut": n_cut,
@@ -669,20 +649,14 @@ def evaluate_point(
         "rL": r * layer,
         "circuit_time_us": circuit_time_us,
         "coherence_budget_us": coherence_budget_us,
-        "coherence_feasible": circuit_time_us <= coherence_budget_us * (
-            1.0 + 1e-12
-        ),
+        "coherence_feasible": circuit_time_us <= coherence_budget_us * (1.0 + 1e-12),
         "block_infidelity": block_infidelity,
         "block_spectral_error": block_spectral_error,
-        "repeated_operator_error_bound": min(
-            2.0, r * block_spectral_error
-        ),
+        "repeated_operator_error_bound": min(2.0, r * block_spectral_error),
         "native_max_infidelity": native_max,
         "exact_correction_max_infidelity": float(np.max(exact_infidelity)),
         "hybrid_max_infidelity": hybrid_max,
-        "compilation_only_max_infidelity": float(
-            np.max(compilation_only)
-        ),
+        "compilation_only_max_infidelity": float(np.max(compilation_only)),
         "improvement_ratio": improvement,
         "target_max_leakage": float(np.max(target_leakage)),
         "hybrid_max_leakage": float(np.max(hybrid_leakage)),
@@ -698,12 +672,8 @@ def evaluate_point(
         "compilation_only_infidelity": compilation_only,
         "target_leakage": target_leakage,
         "hybrid_leakage": hybrid_leakage,
-        "target_phi": trajectory_phi(
-            target_trajectory, problem["basis"].phi
-        ),
-        "hybrid_phi": trajectory_phi(
-            compiled_correction, problem["basis"].phi
-        ),
+        "target_phi": trajectory_phi(target_trajectory, problem["basis"].phi),
+        "hybrid_phi": trajectory_phi(compiled_correction, problem["basis"].phi),
     }
     return row, arrays
 
@@ -741,8 +711,12 @@ def main() -> None:
     parser.add_argument("--seed", type=int, default=20260729)
     parser.add_argument("--alpha-bound", type=float, default=3.0)
     parser.add_argument("--chi-mhz", type=float, default=1.5)
-    parser.add_argument("--t-displacement-us", type=float, required=True,
-                        help="explicit displacement duration, including zero only for an idealized lower bound")
+    parser.add_argument(
+        "--t-displacement-us",
+        type=float,
+        required=True,
+        help="explicit displacement duration, including zero only for an idealized lower bound",
+    )
     parser.add_argument("--t2-anc-us", type=float, default=80.0)
     parser.add_argument("--coherence-fraction", type=float, default=0.25)
     parser.add_argument("--native-threshold", type=float, default=1e-2)
@@ -776,14 +750,10 @@ def main() -> None:
 
     r_values = _parse_int_list(args.r_values, "--r-values")
     layers = _parse_int_list(args.layers, "--layers")
-    validation_cuts = _parse_int_list(
-        args.validation_cuts, "--validation-cuts"
-    )
+    validation_cuts = _parse_int_list(args.validation_cuts, "--validation-cuts")
     if args.screen_cut in validation_cuts:
         validation_cuts.remove(args.screen_cut)
-    all_validation_cuts = sorted(
-        set([args.screen_cut] + validation_cuts)
-    )
+    all_validation_cuts = sorted(set([args.screen_cut] + validation_cuts))
 
     workers = args.workers
     if workers <= 0:
@@ -792,23 +762,14 @@ def main() -> None:
     t_snap_us = 1.0 / args.chi_mhz
     t_layer_us = t_snap_us + args.t_displacement_us
     coherence_budget_us = args.coherence_fraction * args.t2_anc_us
-    pairs = feasible_pairs(
-        r_values, layers, t_layer_us, coherence_budget_us
-    )
+    pairs = feasible_pairs(r_values, layers, t_layer_us, coherence_budget_us)
     if not pairs:
-        raise RuntimeError(
-            "no (r,L) pair fits the requested coherence budget"
-        )
+        raise RuntimeError("no (r,L) pair fits the requested coherence budget")
     excluded = [
-        (r, layer)
-        for r in r_values
-        for layer in layers
-        if (r, layer) not in pairs
+        (r, layer) for r in r_values for layer in layers if (r, layer) not in pairs
     ]
 
-    tag = args.tag.strip() or (
-        f"snapd_e2e_lambda_{_safe_token(args.coupling)}"
-    )
+    tag = args.tag.strip() or (f"snapd_e2e_lambda_{_safe_token(args.coupling)}")
     if not all(character.isalnum() or character in "._-" for character in tag):
         raise ValueError("--tag may contain only letters, digits, '.', '_', '-'")
     outdir = Path(args.outdir).expanduser().resolve()
@@ -867,28 +828,20 @@ def main() -> None:
     target_by_r: dict[int, np.ndarray] = {}
     native_by_r: dict[int, np.ndarray] = {}
     for r in r_values:
-        target_by_r[r] = exact_trajectory(
-            problem["H_target"], psi0, args.T, r
-        )
-        native_by_r[r] = exact_trajectory(
-            problem["H_native"], psi0, args.T, r
-        )
+        target_by_r[r] = exact_trajectory(problem["H_target"], psi0, args.T, r)
+        native_by_r[r] = exact_trajectory(problem["H_native"], psi0, args.T, r)
 
     summary_rows: list[dict[str, Any]] = []
     trajectory_arrays: dict[str, np.ndarray] = {}
     compiled_by_pair: dict[tuple[int, int], dict[str, Any]] = {}
     for r in r_values:
         dt = args.T / r
-        U_target_local = expm(
-            -1j * problem["correction_local"] * dt
-        )
+        U_target_local = expm(-1j * problem["correction_local"] * dt)
         previous_x: np.ndarray | None = None
         for layer in layers:
             if (r, layer) not in pairs:
                 continue
-            checkpoint = compile_dir / (
-                f"nc{args.screen_cut}_r{r}_L{layer}.npz"
-            )
+            checkpoint = compile_dir / (f"nc{args.screen_cut}_r{r}_L{layer}.npz")
             compiled = compile_local_block(
                 U_target=U_target_local,
                 a=problem["a"],
@@ -1011,9 +964,7 @@ def main() -> None:
                 candidate_r,
             )
             if n_cut == args.screen_cut:
-                compiled = compiled_by_pair[
-                    (candidate_r, candidate_layer)
-                ]
+                compiled = compiled_by_pair[(candidate_r, candidate_layer)]
             else:
                 validation_U_target = expm(
                     -1j
@@ -1045,8 +996,7 @@ def main() -> None:
                             previous_cut,
                             n_cut,
                         )
-                        if previous_cut_x is not None
-                        and previous_cut is not None
+                        if previous_cut_x is not None and previous_cut is not None
                         else None
                     ),
                 )
@@ -1064,9 +1014,7 @@ def main() -> None:
                 compiled_x=compiled["x"],
                 block_infidelity=compiled["infidelity"],
                 block_spectral_error=compiled["spectral_error"],
-                circuit_time_us=candidate_r
-                * candidate_layer
-                * t_layer_us,
+                circuit_time_us=candidate_r * candidate_layer * t_layer_us,
                 coherence_budget_us=coherence_budget_us,
             )
             row.update(
@@ -1088,21 +1036,14 @@ def main() -> None:
                 {prefix + key: value for key, value in arrays.items()}
             )
 
-        for lower, higher in zip(
-            all_validation_cuts[:-1], all_validation_cuts[1:]
-        ):
-            embedded = embed_trajectory(
-                validation_target_states[lower], lower, higher
-            )
+        for lower, higher in zip(all_validation_cuts[:-1], all_validation_cuts[1:]):
+            embedded = embed_trajectory(validation_target_states[lower], lower, higher)
             cutoff_infidelity = trajectory_infidelity(
                 validation_target_states[higher], embedded
             )
             phi_change = float(
                 np.max(
-                    np.abs(
-                        validation_target_phi[higher]
-                        - validation_target_phi[lower]
-                    )
+                    np.abs(validation_target_phi[higher] - validation_target_phi[lower])
                 )
             )
             higher_row = next(
@@ -1118,9 +1059,9 @@ def main() -> None:
                 and higher_row["target_max_leakage"] <= args.leakage_tol
                 and higher_row["hybrid_max_leakage"] <= args.leakage_tol
             )
-            trajectory_arrays[
-                f"cutoff_{lower}_to_{higher}_target_infidelity"
-            ] = cutoff_infidelity
+            trajectory_arrays[f"cutoff_{lower}_to_{higher}_target_infidelity"] = (
+                cutoff_infidelity
+            )
             print(
                 f"[cutoff] {lower}->{higher} "
                 f"target_infid={np.max(cutoff_infidelity):.3e} "
@@ -1180,12 +1121,8 @@ def main() -> None:
     }
     _atomic_csv(outdir / f"{tag}_summary.csv", summary_rows)
     if validation_rows:
-        _atomic_csv(
-            outdir / f"{tag}_validation.csv", validation_rows
-        )
-    _atomic_npz(
-        outdir / f"{tag}_trajectories.npz", trajectory_arrays
-    )
+        _atomic_csv(outdir / f"{tag}_validation.csv", validation_rows)
+    _atomic_npz(outdir / f"{tag}_trajectories.npz", trajectory_arrays)
     _atomic_json(outdir / f"{tag}.json", metadata)
     print(
         f"[save] wrote {outdir / f'{tag}_summary.csv'}",

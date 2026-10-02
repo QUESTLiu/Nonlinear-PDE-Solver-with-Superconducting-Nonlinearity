@@ -39,9 +39,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--T", type=float, default=1.0)
     parser.add_argument("--nt", type=int, default=401)
     parser.add_argument("--dim", type=int, default=80)
-    parser.add_argument(
-        "--bench-xi", type=float, nargs="+", default=[1.75, 2.00]
-    )
+    parser.add_argument("--bench-xi", type=float, nargs="+", default=[1.75, 2.00])
     parser.add_argument("--xi-min", type=float, default=0.50)
     parser.add_argument("--xi-max", type=float, default=2.50)
     parser.add_argument("--n-xi", type=int, default=17)
@@ -89,21 +87,13 @@ def operators(
     a4 = a2 @ a2
     ad4 = ad2 @ ad2
 
-    v_ext = (
-        ad4
-        + a4
-        + 4.0 * (ad3 @ a_ext + ad_ext @ a3)
-        + 6.0 * (a2 + ad2)
-    )
+    v_ext = ad4 + a4 + 4.0 * (ad3 @ a_ext + ad_ext @ a3) + 6.0 * (a2 + ad2)
 
     lam = beta / (16.0 * omega0**2)
     k_eff = 3.0 * beta / (8.0 * omega0**2)
     omega_eff = omega0 + k_eff
 
-    hd_ext = (
-        omega0 * (n_ext + 0.5 * eye_ext)
-        + lam * (x_ext @ x_ext @ x_ext @ x_ext)
-    )
+    hd_ext = omega0 * (n_ext + 0.5 * eye_ext) + lam * (x_ext @ x_ext @ x_ext @ x_ext)
     hk_ext = (
         omega_eff * n_ext
         + k_eff * (n_ext @ n_ext)
@@ -227,9 +217,7 @@ def trajectory_metrics(
         "max_projective_correction_ratio": float(np.nanmax(projective_ratio)),
         "initial_projective_correction_ratio": float(projective_ratio[0]),
         "final_duhamel_infidelity_bound": float(duhamel_infidelity_bound[-1]),
-        "max_duhamel_infidelity_bound": float(
-            np.max(duhamel_infidelity_bound)
-        ),
+        "max_duhamel_infidelity_bound": float(np.max(duhamel_infidelity_bound)),
         "max_top4_population": float(np.max(top_population)),
         "min_n_expect": float(np.min(n_expect)),
         "max_n_expect": float(np.max(n_expect)),
@@ -389,9 +377,7 @@ def main() -> None:
                     "duhamel_infidelity_bound": float(
                         series["duhamel_infidelity_bound"][idx]
                     ),
-                    "vcr_action_on_kerr": float(
-                        series["v_action_on_kerr"][idx]
-                    ),
+                    "vcr_action_on_kerr": float(series["v_action_on_kerr"][idx]),
                     "n_expect_duffing": float(series["n_expect"][idx]),
                     "top4_population": float(series["top4_population"][idx]),
                 }
@@ -415,9 +401,7 @@ def main() -> None:
     xi_rows: List[dict] = []
     for xi in np.linspace(args.xi_min, args.xi_max, args.n_xi):
         psi0, discarded = coherent_state(args.dim, float(xi))
-        summary, _ = trajectory_metrics(
-            main_ops, psi0, times, evals_main, evecs_main
-        )
+        summary, _ = trajectory_metrics(main_ops, psi0, times, evals_main, evecs_main)
         xi_rows.append(
             {
                 "xi": float(xi),
@@ -447,9 +431,7 @@ def main() -> None:
             overlap_ref = np.sum(
                 np.conj(psi_ref[:n_cut, :]) * series_n["psi_D"], axis=0
             )
-            state_infidelity_ref = 1.0 - np.clip(
-                np.abs(overlap_ref) ** 2, 0.0, 1.0
-            )
+            state_infidelity_ref = 1.0 - np.clip(np.abs(overlap_ref) ** 2, 0.0, 1.0)
             convergence_rows.append(
                 {
                     "xi": xi,
@@ -463,9 +445,7 @@ def main() -> None:
                     "max_abs_n_error_vs_reference": float(
                         np.max(np.abs(series_n["n_expect"] - n_ref))
                     ),
-                    "max_native_infidelity": summary_n[
-                        "max_native_infidelity"
-                    ],
+                    "max_native_infidelity": summary_n["max_native_infidelity"],
                     "final_duhamel_infidelity_bound": summary_n[
                         "final_duhamel_infidelity_bound"
                     ],

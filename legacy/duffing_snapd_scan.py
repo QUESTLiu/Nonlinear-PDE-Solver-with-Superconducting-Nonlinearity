@@ -18,10 +18,10 @@ What it computes
 4. Kerr + Gaussian squeezing + variational SNAP+D quartic correction:
       [ exp(-i dt H_K) exp(-i dt lambda V2) U_SNAPD ]^nt
 
-The variational SNAP+D block is trained in situ inside a fixed Kerr+squeezing 
-symmetric step. The loss compares the repeated hybrid trajectory against the 
-exact truncated Duffing trajectory at all intermediate time points. 
-Therefore the trained block is a dressed quartic/counter-rotating correction, 
+The variational SNAP+D block is trained in situ inside a fixed Kerr+squeezing
+symmetric step. The loss compares the repeated hybrid trajectory against the
+exact truncated Duffing trajectory at all intermediate time points.
+Therefore the trained block is a dressed quartic/counter-rotating correction,
 not a standalone approximation to exp[-i dt lambda V4].
 
 Outputs
@@ -39,7 +39,6 @@ numpy scipy matplotlib pandas
 import argparse
 import json
 import math
-import os
 from pathlib import Path
 from dataclasses import dataclass
 
@@ -48,6 +47,7 @@ import pandas as pd
 import scipy.linalg as la
 import scipy.optimize as opt
 import matplotlib
+
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
@@ -56,17 +56,20 @@ import matplotlib.pyplot as plt
 # Basic oscillator construction
 # -----------------------------
 
+
 def annihilation(N: int) -> np.ndarray:
     a = np.zeros((N, N), dtype=np.complex128)
     for n in range(1, N):
-        a[n-1, n] = np.sqrt(n)
+        a[n - 1, n] = np.sqrt(n)
     return a
 
 
 def coherent_state(N: int, alpha: complex) -> np.ndarray:
     """Truncated normalized coherent state."""
-    coeffs = np.array([alpha**n / np.sqrt(math.factorial(n)) for n in range(N)], dtype=np.complex128)
-    coeffs *= np.exp(-0.5 * abs(alpha)**2)
+    coeffs = np.array(
+        [alpha**n / np.sqrt(math.factorial(n)) for n in range(N)], dtype=np.complex128
+    )
+    coeffs *= np.exp(-0.5 * abs(alpha) ** 2)
     norm = la.norm(coeffs)
     if norm == 0:
         raise ValueError("Coherent-state norm vanished.")
@@ -85,7 +88,7 @@ def snap_operator(theta: np.ndarray) -> np.ndarray:
 def fidelity(psi: np.ndarray, phi: np.ndarray) -> float:
     psi = psi / la.norm(psi)
     phi = phi / la.norm(phi)
-    return float(abs(np.vdot(psi, phi))**2)
+    return float(abs(np.vdot(psi, phi)) ** 2)
 
 
 def state_infidelity(psi: np.ndarray, phi: np.ndarray) -> float:
@@ -140,15 +143,29 @@ def build_duffing_operators(N: int, omega0: float, beta: float) -> DuffingOperat
     H_kerr = omega_eff * n + K_eff * (n @ n)
 
     return DuffingOperators(
-        N=N, omega0=omega0, beta=beta, a=a, adag=adag, n=n, q=q, p=p,
-        H_duff=H_duff, H_kerr=H_kerr, Vcr=Vcr, V2=V2, V4=V4,
-        lam=lam, omega_eff=omega_eff, K_eff=K_eff
+        N=N,
+        omega0=omega0,
+        beta=beta,
+        a=a,
+        adag=adag,
+        n=n,
+        q=q,
+        p=p,
+        H_duff=H_duff,
+        H_kerr=H_kerr,
+        Vcr=Vcr,
+        V2=V2,
+        V4=V4,
+        lam=lam,
+        omega_eff=omega_eff,
+        K_eff=K_eff,
     )
 
 
 # -----------------------------
 # SNAP+D ansatz and optimization
 # -----------------------------
+
 
 def unpack_params(x: np.ndarray, layers: int, N: int):
     """Each layer: Re alpha, Im alpha, theta_0,...,theta_{N-1}."""
@@ -157,7 +174,7 @@ def unpack_params(x: np.ndarray, layers: int, N: int):
     for _ in range(layers):
         alpha = x[idx] + 1j * x[idx + 1]
         idx += 2
-        theta = x[idx:idx + N]
+        theta = x[idx : idx + N]
         idx += N
         params.append((alpha, theta))
     return params
@@ -216,9 +233,10 @@ def training_loss(
 
     alpha_penalty = 0.0
     for alpha, _theta in unpack_params(x, layers, N):
-        alpha_penalty += abs(alpha)**2
+        alpha_penalty += abs(alpha) ** 2
 
     return float(1.0 - np.mean(fids) + reg_alpha * alpha_penalty)
+
 
 def optimize_snapd(
     a: np.ndarray,
@@ -247,8 +265,8 @@ def optimize_snapd(
         x0 = np.zeros(dim)
         for ell in range(layers):
             start = ell * (N + 2)
-            x0[start:start+2] = init_scale_alpha * rng.normal(size=2)
-            x0[start+2:start+2+N] = init_scale_theta * rng.normal(size=N)
+            x0[start : start + 2] = init_scale_alpha * rng.normal(size=2)
+            x0[start + 2 : start + 2 + N] = init_scale_theta * rng.normal(size=N)
         initial_points.append(x0)
 
     for ridx, x0 in enumerate(initial_points):
@@ -274,22 +292,26 @@ def optimize_snapd(
             },
         )
 
-        history.append({
-            "restart": ridx,
-            "loss": float(res.fun),
-            "nit": int(res.nit),
-            "success": bool(res.success),
-            "message": str(res.message),
-        })
+        history.append(
+            {
+                "restart": ridx,
+                "loss": float(res.fun),
+                "nit": int(res.nit),
+                "success": bool(res.success),
+                "message": str(res.message),
+            }
+        )
 
         if best is None or res.fun < best.fun:
             best = res
 
     return best.x, float(best.fun), history
 
+
 # -----------------------------
 # Evolution and diagnostics
 # -----------------------------
+
 
 def evolve_times(U_step: np.ndarray, psi0: np.ndarray, num_steps: int):
     states = [psi0]
@@ -369,9 +391,7 @@ def main():
     dt = args.T / args.nt
     times = np.linspace(0.0, args.T, args.nt + 1)
 
-
     # Full-step components
-    U_K_step = la.expm(-1j * dt * ops.H_kerr)
     U_sq_step = la.expm(-1j * dt * ops.lam * ops.V2)
 
     # Half-step components for symmetric Trotterization
@@ -381,10 +401,7 @@ def main():
     train_states = [coherent_state(args.N, xi) for xi in train_xis]
 
     # Exact Duffing trajectories for trajectory-level residual training.
-    train_targets = [
-        exact_times(ops.H_duff, psi, times)
-        for psi in train_states
-    ]
+    train_targets = [exact_times(ops.H_duff, psi, times) for psi in train_states]
 
     xopt, best_loss, history = optimize_snapd(
         ops.a,
@@ -420,8 +437,12 @@ def main():
         states_ALG = evolve_times(U_ksq_snapd, psi0, args.nt)
 
         F_K = np.array([fidelity(states_D[i], states_K[i]) for i in range(len(times))])
-        F_KSQ = np.array([fidelity(states_D[i], states_KSQ[i]) for i in range(len(times))])
-        F_ALG = np.array([fidelity(states_D[i], states_ALG[i]) for i in range(len(times))])
+        F_KSQ = np.array(
+            [fidelity(states_D[i], states_KSQ[i]) for i in range(len(times))]
+        )
+        F_ALG = np.array(
+            [fidelity(states_D[i], states_ALG[i]) for i in range(len(times))]
+        )
 
         q_D = np.real(expectations(states_D, ops.q))
         q_K = np.real(expectations(states_K, ops.q))
@@ -442,38 +463,54 @@ def main():
         all_data[f"{label}_n_K"] = n_K
         all_data[f"{label}_n_SNAPD"] = n_ALG
 
-        plot_fidelity(times, F_K, F_KSQ, F_ALG, outdir / f"fidelity_beta{args.beta}_xi{xi}.png")
-        plot_observable(times, q_D, q_K, q_ALG, r"$\langle q(t)\rangle$", outdir / f"q_beta{args.beta}_xi{xi}.png")
-        plot_observable(times, n_D, n_K, n_ALG, r"$\langle n(t)\rangle$", outdir / f"n_beta{args.beta}_xi{xi}.png")
+        plot_fidelity(
+            times, F_K, F_KSQ, F_ALG, outdir / f"fidelity_beta{args.beta}_xi{xi}.png"
+        )
+        plot_observable(
+            times,
+            q_D,
+            q_K,
+            q_ALG,
+            r"$\langle q(t)\rangle$",
+            outdir / f"q_beta{args.beta}_xi{xi}.png",
+        )
+        plot_observable(
+            times,
+            n_D,
+            n_K,
+            n_ALG,
+            r"$\langle n(t)\rangle$",
+            outdir / f"n_beta{args.beta}_xi{xi}.png",
+        )
 
-        rows.append({
-            "N": args.N,
-            "omega0": args.omega0,
-            "beta": args.beta,
-            "T": args.T,
-            "nt": args.nt,
-            "dt": dt,
-            "layers": args.layers,
-            "xi": xi,
-            "mean_n_initial": xi**2,
-            "snapd_training_loss": best_loss,
-            "final_F_K": F_K[-1],
-            "final_F_KSQ": F_KSQ[-1],
-            "final_F_SNAPD": F_ALG[-1],
-            "max_infidelity_K": float(np.max(1.0 - F_K)),
-            "max_infidelity_KSQ": float(np.max(1.0 - F_KSQ)),
-            "max_infidelity_SNAPD": float(np.max(1.0 - F_ALG)),
-            "improvement_maxinfid_K_over_SNAPD": float(np.max(1.0 - F_K) - np.max(1.0 - F_ALG)),
-        })
+        rows.append(
+            {
+                "N": args.N,
+                "omega0": args.omega0,
+                "beta": args.beta,
+                "T": args.T,
+                "nt": args.nt,
+                "dt": dt,
+                "layers": args.layers,
+                "xi": xi,
+                "mean_n_initial": xi**2,
+                "snapd_training_loss": best_loss,
+                "final_F_K": F_K[-1],
+                "final_F_KSQ": F_KSQ[-1],
+                "final_F_SNAPD": F_ALG[-1],
+                "max_infidelity_K": float(np.max(1.0 - F_K)),
+                "max_infidelity_KSQ": float(np.max(1.0 - F_KSQ)),
+                "max_infidelity_SNAPD": float(np.max(1.0 - F_ALG)),
+                "improvement_maxinfid_K_over_SNAPD": float(
+                    np.max(1.0 - F_K) - np.max(1.0 - F_ALG)
+                ),
+            }
+        )
 
     pd.DataFrame(rows).to_csv(outdir / "summary.csv", index=False)
     pd.DataFrame(history).to_csv(outdir / "optimizer_history.csv", index=False)
 
-    np.savez_compressed(
-        outdir / "fidelity_times.npz",
-        times=times,
-        **all_data
-    )
+    np.savez_compressed(outdir / "fidelity_times.npz", times=times, **all_data)
     np.savez_compressed(
         outdir / "snapd_params.npz",
         xopt=xopt,

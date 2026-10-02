@@ -21,7 +21,12 @@ import numpy as np
 DATA = Path(__file__).resolve().parents[1] / "double_sine_gordon_data"
 sys.path.insert(0, str(DATA.parent))
 from double_sine_gordon_code.gaussian_evidence import updated_row, passes_at
-PARTS = {0.1: DATA / "dsg_step_scan_parts_lambda0.1", 0.3: DATA / "dsg_step_scan_parts", 0.6: DATA / "dsg_step_scan_parts_lambda0.6"}
+
+PARTS = {
+    0.1: DATA / "dsg_step_scan_parts_lambda0.1",
+    0.3: DATA / "dsg_step_scan_parts",
+    0.6: DATA / "dsg_step_scan_parts_lambda0.6",
+}
 THRESHOLDS = (1e-3, 5e-4, 2.5e-4, 1e-4)
 ROUTES = ("hybrid", "gauss_block", "kin_pot")
 
@@ -31,14 +36,21 @@ def load(directory, lam2):
     for path in sorted(directory.glob("*.json")):
         for row in json.loads(path.read_text())["rows"]:
             if row["preparation"] == [1.0, 0.0] and row["s"] == 1:
-                unique[(row["route"], row["r"], row["order"])] = updated_row(dict(row, lambda2=lam2, cutoffs=[128, 160]))
+                unique[(row["route"], row["r"], row["order"])] = updated_row(
+                    dict(row, lambda2=lam2, cutoffs=[128, 160])
+                )
     # circuits that exceed the boundary limit only at padding 128 and were re-evaluated at cutoffs 160/192
     check = DATA / f"dsg_boundary_check_lambda{lam2:g}.json"
     if check.exists():
         for row in json.loads(check.read_text())["rows"]:
             row = updated_row(row)
             key = (row["route"], row["r"], row["order"])
-            if row["all_criteria"] and key in unique and not unique[key]["all_criteria"] and not unique[key]["acceptance"]["boundary"]:
+            if (
+                row["all_criteria"]
+                and key in unique
+                and not unique[key]["all_criteria"]
+                and not unique[key]["acceptance"]["boundary"]
+            ):
                 unique[key] = dict(row, cutoffs=[160, 192])
     return list(unique.values())
 
@@ -55,26 +67,54 @@ def main():
         for infidelity in THRESHOLDS:
             entry = dict(lambda2=lam2, infidelity=infidelity)
             for route in ROUTES:
-                candidates = [r for r in rows if r["route"] == route and passes(r, infidelity)]
+                candidates = [
+                    r for r in rows if r["route"] == route and passes(r, infidelity)
+                ]
                 cheaper = [r for r in rows if r["route"] == route]
                 if not candidates:
                     entry[route] = None
                     continue
-                best = min(candidates, key=lambda r: (r["total_programmable_primitives"], r["state_error"]))
+                best = min(
+                    candidates,
+                    key=lambda r: (
+                        r["total_programmable_primitives"],
+                        r["state_error"],
+                    ),
+                )
                 # every cheaper circuit of the route must have been evaluated and failed, otherwise the minimum is not established
-                unevaluated_gap = best["r"] - 1 not in {r["r"] for r in cheaper if r["order"] == best["order"]}
-                entry[route] = dict(r=best["r"], order=best["order"], primitives=best["total_programmable_primitives"],
-                                    state_error=best["state_error"], cutoffs=best["cutoffs"], previous_step_evaluated=not unevaluated_gap,
-                                    error_evidence=best.get("error_evidence", "direct numerical estimate"))
+                unevaluated_gap = best["r"] - 1 not in {
+                    r["r"] for r in cheaper if r["order"] == best["order"]
+                }
+                entry[route] = dict(
+                    r=best["r"],
+                    order=best["order"],
+                    primitives=best["total_programmable_primitives"],
+                    state_error=best["state_error"],
+                    cutoffs=best["cutoffs"],
+                    previous_step_evaluated=not unevaluated_gap,
+                    error_evidence=best.get(
+                        "error_evidence", "direct numerical estimate"
+                    ),
+                )
             if entry["hybrid"] and entry["gauss_block"]:
-                entry["saving_gauss_block"] = entry["gauss_block"]["primitives"] / entry["hybrid"]["primitives"]
+                entry["saving_gauss_block"] = (
+                    entry["gauss_block"]["primitives"] / entry["hybrid"]["primitives"]
+                )
             if entry["hybrid"] and entry["kin_pot"]:
-                entry["saving_kin_pot"] = entry["kin_pot"]["primitives"] / entry["hybrid"]["primitives"]
+                entry["saving_kin_pot"] = (
+                    entry["kin_pot"]["primitives"] / entry["hybrid"]["primitives"]
+                )
             out["results"].append(entry)
-            text = " ".join(f"{k}={v['primitives']}(r{v['r']},o{v['order']}{'' if v['previous_step_evaluated'] else ',gap'})" if v else f"{k}=none"
-                            for k, v in ((k, entry[k]) for k in ROUTES))
-            print(f"lambda2={lam2:g} I*={infidelity:g}: {text} saving GB={entry.get('saving_gauss_block', float('nan')):.2f} "
-                  f"KP={entry.get('saving_kin_pot', float('nan')):.2f}")
+            text = " ".join(
+                f"{k}={v['primitives']}(r{v['r']},o{v['order']}{'' if v['previous_step_evaluated'] else ',gap'})"
+                if v
+                else f"{k}=none"
+                for k, v in ((k, entry[k]) for k in ROUTES)
+            )
+            print(
+                f"lambda2={lam2:g} I*={infidelity:g}: {text} saving GB={entry.get('saving_gauss_block', float('nan')):.2f} "
+                f"KP={entry.get('saving_kin_pot', float('nan')):.2f}"
+            )
     (DATA / "dsg_thresholds.json").write_text(json.dumps(out, indent=1))
 
 

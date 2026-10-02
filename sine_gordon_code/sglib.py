@@ -26,13 +26,14 @@ from scipy.linalg import expm
 def annihilation(n_cut: int) -> np.ndarray:
     a = np.zeros((n_cut, n_cut), dtype=np.complex128)
     if n_cut > 1:
-        a[np.arange(n_cut - 1), np.arange(1, n_cut)] = np.sqrt(
-            np.arange(1, n_cut)
-        )
+        a[np.arange(n_cut - 1), np.arange(1, n_cut)] = np.sqrt(np.arange(1, n_cut))
     return a
 
 
 def mode_operators(n_cut: int, omega: float):
+    # hbar=1: phi=(a+a^dag)/sqrt(2*omega), pi=i*sqrt(omega/2)*(a^dag-a).
+    # In N levels [phi,pi]=i*(I-N|N-1><N-1|); canonical identities acquire
+    # a boundary term. omega specifies the basis scale, not a fitted frequency.
     if n_cut < 2:
         raise ValueError("n_cut must be at least 2")
     if omega <= 0:
@@ -61,6 +62,8 @@ class ModeBasis:
 def build_mode_basis(n_cut: int, omega: float) -> ModeBasis:
     phi, pi, num = mode_operators(n_cut, omega)
     lam_phi, U_phi = np.linalg.eigh(phi)
+    # This is the finite spectral convention: square the truncated momentum.
+    # A physical sandwich P pi^2 P instead includes an upper-boundary term.
     kinetic = 0.5 * (pi @ pi)
     vacuum = np.zeros(n_cut, dtype=np.complex128)
     vacuum[0] = 1.0
@@ -209,6 +212,8 @@ def make_initial_condition(
     local_phi = phis - offsets
     local_states = []
     for ph, mom in zip(local_phi, pis):
+        # These quadrature means determine alpha in the untruncated coherent
+        # state. Projection and renormalization can shift the actual finite means.
         alpha = np.sqrt(omega / 2.0) * ph + 1j * mom / np.sqrt(2.0 * omega)
         local_states.append(_coherent_state(alpha, n_cut))
     psi = _product_state(local_states)
@@ -317,6 +322,7 @@ class SplitOperator:
         self._pot_phase: np.ndarray | None = None
 
     def _prepare(self, dt: float) -> None:
+        # Reuse both exponentials for a fixed step; changing dt invalidates both.
         if self._cached_dt == dt:
             return
         self._kin_half = expm(-0.5j * dt * self.basis.kinetic)
@@ -337,6 +343,9 @@ class SplitOperator:
         return out
 
     def step(self, psi: np.ndarray, dt: float) -> np.ndarray:
+        # Strang composition: exp(-i dt K/2) exp(-i dt V) exp(-i dt K/2).
+        # At fixed cutoff, bounded-matrix BCH gives local O(dt^3) and global
+        # O(T*dt^2) state error; it says nothing about convergence in the cutoff.
         self._prepare(dt)
         assert self._kin_half is not None and self._pot_phase is not None
         out = psi
@@ -454,6 +463,8 @@ def _arnoldi_step(H: HamiltonianApply, psi: np.ndarray, dt: float, m: int):
     small = hess[:k, :k]
     coeff = expm(-1j * dt * small)[:, 0] * beta
     out = coeff @ V[:k]
+    # The last Arnoldi coupling is a residual indicator, not a certified
+    # accumulated trajectory-error bound. Step refinement supplies a separate check.
     err = float(abs(hess[k, k - 1] * coeff[-1])) if k == m else 0.0
     return out.reshape(shape), err
 
@@ -492,7 +503,7 @@ def classical_sine_gordon(
     times: np.ndarray,
     pbc: bool,
     E_J_eff: float | None = None,
-    lambda2: float = 0.,
+    lambda2: float = 0.0,
     lambda2_eff: float | None = None,
 ):
     phis0 = np.asarray(phis0, dtype=float)
@@ -510,6 +521,9 @@ def classical_sine_gordon(
     def rhs(_t, y):
         phi = y[:n_site]
         pi = y[n_site:]
+        # Hamilton's equations for V=E_J*(1-cos(phi))+lambda2*(1-cos(2*phi)).
+        # Differentiation gives the factor 2; the bond force is minus the
+        # discrete Laplacian, with only the listed boundary-condition bonds.
         force = -strength * np.sin(phi) - 2 * strength2 * np.sin(2 * phi)
         for left, right in coupling_pairs:
             delta = phi[right] - phi[left]

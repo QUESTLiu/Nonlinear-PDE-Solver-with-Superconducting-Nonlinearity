@@ -41,6 +41,7 @@ from concurrent.futures import ProcessPoolExecutor, as_completed
 import json
 import os
 from pathlib import Path
+import sys
 import tempfile
 import time
 
@@ -48,14 +49,15 @@ import numpy as np
 from scipy.linalg import expm, expm_frechet
 from scipy.optimize import minimize
 
-if __package__:
-    from sine_gordon_code import sglib as sg, common
-else:
-    import sglib as sg
-    import common
+if not __package__:
+    # Direct script execution puts this directory, not the repository, on sys.path.
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+
+from sine_gordon_code import sglib as sg, common
 
 
 # ---------------------------------------------------------------------
+
 
 def displacement(a, alpha):
     ad = a.conj().T
@@ -73,7 +75,7 @@ def unpack(x, L, n_cut):
     for _ in range(L):
         ar, ai = x[k], x[k + 1]
         k += 2
-        th = x[k:k + n_cut]
+        th = x[k : k + n_cut]
         k += n_cut
         out.append((ar + 1j * ai, th))
     return out
@@ -146,9 +148,7 @@ def objective_and_gradient(x, U_target, L, n_cut, a):
         D = gates[layer] @ snaps[layer].conj().T
         diag_bd = np.diag(B @ D)
         dc_theta = diag_bd * (1j * np.exp(1j * theta))
-        grad[cursor:cursor + n_cut] = (
-            scale * np.real(np.conj(overlap) * dc_theta)
-        )
+        grad[cursor : cursor + n_cut] = scale * np.real(np.conj(overlap) * dc_theta)
         cursor += n_cut
     return loss, grad
 
@@ -171,9 +171,15 @@ def _run_restart(payload):
         bounds=bounds,
         options=dict(maxiter=maxiter, maxfun=10**6, ftol=1e-14, gtol=1e-9),
     )
-    return float(np.clip(result.fun, 0.0, 1.0)), result.x, bool(result.success), (
-        result.message.decode() if isinstance(result.message, bytes)
-        else str(result.message)
+    return (
+        float(np.clip(result.fun, 0.0, 1.0)),
+        result.x,
+        bool(result.success),
+        (
+            result.message.decode()
+            if isinstance(result.message, bytes)
+            else str(result.message)
+        ),
     )
 
 
@@ -228,9 +234,7 @@ def _load_checkpoint(path, signature):
         layers = saved["completed_layers"].astype(int).tolist()
         infidelities = saved["infidelities"].astype(float).tolist()
         vectors = {
-            key: saved[key].copy()
-            for key in saved.files
-            if key.startswith("x_L")
+            key: saved[key].copy() for key in saved.files if key.startswith("x_L")
         }
     if len(layers) != len(infidelities):
         raise RuntimeError(f"invalid checkpoint: {path}")
@@ -249,33 +253,61 @@ def target_potential(kind, lam_phi, E_J, coupling):
 
 # ---------------------------------------------------------------------
 
+
 def main():
     p = common.base_parser(__doc__)
-    p.add_argument("--target", default="second_harmonic",
-                   choices=["disorder", "second_harmonic", "native_cosine"])
-    p.add_argument("--coupling", type=float, default=0.3,
-                   help="delta or lambda for the deformation")
-    p.add_argument("--block-dt", type=float, default=0.05,
-                   help="Trotter step the block must implement")
-    p.add_argument("--layers", default="1,2,4,6,8,12,16",
-                   help="comma-separated SNAP+D layer counts to sweep")
+    p.add_argument(
+        "--target",
+        default="second_harmonic",
+        choices=["disorder", "second_harmonic", "native_cosine"],
+    )
+    p.add_argument(
+        "--coupling",
+        type=float,
+        default=0.3,
+        help="delta or lambda for the deformation",
+    )
+    p.add_argument(
+        "--block-dt",
+        type=float,
+        default=0.05,
+        help="Trotter step the block must implement",
+    )
+    p.add_argument(
+        "--layers",
+        default="1,2,4,6,8,12,16",
+        help="comma-separated SNAP+D layer counts to sweep",
+    )
     p.add_argument("--n-restarts", type=int, default=8)
     p.add_argument("--maxiter", type=int, default=2000)
     p.add_argument("--seed", type=int, default=0)
     p.add_argument(
-        "--workers", type=int, default=0,
-        help="parallel restart workers; 0 uses LSB_DJOB_NUMPROC or 1")
+        "--workers",
+        type=int,
+        default=0,
+        help="parallel restart workers; 0 uses LSB_DJOB_NUMPROC or 1",
+    )
     p.add_argument(
-        "--alpha-bound", type=float, default=3.0,
-        help="symmetric bound on displacement quadratures")
+        "--alpha-bound",
+        type=float,
+        default=3.0,
+        help="symmetric bound on displacement quadratures",
+    )
     p.add_argument(
-        "--resume", action="store_true",
-        help="resume completed layer counts from an atomic checkpoint")
+        "--resume",
+        action="store_true",
+        help="resume completed layer counts from an atomic checkpoint",
+    )
     # hardware budget
-    p.add_argument("--chi-mhz", type=float, default=1.5,
-                   help="dispersive shift chi/2pi in MHz; sets t_SNAP")
-    p.add_argument("--t2-anc-us", type=float, default=80.0,
-                   help="ancilla T2 in microseconds")
+    p.add_argument(
+        "--chi-mhz",
+        type=float,
+        default=1.5,
+        help="dispersive shift chi/2pi in MHz; sets t_SNAP",
+    )
+    p.add_argument(
+        "--t2-anc-us", type=float, default=80.0, help="ancilla T2 in microseconds"
+    )
     p.add_argument(
         "--t-displacement-us",
         type=float,
@@ -288,12 +320,16 @@ def main():
         default=0.25,
         help="maximum allowed circuit time as a fraction of ancilla T2",
     )
-    p.add_argument("--sim-time", type=float, default=5.0,
-                   help="simulated time horizon for the budget")
+    p.add_argument(
+        "--sim-time",
+        type=float,
+        default=5.0,
+        help="simulated time horizon for the budget",
+    )
     args = p.parse_args()
 
     layers = [int(v) for v in args.layers.split(",")]
-    args.n_site = 1                       # single-mode compilation
+    args.n_site = 1  # single-mode compilation
     ctx = common.setup(args, f"snapd_{args.target}")
     basis = ctx["basis"]
     a = sg.annihilation(args.n_cut)
@@ -304,10 +340,15 @@ def main():
     U_target = expm(-1j * dH * args.block_dt)
 
     norm_dH = float(np.linalg.norm(dH, 2))
-    print(f"[snapd] target={args.target} coupling={args.coupling:g} "
-          f"block_dt={args.block_dt:g}")
-    print(f"[snapd] ||dH||_2 = {norm_dH:.4f}   "
-          f"||dH|| * block_dt = {norm_dH*args.block_dt:.4f}", flush=True)
+    print(
+        f"[snapd] target={args.target} coupling={args.coupling:g} "
+        f"block_dt={args.block_dt:g}"
+    )
+    print(
+        f"[snapd] ||dH||_2 = {norm_dH:.4f}   "
+        f"||dH|| * block_dt = {norm_dH * args.block_dt:.4f}",
+        flush=True,
+    )
 
     if args.dry_run:
         return
@@ -327,9 +368,7 @@ def main():
     )
     signature = _checkpoint_signature(args, layers)
     if args.resume:
-        completed_layers, best_infid, best_x = _load_checkpoint(
-            checkpoint, signature
-        )
+        completed_layers, best_infid, best_x = _load_checkpoint(checkpoint, signature)
         if completed_layers:
             print(
                 f"[snapd] resumed layers {completed_layers} from {checkpoint}",
@@ -353,18 +392,20 @@ def main():
         best = (np.inf, None)
         starts = []
         for restart in range(args.n_restarts):
-            rng = np.random.default_rng(
-                np.random.SeedSequence([args.seed, L, restart])
+            rng = np.random.default_rng(np.random.SeedSequence([args.seed, L, restart]))
+            x0 = np.concatenate(
+                [
+                    np.concatenate(
+                        [rng.normal(0, 0.3, 2), rng.normal(0, 0.5, args.n_cut)]
+                    )
+                    for _ in range(L)
+                ]
             )
-            x0 = np.concatenate([
-                np.concatenate([rng.normal(0, 0.3, 2),
-                                rng.normal(0, 0.5, args.n_cut)])
-                for _ in range(L)])
             if restart == 0 and previous_best is not None and L > previous_L:
                 # Pad the preceding optimum with identity layers.  The first
                 # restart therefore cannot be worse solely because L grew.
                 x0[:] = 0.0
-                x0[:previous_best.size] = previous_best
+                x0[: previous_best.size] = previous_best
             starts.append(x0)
 
         payloads = [
@@ -413,9 +454,12 @@ def main():
             best_x,
         )
         optimization_seconds.append(time.perf_counter() - layer_start)
-        print(f"[snapd] L={L:3d}  params={n_par:4d}  "
-              f"operator infidelity = {best[0]:.4e}  "
-              f"opt_time={optimization_seconds[-1]:.1f} s", flush=True)
+        print(
+            f"[snapd] L={L:3d}  params={n_par:4d}  "
+            f"operator infidelity = {best[0]:.4e}  "
+            f"opt_time={optimization_seconds[-1]:.1f} s",
+            flush=True,
+        )
 
     if completed_layers != layers:
         raise RuntimeError(
@@ -435,16 +479,20 @@ def main():
     )
 
     # ---- hardware budget -------------------------------------------
-    t_snap_us = 1.0 / args.chi_mhz          # ~ 2 pi / chi with chi/2pi in MHz
+    t_snap_us = 1.0 / args.chi_mhz  # ~ 2 pi / chi with chi/2pi in MHz
     t_layer_us = t_snap_us + args.t_displacement_us
     n_trotter = int(np.ceil(args.sim_time / args.block_dt))
-    print(f"\n[snapd] --- circuit-time budget "
-          f"(chi/2pi = {args.chi_mhz} MHz, t_SNAP = {t_snap_us:.3f} us) ---")
+    print(
+        f"\n[snapd] --- circuit-time budget "
+        f"(chi/2pi = {args.chi_mhz} MHz, t_SNAP = {t_snap_us:.3f} us) ---"
+    )
     print(f"[snapd] Trotter steps for T={args.sim_time:g}: {n_trotter}")
     coherence_budget = args.coherence_fraction * args.t2_anc_us
-    print(f"[snapd] coherence safety budget = "
-          f"{args.coherence_fraction:g} * T2_anc = "
-          f"{coherence_budget:g} us")
+    print(
+        f"[snapd] coherence safety budget = "
+        f"{args.coherence_fraction:g} * T2_anc = "
+        f"{coherence_budget:g} us"
+    )
     if args.t_displacement_us == 0:
         print(
             "[snapd] displacement duration is zero: circuit times are "
@@ -458,9 +506,7 @@ def main():
     trace_proxy = []
     composed_norm_bound = []
     worst_state_infid_bound = []
-    for L, infid, spectral_error in zip(
-        layers, best_infid, spectral_errors
-    ):
+    for L, infid, spectral_error in zip(layers, best_infid, spectral_errors):
         t_circ = L * n_trotter * t_layer_us
         proxy = min(1.0, (n_trotter * np.sqrt(max(infid, 0.0))) ** 2)
         norm_bound = min(2.0, n_trotter * spectral_error)
@@ -470,25 +516,31 @@ def main():
         composed_norm_bound.append(norm_bound)
         worst_state_infid_bound.append(state_bound)
         flag = "OK" if t_circ < coherence_budget else "EXCEEDS SAFETY BUDGET"
-        print(f"[snapd] L={L:3d}  infid/block={infid:.3e}  "
-              f"spectral_err={spectral_error:.3e}  "
-              f"repeat_norm_bound<={norm_bound:.3e}  "
-              f"trace_proxy~{proxy:.3e}  T_circ={t_circ:9.1f} us  "
-              f"vs budget={coherence_budget:g} us "
-              f"(T2_anc={args.t2_anc_us:g} us)  [{flag}]", flush=True)
+        print(
+            f"[snapd] L={L:3d}  infid/block={infid:.3e}  "
+            f"spectral_err={spectral_error:.3e}  "
+            f"repeat_norm_bound<={norm_bound:.3e}  "
+            f"trace_proxy~{proxy:.3e}  T_circ={t_circ:9.1f} us  "
+            f"vs budget={coherence_budget:g} us "
+            f"(T2_anc={args.t2_anc_us:g} us)  [{flag}]",
+            flush=True,
+        )
     budget = np.array(budget)
     trace_proxy = np.array(trace_proxy)
     composed_norm_bound = np.array(composed_norm_bound)
     worst_state_infid_bound = np.array(worst_state_infid_bound)
 
-    feasible = [(L, i, t) for L, i, t in zip(layers, best_infid, budget)
-                if t < coherence_budget]
+    feasible = [
+        (L, i, t) for L, i, t in zip(layers, best_infid, budget) if t < coherence_budget
+    ]
     if feasible:
         L_f, i_f, t_f = min(feasible, key=lambda z: z[1])
-        print(f"\n[snapd] best infidelity within coherence: "
-              f"{i_f:.3e} at L={L_f} (T_circ={t_f:.1f} us)", flush=True)
-        ctx["params"].update(best_feasible_L=int(L_f),
-                             best_feasible_infid=float(i_f))
+        print(
+            f"\n[snapd] best infidelity within coherence: "
+            f"{i_f:.3e} at L={L_f} (T_circ={t_f:.1f} us)",
+            flush=True,
+        )
+        ctx["params"].update(best_feasible_L=int(L_f), best_feasible_infid=float(i_f))
     else:
         print(
             "\n[snapd] NO tested layer count fits the assumed coherence "
@@ -498,29 +550,45 @@ def main():
         )
         ctx["params"]["best_feasible_L"] = -1
 
-    ctx["params"].update(layers=layers, norm_dH=norm_dH,
-                         t_snap_us=t_snap_us, n_trotter=n_trotter,
-                         t_displacement_us=args.t_displacement_us,
-                         t_layer_us=t_layer_us,
-                         t2_anc_us=args.t2_anc_us,
-                         sim_time=args.sim_time,
-                         block_dt=args.block_dt,
-                         target=args.target,
-                         coupling=args.coupling,
-                         coherence_fraction=args.coherence_fraction,
-                         coherence_budget_us=coherence_budget,
-                         workers=workers, alpha_bound=args.alpha_bound,
-                         analytic_gradient=True, checkpoint=str(checkpoint),
-                         resumed=bool(args.resume))
-    sg.save_run(args.outdir, ctx["tag"], ctx["params"], write_csv=args.csv,
-                arrays=dict(
-        layers=np.array(layers), infidelity=best_infid, T_circ_us=budget,
-        spectral_error=spectral_errors,
-        repeated_operator_error_bound=composed_norm_bound,
-        worst_state_infidelity_bound=worst_state_infid_bound,
-        coherent_trace_infidelity_proxy=trace_proxy,
-        optimization_seconds=optimization_seconds,
-        lam_phi=basis.lam_phi, V_target=V, **best_x))
+    ctx["params"].update(
+        layers=layers,
+        norm_dH=norm_dH,
+        t_snap_us=t_snap_us,
+        n_trotter=n_trotter,
+        t_displacement_us=args.t_displacement_us,
+        t_layer_us=t_layer_us,
+        t2_anc_us=args.t2_anc_us,
+        sim_time=args.sim_time,
+        block_dt=args.block_dt,
+        target=args.target,
+        coupling=args.coupling,
+        coherence_fraction=args.coherence_fraction,
+        coherence_budget_us=coherence_budget,
+        workers=workers,
+        alpha_bound=args.alpha_bound,
+        analytic_gradient=True,
+        checkpoint=str(checkpoint),
+        resumed=bool(args.resume),
+    )
+    sg.save_run(
+        args.outdir,
+        ctx["tag"],
+        ctx["params"],
+        write_csv=args.csv,
+        arrays=dict(
+            layers=np.array(layers),
+            infidelity=best_infid,
+            T_circ_us=budget,
+            spectral_error=spectral_errors,
+            repeated_operator_error_bound=composed_norm_bound,
+            worst_state_infidelity_bound=worst_state_infid_bound,
+            coherent_trace_infidelity_proxy=trace_proxy,
+            optimization_seconds=optimization_seconds,
+            lam_phi=basis.lam_phi,
+            V_target=V,
+            **best_x,
+        ),
+    )
 
 
 if __name__ == "__main__":

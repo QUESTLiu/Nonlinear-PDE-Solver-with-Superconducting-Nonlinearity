@@ -46,18 +46,29 @@ from common_code.metrics import projective_distance  # noqa: E402
 from common_code.run_pilot import _sg_initial  # noqa: E402
 from sine_gordon_code import native_correction as nc  # noqa: E402
 from sine_gordon_code import sglib as sg  # noqa: E402
-from double_sine_gordon_code.run_snapd_end_to_end import build_two_site_problem, exact_trajectory  # noqa: E402
+from double_sine_gordon_code.run_snapd_end_to_end import (
+    build_two_site_problem,
+    exact_trajectory,
+)  # noqa: E402
 from double_sine_gordon_code.gaussian_sequence import merged_gaussian_readouts  # noqa: E402
 
 E_J, KAPPA, LAM2, OMEGA_B = 1.0, 1.0, 0.3, np.sqrt(3.0)
 T = 5.2 / np.sqrt(3.0)
 CUTS = (128, 160)
-SOLVER = {"state": 6.850423817979153e-09, "C12": 6.40067722469277e-12, "S2": 6.767145871444669e-12}
+SOLVER = {
+    "state": 6.850423817979153e-09,
+    "C12": 6.40067722469277e-12,
+    "S2": 6.767145871444669e-12,
+}
 EPS = np.sqrt(1e-3)
 CACHE = Path(os.environ.get("DSG_SCAN_CACHE", "/tmp/dsg_scan_cache"))
 DATA = Path(__file__).resolve().parents[1] / "double_sine_gordon_data"
 PARTS = DATA / "dsg_step_scan_parts"
-ORDER_CODES = {1: (1, 1), 2: (2, 2), 3: (2, 1)}  # (order of the E_J harmonic, order of the lambda2 harmonic)
+ORDER_CODES = {
+    1: (1, 1),
+    2: (2, 2),
+    3: (2, 1),
+}  # (order of the E_J harmonic, order of the lambda2 harmonic)
 
 
 def prep_tag(prep):
@@ -80,14 +91,29 @@ def compute_references(steps, prep):
                 continue
             started = time.perf_counter()
             target = exact_trajectory(problem["H_target"], initial, T, r)
-            obs = [nc.two_site_observables(state.reshape(n, n), basis) for state in target]
-            np.savez(path, states=target, C12=np.array([o["C12_real"] + 1j * o["C12_imag"] for o in obs]),
-                     S2=np.array([o["S2"] for o in obs]))
-            print(f"reference N={n} r={r} prep={prep} {time.perf_counter() - started:.1f} s", flush=True)
+            obs = [
+                nc.two_site_observables(state.reshape(n, n), basis) for state in target
+            ]
+            np.savez(
+                path,
+                states=target,
+                C12=np.array([o["C12_real"] + 1j * o["C12_imag"] for o in obs]),
+                S2=np.array([o["S2"] for o in obs]),
+            )
+            print(
+                f"reference N={n} r={r} prep={prep} {time.perf_counter() - started:.1f} s",
+                flush=True,
+            )
 
 
 def gaussian_generators(basis, tau):
     """Appendix J quadratic shear generators, exact for canonical quadratures."""
+    # q_+=(phi1+phi2)/sqrt(2) is free; q_-=(phi1-phi2)/sqrt(2)
+    # has frequency sqrt(2*kappa). For one canonical mode, the Q-P-Q
+    # factorization uses a=w*tan(w*tau/2)/2 and b=sin(w*tau)/(2*w).
+    # Transforming a*q_-^2 and (tau/2)*p_+^2+b*p_-^2 back gives the grids below.
+    # Exponentiating these finite quadratures implements the shear circuit;
+    # equality to the exponential of the finite quadratic Hamiltonian is not implied.
     omega = np.sqrt(2 * KAPPA)
     b = np.sin(omega * tau) / (2 * omega)
     a = 0.5 * omega * np.tan(0.5 * omega * tau)
@@ -95,7 +121,7 @@ def gaussian_generators(basis, tau):
     lam_pi = np.linalg.eigvalsh(basis.pi)
     P1, P2 = np.meshgrid(lam_pi, lam_pi, indexing="ij")
     q_phi = 0.5 * a * (L1 - L2) ** 2
-    q_pi = (tau / 4 + b / 2) * (P1 ** 2 + P2 ** 2) + (tau / 2 - b) * P1 * P2
+    q_pi = (tau / 4 + b / 2) * (P1**2 + P2**2) + (tau / 2 - b) * P1 * P2
     return q_phi, q_pi
 
 
@@ -104,13 +130,17 @@ def gaussian_step_factors(basis, tau):
     return tuple(np.exp(-1j * q) for q in gaussian_generators(basis, tau))
 
 
-def gauss_block_readouts(problem, initial, h, r, order, s, observer, *, final_only=False):
+def gauss_block_readouts(
+    problem, initial, h, r, order, s, observer, *, final_only=False
+):
     """Readouts of the merged-interval circuit whose ideal primitive count is quoted."""
-    basis = problem['basis']
+    basis = problem["basis"]
     _, U_pi = np.linalg.eigh(basis.pi)
     orders = ORDER_CODES[order]
-    blocks = {m: nc.trig_block(basis.phi, m, h * c, o, s)
-              for m, c, o in zip((1, 2), (E_J, LAM2), orders)}
+    blocks = {
+        m: nc.trig_block(basis.phi, m, h * c, o, s)
+        for m, c, o in zip((1, 2), (E_J, LAM2), orders)
+    }
 
     def diag(state, U, generator):
         rotated = sg._apply_axis(U.conj().T, sg._apply_axis(U.conj().T, state, 0), 1)
@@ -124,10 +154,17 @@ def gauss_block_readouts(problem, initial, h, r, order, s, observer, *, final_on
                 observe(state)
         return state
 
-    return merged_gaussian_readouts(initial, r, gaussian_generators(basis, h / 2),
-                                   gaussian_generators(basis, h),
-                                   lambda state, q: diag(state, basis.U_phi, q),
-                                   lambda state, p: diag(state, U_pi, p), potential, observer, final_only=final_only)
+    return merged_gaussian_readouts(
+        initial,
+        r,
+        gaussian_generators(basis, h / 2),
+        gaussian_generators(basis, h),
+        lambda state, q: diag(state, basis.U_phi, q),
+        lambda state, p: diag(state, U_pi, p),
+        potential,
+        observer,
+        final_only=final_only,
+    )
 
 
 def make_gauss_block_step(problem, h, order, s, observer):
@@ -136,7 +173,10 @@ def make_gauss_block_step(problem, h, order, s, observer):
     U_phi = basis.U_phi
     _, U_pi = np.linalg.eigh(basis.pi)
     order_j, order_2 = ORDER_CODES[order]
-    blocks = {1: nc.trig_block(basis.phi, 1, h * E_J, order_j, s), 2: nc.trig_block(basis.phi, 2, h * LAM2, order_2, s)}
+    blocks = {
+        1: nc.trig_block(basis.phi, 1, h * E_J, order_j, s),
+        2: nc.trig_block(basis.phi, 2, h * LAM2, order_2, s),
+    }
     phase_phi, phase_pi = gaussian_step_factors(basis, h / 2)
 
     def diag(state, U, phase):
@@ -144,7 +184,9 @@ def make_gauss_block_step(problem, h, order, s, observer):
         return sg._apply_axis(U, sg._apply_axis(U, phase[:, :, None] * rotated, 0), 1)
 
     def gaussian(state):
-        return diag(diag(diag(state, U_phi, phase_phi), U_pi, phase_pi), U_phi, phase_phi)
+        return diag(
+            diag(diag(state, U_phi, phase_phi), U_pi, phase_pi), U_phi, phase_phi
+        )
 
     def step(state, record=True):
         out = gaussian(state)
@@ -167,16 +209,27 @@ def make_kin_pot_step(problem, h, order, s, observer):
     """Kinetic/potential split of the repository route G_trig with per-harmonic block orders."""
     basis = problem["basis"]
     order_j, order_2 = ORDER_CODES[order]
-    blocks = {1: nc.trig_block(basis.phi, 1, h * E_J, order_j, s), 2: nc.trig_block(basis.phi, 2, h * LAM2, order_2, s)}
+    blocks = {
+        1: nc.trig_block(basis.phi, 1, h * E_J, order_j, s),
+        2: nc.trig_block(basis.phi, 2, h * LAM2, order_2, s),
+    }
     kinetic_half = expm(-0.5j * h * basis.kinetic)
-    bond_phase = np.exp(-0.25j * h * KAPPA * (basis.lam_phi[:, None] - basis.lam_phi[None, :]) ** 2)
+    bond_phase = np.exp(
+        -0.25j * h * KAPPA * (basis.lam_phi[:, None] - basis.lam_phi[None, :]) ** 2
+    )
 
     def kinetic(state):
         return sg._apply_axis(kinetic_half, sg._apply_axis(kinetic_half, state, 0), 1)
 
     def bond(state):
-        rotated = sg._apply_axis(basis.U_phi.conj().T, sg._apply_axis(basis.U_phi.conj().T, state, 0), 1)
-        return sg._apply_axis(basis.U_phi, sg._apply_axis(basis.U_phi, bond_phase[:, :, None] * rotated, 0), 1)
+        rotated = sg._apply_axis(
+            basis.U_phi.conj().T, sg._apply_axis(basis.U_phi.conj().T, state, 0), 1
+        )
+        return sg._apply_axis(
+            basis.U_phi,
+            sg._apply_axis(basis.U_phi, bond_phase[:, :, None] * rotated, 0),
+            1,
+        )
 
     def step(state, record=True):
         out = bond(kinetic(state))
@@ -215,22 +268,35 @@ def primitive_counts_conjugated(route, r, order, s):
     """Counts of the earlier schedule, which conjugates every factor by R_y(+-pi/2) (kept for provenance)."""
     h = T / r
     coefficients = (0.0, LAM2) if route == "hybrid" else (E_J, LAM2)
-    merged = nc.merge_pulses(trig_schedule_orders(coefficients, h, ORDER_CODES[order], s))
+    merged = nc.merge_pulses(
+        trig_schedule_orders(coefficients, h, ORDER_CODES[order], s)
+    )
     first, last = merged[0], merged[-1]
-    if first["gate"] != "Ry" or last["gate"] != "Ry" or first["value"] + last["value"] != 0:
+    if (
+        first["gate"] != "Ry"
+        or last["gate"] != "Ry"
+        or first["value"] + last["value"] != 0
+    ):
         raise ValueError("outer-step qubit cancellation premise failed")
-    counts = {key: r * value for key, value in Counter(p["gate"] for p in merged).items()}
+    counts = {
+        key: r * value for key, value in Counter(p["gate"] for p in merged).items()
+    }
     counts["Ry"] -= 2 * (r - 1)
-    counts["Gaussian"] = {"hybrid": 0, "kin_pot": 5 * r + 2, "gauss_block": 6 * r + 9}[route]
+    counts["Gaussian"] = {"hybrid": 0, "kin_pot": 5 * r + 2, "gauss_block": 6 * r + 9}[
+        route
+    ]
     return counts, (r + 1 if route == "hybrid" else 0)
 
 
 def primitive_counts(route, r, order, s):
     """Counts with the qubit basis change applied once per circuit (trig_counts.py)."""
     from double_sine_gordon_code import trig_counts
+
     coefficients = (0.0, LAM2) if route == "hybrid" else (E_J, LAM2)
     counts = trig_counts.trig_counts(2, coefficients, r, ORDER_CODES[order], s)
-    counts["Gaussian"] = {"hybrid": 0, "kin_pot": 5 * r + 2, "gauss_block": 6 * r + 9}[route]
+    counts["Gaussian"] = {"hybrid": 0, "kin_pot": 5 * r + 2, "gauss_block": 6 * r + 9}[
+        route
+    ]
     return counts, (r + 1 if route == "hybrid" else 0)
 
 
@@ -255,25 +321,49 @@ def run_circuit(route, n, r, order, s, prep, reference):
         test = np.zeros_like(joint)
         test[:, :, 0] = joint[:, :, 0]
         exact_block = build_two_site_problem(n, OMEGA_B, 0.0, KAPPA, 0.0)["H_native"]
-        exact = expm_multiply(-0.5j * h * exact_block, test[:, :, 0].ravel()).reshape(n, n)
-        gauss_check = projective_distance(exact.ravel(), gaussian(test)[:, :, 0].ravel())
+        exact = expm_multiply(-0.5j * h * exact_block, test[:, :, 0].ravel()).reshape(
+            n, n
+        )
+        gauss_check = projective_distance(
+            exact.ravel(), gaussian(test)[:, :, 0].ravel()
+        )
     elif route == "kin_pot" and order == 3:
         step = make_kin_pot_step(problem, h, order, s, observe)
         gauss_check = None
     else:
         if route == "hybrid" and order == 3:
-            raise ValueError("the hybrid circuit compiles one harmonic, so order code 3 does not apply")
-        step = nc.make_step(problem, E_J, KAPPA, LAM2, h, {"hybrid": "H_trig", "kin_pot": "G_trig"}[route],
-                            order, s, observer=observe)
+            raise ValueError(
+                "the hybrid circuit compiles one harmonic, so order code 3 does not apply"
+            )
+        step = nc.make_step(
+            problem,
+            E_J,
+            KAPPA,
+            LAM2,
+            h,
+            {"hybrid": "H_trig", "kin_pot": "G_trig"}[route],
+            order,
+            s,
+            observer=observe,
+        )
         gauss_check = None
     rows, states = [], []
     for k in range(r + 1):
         metrics = nc.reduced_metrics(joint, reference["states"][k])
         obs = nc.two_site_observables(joint, basis, joint=True)
         c12 = obs["C12_real"] + 1j * obs["C12_imag"]
-        rows.append(dict(t=k * h, bures=metrics["bures_distance"], ancilla=metrics["ancilla_excited_population"],
-                         purity=metrics["system_purity"], C12=c12, S2=obs["S2"],
-                         C12_error=abs(c12 - reference["C12"][k]), S2_error=abs(obs["S2"] - reference["S2"][k])))
+        rows.append(
+            dict(
+                t=k * h,
+                bures=metrics["bures_distance"],
+                ancilla=metrics["ancilla_excited_population"],
+                purity=metrics["system_purity"],
+                C12=c12,
+                S2=obs["S2"],
+                C12_error=abs(c12 - reference["C12"][k]),
+                S2_error=abs(obs["S2"] - reference["S2"][k]),
+            )
+        )
         states.append(joint.copy())
         if k < r:
             joint = next(readouts) if readouts is not None else step(joint)
@@ -294,48 +384,96 @@ def evaluate(route, r, order, s, prep):
     rows_low, states_low, peak_low, gauss_check = out[low]
     rows_high, states_high, peak_high, _ = out[high]
     embedded = np.zeros((r + 1, high, high, 2), complex)
+    # Embed each oscillator index separately; flat zero-padding would put the
+    # second site's Fock levels at the wrong offsets in the larger tensor space.
     embedded[:, :low, :low, :] = states_low
-    pad = max(projective_distance(a.ravel(), b.ravel()) for a, b in zip(embedded, states_high))
+    pad = max(
+        projective_distance(a.ravel(), b.ravel()) for a, b in zip(embedded, states_high)
+    )
     target_low = np.zeros((r + 1, high, high), complex)
     target_low[:, :low, :low] = refs[low]["states"].reshape(r + 1, low, low)
-    ref_margin = max(projective_distance(a.ravel(), b) for a, b in zip(target_low, refs[high]["states"]))
+    ref_margin = max(
+        projective_distance(a.ravel(), b)
+        for a, b in zip(target_low, refs[high]["states"])
+    )
     cref = float(np.max(abs(refs[low]["C12"] - refs[high]["C12"])))
     sref = float(np.max(abs(refs[low]["S2"] - refs[high]["S2"])))
     cp = max(abs(a["C12"] - b["C12"]) for a, b in zip(rows_low, rows_high))
     sp = max(abs(a["S2"] - b["S2"]) for a, b in zip(rows_low, rows_high))
     uc, us = cref + SOLVER["C12"] + cp, sref + SOLVER["S2"] + sp
+    # Maxima cover the outer-step readout grid. Boundary populations also cover
+    # the monitored gate endpoints, but neither samples a physical pulse interior.
     max_bures = max(row["bures"] for row in rows_low)
     total = max_bures + ref_margin + SOLVER["state"] + pad
-    boundary = max(peak_low["boundary_band_population"], peak_high["boundary_band_population"])
+    # These are amplitude-distance margins, so they add before comparison with
+    # sqrt(infidelity threshold). Cutoff and solver differences are empirical.
+    boundary = max(
+        peak_low["boundary_band_population"], peak_high["boundary_band_population"]
+    )
     c12 = max(row["C12_error"] for row in rows_low)
     s2 = max(row["S2_error"] for row in rows_low)
-    acceptance = dict(state=bool(total <= EPS and ref_margin <= EPS / 10 and SOLVER["state"] <= EPS / 10),
-                      boundary=bool(boundary <= 1e-6), C12=bool(uc <= 1e-3 and c12 + uc <= 0.01),
-                      S2=bool(us <= 5e-3 and s2 + us <= 0.02))
+    acceptance = dict(
+        state=bool(
+            total <= EPS and ref_margin <= EPS / 10 and SOLVER["state"] <= EPS / 10
+        ),
+        boundary=bool(boundary <= 1e-6),
+        C12=bool(uc <= 1e-3 and c12 + uc <= 0.01),
+        S2=bool(us <= 5e-3 and s2 + us <= 0.02),
+    )
     counts, waits = primitive_counts(route, r, order, s)
-    return dict(route=route, r=r, order=order, block_orders=list(ORDER_CODES[order]), s=s, preparation=list(prep), cutoffs=list(CUTS),
-                gaussian_sequence="merged_intervals" if route == "gauss_block" else None,
-                primitive_counts=counts, total_programmable_primitives=int(sum(counts.values())), native_waits=waits,
-                state_error=total, max_bures=max_bures, margins=dict(reference=ref_margin, solver=SOLVER["state"], padding=pad,
-                                                                     C12=uc, S2=us),
-                C12_error=c12 + uc, S2_error=s2 + us, boundary_population=boundary,
-                boundary_low=peak_low["boundary_band_population"], boundary_high=peak_high["boundary_band_population"],
-                max_ancilla_excited=max(row["ancilla"] for row in rows_low),
-                min_system_purity=min(row["purity"] for row in rows_low), gaussian_step_check=gauss_check,
-                acceptance=acceptance, all_criteria=bool(all(acceptance.values())),
-                series=dict(t=[row["t"] for row in rows_low], bures=[row["bures"] for row in rows_low],
-                            C12_error=[row["C12_error"] for row in rows_low], S2_error=[row["S2_error"] for row in rows_low],
-                            C12_real=[float(row["C12"].real) for row in rows_low], C12_imag=[float(row["C12"].imag) for row in rows_low],
-                            S2=[row["S2"] for row in rows_low]))
+    return dict(
+        route=route,
+        r=r,
+        order=order,
+        block_orders=list(ORDER_CODES[order]),
+        s=s,
+        preparation=list(prep),
+        cutoffs=list(CUTS),
+        gaussian_sequence="merged_intervals" if route == "gauss_block" else None,
+        primitive_counts=counts,
+        total_programmable_primitives=int(sum(counts.values())),
+        native_waits=waits,
+        state_error=total,
+        max_bures=max_bures,
+        margins=dict(
+            reference=ref_margin, solver=SOLVER["state"], padding=pad, C12=uc, S2=us
+        ),
+        C12_error=c12 + uc,
+        S2_error=s2 + us,
+        boundary_population=boundary,
+        boundary_low=peak_low["boundary_band_population"],
+        boundary_high=peak_high["boundary_band_population"],
+        max_ancilla_excited=max(row["ancilla"] for row in rows_low),
+        min_system_purity=min(row["purity"] for row in rows_low),
+        gaussian_step_check=gauss_check,
+        acceptance=acceptance,
+        all_criteria=bool(all(acceptance.values())),
+        series=dict(
+            t=[row["t"] for row in rows_low],
+            bures=[row["bures"] for row in rows_low],
+            C12_error=[row["C12_error"] for row in rows_low],
+            S2_error=[row["S2_error"] for row in rows_low],
+            C12_real=[float(row["C12"].real) for row in rows_low],
+            C12_imag=[float(row["C12"].imag) for row in rows_low],
+            S2=[row["S2"] for row in rows_low],
+        ),
+    )
 
 
 def environment():
-    return dict(python=sys.executable, python_version=platform.python_version(), numpy=np.__version__, scipy=scipy.__version__,
-                threads=os.environ.get("OPENBLAS_NUM_THREADS"))
+    return dict(
+        python=sys.executable,
+        python_version=platform.python_version(),
+        numpy=np.__version__,
+        scipy=scipy.__version__,
+        threads=os.environ.get("OPENBLAS_NUM_THREADS"),
+    )
 
 
 def main():
-    parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    parser = argparse.ArgumentParser(
+        description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter
+    )
     parser.add_argument("job", choices=["references", "scan", "merge"])
     parser.add_argument("--route", choices=["hybrid", "kin_pot", "gauss_block"])
     parser.add_argument("--orders", default="1,2")
@@ -359,33 +497,67 @@ def main():
                 row = evaluate(args.route, r, order, args.s, prep)
                 row["wall_seconds"] = time.perf_counter() - started
                 results.append(row)
-                acc = "PASS" if row["all_criteria"] else "fail " + ",".join(k for k, v in row["acceptance"].items() if not v)
-                print(f"{args.route} r={r} o={order} s={args.s} prims={row['total_programmable_primitives']} "
-                      f"state={row['state_error']:.4f} C12={row['C12_error']:.4f} S2={row['S2_error']:.4f} "
-                      f"bnd={row['boundary_population']:.2e} {acc} ({row['wall_seconds']:.0f} s)", flush=True)
+                acc = (
+                    "PASS"
+                    if row["all_criteria"]
+                    else "fail "
+                    + ",".join(k for k, v in row["acceptance"].items() if not v)
+                )
+                print(
+                    f"{args.route} r={r} o={order} s={args.s} prims={row['total_programmable_primitives']} "
+                    f"state={row['state_error']:.4f} C12={row['C12_error']:.4f} S2={row['S2_error']:.4f} "
+                    f"bnd={row['boundary_population']:.2e} {acc} ({row['wall_seconds']:.0f} s)",
+                    flush=True,
+                )
                 sequence_tag = "_merged" if args.route == "gauss_block" else ""
                 name = f"{args.route}_prep{prep_tag(prep)}{args.tag}{sequence_tag}.json"
-                (PARTS / name).write_text(json.dumps(dict(environment=environment(), rows=results), indent=1))
+                (PARTS / name).write_text(
+                    json.dumps(dict(environment=environment(), rows=results), indent=1)
+                )
         return
     unique = {}
     for path in sorted(PARTS.glob("*.json")):
         for row in json.loads(path.read_text())["rows"]:
-            if row["route"] == "gauss_block" and row.get("gaussian_sequence") != "merged_intervals":
+            if (
+                row["route"] == "gauss_block"
+                and row.get("gaussian_sequence") != "merged_intervals"
+            ):
                 continue  # Unmerged archives are inputs to gaussian_evidence.py, not fresh scans.
-            unique[(row["route"], row["r"], row["order"], row["s"], tuple(row["preparation"]))] = row
+            unique[
+                (
+                    row["route"],
+                    row["r"],
+                    row["order"],
+                    row["s"],
+                    tuple(row["preparation"]),
+                )
+            ] = row
     rows = list(unique.values())
     best = {}
     for row in rows:
         if row["preparation"] != [1.0, 0.0] or not row["all_criteria"]:
             continue
         key = row["route"]
-        if key not in best or (row["total_programmable_primitives"], row["state_error"]) < (
-                best[key]["total_programmable_primitives"], best[key]["state_error"]):
+        if key not in best or (
+            row["total_programmable_primitives"],
+            row["state_error"],
+        ) < (best[key]["total_programmable_primitives"], best[key]["state_error"]):
             best[key] = row
-    summary = dict(description=__doc__.split("\n\n")[0], rows=rows,
-                   cheapest_passing={k: dict(r=v["r"], order=v["order"], s=v["s"], primitives=v["total_programmable_primitives"],
-                                             state_error=v["state_error"]) for k, v in best.items()},
-                   environment=environment())
+    summary = dict(
+        description=__doc__.split("\n\n")[0],
+        rows=rows,
+        cheapest_passing={
+            k: dict(
+                r=v["r"],
+                order=v["order"],
+                s=v["s"],
+                primitives=v["total_programmable_primitives"],
+                state_error=v["state_error"],
+            )
+            for k, v in best.items()
+        },
+        environment=environment(),
+    )
     (DATA / "dsg_step_scan_merged.json").write_text(json.dumps(summary, indent=1))
     for k, v in summary["cheapest_passing"].items():
         print(k, v)

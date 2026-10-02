@@ -77,8 +77,6 @@ import numpy as np
 import scipy
 from scipy.linalg import expm
 from scipy.optimize import minimize
-from scipy.sparse import csc_matrix, eye as sparse_eye
-from scipy.sparse.linalg import expm_multiply
 
 
 Array = np.ndarray
@@ -226,15 +224,13 @@ def validate_args(args: argparse.Namespace) -> None:
 
 def ladder(dim: int) -> Array:
     a = np.zeros((dim, dim), dtype=np.complex128)
-    a[np.arange(dim - 1), np.arange(1, dim)] = np.sqrt(
-        np.arange(1, dim, dtype=float)
-    )
+    a[np.arange(dim - 1), np.arange(1, dim)] = np.sqrt(np.arange(1, dim, dtype=float))
     return a
 
 
 def coherent_state(dim: int, xi: complex) -> Tuple[Array, float]:
     """Normalized projected coherent state and exact discarded probability."""
-    mu = float(abs(xi)**2)
+    mu = float(abs(xi) ** 2)
     coeff = np.empty(dim, dtype=np.complex128)
     coeff[0] = math.exp(-0.5 * mu)
     for n in range(1, dim):
@@ -254,9 +250,7 @@ def hermitian_exponential(h: Array, coefficient: complex) -> Array:
 def evolve_hermitian(h: Array, psi0: Array, times: Array) -> Array:
     vals, vecs = np.linalg.eigh(h)
     amplitudes = vecs.conj().T @ psi0
-    return vecs @ (
-        amplitudes[:, None] * np.exp(-1j * vals[:, None] * times[None, :])
-    )
+    return vecs @ (amplitudes[:, None] * np.exp(-1j * vals[:, None] * times[None, :]))
 
 
 def hard_sandwiched_operators(
@@ -282,6 +276,11 @@ def hard_sandwiched_operators(
     a4 = a2 @ a2
     ad4 = ad2 @ ad2
 
+    # q=(a+a^dag)/sqrt(2*omega0), so beta*q^4/4=lambda*(a+a^dag)^4.
+    # Normal ordering gives (a+a^dag)^4=6*n^2+6*n+3+V_2+V_4.
+    # V_2 changes occupation by +/-2; V_4 contains the remaining degree-four
+    # number-changing terms (including +/-2 transitions). The diagonal terms
+    # define H_K. Form these identities before slicing to retain boundary paths.
     lam = beta / (16.0 * omega0**2)
     k_eff = 3.0 * beta / (8.0 * omega0**2)
     omega_eff = omega0 + k_eff
@@ -290,11 +289,7 @@ def hard_sandwiched_operators(
     v4 = ad4 + a4 + 4.0 * (ad3 @ a + ad @ a3)
     vcr = v2 + v4
     hd = omega0 * (n + 0.5 * ident) + lam * (x @ x @ x @ x)
-    hk = (
-        omega_eff * n
-        + k_eff * (n @ n)
-        + (0.5 * omega0 + 3.0 * lam) * ident
-    )
+    hk = omega_eff * n + k_eff * (n @ n) + (0.5 * omega0 + 3.0 * lam) * ident
 
     sl = np.s_[:dim, :dim]
     out: Dict[str, Array | float] = {
@@ -330,9 +325,7 @@ class FixedGates:
     k_v2_step: Array
 
 
-def build_fixed_gates(
-    ops: Dict[str, Array | float], dt: float
-) -> FixedGates:
+def build_fixed_gates(ops: Dict[str, Array | float], dt: float) -> FixedGates:
     hk = np.asarray(ops["H_K"])
     v2 = np.asarray(ops["V_2"])
     v4 = np.asarray(ops["V_4"])
@@ -380,6 +373,9 @@ def build_training_snapshots(
         psi = embed_state(psi_ref, dim)
         for step in range(1, steps + 1):
             x = gates.v2_half @ (gates.k_half @ psi)
+            # Train where the residual block is actually entered in the split
+            # circuit. The next training snapshot still follows exact H_D,
+            # avoiding a moving target set tied to the current compiler error.
             y = gates.u4_exact @ x
             before.append(x)
             after.append(y)
@@ -408,7 +404,7 @@ def unpack_parameters(
     return theta, alpha_xy
 
 
-def pack_parameters(theta: Array, alpha_xy: Array, phase: float = 0.) -> Array:
+def pack_parameters(theta: Array, alpha_xy: Array, phase: float = 0.0) -> Array:
     return np.concatenate([theta.ravel(), alpha_xy.ravel(), [phase]])
 
 
@@ -425,8 +421,15 @@ def finite_displacement(alpha: complex, a: Array):
     phases = np.exp(1j * values)
     unitary = (vectors * phases) @ vectors.conj().T
     difference = values[:, None] - values[None, :]
-    divided = np.exp(.5j * (values[:, None] + values[None, :])) * np.sinc(difference / (2 * np.pi))
-    derivatives = [vectors @ (divided * (vectors.conj().T @ g @ vectors)) @ vectors.conj().T for g in (gx, gy)]
+    # (exp(ix)-exp(iy))/(i(x-y)) = exp(i(x+y)/2)*sinc((x-y)/(2*pi)).
+    # NumPy's normalized sinc supplies the coincident-eigenvalue limit directly.
+    divided = np.exp(0.5j * (values[:, None] + values[None, :])) * np.sinc(
+        difference / (2 * np.pi)
+    )
+    derivatives = [
+        vectors @ (divided * (vectors.conj().T @ g @ vectors)) @ vectors.conj().T
+        for g in (gx, gy)
+    ]
     return unitary, derivatives[0], derivatives[1]
 
 
@@ -449,21 +452,24 @@ class SnapDisplacementCompiler:
         self.targets = np.asarray(targets, dtype=np.complex128)
         self.n_states = self.inputs.shape[1]
         self.alpha_regularization = float(alpha_regularization)
-        if not 1 <= active_dim <= dim or layers < 1 or self.inputs.shape != self.targets.shape or self.inputs.ndim != 2 or self.inputs.shape[0] != dim or self.n_states < 1:
+        if (
+            not 1 <= active_dim <= dim
+            or layers < 1
+            or self.inputs.shape != self.targets.shape
+            or self.inputs.ndim != 2
+            or self.inputs.shape[0] != dim
+            or self.n_states < 1
+        ):
             raise ValueError("invalid compiler dimensions or target family")
         if self.alpha_regularization < 0 or not np.isfinite(self.alpha_regularization):
             raise ValueError("regularization must be finite and nonnegative")
 
-        a_dense = ladder(dim)
-        ad_dense = a_dense.conj().T
-        self.a = a_dense
-        self.ad = ad_dense
+        self.a = ladder(dim)
+        self.ad = self.a.conj().T
         self.last_metrics: Dict[str, float] = {}
         self.calls = 0
 
-    def _forward(
-        self, theta: Array, alpha_xy: Array
-    ) -> Tuple[Array, list]:
+    def _forward(self, theta: Array, alpha_xy: Array) -> Tuple[Array, list]:
         x = self.inputs
         cache = []
         for layer in range(self.layers):
@@ -479,13 +485,13 @@ class SnapDisplacementCompiler:
         return x, cache
 
     def value_and_grad(self, vector: Array) -> Tuple[float, Array]:
-        theta, alpha_xy = unpack_parameters(
-            vector, self.layers, self.active_dim
-        )
+        theta, alpha_xy = unpack_parameters(vector, self.layers, self.active_dim)
         output, cache = self._forward(theta, alpha_xy)
 
         overlaps = np.sum(np.conj(self.targets) * output, axis=0)
         per_state_fidelity = np.clip(np.abs(overlaps) ** 2, 0.0, 1.0)
+        # One phase aligns the entire input family. Independent column phases
+        # would hide coherent action errors on superpositions of those inputs.
         phase = np.exp(-1j * vector[-1])
         difference = phase * output - self.targets
         state_loss = float(np.vdot(difference, difference).real / self.n_states)
@@ -494,32 +500,29 @@ class SnapDisplacementCompiler:
 
         # For real parameters, df = 2 Re Tr(G^dagger dX).
         adjoint = np.conj(phase) * difference / self.n_states
-        grad_phase = 2 * float(np.vdot(difference, -1j * phase * output).real) / self.n_states
+        grad_phase = (
+            2 * float(np.vdot(difference, -1j * phase * output).real) / self.n_states
+        )
         grad_theta = np.zeros_like(theta)
         grad_alpha = np.zeros_like(alpha_xy)
 
         for layer in range(self.layers - 1, -1, -1):
+            # Reverse propagation applies D^dag then SNAP^dag to the adjoint.
+            # For a SNAP phase theta_n, d(SNAP*x)/dtheta_n=i*exp(i*theta_n)*x_n;
+            # displacement derivatives are Frechet derivatives of the finite D.
             before, after_snap, snap, displacement, dx, dy = cache[layer]
             dx_action = dx @ after_snap
             dy_action = dy @ after_snap
-            grad_alpha[layer, 0] = 2.0 * float(
-                np.real(np.vdot(adjoint, dx_action))
-            )
-            grad_alpha[layer, 1] = 2.0 * float(
-                np.real(np.vdot(adjoint, dy_action))
-            )
+            grad_alpha[layer, 0] = 2.0 * float(np.real(np.vdot(adjoint, dx_action)))
+            grad_alpha[layer, 1] = 2.0 * float(np.real(np.vdot(adjoint, dy_action)))
 
             after_displacement_adjoint = displacement.conj().T @ adjoint
             theta_action = (
-                1j
-                * snap[: self.active_dim, None]
-                * before[: self.active_dim]
+                1j * snap[: self.active_dim, None] * before[: self.active_dim]
             )
             grad_theta[layer] = 2.0 * np.real(
                 np.sum(
-                    np.conj(
-                        after_displacement_adjoint[: self.active_dim]
-                    )
+                    np.conj(after_displacement_adjoint[: self.active_dim])
                     * theta_action,
                     axis=1,
                 )
@@ -528,45 +531,30 @@ class SnapDisplacementCompiler:
 
         if self.alpha_regularization:
             grad_alpha += (
-                2.0
-                * self.alpha_regularization
-                * alpha_xy
-                / float(self.layers)
+                2.0 * self.alpha_regularization * alpha_xy / float(self.layers)
             )
 
         coherent_trace = np.sum(overlaps)
-        coherent_trace_fidelity = float(
-            np.abs(coherent_trace) ** 2 / self.n_states**2
-        )
-        pop_above_active = np.sum(
-            np.abs(output[self.active_dim :, :]) ** 2, axis=0
-        )
+        coherent_trace_fidelity = float(np.abs(coherent_trace) ** 2 / self.n_states**2)
+        pop_above_active = np.sum(np.abs(output[self.active_dim :, :]) ** 2, axis=0)
         self.last_metrics = {
             "objective": float(objective),
             "common_phase_action_mse": state_loss,
             "regularization": reg,
             "mean_training_infidelity": float(1.0 - np.mean(per_state_fidelity)),
-            "max_training_infidelity": float(
-                1.0 - np.min(per_state_fidelity)
-            ),
+            "max_training_infidelity": float(1.0 - np.min(per_state_fidelity)),
             "coherent_trace_fidelity": coherent_trace_fidelity,
             "mean_population_above_active_after_block": float(
                 np.mean(pop_above_active)
             ),
-            "max_population_above_active_after_block": float(
-                np.max(pop_above_active)
-            ),
-            "max_abs_alpha": float(np.max(np.hypot(
-                alpha_xy[:, 0], alpha_xy[:, 1]
-            ))),
+            "max_population_above_active_after_block": float(np.max(pop_above_active)),
+            "max_abs_alpha": float(np.max(np.hypot(alpha_xy[:, 0], alpha_xy[:, 1]))),
         }
         self.calls += 1
         return float(objective), pack_parameters(grad_theta, grad_alpha, grad_phase)
 
     def metrics(self, vector: Array, edge_levels: int) -> Dict[str, float]:
-        theta, alpha_xy = unpack_parameters(
-            vector, self.layers, self.active_dim
-        )
+        theta, alpha_xy = unpack_parameters(vector, self.layers, self.active_dim)
         output, _ = self._forward(theta, alpha_xy)
         overlaps = np.sum(np.conj(self.targets) * output, axis=0)
         state_fid = np.clip(np.abs(overlaps) ** 2, 0.0, 1.0)
@@ -574,27 +562,25 @@ class SnapDisplacementCompiler:
             np.abs(np.sum(overlaps)) ** 2 / self.n_states**2
         )
         return {
-            "common_phase_action_mse": float(np.linalg.norm(np.exp(-1j * vector[-1]) * output - self.targets, 'fro')**2 / self.n_states),
+            "common_phase_action_mse": float(
+                np.linalg.norm(np.exp(-1j * vector[-1]) * output - self.targets, "fro")
+                ** 2
+                / self.n_states
+            ),
             "mean_training_fidelity": float(np.mean(state_fid)),
             "min_training_fidelity": float(np.min(state_fid)),
             "max_training_infidelity": float(1.0 - np.min(state_fid)),
             "coherent_trace_fidelity": coherent_trace_fidelity,
             "mean_population_above_active_after_block": float(
-                np.mean(np.sum(
-                    np.abs(output[self.active_dim :, :]) ** 2, axis=0
-                ))
+                np.mean(np.sum(np.abs(output[self.active_dim :, :]) ** 2, axis=0))
             ),
             "max_population_above_active_after_block": float(
-                np.max(np.sum(
-                    np.abs(output[self.active_dim :, :]) ** 2, axis=0
-                ))
+                np.max(np.sum(np.abs(output[self.active_dim :, :]) ** 2, axis=0))
             ),
             "max_edge_population_after_block": float(
                 np.max(np.sum(np.abs(output[-edge_levels:, :]) ** 2, axis=0))
             ),
-            "max_abs_alpha": float(
-                np.max(np.hypot(alpha_xy[:, 0], alpha_xy[:, 1]))
-            ),
+            "max_abs_alpha": float(np.max(np.hypot(alpha_xy[:, 0], alpha_xy[:, 1]))),
         }
 
 
@@ -630,9 +616,7 @@ def finite_difference_gradient_check(
         )
 
 
-def write_csv(
-    path: Path, fieldnames: Iterable[str], rows: Iterable[dict]
-) -> None:
+def write_csv(path: Path, fieldnames: Iterable[str], rows: Iterable[dict]) -> None:
     fields = list(fieldnames)
     with path.open("w", newline="", encoding="utf-8") as handle:
         writer = csv.DictWriter(handle, fieldnames=fields)
@@ -662,17 +646,19 @@ def initial_parameters(
 def paired_frame_parameters(target, active_dim, layers, seed):
     """Initialize a diagonal unitary in cancelling displaced frames."""
     if layers < 2 or layers % 2 or not 1 <= active_dim <= len(target):
-        raise ValueError("paired frames need a positive active space and an even layer count")
+        raise ValueError(
+            "paired frames need a positive active space and an even layer count"
+        )
     rng = np.random.Generator(np.random.PCG64(seed))
-    radii = rng.uniform(.3, .8, layers // 2)
-    phases = rng.uniform(0., 2 * np.pi, layers // 2)
+    radii = rng.uniform(0.3, 0.8, layers // 2)
+    phases = rng.uniform(0.0, 2 * np.pi, layers // 2)
     beta = radii * np.exp(1j * phases)
     alpha = np.empty((layers, 2))
     alpha[::2] = np.column_stack((beta.real, beta.imag))
     alpha[1::2] = -alpha[::2]
     theta = np.zeros((layers, active_dim))
     theta[0] = np.angle(np.diag(target)[:active_dim])
-    return pack_parameters(theta, alpha, 0.)
+    return pack_parameters(theta, alpha, 0.0)
 
 
 def save_parameters(
@@ -694,9 +680,7 @@ def save_parameters(
     )
 
 
-def load_parameter_vector(
-    path: Path, layers: int, active_dim: int
-) -> Array:
+def load_parameter_vector(path: Path, layers: int, active_dim: int) -> Array:
     with np.load(path, allow_pickle=False) as data:
         if "parameter_vector" in data:
             vector = np.asarray(data["parameter_vector"], dtype=float)
@@ -711,14 +695,20 @@ def load_parameter_vector(
             vector = pack_parameters(theta, alpha)
     expected = layers * active_dim + 2 * layers + 1
     if vector.size != expected:
-        raise ValueError(
-            f"{path} has {vector.size} parameters; expected {expected}"
-        )
+        raise ValueError(f"{path} has {vector.size} parameters; expected {expected}")
     return vector
 
 
-def optimize_common_phase(compiler, seed, seconds, checkpoint, *, initial_vector=None,
-                          maxiter=1200, record_history=False):
+def optimize_common_phase(
+    compiler,
+    seed,
+    seconds,
+    checkpoint,
+    *,
+    initial_vector=None,
+    maxiter=1200,
+    record_history=False,
+):
     """One bounded SLSQP restart of the specified common-phase problem.
 
     The checkpoint records the best evaluated vector and the actual initial
@@ -728,67 +718,128 @@ def optimize_common_phase(compiler, seed, seconds, checkpoint, *, initial_vector
     """
     if seconds <= 0 or seconds > 900:
         raise ValueError("one restart must have a time budget in (0,900] seconds")
-    if not isinstance(maxiter,int) or maxiter<1:
+    if not isinstance(maxiter, int) or maxiter < 1:
         raise ValueError("maxiter must be a positive integer")
     rng = np.random.Generator(np.random.PCG64(seed))
-    initial = (initial_parameters(rng, compiler.layers, compiler.active_dim, .025,
-                                  identity=seed in (240731, 20260729))
-               if initial_vector is None else np.asarray(initial_vector,dtype=float).copy())
-    bounds = [(-np.pi, np.pi)]*(compiler.layers*compiler.active_dim) + [(-1.5, 1.5)]*(2*compiler.layers) + [(-np.pi, np.pi)]
-    if initial.shape!=(len(bounds),) or not np.all(np.isfinite(initial)) or any(v<lo or v>hi for v,(lo,hi) in zip(initial,bounds)):
-        raise ValueError("initial vector must be finite and satisfy the parameter bounds")
+    initial = (
+        initial_parameters(
+            rng,
+            compiler.layers,
+            compiler.active_dim,
+            0.025,
+            identity=seed in (240731, 20260729),
+        )
+        if initial_vector is None
+        else np.asarray(initial_vector, dtype=float).copy()
+    )
+    bounds = (
+        [(-np.pi, np.pi)] * (compiler.layers * compiler.active_dim)
+        + [(-1.5, 1.5)] * (2 * compiler.layers)
+        + [(-np.pi, np.pi)]
+    )
+    if (
+        initial.shape != (len(bounds),)
+        or not np.all(np.isfinite(initial))
+        or any(v < lo or v > hi for v, (lo, hi) in zip(initial, bounds))
+    ):
+        raise ValueError(
+            "initial vector must be finite and satisfy the parameter bounds"
+        )
     started = time.perf_counter()
     cpu_started = time.process_time()
     best = initial.copy()
     best_value = np.inf
     evaluations = 0
-    history=[]
-    last_vector=None
-    last_value=None
+    history = []
+    last_vector = None
+    last_value = None
+
     class BudgetExpired(Exception):
         pass
+
     def save(status):
-        np.savez_compressed(checkpoint, parameter_vector=best, initial_vector=initial,
-                            seed=seed, objective=best_value, evaluations=evaluations,
-                            elapsed_seconds=time.perf_counter()-started, status=status)
+        np.savez_compressed(
+            checkpoint,
+            parameter_vector=best,
+            initial_vector=initial,
+            seed=seed,
+            objective=best_value,
+            evaluations=evaluations,
+            elapsed_seconds=time.perf_counter() - started,
+            status=status,
+        )
+
     def objective(vector):
         nonlocal evaluations, best, best_value, last_vector, last_value
-        if time.perf_counter()-started >= seconds:
+        if time.perf_counter() - started >= seconds:
             raise BudgetExpired
         value, gradient = compiler.value_and_grad(vector)
-        last_vector,last_value=vector.copy(),float(value)
+        last_vector, last_value = vector.copy(), float(value)
         evaluations += 1
         if value < best_value:
             best_value, best = value, vector.copy()
-        if time.perf_counter()-started >= seconds:
+        if time.perf_counter() - started >= seconds:
             save("budget_limited")
             raise BudgetExpired
         return value, gradient
+
     def callback(vector):
         if record_history:
-            history.append(dict(iteration=len(history)+1,evaluations=evaluations,
-                                best_evaluated_objective=float(best_value),
-                                iteration_objective=last_value if np.array_equal(vector,last_vector) else None,
-                                elapsed_seconds=time.perf_counter()-started))
+            history.append(
+                dict(
+                    iteration=len(history) + 1,
+                    evaluations=evaluations,
+                    best_evaluated_objective=float(best_value),
+                    iteration_objective=last_value
+                    if np.array_equal(vector, last_vector)
+                    else None,
+                    elapsed_seconds=time.perf_counter() - started,
+                )
+            )
         save("running")
+
     try:
-        result = minimize(objective, initial, method="SLSQP", jac=True, bounds=bounds,
-                          callback=callback, options={"maxiter":maxiter, "ftol":1e-12})
+        result = minimize(
+            objective,
+            initial,
+            method="SLSQP",
+            jac=True,
+            bounds=bounds,
+            callback=callback,
+            options={"maxiter": maxiter, "ftol": 1e-12},
+        )
         status = "solver_success" if result.success else "solver_terminated"
         message = str(result.message)
         iterations = int(result.nit)
     except BudgetExpired:
-        status, message, iterations = "budget_limited", "optimizer wall-time budget reached", None
+        status, message, iterations = (
+            "budget_limited",
+            "optimizer wall-time budget reached",
+            None,
+        )
     save(status)
-    return best, dict(status=status, message=message, iterations=iterations,
-                      evaluations=evaluations, objective=float(best_value),
-                      elapsed_seconds=time.perf_counter()-started,
-                      cpu_seconds=time.process_time()-cpu_started,
-                      constraint_violation=float(max(max(lo-v, v-hi, 0.) for v,(lo,hi) in zip(best,bounds))),
-                      seed=seed, method="SLSQP", maxiter=maxiter, ftol=1e-12,
-                      initial_rule="specified_vector" if initial_vector is not None else "original_seed_rule",
-                      iteration_history=history,
-                      common_phase=float(best[-1]), regularization=compiler.alpha_regularization)
+    return best, dict(
+        status=status,
+        message=message,
+        iterations=iterations,
+        evaluations=evaluations,
+        objective=float(best_value),
+        elapsed_seconds=time.perf_counter() - started,
+        cpu_seconds=time.process_time() - cpu_started,
+        constraint_violation=float(
+            max(max(lo - v, v - hi, 0.0) for v, (lo, hi) in zip(best, bounds))
+        ),
+        seed=seed,
+        method="SLSQP",
+        maxiter=maxiter,
+        ftol=1e-12,
+        initial_rule="specified_vector"
+        if initial_vector is not None
+        else "original_seed_rule",
+        iteration_history=history,
+        common_phase=float(best[-1]),
+        regularization=compiler.alpha_regularization,
+    )
 
 
 def compile_block(
@@ -798,16 +849,16 @@ def compile_block(
 ) -> Tuple[Array, List[dict]]:
     rng = np.random.default_rng(args.seed)
     n_theta = args.layers * args.active_dim
-    bounds = [(-math.pi, math.pi)] * n_theta + [
-        (-args.alpha_max, args.alpha_max)
-    ] * (2 * args.layers) + [(-math.pi, math.pi)]
+    bounds = (
+        [(-math.pi, math.pi)] * n_theta
+        + [(-args.alpha_max, args.alpha_max)] * (2 * args.layers)
+        + [(-math.pi, math.pi)]
+    )
 
     checkpoint = output_dir / "best_compiler_parameters.npz"
     resumed_vector: Array | None = None
     if args.resume and checkpoint.exists():
-        resumed_vector = load_parameter_vector(
-            checkpoint, args.layers, args.active_dim
-        )
+        resumed_vector = load_parameter_vector(checkpoint, args.layers, args.active_dim)
         print(f"Resuming restart 0 from {checkpoint}")
 
     best_vector: Array | None = None
@@ -824,7 +875,11 @@ def compile_block(
                 args.layers,
                 args.active_dim,
                 args.init_scale,
-                identity=(restart == 0 and args.seed in (240731, 20260729) and resumed_vector is None),
+                identity=(
+                    restart == 0
+                    and args.seed in (240731, 20260729)
+                    and resumed_vector is None
+                ),
             )
             init_kind = "identity" if restart == 0 else "random"
 
@@ -901,12 +956,8 @@ def compile_block(
                 {
                     "best_objective": best_objective,
                     "restart": restart,
-                    "mean_training_fidelity": metrics[
-                        "mean_training_fidelity"
-                    ],
-                    "min_training_fidelity": metrics[
-                        "min_training_fidelity"
-                    ],
+                    "mean_training_fidelity": metrics["mean_training_fidelity"],
+                    "min_training_fidelity": metrics["min_training_fidelity"],
                 },
             )
 
@@ -976,30 +1027,22 @@ def simulate_compiled_trajectory(
         psi = gates.k_half @ psi
         psi = gates.v2_half @ psi
         psi = u_sd @ psi
-        max_edge = max(
-            max_edge, float(np.sum(np.abs(psi[-edge_levels:]) ** 2))
-        )
+        max_edge = max(max_edge, float(np.sum(np.abs(psi[-edge_levels:]) ** 2)))
         max_above_active = max(
             max_above_active, float(np.sum(np.abs(psi[active_dim:]) ** 2))
         )
         psi = gates.v2_half @ psi
         psi = gates.k_half @ psi
-        max_edge = max(
-            max_edge, float(np.sum(np.abs(psi[-edge_levels:]) ** 2))
-        )
+        max_edge = max(max_edge, float(np.sum(np.abs(psi[-edge_levels:]) ** 2)))
         max_above_active = max(
             max_above_active, float(np.sum(np.abs(psi[active_dim:]) ** 2))
         )
-        max_norm_error = max(
-            max_norm_error, abs(float(np.vdot(psi, psi).real) - 1.0)
-        )
+        max_norm_error = max(max_norm_error, abs(float(np.vdot(psi, psi).real) - 1.0))
         states.append(psi.copy())
 
     return np.column_stack(states), {
         "max_edge_population_during_compiled_trajectory": max_edge,
-        "max_population_above_active_during_compiled_trajectory": (
-            max_above_active
-        ),
+        "max_population_above_active_during_compiled_trajectory": (max_above_active),
         "max_norm_error_during_compiled_trajectory": max_norm_error,
     }
 
@@ -1013,13 +1056,9 @@ def apply_repeated_step(psi0: Array, step: Array, steps: int) -> Array:
     return np.column_stack(states)
 
 
-def diagonal_kerr_trajectory(
-    hk: Array, psi0: Array, times: Array
-) -> Array:
+def diagonal_kerr_trajectory(hk: Array, psi0: Array, times: Array) -> Array:
     energies = np.real(np.diag(hk))
-    return psi0[:, None] * np.exp(
-        -1j * energies[:, None] * times[None, :]
-    )
+    return psi0[:, None] * np.exp(-1j * energies[:, None] * times[None, :])
 
 
 def max_infidelity(reference: Array, candidate: Array) -> float:
@@ -1041,41 +1080,29 @@ def evaluate(
         args.layers,
         best_vector,
     )
-    compiled_step = (
-        gates_pad.k_half
-        @ gates_pad.v2_half
-        @ u_sd
-        @ gates_pad.v2_half
-        @ gates_pad.k_half
-    )
-
     time_rows: List[dict] = []
     summary_rows: List[dict] = []
     for xi in args.test_xi:
         psi_ref0, discarded_ref = coherent_state(args.reference_dim, xi)
         psi_pad0, discarded_pad = coherent_state(args.pad_dim, xi)
 
-        reference_small = evolve_hermitian(
-            np.asarray(ops_ref["H_D"]), psi_ref0, times
-        )
+        reference_small = evolve_hermitian(np.asarray(ops_ref["H_D"]), psi_ref0, times)
         reference = np.column_stack(
             [
                 embed_state(reference_small[:, index], args.pad_dim)
                 for index in range(reference_small.shape[1])
             ]
         )
-        exact_pad = evolve_hermitian(
-            np.asarray(ops_pad["H_D"]), psi_pad0, times
-        )
+        exact_pad = evolve_hermitian(np.asarray(ops_pad["H_D"]), psi_pad0, times)
         native_kerr = diagonal_kerr_trajectory(
             np.asarray(ops_pad["H_K"]), psi_pad0, times
         )
-        kerr_v2 = apply_repeated_step(
-            psi_pad0, gates_pad.k_v2_step, args.steps
-        )
+        kerr_v2 = apply_repeated_step(psi_pad0, gates_pad.k_v2_step, args.steps)
         exact_split = apply_repeated_step(
             psi_pad0, gates_pad.exact_split_step, args.steps
         )
+        # Keep the factor-by-factor path: its intermediate populations are part
+        # of the validation and cannot be recovered from the final step matrix.
         compiled, boundary = simulate_compiled_trajectory(
             psi_pad0,
             args.steps,
@@ -1091,35 +1118,21 @@ def evaluate(
                 "xi": xi,
                 "step": index,
                 "time": float(t),
-                "fidelity_native_kerr_vs_N80": fidelity(
-                    ref, native_kerr[:, index]
-                ),
-                "fidelity_kerr_v2_vs_N80": fidelity(
-                    ref, kerr_v2[:, index]
-                ),
-                "fidelity_exact_split_vs_N80": fidelity(
-                    ref, exact_split[:, index]
-                ),
-                "fidelity_compiled_hybrid_vs_N80": fidelity(
-                    ref, compiled[:, index]
-                ),
+                "fidelity_native_kerr_vs_N80": fidelity(ref, native_kerr[:, index]),
+                "fidelity_kerr_v2_vs_N80": fidelity(ref, kerr_v2[:, index]),
+                "fidelity_exact_split_vs_N80": fidelity(ref, exact_split[:, index]),
+                "fidelity_compiled_hybrid_vs_N80": fidelity(ref, compiled[:, index]),
                 "fidelity_compiled_vs_exact_split": fidelity(
                     exact_split[:, index], compiled[:, index]
                 ),
-                "fidelity_exact_Dpad_vs_N80": fidelity(
-                    ref, exact_pad[:, index]
-                ),
+                "fidelity_exact_Dpad_vs_N80": fidelity(ref, exact_pad[:, index]),
                 "mean_n_N80_reference": expectation_n(ref),
-                "mean_n_compiled_hybrid": expectation_n(
-                    compiled[:, index]
-                ),
+                "mean_n_compiled_hybrid": expectation_n(compiled[:, index]),
                 "population_above_active_compiled": float(
                     np.sum(np.abs(compiled[args.active_dim :, index]) ** 2)
                 ),
                 "edge_population_compiled": float(
-                    np.sum(
-                        np.abs(compiled[-args.edge_levels :, index]) ** 2
-                    )
+                    np.sum(np.abs(compiled[-args.edge_levels :, index]) ** 2)
                 ),
                 "norm_compiled": float(
                     np.vdot(compiled[:, index], compiled[:, index]).real
@@ -1128,61 +1141,48 @@ def evaluate(
             time_rows.append(row)
 
         summary = {
-                "xi": xi,
-                "mean_n_initial": xi * xi,
-                "reference_dimension": args.reference_dim,
-                "padded_dimension": args.pad_dim,
-                "active_dimension": args.active_dim,
-                "initial_discarded_probability_N80": discarded_ref,
-                "initial_discarded_probability_Dpad": discarded_pad,
-                "max_infidelity_native_kerr_vs_N80": max_infidelity(
-                    reference, native_kerr
-                ),
-                "final_infidelity_native_kerr_vs_N80": (
-                    1.0 - fidelity(reference[:, -1], native_kerr[:, -1])
-                ),
-                "max_infidelity_kerr_v2_vs_N80": max_infidelity(
-                    reference, kerr_v2
-                ),
-                "final_infidelity_kerr_v2_vs_N80": (
-                    1.0 - fidelity(reference[:, -1], kerr_v2[:, -1])
-                ),
-                "max_infidelity_exact_split_vs_N80": max_infidelity(
-                    reference, exact_split
-                ),
-                "final_infidelity_exact_split_vs_N80": (
-                    1.0 - fidelity(reference[:, -1], exact_split[:, -1])
-                ),
-                "max_infidelity_compiled_hybrid_vs_N80": max_infidelity(
-                    reference, compiled
-                ),
-                "final_infidelity_compiled_hybrid_vs_N80": (
-                    1.0 - fidelity(reference[:, -1], compiled[:, -1])
-                ),
-                "max_infidelity_compiled_vs_exact_split": max_infidelity(
-                    exact_split, compiled
-                ),
-                "final_infidelity_compiled_vs_exact_split": (
-                    1.0
-                    - fidelity(exact_split[:, -1], compiled[:, -1])
-                ),
-                "max_infidelity_exact_Dpad_vs_N80": max_infidelity(
-                    reference, exact_pad
-                ),
-                "final_infidelity_exact_Dpad_vs_N80": (
-                    1.0 - fidelity(reference[:, -1], exact_pad[:, -1])
-                ),
-                "max_reference_mean_n": float(
-                    max(expectation_n(reference[:, j]) for j in range(
-                        reference.shape[1]
-                    ))
-                ),
-                "max_compiled_mean_n": float(
-                    max(expectation_n(compiled[:, j]) for j in range(
-                        compiled.shape[1]
-                    ))
-                ),
-                **boundary,
+            "xi": xi,
+            "mean_n_initial": xi * xi,
+            "reference_dimension": args.reference_dim,
+            "padded_dimension": args.pad_dim,
+            "active_dimension": args.active_dim,
+            "initial_discarded_probability_N80": discarded_ref,
+            "initial_discarded_probability_Dpad": discarded_pad,
+            "max_infidelity_native_kerr_vs_N80": max_infidelity(reference, native_kerr),
+            "final_infidelity_native_kerr_vs_N80": (
+                1.0 - fidelity(reference[:, -1], native_kerr[:, -1])
+            ),
+            "max_infidelity_kerr_v2_vs_N80": max_infidelity(reference, kerr_v2),
+            "final_infidelity_kerr_v2_vs_N80": (
+                1.0 - fidelity(reference[:, -1], kerr_v2[:, -1])
+            ),
+            "max_infidelity_exact_split_vs_N80": max_infidelity(reference, exact_split),
+            "final_infidelity_exact_split_vs_N80": (
+                1.0 - fidelity(reference[:, -1], exact_split[:, -1])
+            ),
+            "max_infidelity_compiled_hybrid_vs_N80": max_infidelity(
+                reference, compiled
+            ),
+            "final_infidelity_compiled_hybrid_vs_N80": (
+                1.0 - fidelity(reference[:, -1], compiled[:, -1])
+            ),
+            "max_infidelity_compiled_vs_exact_split": max_infidelity(
+                exact_split, compiled
+            ),
+            "final_infidelity_compiled_vs_exact_split": (
+                1.0 - fidelity(exact_split[:, -1], compiled[:, -1])
+            ),
+            "max_infidelity_exact_Dpad_vs_N80": max_infidelity(reference, exact_pad),
+            "final_infidelity_exact_Dpad_vs_N80": (
+                1.0 - fidelity(reference[:, -1], exact_pad[:, -1])
+            ),
+            "max_reference_mean_n": float(
+                max(expectation_n(reference[:, j]) for j in range(reference.shape[1]))
+            ),
+            "max_compiled_mean_n": float(
+                max(expectation_n(compiled[:, j]) for j in range(compiled.shape[1]))
+            ),
+            **boundary,
         }
         summary.update(
             {
@@ -1191,9 +1191,7 @@ def evaluate(
                     <= args.max_reference_infidelity
                 ),
                 "padding_boundary_pass": bool(
-                    summary[
-                        "max_edge_population_during_compiled_trajectory"
-                    ]
+                    summary["max_edge_population_during_compiled_trajectory"]
                     <= args.max_edge_population
                 ),
                 "product_formula_pass": bool(
@@ -1404,12 +1402,8 @@ def main() -> None:
     dt = args.T / args.steps
 
     print("Building hard-sandwiched reference and padded operators...")
-    ops_ref = hard_sandwiched_operators(
-        args.reference_dim, args.omega0, args.beta
-    )
-    ops_pad = hard_sandwiched_operators(
-        args.pad_dim, args.omega0, args.beta
-    )
+    ops_ref = hard_sandwiched_operators(args.reference_dim, args.omega0, args.beta)
+    ops_pad = hard_sandwiched_operators(args.pad_dim, args.omega0, args.beta)
     print(
         "Split residuals: "
         f"N_ref={float(ops_ref['split_residual_norm']):.3e}, "
@@ -1442,15 +1436,11 @@ def main() -> None:
         targets,
         args.alpha_regularization,
     )
-    best_vector, restart_rows = compile_block(
-        args, compiler, args.output_dir
-    )
+    best_vector, restart_rows = compile_block(args, compiler, args.output_dir)
     compiler_metrics = compiler.metrics(best_vector, args.edge_levels)
 
     print("Evaluating compiled trajectories against the N=80 reference...")
-    time_rows, summary_rows = evaluate(
-        args, ops_ref, ops_pad, gates_pad, best_vector
-    )
+    time_rows, summary_rows = evaluate(args, ops_ref, ops_pad, gates_pad, best_vector)
     write_csv(
         args.output_dir / "hybrid_time_series.csv",
         time_rows[0].keys(),
@@ -1489,25 +1479,19 @@ def main() -> None:
         "split_residual_padded": float(ops_pad["split_residual_norm"]),
         "compiler_metrics": compiler_metrics,
         "best_restart": int(
-            min(restart_rows, key=lambda row: row["final_objective"])[
-                "restart"
-            ]
+            min(restart_rows, key=lambda row: row["final_objective"])["restart"]
         ),
         "python_version": platform.python_version(),
         "numpy_version": np.__version__,
         "scipy_version": scipy.__version__,
         "command": " ".join(sys.argv),
     }
-    with (args.output_dir / "metadata.json").open(
-        "w", encoding="utf-8"
-    ) as handle:
+    with (args.output_dir / "metadata.json").open("w", encoding="utf-8") as handle:
         json.dump(metadata, handle, indent=2, sort_keys=True)
         handle.write("\n")
 
     verdict = verdict_text(args, compiler_metrics, summary_rows)
-    (args.output_dir / "validation_verdict.md").write_text(
-        verdict, encoding="utf-8"
-    )
+    (args.output_dir / "validation_verdict.md").write_text(verdict, encoding="utf-8")
 
     if args.plot:
         create_plot(args.output_dir, time_rows, args.test_xi)

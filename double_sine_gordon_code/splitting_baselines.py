@@ -37,11 +37,17 @@ from double_sine_gordon_code.run_snapd_end_to_end import build_two_site_problem 
 
 EJ, KAPPA, OMEGA_B = 1.0, 1.0, np.sqrt(3.0)
 T = 5.2 / np.sqrt(3.0)
-OUT = Path(__file__).resolve().parents[1] / "double_sine_gordon_data" / "splitting_baselines.json"
+OUT = (
+    Path(__file__).resolve().parents[1]
+    / "double_sine_gordon_data"
+    / "splitting_baselines.json"
+)
 
 
 def distance(x, y):
-    overlap = abs(np.vdot(x.ravel(), y.ravel())) / (np.linalg.norm(x) * np.linalg.norm(y))
+    overlap = abs(np.vdot(x.ravel(), y.ravel())) / (
+        np.linalg.norm(x) * np.linalg.norm(y)
+    )
     return float(np.sqrt(max(0.0, 2.0 - 2.0 * overlap)))
 
 
@@ -57,17 +63,26 @@ def scan(n, lam2, steps, routes, kappa=KAPPA):
     bond_op = 0.5 * kappa * (kron(phi2, ident) + kron(ident, phi2) - 2 * kron(phi, phi))
     gauss = (kron(kin, ident) + kron(ident, kin) + bond_op).tocsr()
     curvature = EJ + 4 * lam2
-    gauss_h = (gauss + 0.5 * curvature * (kron(phi2, ident) + kron(ident, phi2))).tocsr()
+    # V''(0)=EJ+4*lambda2 matches only the small-amplitude curvature.
+    # Retuning EJ removes the quadratic correction, leaving a quartic-leading
+    # residual; its advantage away from phi=0 must be evaluated dynamically.
+    gauss_h = (
+        gauss + 0.5 * curvature * (kron(phi2, ident) + kron(ident, phi2))
+    ).tocsr()
     H_native = problem["H_native"]
     H_ret = build_two_site_problem(n, OMEGA_B, EJ + 4 * lam2, kappa, 0.0)["H_native"]
     L1, L2 = np.meshgrid(lam, lam, indexing="ij")
-    cosines = EJ * (2 - np.cos(L1) - np.cos(L2)) + lam2 * (2 - np.cos(2 * L1) - np.cos(2 * L2))
+    cosines = EJ * (2 - np.cos(L1) - np.cos(L2)) + lam2 * (
+        2 - np.cos(2 * L1) - np.cos(2 * L2)
+    )
     correction = lam2 * (2 - np.cos(2 * L1) - np.cos(2 * L2))
     correction_ret = correction - 4 * lam2 * (2 - np.cos(L1) - np.cos(L2))
     bond = 0.5 * kappa * (L1 - L2) ** 2
-    anharmonic = cosines - 0.5 * curvature * (L1 ** 2 + L2 ** 2)
+    anharmonic = cosines - 0.5 * curvature * (L1**2 + L2**2)
 
     def diag(p, potential, tau):
+        # p holds ket amplitudes with one index per site, not a density matrix.
+        # A tensor product A tensor B acts as A*p*B^T, hence the final U.T.
         rotated = U.conj().T @ p @ U.conj()
         return U @ (np.exp(-1j * tau * potential) * rotated) @ U.T
 
@@ -79,13 +94,30 @@ def scan(n, lam2, steps, routes, kappa=KAPPA):
         h = T / r
         kin_half = expm(-0.5j * h * basis.kinetic)
         step = {
-            "hybrid": lambda p: prop(H_native, diag(prop(H_native, p, h / 2), correction, h), h / 2),
-            "hybrid_ret": lambda p: prop(H_ret, diag(prop(H_ret, p, h / 2), correction_ret, h), h / 2),
-            "kin_pot": lambda p: kin_half @ diag(kin_half @ p @ kin_half.T, bond + cosines, h) @ kin_half.T,
-            "gauss_cos": lambda p: prop(gauss, diag(prop(gauss, p, h / 2), cosines, h), h / 2),
-            "gauss_harm": lambda p: prop(gauss_h, diag(prop(gauss_h, p, h / 2), anharmonic, h), h / 2),
+            "hybrid": lambda p: prop(
+                H_native, diag(prop(H_native, p, h / 2), correction, h), h / 2
+            ),
+            "hybrid_ret": lambda p: prop(
+                H_ret, diag(prop(H_ret, p, h / 2), correction_ret, h), h / 2
+            ),
+            "kin_pot": lambda p: kin_half
+            @ diag(kin_half @ p @ kin_half.T, bond + cosines, h)
+            @ kin_half.T,
+            "gauss_cos": lambda p: prop(
+                gauss, diag(prop(gauss, p, h / 2), cosines, h), h / 2
+            ),
+            "gauss_harm": lambda p: prop(
+                gauss_h, diag(prop(gauss_h, p, h / 2), anharmonic, h), h / 2
+            ),
         }
-        exact = expm_multiply(-1j * problem["H_target"], psi0.ravel(), start=0.0, stop=T, num=r + 1, endpoint=True)
+        exact = expm_multiply(
+            -1j * problem["H_target"],
+            psi0.ravel(),
+            start=0.0,
+            stop=T,
+            num=r + 1,
+            endpoint=True,
+        )
         for name in routes:
             p, worst = psi0, 0.0
             for j in range(1, r + 1):
@@ -102,21 +134,46 @@ def main():
     record = {
         "description": "maximum projective distance over outer-step times, exact blocks, two open sites, E_J=1, kappa=1",
         "T": T,
-        "scan": {"cutoff": 80, "lambda2": 0.3, "r": steps, "errors": scan(80, 0.3, steps, all_routes)},
-        "cutoff_check": {"cutoff": 64, "lambda2": 0.3, "r": [10, 20],
-                         "errors": scan(64, 0.3, [10, 20], ["hybrid", "kin_pot", "gauss_cos"])},
-        "lambda2_check": {"cutoff": 80, "lambda2": 0.15, "r": [10, 20],
-                          "errors": scan(80, 0.15, [10, 20], ["hybrid", "kin_pot", "gauss_cos"])},
+        "scan": {
+            "cutoff": 80,
+            "lambda2": 0.3,
+            "r": steps,
+            "errors": scan(80, 0.3, steps, all_routes),
+        },
+        "cutoff_check": {
+            "cutoff": 64,
+            "lambda2": 0.3,
+            "r": [10, 20],
+            "errors": scan(64, 0.3, [10, 20], ["hybrid", "kin_pot", "gauss_cos"]),
+        },
+        "lambda2_check": {
+            "cutoff": 80,
+            "lambda2": 0.15,
+            "r": [10, 20],
+            "errors": scan(80, 0.15, [10, 20], ["hybrid", "kin_pot", "gauss_cos"]),
+        },
     }
-    record["environment"] = {"python": sys.executable, "python_version": platform.python_version(),
-                             "numpy": np.__version__, "scipy": scipy.__version__,
-                             "wall_seconds": time.perf_counter() - started}
+    record["environment"] = {
+        "python": sys.executable,
+        "python_version": platform.python_version(),
+        "numpy": np.__version__,
+        "scipy": scipy.__version__,
+        "wall_seconds": time.perf_counter() - started,
+    }
     OUT.write_text(json.dumps(record, indent=1))
     scan_errors = record["scan"]["errors"]
     for i, r in enumerate(steps):
         hyb = scan_errors["hybrid"][i]
-        print(f"r={r:2d} " + " ".join(f"{k}={v[i]:.5f}" for k, v in scan_errors.items())
-              + "  ratios " + " ".join(f"{k}/hybrid={v[i] / hyb:.2f}" for k, v in scan_errors.items() if k != "hybrid"))
+        print(
+            f"r={r:2d} "
+            + " ".join(f"{k}={v[i]:.5f}" for k, v in scan_errors.items())
+            + "  ratios "
+            + " ".join(
+                f"{k}/hybrid={v[i] / hyb:.2f}"
+                for k, v in scan_errors.items()
+                if k != "hybrid"
+            )
+        )
     for key in ("cutoff_check", "lambda2_check"):
         print(key, json.dumps(record[key]["errors"]))
     print(f"wall {record['environment']['wall_seconds']:.1f} s")

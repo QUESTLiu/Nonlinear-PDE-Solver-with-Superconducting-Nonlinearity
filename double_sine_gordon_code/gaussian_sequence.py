@@ -15,7 +15,18 @@ The phase commutation is exact also for the finite spectral representation.
 """
 
 
-def merged_gaussian_readouts(initial, steps, half, full, position, momentum, potential, observe, *, final_only=False):
+def merged_gaussian_readouts(
+    initial,
+    steps,
+    half,
+    full,
+    position,
+    momentum,
+    potential,
+    observe,
+    *,
+    final_only=False,
+):
     """Yield complete circuit outputs at 0,h,...,steps*h without storing trajectories.
 
     half/full are pairs of real diagonal quadratic generators on the position
@@ -34,8 +45,14 @@ def merged_gaussian_readouts(initial, steps, half, full, position, momentum, pot
     for k in range(1, steps + 1):
         left = q_half if k == 1 else q_full
         right = q_half if k == steps else q_full
+        # All position phases and trigonometric potentials are functions of the
+        # same commuting phi_j. Their generators add exactly even at finite N.
+        # Q(tau) is nonlinear in tau, so replacing Q(a)+Q(b) by Q(a+b) is invalid.
         state = position(state, left + right)
         closing_shift = q_half - right
+        # A prefix ending here needs Q(h/2) on its right, not the interior Q(h).
+        # Apply their difference only to the closed readout/checkpoint; retain
+        # the interior state so the next step follows the full counted circuit.
 
         def check(value):
             observe(value)

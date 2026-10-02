@@ -30,7 +30,6 @@ import os
 import platform
 import sys
 import time
-from collections import Counter
 from pathlib import Path
 
 import numpy as np
@@ -84,6 +83,10 @@ def lanczos_propagate(apply, v, tau, tol=None, m_max=40):
             alpha.append(a)
             tri = np.diag(alpha) + np.diag(beta, 1) + np.diag(beta, -1)
             coeff = expm(-1j * dt * tri)[:, 0]
+            # H Q_m=Q_m T_m+b*q_next*e_m^T: b*|coeff[-1]| is the
+            # endpoint Schrodinger residual for a normalized starting vector.
+            # The acceptance rule uses it as a local indicator; it does not
+            # integrate that residual to certify the accumulated state error.
             if b * abs(coeff[-1]) < tol * dt / abs(tau) or b < 1e-14:
                 converged = True
                 break
@@ -92,7 +95,7 @@ def lanczos_propagate(apply, v, tau, tol=None, m_max=40):
         if not converged:
             dt *= 0.5
             continue
-        out = beta0 * sum(c * q for c, q in zip(coeff, basis[:len(coeff)]))
+        out = beta0 * sum(c * q for c, q in zip(coeff, basis[: len(coeff)]))
         t_left -= dt
         dt = min(1.25 * dt, t_left) if t_left > 0 else dt
     return out, matvecs
@@ -112,7 +115,13 @@ class Chain:
         self.lam_pi, self.U_pi = np.linalg.eigh(b.pi)
         self.bonds = [(j, j + 1) for j in range(sites - 1)]
         degree = [sum(j in bond for bond in self.bonds) for j in range(sites)]
-        self.native_local = [b.kinetic + fun(lambda x, d=d: E_J * (1 - np.cos(x)) + 0.5 * KAPPA * d * x ** 2) for d in degree]
+        # Each bond contributes kappa*phi_j^2/2 at both endpoints. The cross
+        # term -kappa*phi_i*phi_j is applied separately in apply_h.
+        self.native_local = [
+            b.kinetic
+            + fun(lambda x, d=d: E_J * (1 - np.cos(x)) + 0.5 * KAPPA * d * x**2)
+            for d in degree
+        ]
         self.corr_local = fun(lambda x: lam2 * (1 - np.cos(2 * x)))
         self.target_local = [m + self.corr_local for m in self.native_local]
         laplacian = np.zeros((sites, sites))
@@ -122,7 +131,9 @@ class Chain:
             laplacian[i, j] -= 1
             laplacian[j, i] -= 1
         self.stiffness = KAPPA * laplacian
-        psi = sg.make_initial_condition("coherent_single", sites, n, OMEGA_B, 1.0, 1.0, prep[0], prep[1], 0, False)[0]
+        psi = sg.make_initial_condition(
+            "coherent_single", sites, n, OMEGA_B, 1.0, 1.0, prep[0], prep[1], 0, False
+        )[0]
         self.psi0 = np.asarray(psi, dtype=complex).reshape((n,) * sites)
         self.psi0 /= np.linalg.norm(self.psi0)
         self.vertex = (U * np.exp(1j * lam)) @ U.conj().T
@@ -133,22 +144,36 @@ class Chain:
         for j in range(self.N):
             out += sg._apply_axis(local[j], state, j)
         for i, j in self.bonds:
-            out -= KAPPA * sg._apply_axis(self.phi, sg._apply_axis(self.phi, state, i), j)
+            out -= KAPPA * sg._apply_axis(
+                self.phi, sg._apply_axis(self.phi, state, i), j
+            )
         return out
 
     def operator(self, local, columns):
         shape = (self.n,) * self.N + ((columns,) if columns > 1 else ())
-        dim = self.n ** self.N
+        dim = self.n**self.N
 
         def mv(x):
             x = np.asarray(x)
             k = x.shape[1] if x.ndim == 2 else 1
-            y = self.apply_h(x.reshape((self.n,) * self.N + ((k,) if k > 1 else ())), local)
+            y = self.apply_h(
+                x.reshape((self.n,) * self.N + ((k,) if k > 1 else ())), local
+            )
             return y.reshape(dim, k) if x.ndim == 2 else y.reshape(dim)
 
-        trace = self.n ** (self.N - 1) * sum(np.trace(m).real for m in local) - KAPPA * sum(
-            np.trace(self.phi).real ** 2 * self.n ** (self.N - 2) for _ in self.bonds)
-        op = LinearOperator((dim, dim), matvec=mv, rmatvec=mv, matmat=mv, rmatmat=mv, dtype=np.complex128)
+        trace = self.n ** (self.N - 1) * sum(
+            np.trace(m).real for m in local
+        ) - KAPPA * sum(
+            np.trace(self.phi).real ** 2 * self.n ** (self.N - 2) for _ in self.bonds
+        )
+        op = LinearOperator(
+            (dim, dim),
+            matvec=mv,
+            rmatvec=mv,
+            matmat=mv,
+            rmatmat=mv,
+            dtype=np.complex128,
+        )
         return op, trace, shape
 
     def propagate(self, state, tau, local, tol=None):
@@ -161,7 +186,9 @@ class Chain:
         if state.ndim == self.N + 1:
             out = np.empty(state.shape, complex)
             for c in range(state.shape[-1]):
-                out[..., c] = lanczos_propagate(apply, state[..., c], tau, tol)[0].reshape(system)
+                out[..., c] = lanczos_propagate(apply, state[..., c], tau, tol)[
+                    0
+                ].reshape(system)
             return out
         return lanczos_propagate(apply, state, tau, tol)[0].reshape(system)
 
@@ -169,7 +196,9 @@ class Chain:
         """exp(-i tau H) by scipy expm_multiply, used only to check the Lanczos propagator."""
         columns = state.shape[-1] if state.ndim == self.N + 1 else 1
         op, trace, shape = self.operator(local, columns)
-        flat = state.reshape(self.n ** self.N, columns) if columns > 1 else state.reshape(-1)
+        flat = (
+            state.reshape(self.n**self.N, columns) if columns > 1 else state.reshape(-1)
+        )
         out = expm_multiply(-1j * tau * op, flat, traceA=-1j * tau * trace)
         return np.asarray(out).reshape(state.shape)
 
@@ -186,6 +215,9 @@ class Chain:
 
     def boundary(self, state, edge=4):
         """Population with at least one mode in its four highest levels."""
+        # Complement of the all-modes-interior box counts simultaneous boundary
+        # occupations once. Small population is a truncation diagnostic, not a
+        # bound on the difference from an infinite-dimensional evolution.
         prob = np.abs(state) ** 2
         if state.ndim == self.N + 1:
             prob = prob.sum(axis=-1)
@@ -207,16 +239,27 @@ class Chain:
     def quadratic_generator(self, values, matrix):
         """x^T M x on the product grid of eigenvalues x_j."""
         g = self.grid(values)
-        return sum(matrix[i, j] * g[i] * g[j] for i in range(self.N) for j in range(self.N))
+        return sum(
+            matrix[i, j] * g[i] * g[j] for i in range(self.N) for j in range(self.N)
+        )
 
     def gaussian_generators(self, tau):
         w2, modes = np.linalg.eigh(self.stiffness)
         w = np.sqrt(np.clip(w2, 0.0, None))
+        # The open chain has a free center-of-mass mode: its position shear
+        # vanishes and sin(w*tau)/(2*w) has the limit tau/2 at w=0.
         a = np.where(w > 1e-12, 0.5 * w * np.tan(0.5 * w * tau), 0.0)
-        bb = np.where(w > 1e-12, np.sin(w * tau) / (2 * np.where(w > 1e-12, w, 1.0)), 0.5 * tau)
+        bb = np.where(
+            w > 1e-12, np.sin(w * tau) / (2 * np.where(w > 1e-12, w, 1.0)), 0.5 * tau
+        )
         A = modes @ np.diag(a) @ modes.T
         B = modes @ np.diag(bb) @ modes.T
-        return self.quadratic_generator(self.lam_phi, A), self.quadratic_generator(self.lam_pi, B), A, B
+        return (
+            self.quadratic_generator(self.lam_phi, A),
+            self.quadratic_generator(self.lam_pi, B),
+            A,
+            B,
+        )
 
     def gaussian_factors(self, tau):
         q_phi, q_pi, A, B = self.gaussian_generators(tau)
@@ -224,8 +267,10 @@ class Chain:
 
     def gaussian_readouts(self, initial, h, r, order, s, observe):
         """Complete readout circuits with the merged intervals counted by counts()."""
-        blocks = [nc.trig_block(self.phi, m, h * coefficient, o, s)
-                  for m, coefficient, o in zip((1, 2), (E_J, self.lam2), ORDER_CODES[order])]
+        blocks = [
+            nc.trig_block(self.phi, m, h * coefficient, o, s)
+            for m, coefficient, o in zip((1, 2), (E_J, self.lam2), ORDER_CODES[order])
+        ]
 
         def potential(state, checkpoint):
             for site in range(self.N):
@@ -235,9 +280,15 @@ class Chain:
             return state
 
         return merged_gaussian_readouts(
-            initial, r, self.gaussian_generators(h / 2)[:2], self.gaussian_generators(h)[:2],
+            initial,
+            r,
+            self.gaussian_generators(h / 2)[:2],
+            self.gaussian_generators(h)[:2],
             lambda state, q: self.diag_phase(state, self.U_phi, np.exp(-1j * q)),
-            lambda state, q: self.diag_phase(state, self.U_pi, np.exp(-1j * q)), potential, observe)
+            lambda state, q: self.diag_phase(state, self.U_pi, np.exp(-1j * q)),
+            potential,
+            observe,
+        )
 
     def make_step(self, route, h, order, s, observe):
         """One outer step; Gaussian half steps reproduce the archived unmerged sequence."""
@@ -265,11 +316,19 @@ class Chain:
             gphi, gpi, _, _ = self.gaussian_factors(h / 2)
 
             def half(state):
-                return self.diag_phase(self.diag_phase(self.diag_phase(state, self.U_phi, gphi), self.U_pi, gpi), self.U_phi, gphi)
+                return self.diag_phase(
+                    self.diag_phase(
+                        self.diag_phase(state, self.U_phi, gphi), self.U_pi, gpi
+                    ),
+                    self.U_phi,
+                    gphi,
+                )
         elif route == "kin_pot":
             kin_half = expm(-0.5j * h * self.basis.kinetic)
             g = self.grid(self.lam_phi)
-            bond_phase = np.exp(-0.25j * h * KAPPA * sum((g[i] - g[j]) ** 2 for i, j in self.bonds))
+            bond_phase = np.exp(
+                -0.25j * h * KAPPA * sum((g[i] - g[j]) ** 2 for i, j in self.bonds)
+            )
 
             def half(state):
                 for j in range(self.N):
@@ -310,15 +369,22 @@ class Chain:
                     if pulse["site"] != -1:
                         pulse["site"] = site
                     pulses.append(pulse)
-        del pulses  # the qubit basis change is applied once per circuit (trig_counts.py)
+        del (
+            pulses
+        )  # the qubit basis change is applied once per circuit (trig_counts.py)
         from double_sine_gordon_code import trig_counts
+
         c = trig_counts.trig_counts(self.N, coefficients, r, orders, s)
         n_bonds = len(self.bonds)
         if route == "kin_pot":
             c["Gaussian"] = self.N * (r + 1) + (self.N + n_bonds) * r
         elif route == "gauss_block":
             _, _, A, B = self.gaussian_factors(h / 2)
-            per_factor = lambda M: self.N + sum(abs(M[i, j]) > 1e-12 for i in range(self.N) for j in range(i + 1, self.N))  # noqa: E731
+            per_factor = lambda M: self.N + sum(
+                abs(M[i, j]) > 1e-12
+                for i in range(self.N)
+                for j in range(i + 1, self.N)
+            )  # noqa: E731
             c["Gaussian"] = (r + 1) * per_factor(B) + (r + 2) * per_factor(A)
         else:
             c["Gaussian"] = 0
@@ -346,8 +412,12 @@ def compute_references(sites, cuts, lam2, prep, steps):
         folder.mkdir(parents=True, exist_ok=True)
         chain = Chain(sites, n, lam2, prep)
         started = time.perf_counter()
-        states = np.lib.format.open_memmap(folder / "states.npy", mode="w+", dtype=np.complex128,
-                                           shape=(len(times),) + chain.psi0.shape)
+        states = np.lib.format.open_memmap(
+            folder / "states.npy",
+            mode="w+",
+            dtype=np.complex128,
+            shape=(len(times),) + chain.psi0.shape,
+        )
         state, t_now, c12, s2 = chain.psi0.copy(), 0.0, [], []
         for i, t in enumerate(times):
             if t > t_now:
@@ -362,10 +432,23 @@ def compute_references(sites, cuts, lam2, prep, steps):
         del states
         check = chain.propagate(chain.psi0, T, chain.target_local, tol=1e-13)
         solver = distance(check / np.linalg.norm(check), state)
-        meta_path.write_text(json.dumps(dict(times=times, C12=c12, S2=s2, solver=solver, lanczos_tol=LANCZOS_TOL,
-                                             wall_seconds=time.perf_counter() - started)))
-        print(f"reference N={sites} n={n} lambda2={lam2:g} prep={prep} times={len(times)} solver={solver:.1e} "
-              f"{time.perf_counter() - started:.0f} s", flush=True)
+        meta_path.write_text(
+            json.dumps(
+                dict(
+                    times=times,
+                    C12=c12,
+                    S2=s2,
+                    solver=solver,
+                    lanczos_tol=LANCZOS_TOL,
+                    wall_seconds=time.perf_counter() - started,
+                )
+            )
+        )
+        print(
+            f"reference N={sites} n={n} lambda2={lam2:g} prep={prep} times={len(times)} solver={solver:.1e} "
+            f"{time.perf_counter() - started:.0f} s",
+            flush=True,
+        )
 
 
 def load_reference(sites, n, lam2, prep, r):
@@ -374,8 +457,12 @@ def load_reference(sites, n, lam2, prep, r):
     index = {round(t, 14): i for i, t in enumerate(meta["times"])}
     rows = [index[round(k * T / r, 14)] for k in range(r + 1)]
     states = np.load(folder / "states.npy", mmap_mode="r")
-    return dict(states=[np.array(states[i]) for i in rows], C12=np.array([complex(*meta["C12"][i]) for i in rows]),
-                S2=np.array([meta["S2"][i] for i in rows]), solver=float(meta["solver"]))
+    return dict(
+        states=[np.array(states[i]) for i in rows],
+        C12=np.array([complex(*meta["C12"][i]) for i in rows]),
+        S2=np.array([meta["S2"][i] for i in rows]),
+        solver=float(meta["solver"]),
+    )
 
 
 def run_circuit(chain, route, r, order, s, reference):
@@ -398,9 +485,16 @@ def run_circuit(chain, route, r, order, s, reference):
         ref = reference["states"][k].reshape(-1)
         fidelity = float(np.sum(np.abs(ref.conj() @ flat) ** 2))
         c12, s2 = chain.observables(joint)
-        rows.append(dict(bures=float(np.sqrt(max(0.0, 2 - 2 * np.sqrt(min(1.0, fidelity))))),
-                         ancilla=float(np.sum(np.abs(flat[:, 1]) ** 2)), C12=c12, S2=s2,
-                         C12_error=abs(c12 - reference["C12"][k]), S2_error=abs(s2 - reference["S2"][k])))
+        rows.append(
+            dict(
+                bures=float(np.sqrt(max(0.0, 2 - 2 * np.sqrt(min(1.0, fidelity))))),
+                ancilla=float(np.sum(np.abs(flat[:, 1]) ** 2)),
+                C12=c12,
+                S2=s2,
+                C12_error=abs(c12 - reference["C12"][k]),
+                S2_error=abs(s2 - reference["S2"][k]),
+            )
+        )
         states.append(joint.copy())
         if k < r:
             joint = next(readouts) if readouts is not None else step(joint)
@@ -439,26 +533,54 @@ def evaluate(sites, cuts, lam2, prep, route, r, order, s):
     boundary = max(peak_low, peak_high)
     c12 = max(row["C12_error"] for row in rows_low)
     s2 = max(row["S2_error"] for row in rows_low)
-    acceptance = dict(state=bool(total <= EPS and ref_margin <= EPS / 10 and solver <= EPS / 10),
-                      boundary=bool(boundary <= 1e-6), C12=bool(uc <= 1e-3 and c12 + uc <= 0.01),
-                      S2=bool(us <= 5e-3 and s2 + us <= 0.02))
-    return dict(sites=sites, lambda2=lam2, route=route, r=r, order=order, block_orders=list(ORDER_CODES[order]), s=s,
-                gaussian_sequence="merged_intervals" if route == "gauss_block" else None,
-                preparation=list(prep), cutoffs=list(cuts), primitive_counts={k: int(v) for k, v in counts.items()},
-                total_programmable_primitives=int(sum(counts.values())), native_waits=waits, state_error=total,
-                max_bures=max_bures, margins=dict(reference=ref_margin, solver=solver, padding=pad, C12=uc, S2=us),
-                C12_error=c12 + uc, S2_error=s2 + us, boundary_population=boundary, boundary_low=peak_low,
-                boundary_high=peak_high, max_ancilla_excited=max(row["ancilla"] for row in rows_low),
-                acceptance=acceptance, all_criteria=bool(all(acceptance.values())))
+    acceptance = dict(
+        state=bool(total <= EPS and ref_margin <= EPS / 10 and solver <= EPS / 10),
+        boundary=bool(boundary <= 1e-6),
+        C12=bool(uc <= 1e-3 and c12 + uc <= 0.01),
+        S2=bool(us <= 5e-3 and s2 + us <= 0.02),
+    )
+    return dict(
+        sites=sites,
+        lambda2=lam2,
+        route=route,
+        r=r,
+        order=order,
+        block_orders=list(ORDER_CODES[order]),
+        s=s,
+        gaussian_sequence="merged_intervals" if route == "gauss_block" else None,
+        preparation=list(prep),
+        cutoffs=list(cuts),
+        primitive_counts={k: int(v) for k, v in counts.items()},
+        total_programmable_primitives=int(sum(counts.values())),
+        native_waits=waits,
+        state_error=total,
+        max_bures=max_bures,
+        margins=dict(reference=ref_margin, solver=solver, padding=pad, C12=uc, S2=us),
+        C12_error=c12 + uc,
+        S2_error=s2 + us,
+        boundary_population=boundary,
+        boundary_low=peak_low,
+        boundary_high=peak_high,
+        max_ancilla_excited=max(row["ancilla"] for row in rows_low),
+        acceptance=acceptance,
+        all_criteria=bool(all(acceptance.values())),
+    )
 
 
 def environment():
-    return dict(python=sys.executable, python_version=platform.python_version(), numpy=np.__version__,
-                scipy=scipy.__version__, threads=os.environ.get("OPENBLAS_NUM_THREADS"))
+    return dict(
+        python=sys.executable,
+        python_version=platform.python_version(),
+        numpy=np.__version__,
+        scipy=scipy.__version__,
+        threads=os.environ.get("OPENBLAS_NUM_THREADS"),
+    )
 
 
 def main():
-    parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    parser = argparse.ArgumentParser(
+        description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter
+    )
     parser.add_argument("job", choices=["references", "scan", "merge", "time"])
     parser.add_argument("--sites", type=int, default=3)
     parser.add_argument("--cuts", default="96,128")
@@ -479,7 +601,10 @@ def main():
             chain = Chain(args.sites, n, args.lam2, prep)
             started = time.perf_counter()
             chain.propagate(chain.psi0, T / 12, chain.native_local)
-            print(f"N={args.sites} n={n}: native half step at r=6 took {time.perf_counter() - started:.1f} s", flush=True)
+            print(
+                f"N={args.sites} n={n}: native half step at r=6 took {time.perf_counter() - started:.1f} s",
+                flush=True,
+            )
         return
     if args.job == "references":
         compute_references(args.sites, cuts, args.lam2, prep, steps)
@@ -491,38 +616,76 @@ def main():
         for r in steps:
             for order in [int(x) for x in args.orders.split(",")]:
                 started = time.perf_counter()
-                row = evaluate(args.sites, cuts, args.lam2, prep, args.route, r, order, args.s)
+                row = evaluate(
+                    args.sites, cuts, args.lam2, prep, args.route, r, order, args.s
+                )
                 row["wall_seconds"] = time.perf_counter() - started
                 results.append(row)
-                acc = "PASS" if row["all_criteria"] else "fail " + ",".join(k for k, v in row["acceptance"].items() if not v)
-                print(f"N={args.sites} lambda2={args.lam2:g} {args.route} r={r} o={order} prims={row['total_programmable_primitives']} "
-                      f"state={row['state_error']:.4f} C12={row['C12_error']:.4f} S2={row['S2_error']:.4f} "
-                      f"bnd={row['boundary_population']:.2e} ref={row['margins']['reference']:.1e} "
-                      f"pad={row['margins']['padding']:.1e} {acc} ({row['wall_seconds']:.0f} s)", flush=True)
+                acc = (
+                    "PASS"
+                    if row["all_criteria"]
+                    else "fail "
+                    + ",".join(k for k, v in row["acceptance"].items() if not v)
+                )
+                print(
+                    f"N={args.sites} lambda2={args.lam2:g} {args.route} r={r} o={order} prims={row['total_programmable_primitives']} "
+                    f"state={row['state_error']:.4f} C12={row['C12_error']:.4f} S2={row['S2_error']:.4f} "
+                    f"bnd={row['boundary_population']:.2e} ref={row['margins']['reference']:.1e} "
+                    f"pad={row['margins']['padding']:.1e} {acc} ({row['wall_seconds']:.0f} s)",
+                    flush=True,
+                )
                 sequence_tag = "_merged" if args.route == "gauss_block" else ""
                 name = f"{args.route}_{tag(args.sites, args.lam2, prep)}{args.tag}{sequence_tag}.json"
-                (parts / name).write_text(json.dumps(dict(environment=environment(), rows=results), indent=1))
+                (parts / name).write_text(
+                    json.dumps(dict(environment=environment(), rows=results), indent=1)
+                )
         return
     unique = {}
     for path in sorted(parts.glob("*.json")):
         for row in json.loads(path.read_text())["rows"]:
-            if row["route"] == "gauss_block" and row.get("gaussian_sequence") != "merged_intervals":
+            if (
+                row["route"] == "gauss_block"
+                and row.get("gaussian_sequence") != "merged_intervals"
+            ):
                 continue
-            unique[(row["route"], row["lambda2"], row["r"], row["order"], tuple(row["preparation"]))] = row
+            unique[
+                (
+                    row["route"],
+                    row["lambda2"],
+                    row["r"],
+                    row["order"],
+                    tuple(row["preparation"]),
+                )
+            ] = row
     rows = list(unique.values())
     best = {}
     for row in rows:
         if tuple(row["preparation"]) != (1.0, 0.0) or not row["all_criteria"]:
             continue
         key = (row["route"], row["lambda2"])
-        if key not in best or (row["total_programmable_primitives"], row["state_error"]) < (
-                best[key]["total_programmable_primitives"], best[key]["state_error"]):
+        if key not in best or (
+            row["total_programmable_primitives"],
+            row["state_error"],
+        ) < (best[key]["total_programmable_primitives"], best[key]["state_error"]):
             best[key] = row
-    summary = dict(description=__doc__.split("\n\n")[0], sites=args.sites, cutoffs=list(cuts), rows=rows,
-                   cheapest_passing=[dict(route=k[0], lambda2=k[1], r=v["r"], order=v["order"],
-                                          primitives=v["total_programmable_primitives"], state_error=v["state_error"])
-                                     for k, v in sorted(best.items())],
-                   environment=environment())
+    summary = dict(
+        description=__doc__.split("\n\n")[0],
+        sites=args.sites,
+        cutoffs=list(cuts),
+        rows=rows,
+        cheapest_passing=[
+            dict(
+                route=k[0],
+                lambda2=k[1],
+                r=v["r"],
+                order=v["order"],
+                primitives=v["total_programmable_primitives"],
+                state_error=v["state_error"],
+            )
+            for k, v in sorted(best.items())
+        ],
+        environment=environment(),
+    )
     out = DATA / f"dsg_chain_N{args.sites}_cut{cuts[0]}_{cuts[1]}_merged.json"
     out.write_text(json.dumps(summary, indent=1))
     for item in summary["cheapest_passing"]:

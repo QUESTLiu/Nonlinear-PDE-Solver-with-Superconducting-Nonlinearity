@@ -40,8 +40,12 @@ def base_parser(description: str) -> argparse.ArgumentParser:
     )
     parser.add_argument("--phi0", type=float, default=3.0)
     parser.add_argument("--pi0", type=float, default=0.0)
-    parser.add_argument("--omega-time", type=float, default=None,
-                        help="frequency for tau=Omega_time*t, independent of the basis")
+    parser.add_argument(
+        "--omega-time",
+        type=float,
+        default=None,
+        help="frequency for tau=Omega_time*t, independent of the basis",
+    )
     parser.add_argument("--site", type=int, default=0)
     parser.add_argument("--T", type=float, default=5.0)
     parser.add_argument("--dt", type=float, default=0.005)
@@ -90,7 +94,11 @@ def setup(args, default_tag: str):
         if args.omega > 0
         else float(np.sqrt(max(args.E_J + 2.0 * args.kappa, 1e-12)))
     )
-    omega_time = float(np.sqrt(args.E_J + 2 * args.kappa)) if args.omega_time is None else float(args.omega_time)
+    omega_time = (
+        float(np.sqrt(args.E_J + 2 * args.kappa))
+        if args.omega_time is None
+        else float(args.omega_time)
+    )
     if not np.isfinite(omega_time) or omega_time < 0:
         raise ValueError("time-scale frequency must be finite and nonnegative")
     basis = sg.build_mode_basis(args.n_cut, omega)
@@ -103,7 +111,7 @@ def setup(args, default_tag: str):
             raise ValueError("SG_MEMORY_LIMIT_GB must be numeric") from exc
     print(
         f"[setup] sites={args.n_site} cutoff={args.n_cut} "
-        f"dimension={args.n_cut ** args.n_site:,} omega={omega:.6g}",
+        f"dimension={args.n_cut**args.n_site:,} omega={omega:.6g}",
         flush=True,
     )
     print(
@@ -125,7 +133,7 @@ def setup(args, default_tag: str):
         "omega": omega,
         "omega_b": omega,
         "Omega_time": omega_time,
-        "lambda2": float(getattr(args,"lambda2",0.)),
+        "lambda2": float(getattr(args, "lambda2", 0.0)),
         "operator_convention": "finite spectral: pi_N squared and cos(m phi_N)",
         "T_requested": float(args.T),
         "dt_requested": float(args.dt),
@@ -203,20 +211,12 @@ def make_observer(phi_op, pi_op, num_op, store, offsets):
         if norm == 0:
             raise FloatingPointError("observer received a zero state")
         state = psi / norm
-        phi = np.array(
-            [sg.expect_mode(state, phi_op, j).real for j in range(n_site)]
-        )
-        pi = np.array(
-            [sg.expect_mode(state, pi_op, j).real for j in range(n_site)]
-        )
-        num = np.array(
-            [sg.expect_mode(state, num_op, j).real for j in range(n_site)]
-        )
+        phi = np.array([sg.expect_mode(state, phi_op, j).real for j in range(n_site)])
+        pi = np.array([sg.expect_mode(state, pi_op, j).real for j in range(n_site)])
+        num = np.array([sg.expect_mode(state, num_op, j).real for j in range(n_site)])
         top = np.zeros((n_cut, n_cut), dtype=float)
         top[-1, -1] = 1.0
-        leakage = max(
-            float(sg.expect_mode(state, top, j).real) for j in range(n_site)
-        )
+        leakage = max(float(sg.expect_mode(state, top, j).real) for j in range(n_site))
         store["t"].append(float(t))
         store["phi"].append(phi + offsets)
         store["pi"].append(pi)

@@ -25,7 +25,11 @@ LAM2, ROUTE, ORDER, STEPS = 0.6, "gauss_block", 3, (9, 10, 11, 12)
 
 def main():
     # optional arguments: preparation <phi_1>,<Pi_1> and outer-step numbers, e.g. "0.75,0.25 10"
-    prep = tuple(float(x) for x in sys.argv[1].split(",")) if len(sys.argv) > 1 else (1.0, 0.0)
+    prep = (
+        tuple(float(x) for x in sys.argv[1].split(","))
+        if len(sys.argv) > 1
+        else (1.0, 0.0)
+    )
     steps = [int(x) for x in sys.argv[2].split(",")] if len(sys.argv) > 2 else STEPS
     scan_lambda.configure(LAM2)
     scan.CUTS = (160, 192)
@@ -37,13 +41,27 @@ def main():
         row["lambda2"] = LAM2
         row["wall_seconds"] = time.perf_counter() - started
         rows.append(row)
-        print(f"lambda2={LAM2:g} cutoffs 160/192 {ROUTE} r={r} o={ORDER} prims={row['total_programmable_primitives']} "
-              f"state={row['state_error']:.4f} C12={row['C12_error']:.4f} S2={row['S2_error']:.4f} "
-              f"boundary={row['boundary_low']:.2e}/{row['boundary_high']:.2e} {'PASS' if row['all_criteria'] else row['acceptance']}",
-              flush=True)
-    out = scan.DATA / f"dsg_boundary_check_lambda{LAM2:g}{'' if prep == (1.0, 0.0) else '_prep' + scan.prep_tag(prep)}_merged.json"
-    out.write_text(json.dumps(dict(description=__doc__.split("\n\n")[0], rows=rows, environment=scan.environment()), indent=1,
-                              default=lambda x: [x.real, x.imag] if isinstance(x, complex) else x))
+        print(
+            f"lambda2={LAM2:g} cutoffs 160/192 {ROUTE} r={r} o={ORDER} prims={row['total_programmable_primitives']} "
+            f"state={row['state_error']:.4f} C12={row['C12_error']:.4f} S2={row['S2_error']:.4f} "
+            f"boundary={row['boundary_low']:.2e}/{row['boundary_high']:.2e} {'PASS' if row['all_criteria'] else row['acceptance']}",
+            flush=True,
+        )
+    out = (
+        scan.DATA
+        / f"dsg_boundary_check_lambda{LAM2:g}{'' if prep == (1.0, 0.0) else '_prep' + scan.prep_tag(prep)}_merged.json"
+    )
+    out.write_text(
+        json.dumps(
+            dict(
+                description=__doc__.split("\n\n")[0],
+                rows=rows,
+                environment=scan.environment(),
+            ),
+            indent=1,
+            default=lambda x: [x.real, x.imag] if isinstance(x, complex) else x,
+        )
+    )
 
 
 if __name__ == "__main__":

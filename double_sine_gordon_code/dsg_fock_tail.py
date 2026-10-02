@@ -23,6 +23,8 @@ CHAIN_CACHE = Path(os.environ.get("DSG_CHAIN_CACHE", "/tmp/dsg_chain_cache"))
 
 
 def tail(state, sites, n):
+    # This union probability concerns occupations >LEVEL in the stored finite
+    # state. It neither estimates the omitted levels >=n nor bounds their dynamics.
     prob = np.abs(np.asarray(state).reshape((n,) * sites)) ** 2
     inside = prob[(slice(0, LEVEL + 1),) * sites].sum()
     return float(prob.sum() - inside)
@@ -32,11 +34,15 @@ def main():
     out = dict(description=__doc__.split("\n\n")[0], level=LEVEL)
     with np.load(SCAN_CACHE / "target_N128_r20_prep1_0.npz") as a:
         values = [tail(s, 2, 128) for s in a["states"]]
-    out["two_sites"] = dict(cutoff=128, times=len(values), max_population_above=max(values))
+    out["two_sites"] = dict(
+        cutoff=128, times=len(values), max_population_above=max(values)
+    )
     folder = CHAIN_CACHE / "target_N3_lambda0.3_prep1_0_n128"
     states = np.load(folder / "states.npy", mmap_mode="r")
     values = [tail(states[i], 3, 128) for i in range(states.shape[0])]
-    out["three_sites"] = dict(cutoff=128, times=len(values), max_population_above=max(values))
+    out["three_sites"] = dict(
+        cutoff=128, times=len(values), max_population_above=max(values)
+    )
     for key in ("two_sites", "three_sites"):
         print(key, out[key])
     (DATA / "dsg_fock_tail.json").write_text(json.dumps(out, indent=1))

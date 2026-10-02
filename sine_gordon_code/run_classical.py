@@ -28,11 +28,11 @@ import numpy as np
 
 if __package__:
     from . import common, sglib as sg
-    from .native_correction import moment_diagnostics,prepare_moment_diagnostics
+    from .native_correction import moment_diagnostics, prepare_moment_diagnostics
 else:
     import common
     import sglib as sg
-    from native_correction import moment_diagnostics,prepare_moment_diagnostics
+    from native_correction import moment_diagnostics, prepare_moment_diagnostics
 
 
 def main() -> None:
@@ -44,9 +44,7 @@ def main() -> None:
         default=0.1,
         help="threshold as a fraction of the half peak-to-peak amplitude",
     )
-    parser.add_argument(
-        "--propagator", choices=["strang", "krylov"], default="strang"
-    )
+    parser.add_argument("--propagator", choices=["strang", "krylov"], default="strang")
     parser.add_argument("--krylov-m", type=int, default=30)
     parser.add_argument(
         "--convergence-check",
@@ -68,10 +66,18 @@ def main() -> None:
             "Recommended for E_J scans."
         ),
     )
-    parser.add_argument("--steps", type=int, default=None,
-                        help="exact integration step count at the requested horizon")
-    parser.add_argument("--zero-amplitude-scale", type=float, default=1.,
-                        help="absolute normalization when the classical amplitude is zero")
+    parser.add_argument(
+        "--steps",
+        type=int,
+        default=None,
+        help="exact integration step count at the requested horizon",
+    )
+    parser.add_argument(
+        "--zero-amplitude-scale",
+        type=float,
+        default=1.0,
+        help="absolute normalization when the classical amplitude is zero",
+    )
     parser.add_argument(
         "--leakage-tol",
         type=float,
@@ -84,7 +90,11 @@ def main() -> None:
 
     tau_requested = None
     if args.tau_max > 0:
-        omega_plan = float(args.omega_time) if args.omega_time is not None else float(np.sqrt(args.E_J + 2 * args.kappa))
+        omega_plan = (
+            float(args.omega_time)
+            if args.omega_time is not None
+            else float(np.sqrt(args.E_J + 2 * args.kappa))
+        )
         if omega_plan <= 0:
             raise ValueError("Omega_time must be positive")
         requested_time = args.tau_max / omega_plan
@@ -141,7 +151,9 @@ def main() -> None:
             args.n_site,
             local_offsets,
         )
-        onsite += args.lambda2 * (1 - np.cos(2 * (local_basis.lam_phi[None, :] + local_offsets[:, None])))
+        onsite += args.lambda2 * (
+            1 - np.cos(2 * (local_basis.lam_phi[None, :] + local_offsets[:, None]))
+        )
         store = common.new_store()
         basic_observer = common.make_observer(
             local_basis.phi,
@@ -150,13 +162,34 @@ def main() -> None:
             store,
             local_offsets,
         )
-        hamiltonian = sg.HamiltonianApply(local_basis, args.n_site, args.kappa, onsite, args.pbc, offsets=local_offsets)
-        prepared=prepare_moment_diagnostics(local_basis,args.E_J,args.lambda2,local_offsets)
+        hamiltonian = sg.HamiltonianApply(
+            local_basis,
+            args.n_site,
+            args.kappa,
+            onsite,
+            args.pbc,
+            offsets=local_offsets,
+        )
+        prepared = prepare_moment_diagnostics(
+            local_basis, args.E_J, args.lambda2, local_offsets
+        )
+
         def observer(t, psi):
             basic_observer(t, psi)
-            diagnostics = moment_diagnostics(psi, local_basis, args.E_J, args.kappa, args.lambda2, hamiltonian, offsets=local_offsets, pbc=args.pbc,prepared=prepared)
+            diagnostics = moment_diagnostics(
+                psi,
+                local_basis,
+                args.E_J,
+                args.kappa,
+                args.lambda2,
+                hamiltonian,
+                offsets=local_offsets,
+                pbc=args.pbc,
+                prepared=prepared,
+            )
             for key, value in diagnostics.items():
                 store.setdefault(key, []).append(value)
+
         if args.propagator == "strang":
             propagator = sg.SplitOperator(
                 local_basis,
@@ -166,9 +199,7 @@ def main() -> None:
                 args.pbc,
                 offsets=local_offsets,
             )
-            propagator.evolve(
-                local_psi0, dt, steps, obs_stride, observer
-            )
+            propagator.evolve(local_psi0, dt, steps, obs_stride, observer)
         else:
             hamiltonian = sg.HamiltonianApply(
                 local_basis,
@@ -189,9 +220,7 @@ def main() -> None:
             )
         return common.stack(store)
 
-    quantum = quantum_trajectory(
-        basis, psi0, offsets, args.dt, n_steps, stride
-    )
+    quantum = quantum_trajectory(basis, psi0, offsets, args.dt, n_steps, stride)
     times = quantum["t"]
 
     # These are the initial data promised by the manuscript definition.
@@ -229,37 +258,36 @@ def main() -> None:
     if oscillation_amplitude == 0:
         oscillation_amplitude = args.zero_amplitude_scale
     threshold = float(args.ehrenfest_tol * oscillation_amplitude)
-    dev_classical = np.max(
-        np.abs(quantum["phi"] - classical_phi), axis=1
-    )
+    dev_classical = np.max(np.abs(quantum["phi"] - classical_phi), axis=1)
     dev_dw = np.max(np.abs(quantum["phi"] - dw_phi), axis=1)
 
     def first_crossing(deviation):
         indices = np.flatnonzero(deviation > threshold)
         if indices.size == 0:
-            return None,None
+            return None, None
         right = int(indices[0])
         if right == 0:
-            return float(times[0]),[float(times[0]),float(times[0])]
+            return float(times[0]), [float(times[0]), float(times[0])]
         left = right - 1
         y0 = float(deviation[left])
         y1 = float(deviation[right])
         if y1 <= y0:
-            return float(times[right]),[float(times[left]),float(times[right])]
+            return float(times[right]), [float(times[left]), float(times[right])]
         fraction = np.clip((threshold - y0) / (y1 - y0), 0.0, 1.0)
-        return float(times[left] + fraction * (times[right] - times[left])),[float(times[left]),float(times[right])]
+        return float(times[left] + fraction * (times[right] - times[left])), [
+            float(times[left]),
+            float(times[right]),
+        ]
 
-    t_ehrenfest_classical,bracket_classical = first_crossing(dev_classical)
-    t_ehrenfest_dw,bracket_dw = first_crossing(dev_dw)
+    t_ehrenfest_classical, bracket_classical = first_crossing(dev_classical)
+    t_ehrenfest_dw, bracket_dw = first_crossing(dev_dw)
     tau_ehrenfest_classical = (
         None
         if t_ehrenfest_classical is None
         else float(ctx["Omega_time"] * t_ehrenfest_classical)
     )
     tau_ehrenfest_dw = (
-        None
-        if t_ehrenfest_dw is None
-        else float(ctx["Omega_time"] * t_ehrenfest_dw)
+        None if t_ehrenfest_dw is None else float(ctx["Omega_time"] * t_ehrenfest_dw)
     )
     tau_actual = float(ctx["Omega_time"] * times[-1])
 
@@ -292,9 +320,7 @@ def main() -> None:
         )
         if quantum_low["phi"].shape != quantum["phi"].shape:
             raise RuntimeError("cutoff trajectories use different grids")
-        cutoff_convergence = float(
-            np.max(np.abs(quantum["phi"] - quantum_low["phi"]))
-        )
+        cutoff_convergence = float(np.max(np.abs(quantum["phi"] - quantum_low["phi"])))
 
     time_step_convergence = None
     if args.time_convergence_check:
@@ -340,39 +366,27 @@ def main() -> None:
     print(f"[classical] oscillation amplitude = {oscillation_amplitude:.6g}")
     print(f"[classical] threshold              = {threshold:.6g}")
     print(f"[classical] Delta phi              = {delta_phi:.6g}")
+    print(f"[classical] force renormalization = {force_renormalization_pct:.4f}%")
     print(
-        f"[classical] force renormalization = "
-        f"{force_renormalization_pct:.4f}%"
-    )
-    print(
-        f"[classical] initial representation error = "
-        f"{initial_representation_error:.4e}"
+        f"[classical] initial representation error = {initial_representation_error:.4e}"
     )
     print(f"[classical] max dev vs classical = {max_dev_classical:.4e}")
     print(f"[classical] max dev vs DW        = {max_dev_dw:.4e}")
-    print(
-        f"[classical] DW discrepancy improvement = "
-        f"{dw_improvement_pct:+.3f}%"
-    )
+    print(f"[classical] DW discrepancy improvement = {dw_improvement_pct:+.3f}%")
     print(
         f"[classical] t_E (classical) = "
         f"{display_time(t_ehrenfest_classical, times[-1])}"
     )
-    print(
-        f"[classical] t_E (DW)        = "
-        f"{display_time(t_ehrenfest_dw, times[-1])}"
-    )
+    print(f"[classical] t_E (DW)        = {display_time(t_ehrenfest_dw, times[-1])}")
     print(
         f"[classical] tau_E (classical) = "
         f"{display_time(tau_ehrenfest_classical, tau_actual)}"
     )
     print(
-        f"[classical] tau_E (DW)        = "
-        f"{display_time(tau_ehrenfest_dw, tau_actual)}"
+        f"[classical] tau_E (DW)        = {display_time(tau_ehrenfest_dw, tau_actual)}"
     )
     print(
-        f"[classical] max top-level leakage = "
-        f"{quantum['leak'].max():.3e}",
+        f"[classical] max top-level leakage = {quantum['leak'].max():.3e}",
         flush=True,
     )
     if cutoff_convergence is not None:
@@ -404,10 +418,14 @@ def main() -> None:
         debye_waller_improvement_pct=dw_improvement_pct,
         initial_representation_error=initial_representation_error,
         cutoff_convergence=cutoff_convergence,
-        cutoff_convergence_normalized=None if cutoff_convergence is None else cutoff_convergence/oscillation_amplitude,
+        cutoff_convergence_normalized=None
+        if cutoff_convergence is None
+        else cutoff_convergence / oscillation_amplitude,
         cutoff_compared=cutoff_compared,
         time_step_convergence=time_step_convergence,
-        time_step_convergence_normalized=None if time_step_convergence is None else time_step_convergence/oscillation_amplitude,
+        time_step_convergence_normalized=None
+        if time_step_convergence is None
+        else time_step_convergence / oscillation_amplitude,
         ehrenfest_fraction=float(args.ehrenfest_tol),
         ehrenfest_threshold=threshold,
         ehrenfest_crossed_classical=t_ehrenfest_classical is not None,
@@ -416,8 +434,12 @@ def main() -> None:
         t_ehrenfest_dw=t_ehrenfest_dw,
         t_ehrenfest_bracket_classical=bracket_classical,
         t_ehrenfest_bracket_dw=bracket_dw,
-        tau_ehrenfest_bracket_classical=None if bracket_classical is None else [ctx["Omega_time"]*t for t in bracket_classical],
-        tau_ehrenfest_bracket_dw=None if bracket_dw is None else [ctx["Omega_time"]*t for t in bracket_dw],
+        tau_ehrenfest_bracket_classical=None
+        if bracket_classical is None
+        else [ctx["Omega_time"] * t for t in bracket_classical],
+        tau_ehrenfest_bracket_dw=None
+        if bracket_dw is None
+        else [ctx["Omega_time"] * t for t in bracket_dw],
         tau_ehrenfest_classical=tau_ehrenfest_classical,
         tau_ehrenfest_dw=tau_ehrenfest_dw,
         tau_max_requested=tau_requested,
@@ -438,7 +460,11 @@ def main() -> None:
         arrays=dict(
             t=times,
             tau=ctx["Omega_time"] * times,
-            **{key: value for key, value in quantum.items() if key not in ("t", "phi", "pi", "n", "leak")},
+            **{
+                key: value
+                for key, value in quantum.items()
+                if key not in ("t", "phi", "pi", "n", "leak")
+            },
             phi_q=quantum["phi"],
             pi_q=quantum["pi"],
             n_q=quantum["n"],
@@ -458,11 +484,7 @@ def main() -> None:
                 [np.nan if cutoff_convergence is None else cutoff_convergence]
             ),
             time_step_convergence=np.array(
-                [
-                    np.nan
-                    if time_step_convergence is None
-                    else time_step_convergence
-                ]
+                [np.nan if time_step_convergence is None else time_step_convergence]
             ),
         ),
     )

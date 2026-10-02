@@ -46,6 +46,7 @@ import numpy as np
 from scipy.linalg import eigh
 
 import matplotlib
+
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
@@ -127,38 +128,30 @@ def build_two_site_operators(n_cut, EJ, kappa, f1, f2):
     n1 = kron2(n_local, I1)
     n2 = kron2(I1, n_local)
 
-    kinetic = hermitize(
-        0.5 * kron2(Pi2_local, I1)
-        + 0.5 * kron2(I1, Pi2_local)
-    )
+    kinetic = hermitize(0.5 * kron2(Pi2_local, I1) + 0.5 * kron2(I1, Pi2_local))
 
     V_cos = hermitize(
-        EJ * (
-            kron2(I1 - cos_phi_local, I1)
-            + kron2(I1, I1 - cos_phi_local)
-        )
+        EJ * (kron2(I1 - cos_phi_local, I1) + kron2(I1, I1 - cos_phi_local))
     )
 
     V4 = hermitize(
-        EJ * (
+        EJ
+        * (
             kron2(0.5 * phi2_local - phi4_local / 24.0, I1)
             + kron2(I1, 0.5 * phi2_local - phi4_local / 24.0)
         )
     )
 
     V6 = hermitize(
-        EJ * (
+        EJ
+        * (
             kron2(
-                0.5 * phi2_local
-                - phi4_local / 24.0
-                + phi6_local / 720.0,
+                0.5 * phi2_local - phi4_local / 24.0 + phi6_local / 720.0,
                 I1,
             )
             + kron2(
                 I1,
-                0.5 * phi2_local
-                - phi4_local / 24.0
-                + phi6_local / 720.0,
+                0.5 * phi2_local - phi4_local / 24.0 + phi6_local / 720.0,
             )
         )
     )
@@ -254,8 +247,7 @@ def relative_energy_drift(energy):
 
 def field_vector_error(phi1_ref, phi2_ref, phi1_test, phi2_test):
     diff = np.sqrt(
-        (np.real(phi1_ref - phi1_test)) ** 2
-        + (np.real(phi2_ref - phi2_test)) ** 2
+        (np.real(phi1_ref - phi1_test)) ** 2 + (np.real(phi2_ref - phi2_test)) ** 2
     )
     ref_norm = np.sqrt(np.real(phi1_ref) ** 2 + np.real(phi2_ref) ** 2)
     denom = max(float(np.max(ref_norm)), 1e-12)
@@ -263,9 +255,11 @@ def field_vector_error(phi1_ref, phi2_ref, phi1_test, phi2_test):
 
 
 def make_plots(case_dir, times, data, n_cut, kappa, f1, f2):
-    title = (
-        r"$n_{\rm cut}=%d$, $\kappa=%.3g$, $f_1=%.3g$, $f_2=%.3g$"
-        % (n_cut, kappa, f1, f2)
+    title = r"$n_{\rm cut}=%d$, $\kappa=%.3g$, $f_1=%.3g$, $f_2=%.3g$" % (
+        n_cut,
+        kappa,
+        f1,
+        f2,
     )
 
     eps = 1e-16
@@ -273,7 +267,9 @@ def make_plots(case_dir, times, data, n_cut, kappa, f1, f2):
     # Infidelity
     plt.figure(figsize=(7.2, 4.6))
     plt.semilogy(times, np.maximum(1.0 - data["F_native"], eps), label="Native-only")
-    plt.semilogy(times, np.maximum(1.0 - data["F_aug"], eps), label="Native + correction")
+    plt.semilogy(
+        times, np.maximum(1.0 - data["F_aug"], eps), label="Native + correction"
+    )
     plt.semilogy(times, np.maximum(1.0 - data["F4"], eps), label="Quartic target")
     plt.semilogy(times, np.maximum(1.0 - data["F6"], eps), label="Sixth-order target")
     plt.xlabel("Time")
@@ -390,40 +386,42 @@ def write_timeseries_csv(path, times, data):
         writer.writerow(headers)
 
         for i in range(len(times)):
-            writer.writerow([
-                float(times[i]),
-                float(data["F_native"][i]),
-                float(data["F_aug"][i]),
-                float(data["F4"][i]),
-                float(data["F6"][i]),
-                float(1.0 - data["F_native"][i]),
-                float(1.0 - data["F_aug"][i]),
-                float(1.0 - data["F4"][i]),
-                float(1.0 - data["F6"][i]),
-                float(data["err_native"][i]),
-                float(data["err_aug"][i]),
-                float(data["err_4"][i]),
-                float(data["err_6"][i]),
-                float(np.real(data["phi1_target"][i])),
-                float(np.real(data["phi2_target"][i])),
-                float(np.real(data["phi1_native"][i])),
-                float(np.real(data["phi2_native"][i])),
-                float(np.real(data["phi1_aug"][i])),
-                float(np.real(data["phi2_aug"][i])),
-                float(np.real(data["phi1_4"][i])),
-                float(np.real(data["phi2_4"][i])),
-                float(np.real(data["phi1_6"][i])),
-                float(np.real(data["phi2_6"][i])),
-                float(np.real(data["dphi2_target"][i])),
-                float(np.real(data["dphi2_native"][i])),
-                float(np.real(data["dphi2_aug"][i])),
-                float(np.real(data["dphi2_4"][i])),
-                float(np.real(data["dphi2_6"][i])),
-                float(np.real(data["E_target_ref"][i])),
-                float(np.real(data["E_target_aug"][i])),
-                float(np.real(data["n1_target"][i])),
-                float(np.real(data["n2_target"][i])),
-            ])
+            writer.writerow(
+                [
+                    float(times[i]),
+                    float(data["F_native"][i]),
+                    float(data["F_aug"][i]),
+                    float(data["F4"][i]),
+                    float(data["F6"][i]),
+                    float(1.0 - data["F_native"][i]),
+                    float(1.0 - data["F_aug"][i]),
+                    float(1.0 - data["F4"][i]),
+                    float(1.0 - data["F6"][i]),
+                    float(data["err_native"][i]),
+                    float(data["err_aug"][i]),
+                    float(data["err_4"][i]),
+                    float(data["err_6"][i]),
+                    float(np.real(data["phi1_target"][i])),
+                    float(np.real(data["phi2_target"][i])),
+                    float(np.real(data["phi1_native"][i])),
+                    float(np.real(data["phi2_native"][i])),
+                    float(np.real(data["phi1_aug"][i])),
+                    float(np.real(data["phi2_aug"][i])),
+                    float(np.real(data["phi1_4"][i])),
+                    float(np.real(data["phi2_4"][i])),
+                    float(np.real(data["phi1_6"][i])),
+                    float(np.real(data["phi2_6"][i])),
+                    float(np.real(data["dphi2_target"][i])),
+                    float(np.real(data["dphi2_native"][i])),
+                    float(np.real(data["dphi2_aug"][i])),
+                    float(np.real(data["dphi2_4"][i])),
+                    float(np.real(data["dphi2_6"][i])),
+                    float(np.real(data["E_target_ref"][i])),
+                    float(np.real(data["E_target_aug"][i])),
+                    float(np.real(data["n1_target"][i])),
+                    float(np.real(data["n2_target"][i])),
+                ]
+            )
 
 
 def write_metrics_csv(path, metrics):
@@ -594,7 +592,7 @@ def run_case(args):
         "case_index": args.case_index,
         "n_cases": n_cases,
         "n_cut": n_cut,
-        "hilbert_dim": n_cut ** 2,
+        "hilbert_dim": n_cut**2,
         "EJ": args.EJ,
         "kappa": kappa,
         "f": f,
@@ -619,10 +617,18 @@ def run_case(args):
         "max_field_error_augmented": float(np.max(err_aug)),
         "max_field_error_quartic_target": float(np.max(err_4)),
         "max_field_error_sixth_target": float(np.max(err_6)),
-        "max_coupling_error_native_only": float(np.max(np.abs(np.real(dphi2_target - dphi2_native)))),
-        "max_coupling_error_augmented": float(np.max(np.abs(np.real(dphi2_target - dphi2_aug)))),
-        "max_coupling_error_quartic_target": float(np.max(np.abs(np.real(dphi2_target - dphi2_4)))),
-        "max_coupling_error_sixth_target": float(np.max(np.abs(np.real(dphi2_target - dphi2_6)))),
+        "max_coupling_error_native_only": float(
+            np.max(np.abs(np.real(dphi2_target - dphi2_native)))
+        ),
+        "max_coupling_error_augmented": float(
+            np.max(np.abs(np.real(dphi2_target - dphi2_aug)))
+        ),
+        "max_coupling_error_quartic_target": float(
+            np.max(np.abs(np.real(dphi2_target - dphi2_4)))
+        ),
+        "max_coupling_error_sixth_target": float(
+            np.max(np.abs(np.real(dphi2_target - dphi2_6)))
+        ),
         "target_energy_drift_reference": relative_energy_drift(E_target_ref),
         "target_energy_drift_augmented": relative_energy_drift(E_target_aug),
         "max_mean_n1_target": float(np.max(np.real(n1_target))),
@@ -632,10 +638,7 @@ def run_case(args):
     }
 
     np.savez_compressed(
-        os.path.join(case_dir, "timeseries_data.npz"),
-        times=times,
-        psi0=psi0,
-        **data
+        os.path.join(case_dir, "timeseries_data.npz"), times=times, psi0=psi0, **data
     )
 
     write_timeseries_csv(os.path.join(case_dir, "timeseries.csv"), times, data)

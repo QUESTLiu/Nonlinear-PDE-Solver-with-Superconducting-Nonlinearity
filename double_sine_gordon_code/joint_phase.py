@@ -34,12 +34,16 @@ def response_coefficients(a, b, degree):
     if max(abs(a), abs(b)) >= 1 or degree < 1:
         raise ValueError("this bounded compiler requires |a|,|b|<1 and K>=1")
     indices = np.arange(-40, 41)
-    first = (1j ** indices) * jv(indices, a)
+    first = (1j**indices) * jv(indices, a)
     second = np.zeros(161, complex)
-    second[::2] = (1j ** indices) * jv(indices, b)
+    second[::2] = (1j**indices) * jv(indices, b)
+    # exp(i*a*cos(x))=sum_k i^k J_k(a) exp(i*k*x); the second harmonic
+    # contributes only indices 2*l. Their convolution has n=k+2*l.
+    # If the omitted l1 tail is delta, |F_truncated|<=1+delta on the circle;
+    # division by that bound makes the retained response contractive.
     coeff = np.convolve(first, second)  # indices -120,...,120
     tail = float(np.sum(np.abs(coeff[np.abs(np.arange(-120, 121)) > degree])))
-    f = coeff[120 - degree:121 + degree] / (1 + tail + 1e-13)
+    f = coeff[120 - degree : 121 + degree] / (1 + tail + 1e-13)
     x = 2 * np.pi * np.arange(4096) / 4096
     fft = np.fft.fft(np.exp(1j * (a * np.cos(x) + b * np.cos(2 * x)))) / len(x)
     fft_error = max(abs(coeff[120 + n] - fft[n % len(x)]) for n in range(-20, 21))
@@ -50,10 +54,15 @@ def complete_and_factor(f):
     """Return time-ordered SU(2) rotations around balanced Z queries."""
     d = len(f) - 1
     q = -np.convolve(f, f[::-1].conj())
+    # Reversed conjugate coefficients represent F*(1/z*) on the unit circle.
+    # Adding the central 1 forms z^d*(1-|F|^2); spectral completion seeks H
+    # with that autocorrelation. The measured completion error checks the roots.
     q[d] += 1
     roots = np.polynomial.polynomial.polyroots(q)
     inside = roots[np.argsort(np.abs(roots))[:d]]
     h = np.polynomial.polynomial.polyfromroots(inside)
+    # The central autocorrelation coefficient is sum_k |h_k|^2. Matching it
+    # fixes the magnitude of H, while its overall phase remains arbitrary.
     h *= np.sqrt(q[d].real / np.sum(np.abs(h) ** 2))
     completion_error = np.max(np.abs(np.convolve(h, h[::-1].conj()) - q))
     coeff = np.empty((d + 1, 2, 2), complex)
@@ -67,18 +76,24 @@ def complete_and_factor(f):
         v = left[:, 0]
         basis = np.column_stack((v, [-v[1].conjugate(), v[0].conjugate()]))
         p = np.outer(v, v.conj())
-        residuals.extend([np.linalg.norm(p @ coeff[0]), np.linalg.norm((eye - p) @ coeff[-1])])
+        residuals.extend(
+            [np.linalg.norm(p @ coeff[0]), np.linalg.norm((eye - p) @ coeff[-1])]
+        )
         coeff = (eye - p) @ coeff[:-1] + p @ coeff[1:]
         bases.append(basis)
     left, _, right = np.linalg.svd(coeff[0])
+    # Polar projection repairs the numerically recovered constant to a unitary;
+    # determinant normalization chooses SU(2). Record the projection error below.
     constant = left @ right
     constant /= np.sqrt(np.linalg.det(constant))
     rotations = [bases[-1].conj().T @ constant]
     rotations += [bases[i].conj().T @ bases[i + 1] for i in range(d - 2, -1, -1)]
     rotations.append(bases[0])
-    diagnostics = dict(completion_error=float(completion_error),
-                       peeling_residual=float(max(residuals)),
-                       constant_projection_error=float(np.linalg.norm(constant - coeff[0])))
+    diagnostics = dict(
+        completion_error=float(completion_error),
+        peeling_residual=float(max(residuals)),
+        constant_projection_error=float(np.linalg.norm(constant - coeff[0])),
+    )
     return rotations, original, diagnostics
 
 
@@ -151,7 +166,7 @@ def merge_rotations(pulses):
             c, s = np.cos(angle / 2), np.sin(angle / 2)
             pending = np.array([[c, -s], [s, c]]) @ pending
         else:
-            pending = np.diag([np.exp(-.5j * angle), np.exp(.5j * angle)]) @ pending
+            pending = np.diag([np.exp(-0.5j * angle), np.exp(0.5j * angle)]) @ pending
     flush()
     return merge_z(result)
 
@@ -193,12 +208,16 @@ def compile_phase(a, b, degree):
     unitarity = float(np.max(np.abs(word.conj().transpose(0, 2, 1) @ word - np.eye(2))))
     if reconstruction > 1e-8 or unitarity > 1e-11:
         raise ArithmeticError(f"failed pulse recovery: {reconstruction=}, {unitarity=}")
-    diagnostics.update(factor_info, reconstruction_error=reconstruction,
-                       sampled_paired_error=paired_error, unitarity_error=unitarity,
-                       omitted_rotation_bound=omitted)
+    diagnostics.update(
+        factor_info,
+        reconstruction_error=reconstruction,
+        sampled_paired_error=paired_error,
+        unitarity_error=unitarity,
+        omitted_rotation_bound=omitted,
+    )
     # Linear interpolation bounds the unsampled matrix-valued error by M2 dx^2/8.
     # Differentiating the 2K unitary queries gives ||W''||<=K^2; the target
     # contributes (|a|+2|b|)^2+|a|+4|b|. This bound excludes floating-point error.
-    m2 = degree ** 2 + (abs(a) + 2 * abs(b)) ** 2 + abs(a) + 4 * abs(b)
+    m2 = degree**2 + (abs(a) + 2 * abs(b)) ** 2 + abs(a) + 4 * abs(b)
     diagnostics["interpolation_allowance"] = float(m2 * (2 * np.pi / len(x)) ** 2 / 8)
     return dict(a=a, b=b, degree=degree, pulses=pulses, diagnostics=diagnostics)

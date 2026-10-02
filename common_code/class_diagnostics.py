@@ -32,8 +32,13 @@ def duffing(n, beta=0.1, omega0=1.0):
     h_t = np.asarray(ops["H_D"])
     h_n = np.asarray(ops["H_K"])  # includes the scalar E0 I
     dh = h_t - h_n
-    return dict(N=n, dH_centered=centered_norm(dh), H_centered=centered_norm(h_t),
-                eta_H=centered_norm(dh) / centered_norm(h_t), C_corr=spec(h_n @ dh - dh @ h_n))
+    return dict(
+        N=n,
+        dH_centered=centered_norm(dh),
+        H_centered=centered_norm(h_t),
+        eta_H=centered_norm(dh) / centered_norm(h_t),
+        C_corr=spec(h_n @ dh - dh @ h_n),
+    )
 
 
 def dsg(n, ej=1.0, lam2=0.3, kappa=1.0, omega_b=np.sqrt(3.0)):
@@ -49,23 +54,41 @@ def dsg(n, ej=1.0, lam2=0.3, kappa=1.0, omega_b=np.sqrt(3.0)):
     site = kin + ej * (eye - cos1)
     res = lam2 * (eye - cos2)
     k = np.kron
-    h_nat = k(site, eye) + k(eye, site) + kappa / 2 * np.linalg.matrix_power(k(phi, eye) - k(eye, phi), 2)
+    h_nat = (
+        k(site, eye)
+        + k(eye, site)
+        + kappa / 2 * np.linalg.matrix_power(k(phi, eye) - k(eye, phi), 2)
+    )
     dh = k(res, eye) + k(eye, res)
     h_t = h_nat + dh
-    return dict(N=n, dim=n * n, dH_centered=centered_norm(dh), H_centered=centered_norm(h_t),
-                eta_H=centered_norm(dh) / centered_norm(h_t), C_corr=spec(h_nat @ dh - dh @ h_nat))
+    return dict(
+        N=n,
+        dim=n * n,
+        dH_centered=centered_norm(dh),
+        H_centered=centered_norm(h_t),
+        eta_H=centered_norm(dh) / centered_norm(h_t),
+        C_corr=spec(h_nat @ dh - dh @ h_nat),
+    )
 
 
 def main():
-    out = dict(duffing=[duffing(n) for n in (48, 64, 80)], double_sine_gordon=[dsg(n) for n in (16, 24, 32, 48)])
+    out = dict(
+        duffing=[duffing(n) for n in (48, 64, 80)],
+        double_sine_gordon=[dsg(n) for n in (16, 24, 32, 48)],
+    )
     eps = np.sqrt(1e-3)
     out["class_I_threshold_T_times_dH"] = eps / 3
     out["duffing_T"] = 1.0
     out["dsg_T"] = 5.2 / np.sqrt(3)
-    (Path(__file__).resolve().parents[1] / "common_data" / "class_diagnostics.json").write_text(json.dumps(out, indent=1))
+    (
+        Path(__file__).resolve().parents[1] / "common_data" / "class_diagnostics.json"
+    ).write_text(json.dumps(out, indent=1))
     for key in ("duffing", "double_sine_gordon"):
         for r in out[key]:
-            print(key, {k: (round(v, 4) if isinstance(v, float) else v) for k, v in r.items()})
+            print(
+                key,
+                {k: (round(v, 4) if isinstance(v, float) else v) for k, v in r.items()},
+            )
 
 
 if __name__ == "__main__":

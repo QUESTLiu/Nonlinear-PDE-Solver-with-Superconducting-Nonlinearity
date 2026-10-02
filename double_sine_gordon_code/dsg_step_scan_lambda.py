@@ -23,12 +23,17 @@ import dsg_step_scan as scan  # noqa: E402
 
 def configure(lam2):
     scan.LAM2 = lam2
-    scan.CACHE = Path(os.environ.get("DSG_SCAN_CACHE", "/tmp/dsg_scan_cache")) / f"lambda{lam2:g}"
+    scan.CACHE = (
+        Path(os.environ.get("DSG_SCAN_CACHE", "/tmp/dsg_scan_cache"))
+        / f"lambda{lam2:g}"
+    )
     scan.PARTS = scan.DATA / f"dsg_step_scan_parts_lambda{lam2:g}"
 
 
 def main():
-    parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    parser = argparse.ArgumentParser(
+        description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter
+    )
     parser.add_argument("job", choices=["references", "scan", "merge"])
     parser.add_argument("--lam2", type=float, required=True)
     parser.add_argument("--route", choices=["hybrid", "kin_pot", "gauss_block"])
@@ -55,34 +60,70 @@ def main():
                 row["lambda2"] = args.lam2
                 row["wall_seconds"] = time.perf_counter() - started
                 results.append(row)
-                acc = "PASS" if row["all_criteria"] else "fail " + ",".join(k for k, v in row["acceptance"].items() if not v)
-                print(f"lambda2={args.lam2:g} {args.route} r={r} o={order} s={args.s} prims={row['total_programmable_primitives']} "
-                      f"state={row['state_error']:.4f} C12={row['C12_error']:.4f} S2={row['S2_error']:.4f} "
-                      f"bnd={row['boundary_population']:.2e} ref={row['margins']['reference']:.1e} {acc} ({row['wall_seconds']:.0f} s)",
-                      flush=True)
+                acc = (
+                    "PASS"
+                    if row["all_criteria"]
+                    else "fail "
+                    + ",".join(k for k, v in row["acceptance"].items() if not v)
+                )
+                print(
+                    f"lambda2={args.lam2:g} {args.route} r={r} o={order} s={args.s} prims={row['total_programmable_primitives']} "
+                    f"state={row['state_error']:.4f} C12={row['C12_error']:.4f} S2={row['S2_error']:.4f} "
+                    f"bnd={row['boundary_population']:.2e} ref={row['margins']['reference']:.1e} {acc} ({row['wall_seconds']:.0f} s)",
+                    flush=True,
+                )
                 sequence_tag = "_merged" if args.route == "gauss_block" else ""
                 name = f"{args.route}_prep{scan.prep_tag(prep)}{args.tag}{sequence_tag}.json"
-                (scan.PARTS / name).write_text(json.dumps(dict(environment=scan.environment(), rows=results), indent=1))
+                (scan.PARTS / name).write_text(
+                    json.dumps(
+                        dict(environment=scan.environment(), rows=results), indent=1
+                    )
+                )
         return
     unique = {}
     for path in sorted(scan.PARTS.glob("*.json")):
         for row in json.loads(path.read_text())["rows"]:
-            if row["route"] == "gauss_block" and row.get("gaussian_sequence") != "merged_intervals":
+            if (
+                row["route"] == "gauss_block"
+                and row.get("gaussian_sequence") != "merged_intervals"
+            ):
                 continue
-            unique[(row["route"], row["r"], row["order"], row["s"], tuple(row["preparation"]))] = row
+            unique[
+                (
+                    row["route"],
+                    row["r"],
+                    row["order"],
+                    row["s"],
+                    tuple(row["preparation"]),
+                )
+            ] = row
     rows = list(unique.values())
     best = {}
     for row in rows:
         if row["preparation"] != [1.0, 0.0] or not row["all_criteria"]:
             continue
         key = row["route"]
-        if key not in best or (row["total_programmable_primitives"], row["state_error"]) < (
-                best[key]["total_programmable_primitives"], best[key]["state_error"]):
+        if key not in best or (
+            row["total_programmable_primitives"],
+            row["state_error"],
+        ) < (best[key]["total_programmable_primitives"], best[key]["state_error"]):
             best[key] = row
-    summary = dict(description=f"dsg_step_scan.py circuits and acceptance rule at lambda2 = {args.lam2:g}", lambda2=args.lam2, rows=rows,
-                   cheapest_passing={k: dict(r=v["r"], order=v["order"], s=v["s"], primitives=v["total_programmable_primitives"],
-                                             state_error=v["state_error"]) for k, v in best.items()},
-                   environment=scan.environment())
+    summary = dict(
+        description=f"dsg_step_scan.py circuits and acceptance rule at lambda2 = {args.lam2:g}",
+        lambda2=args.lam2,
+        rows=rows,
+        cheapest_passing={
+            k: dict(
+                r=v["r"],
+                order=v["order"],
+                s=v["s"],
+                primitives=v["total_programmable_primitives"],
+                state_error=v["state_error"],
+            )
+            for k, v in best.items()
+        },
+        environment=scan.environment(),
+    )
     out = scan.DATA / f"dsg_step_scan_lambda{args.lam2:g}_merged.json"
     out.write_text(json.dumps(summary, indent=1))
     for k, v in summary["cheapest_passing"].items():

@@ -28,7 +28,9 @@ XIS = np.round(np.arange(0.25, 2.5001, 0.05), 2)
 def trajectories(ops, eig, xi):
     psi, _ = df.coherent_state(ops["H_D"].shape[0], xi)
     vals, vecs = eig
-    target = vecs @ ((vecs.conj().T @ psi)[:, None] * np.exp(-1j * vals[:, None] * TIMES))
+    target = vecs @ (
+        (vecs.conj().T @ psi)[:, None] * np.exp(-1j * vals[:, None] * TIMES)
+    )
     native = psi[:, None] * np.exp(-1j * np.diag(ops["H_K"]).real[:, None] * TIMES)
     return psi, target, native
 
@@ -45,20 +47,25 @@ def diagnostics(n):
         infid = dist**2 * (1 - dist**2 / 4)
         bounds = native_residual_integral(residual, native, TIMES)
         ceiling = float(np.sum(np.abs(target[:, -1]) * np.abs(psi)) ** 2)
+
         # r_psi(t) = sigma(lambda V_cr) / sigma(H_D) on the exact target trajectory
         def sigma(op, states):
             act = op @ states
             mean = np.sum(states.conj() * act, axis=0)
             return np.linalg.norm(act - states * mean[None, :], axis=0)
+
         r_psi = sigma(lam_vcr, target) / sigma(ops["H_D"], target)
-        rows.append(dict(
-            xi=float(xi), n0=float(xi**2),
-            max_native_infidelity=float(infid.max()),
-            duhamel_infidelity_bound=float(bounds["uncentered_integral"][-1] ** 2),
-            centered_infidelity_bound=float(bounds["centered_integral"][-1] ** 2),
-            diagonal_ceiling_T=ceiling,
-            max_r_psi=float(r_psi.max()),
-        ))
+        rows.append(
+            dict(
+                xi=float(xi),
+                n0=float(xi**2),
+                max_native_infidelity=float(infid.max()),
+                duhamel_infidelity_bound=float(bounds["uncentered_integral"][-1] ** 2),
+                centered_infidelity_bound=float(bounds["centered_integral"][-1] ** 2),
+                diagonal_ceiling_T=ceiling,
+                max_r_psi=float(r_psi.max()),
+            )
+        )
     return ops, eig, rows
 
 
@@ -79,9 +86,15 @@ def main():
     _, _, rows_check = diagnostics(N_CHECK)
     sel = [r for r in rows if r["n0"] > 1.0]
     fit = dict(
-        infidelity_exponent=loglog_slope([r["n0"] for r in sel], [r["max_native_infidelity"] for r in sel]),
-        duhamel_exponent=loglog_slope([r["n0"] for r in sel], [r["duhamel_infidelity_bound"] for r in sel]),
-        centered_exponent=loglog_slope([r["n0"] for r in sel], [r["centered_infidelity_bound"] for r in sel]),
+        infidelity_exponent=loglog_slope(
+            [r["n0"] for r in sel], [r["max_native_infidelity"] for r in sel]
+        ),
+        duhamel_exponent=loglog_slope(
+            [r["n0"] for r in sel], [r["duhamel_infidelity_bound"] for r in sel]
+        ),
+        centered_exponent=loglog_slope(
+            [r["n0"] for r in sel], [r["centered_infidelity_bound"] for r in sel]
+        ),
         points=len(sel),
     )
     xs = [r["xi"] for r in rows]
@@ -100,22 +113,43 @@ def main():
             _, tgt, _ = trajectories(o, e, xi)
             emb = np.vstack([tgt, np.zeros((N_REF - n, tgt.shape[1]))])
             d = projective_distances(ref, emb)
-            entries.append(dict(N=n, max_infidelity=float((d**2 * (1 - d**2 / 4)).max())))
+            entries.append(
+                dict(N=n, max_infidelity=float((d**2 * (1 - d**2 / 4)).max()))
+            )
         conv[str(xi)] = entries
-    cutoff_diff = max(abs(a["max_native_infidelity"] - b["max_native_infidelity"]) for a, b in zip(rows, rows_check))
+    cutoff_diff = max(
+        abs(a["max_native_infidelity"] - b["max_native_infidelity"])
+        for a, b in zip(rows, rows_check)
+    )
     bench = {str(r["xi"]): r for r in rows if r["xi"] in (1.75, 2.0)}
     out = dict(
         description="Duffing native-Kerr diagnostics, omega0=1, beta=0.1, T=1, 401-point grid, strict physical sandwich",
-        N_ref=N_REF, N_check=N_CHECK, K_eff=float(ops["K_eff"]), lambda_=float(ops["lambda"]),
-        rows=rows, fit=fit, unity_crossing=unity, benchmark=bench,
-        cutoff_convergence=conv, max_infidelity_change_N64_to_N80=cutoff_diff,
-        python=sys.executable, numpy=np.__version__,
+        N_ref=N_REF,
+        N_check=N_CHECK,
+        K_eff=float(ops["K_eff"]),
+        lambda_=float(ops["lambda"]),
+        rows=rows,
+        fit=fit,
+        unity_crossing=unity,
+        benchmark=bench,
+        cutoff_convergence=conv,
+        max_infidelity_change_N64_to_N80=cutoff_diff,
+        python=sys.executable,
+        numpy=np.__version__,
     )
-    path = Path(__file__).resolve().parents[1] / "duffing_data" / "duffing_amplitude_scan.json"
+    path = (
+        Path(__file__).resolve().parents[1]
+        / "duffing_data"
+        / "duffing_amplitude_scan.json"
+    )
     path.write_text(json.dumps(out, indent=1))
-    print(json.dumps(dict(fit=fit, unity=unity, bench=bench, cutoff_diff=cutoff_diff), indent=1))
+    print(
+        json.dumps(
+            dict(fit=fit, unity=unity, bench=bench, cutoff_diff=cutoff_diff), indent=1
+        )
+    )
     for xi, entries in conv.items():
-        print(xi, [(e["N"], f'{e["max_infidelity"]:.2e}') for e in entries])
+        print(xi, [(e["N"], f"{e['max_infidelity']:.2e}") for e in entries])
 
 
 if __name__ == "__main__":

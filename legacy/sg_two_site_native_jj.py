@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""
+r"""
 Two-site native Josephson / Sine-Gordon embedding benchmark.
 
 Hamiltonian:
@@ -45,6 +45,7 @@ import numpy as np
 from scipy.linalg import eigh
 
 import matplotlib
+
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
@@ -138,14 +139,16 @@ def build_two_site_operators(n_cut, EJ, kappa):
     )
 
     V4 = hermitize(
-        EJ * (
+        EJ
+        * (
             kron2(0.5 * phi2_local - phi4_local / 24.0, I1)
             + kron2(I1, 0.5 * phi2_local - phi4_local / 24.0)
         )
     )
 
     V6 = hermitize(
-        EJ * (
+        EJ
+        * (
             kron2(
                 0.5 * phi2_local - phi4_local / 24.0 + phi6_local / 720.0,
                 I1,
@@ -260,7 +263,9 @@ def relative_energy_drift(energy):
 
 
 def field_vector_error(phi1_ref, phi2_ref, phi1_test, phi2_test):
-    diff = np.sqrt((np.real(phi1_ref - phi1_test)) ** 2 + (np.real(phi2_ref - phi2_test)) ** 2)
+    diff = np.sqrt(
+        (np.real(phi1_ref - phi1_test)) ** 2 + (np.real(phi2_ref - phi2_test)) ** 2
+    )
     ref_norm = np.sqrt(np.real(phi1_ref) ** 2 + np.real(phi2_ref) ** 2)
     denom = max(float(np.max(ref_norm)), 1e-12)
     return diff / denom
@@ -276,8 +281,12 @@ def make_plots(case_dir, times, data, n_cut, kappa, phi1_0, phi2_0):
     plt.figure(figsize=(7.2, 4.6))
     eps = 1e-16
     plt.semilogy(times, np.maximum(1.0 - data["F4"], eps), label="Quartic truncation")
-    plt.semilogy(times, np.maximum(1.0 - data["F6"], eps), label="Sixth-order truncation")
-    plt.semilogy(times, np.maximum(1.0 - data["Ftrot"], eps), label="Trotterized native cosine")
+    plt.semilogy(
+        times, np.maximum(1.0 - data["F6"], eps), label="Sixth-order truncation"
+    )
+    plt.semilogy(
+        times, np.maximum(1.0 - data["Ftrot"], eps), label="Trotterized native cosine"
+    )
     plt.xlabel("Time")
     plt.ylabel("Infidelity")
     plt.title("Two-site native Josephson benchmark: " + title_suffix)
@@ -334,8 +343,12 @@ def make_plots(case_dir, times, data, n_cut, kappa, phi1_0, phi2_0):
     # Field vector error
     plt.figure(figsize=(7.2, 4.6))
     plt.semilogy(times, np.maximum(data["err_phi_4"], eps), label="Quartic truncation")
-    plt.semilogy(times, np.maximum(data["err_phi_6"], eps), label="Sixth-order truncation")
-    plt.semilogy(times, np.maximum(data["err_phi_trot"], eps), label="Trotterized native cosine")
+    plt.semilogy(
+        times, np.maximum(data["err_phi_6"], eps), label="Sixth-order truncation"
+    )
+    plt.semilogy(
+        times, np.maximum(data["err_phi_trot"], eps), label="Trotterized native cosine"
+    )
     plt.xlabel("Time")
     plt.ylabel(r"Relative field-vector error")
     plt.title("Two-site field-vector error: " + title_suffix)
@@ -396,34 +409,36 @@ def write_timeseries_csv(path, times, data):
         writer.writerow(headers)
 
         for i in range(len(times)):
-            writer.writerow([
-                float(times[i]),
-                float(data["F4"][i]),
-                float(data["F6"][i]),
-                float(data["Ftrot"][i]),
-                float(1.0 - data["F4"][i]),
-                float(1.0 - data["F6"][i]),
-                float(1.0 - data["Ftrot"][i]),
-                float(np.real(data["phi1_cos"][i])),
-                float(np.real(data["phi2_cos"][i])),
-                float(np.real(data["phi1_4"][i])),
-                float(np.real(data["phi2_4"][i])),
-                float(np.real(data["phi1_6"][i])),
-                float(np.real(data["phi2_6"][i])),
-                float(np.real(data["phi1_trot"][i])),
-                float(np.real(data["phi2_trot"][i])),
-                float(np.real(data["err_phi_4"][i])),
-                float(np.real(data["err_phi_6"][i])),
-                float(np.real(data["err_phi_trot"][i])),
-                float(np.real(data["dphi2_cos"][i])),
-                float(np.real(data["dphi2_4"][i])),
-                float(np.real(data["dphi2_6"][i])),
-                float(np.real(data["dphi2_trot"][i])),
-                float(np.real(data["n1_cos"][i])),
-                float(np.real(data["n2_cos"][i])),
-                float(np.real(data["E_cos_ref"][i])),
-                float(np.real(data["E_cos_trot"][i])),
-            ])
+            writer.writerow(
+                [
+                    float(times[i]),
+                    float(data["F4"][i]),
+                    float(data["F6"][i]),
+                    float(data["Ftrot"][i]),
+                    float(1.0 - data["F4"][i]),
+                    float(1.0 - data["F6"][i]),
+                    float(1.0 - data["Ftrot"][i]),
+                    float(np.real(data["phi1_cos"][i])),
+                    float(np.real(data["phi2_cos"][i])),
+                    float(np.real(data["phi1_4"][i])),
+                    float(np.real(data["phi2_4"][i])),
+                    float(np.real(data["phi1_6"][i])),
+                    float(np.real(data["phi2_6"][i])),
+                    float(np.real(data["phi1_trot"][i])),
+                    float(np.real(data["phi2_trot"][i])),
+                    float(np.real(data["err_phi_4"][i])),
+                    float(np.real(data["err_phi_6"][i])),
+                    float(np.real(data["err_phi_trot"][i])),
+                    float(np.real(data["dphi2_cos"][i])),
+                    float(np.real(data["dphi2_4"][i])),
+                    float(np.real(data["dphi2_6"][i])),
+                    float(np.real(data["dphi2_trot"][i])),
+                    float(np.real(data["n1_cos"][i])),
+                    float(np.real(data["n2_cos"][i])),
+                    float(np.real(data["E_cos_ref"][i])),
+                    float(np.real(data["E_cos_trot"][i])),
+                ]
+            )
 
 
 def write_metrics_csv(path, metrics):
@@ -570,7 +585,7 @@ def run_case(args):
         "case_index": args.case_index,
         "n_cases": n_cases,
         "n_cut": n_cut,
-        "hilbert_dim": n_cut ** 2,
+        "hilbert_dim": n_cut**2,
         "EJ": args.EJ,
         "kappa": kappa,
         "phi1_0": args.phi1_0,
@@ -593,9 +608,13 @@ def run_case(args):
         "final_field_vector_error_sixth": float(err_phi_6[-1]),
         "final_field_vector_error_trotter": float(err_phi_trot[-1]),
         "max_coupling_observable_cos": float(np.max(np.real(dphi2_cos))),
-        "max_coupling_error_quartic": float(np.max(np.abs(np.real(dphi2_cos - dphi2_4)))),
+        "max_coupling_error_quartic": float(
+            np.max(np.abs(np.real(dphi2_cos - dphi2_4)))
+        ),
         "max_coupling_error_sixth": float(np.max(np.abs(np.real(dphi2_cos - dphi2_6)))),
-        "max_coupling_error_trotter": float(np.max(np.abs(np.real(dphi2_cos - dphi2_trot)))),
+        "max_coupling_error_trotter": float(
+            np.max(np.abs(np.real(dphi2_cos - dphi2_trot)))
+        ),
         "cos_energy_drift_reference": relative_energy_drift(E_cos_ref),
         "cos_energy_drift_trotter": relative_energy_drift(E_cos_trot),
         "max_mean_n1_reference": float(np.max(np.real(n1_cos))),
@@ -606,10 +625,7 @@ def run_case(args):
 
     # Save data
     np.savez_compressed(
-        os.path.join(case_dir, "timeseries_data.npz"),
-        times=times,
-        psi0=psi0,
-        **data
+        os.path.join(case_dir, "timeseries_data.npz"), times=times, psi0=psi0, **data
     )
 
     write_timeseries_csv(os.path.join(case_dir, "timeseries.csv"), times, data)
@@ -663,12 +679,36 @@ def aggregate_results(args):
     kappas = sorted({float(r["kappa"]) for r in rows})
 
     plot_specs = [
-        ("max_infidelity_quartic", "Max infidelity: quartic", "aggregate_quartic_max_infid.png"),
-        ("max_infidelity_sixth", "Max infidelity: sixth-order", "aggregate_sixth_max_infid.png"),
-        ("max_infidelity_trotter", "Max infidelity: native Trotter", "aggregate_trotter_max_infid.png"),
-        ("max_field_vector_error_quartic", "Max field-vector error: quartic", "aggregate_quartic_field_error.png"),
-        ("max_field_vector_error_sixth", "Max field-vector error: sixth-order", "aggregate_sixth_field_error.png"),
-        ("max_field_vector_error_trotter", "Max field-vector error: native Trotter", "aggregate_trotter_field_error.png"),
+        (
+            "max_infidelity_quartic",
+            "Max infidelity: quartic",
+            "aggregate_quartic_max_infid.png",
+        ),
+        (
+            "max_infidelity_sixth",
+            "Max infidelity: sixth-order",
+            "aggregate_sixth_max_infid.png",
+        ),
+        (
+            "max_infidelity_trotter",
+            "Max infidelity: native Trotter",
+            "aggregate_trotter_max_infid.png",
+        ),
+        (
+            "max_field_vector_error_quartic",
+            "Max field-vector error: quartic",
+            "aggregate_quartic_field_error.png",
+        ),
+        (
+            "max_field_vector_error_sixth",
+            "Max field-vector error: sixth-order",
+            "aggregate_sixth_field_error.png",
+        ),
+        (
+            "max_field_vector_error_trotter",
+            "Max field-vector error: native Trotter",
+            "aggregate_trotter_field_error.png",
+        ),
     ]
 
     for metric_name, ylabel, filename in plot_specs:
@@ -678,8 +718,10 @@ def aggregate_results(args):
             ys = []
             for kappa in kappas:
                 match = [
-                    r for r in rows
-                    if int(r["n_cut"]) == ncut and abs(float(r["kappa"]) - kappa) < 1e-12
+                    r
+                    for r in rows
+                    if int(r["n_cut"]) == ncut
+                    and abs(float(r["kappa"]) - kappa) < 1e-12
                 ]
                 if match:
                     xs.append(kappa)

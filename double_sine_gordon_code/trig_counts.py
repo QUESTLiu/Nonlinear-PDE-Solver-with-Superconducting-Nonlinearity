@@ -36,8 +36,14 @@ from sine_gordon_code import native_correction as nc  # noqa: E402
 DATA = Path(__file__).resolve().parents[1] / "double_sine_gordon_data"
 OMEGA_B = np.sqrt(3.0)
 ORDER_CODES = {1: (1, 1), 2: (2, 2), 3: (2, 1)}
-BASIS = [dict(gate="Rz", site=-1, value=np.pi / 2), dict(gate="Ry", site=-1, value=np.pi / 2)]           # B, time order
-BASIS_INV = [dict(gate="Ry", site=-1, value=-np.pi / 2), dict(gate="Rz", site=-1, value=-np.pi / 2)]     # B^+, time order
+BASIS = [
+    dict(gate="Rz", site=-1, value=np.pi / 2),
+    dict(gate="Ry", site=-1, value=np.pi / 2),
+]  # B, time order
+BASIS_INV = [
+    dict(gate="Ry", site=-1, value=-np.pi / 2),
+    dict(gate="Rz", site=-1, value=-np.pi / 2),
+]  # B^+, time order
 
 
 def basis_schedule(n_site, coefficients, h, orders, s, omega=OMEGA_B):
@@ -71,8 +77,13 @@ def basis_schedule(n_site, coefficients, h, orders, s, omega=OMEGA_B):
 def trig_counts(n_site, coefficients, r, orders, s=1):
     """Merged counts of r potential steps; B B^+ at the r - 1 step boundaries cancel through the system blocks."""
     merged = nc.merge_pulses(basis_schedule(n_site, coefficients, 1.0 / r, orders, s))
-    if [(p["gate"], p["value"]) for p in merged[:2]] != [("Ry", -np.pi / 2), ("Rz", -np.pi / 2)] or \
-            [(p["gate"], p["value"]) for p in merged[-2:]] != [("Rz", np.pi / 2), ("Ry", np.pi / 2)]:
+    if [(p["gate"], p["value"]) for p in merged[:2]] != [
+        ("Ry", -np.pi / 2),
+        ("Rz", -np.pi / 2),
+    ] or [(p["gate"], p["value"]) for p in merged[-2:]] != [
+        ("Rz", np.pi / 2),
+        ("Ry", np.pi / 2),
+    ]:
         raise ValueError("a step must start with B^+ and end with B")
     counts = Counter()
     for p in merged:
@@ -96,8 +107,8 @@ def recount(row, n_site):
 def _pulse_unitary(pulses, phis, omega=OMEGA_B):
     """Joint unitary of a pulse list on (site modes) x qubit, qubit last, time order left to right."""
     n = phis[0].shape[0]
-    dims = [n] * len(phis)
-    Y = np.array([[0, -1j], [1j, 0]]); Z = np.diag([1.0, -1.0]).astype(complex)
+    Y = np.array([[0, -1j], [1j, 0]])
+    Z = np.diag([1.0, -1.0]).astype(complex)
     eye_sys = np.eye(n ** len(phis))
     total = np.eye(2 * n ** len(phis), dtype=complex)
     for p in pulses:
@@ -109,11 +120,10 @@ def _pulse_unitary(pulses, phis, omega=OMEGA_B):
             m = p["value"] * 2 * np.sqrt(2 * omega)
             ops = [np.eye(n)] * len(phis)
             ops[p["site"]] = phis[p["site"]]
+            # Tensor factors follow site order; the qubit is appended last.
             A = ops[0]
             for o in ops[1:]:
                 A = np.kron(A, o)
-            if len(phis) > 1 and p["site"] != 0:
-                A = np.kron(np.kron(np.eye(n ** p["site"]), phis[p["site"]]), np.eye(n ** (len(phis) - p["site"] - 1)))
             U = expm(0.5j * m * np.kron(A, Z))
         total = U @ total
     return total
@@ -121,7 +131,9 @@ def _pulse_unitary(pulses, phis, omega=OMEGA_B):
 
 def verify():
     n = 10
-    phi = np.diag(np.linspace(-2.0, 2.0, n)) + 0.3 * (np.eye(n, k=1) + np.eye(n, k=-1))  # a finite Hermitian quadrature
+    phi = np.diag(np.linspace(-2.0, 2.0, n)) + 0.3 * (
+        np.eye(n, k=1) + np.eye(n, k=-1)
+    )  # a finite Hermitian quadrature
     worst = 0.0
     for orders in ((1, 1), (2, 2), (2, 1)):
         for s in (1, 2):
@@ -134,7 +146,9 @@ def verify():
                 for harmonic, (c, o) in enumerate(zip(coefficients, orders), 1):
                     if c != 0:
                         U_ref = nc.trig_block(phi, harmonic, h * c, o, s) @ U_ref
-                        U_ref = U_ref * np.exp(1j * h * c)  # the scalar phase e^{-iu} of Q is bookkeeping, not a pulse
+                        U_ref = U_ref * np.exp(
+                            1j * h * c
+                        )  # the scalar phase e^{-iu} of Q is bookkeeping, not a pulse
                 worst = max(worst, float(np.abs(U_new - U_ref).max()))
     print(f"rewritten pulses reproduce the exact trigonometric blocks to {worst:.1e}")
     verify_circuits()
@@ -144,7 +158,10 @@ def verify():
         for row in json.loads(path.read_text())["rows"]:
             old = row.get("primitive_counts_conjugated", row["primitive_counts"])
             new = recount(dict(row, primitive_counts=old), 2)
-            if sum(new.values()) != old["CD_Z"] + old["Rz"] + old.get("Gaussian", 0) + 4:
+            if (
+                sum(new.values())
+                != old["CD_Z"] + old["Rz"] + old.get("Gaussian", 0) + 4
+            ):
                 bad += 1
     print("rows whose new count differs from CD + Rz + Gaussian + 4:", bad)
 
@@ -164,26 +181,46 @@ def verify_circuits(seed=7):
 
     worst, count_bad, cases = 0.0, 0, 0
     for n_site, n in ((2, 5), (3, 4)):
-        phis = [np.diag(np.linspace(-2.0, 2.0, n)) + 0.3 * hermitian(n, 1.0) for _ in range(n_site)]
-        embedded = [np.kron(np.kron(np.eye(n ** j), phis[j]), np.eye(n ** (n_site - j - 1))) for j in range(n_site)]
-        system = np.kron(expm(-1j * hermitian(n ** n_site, 0.5)), np.eye(2))
-        dim = 2 * n ** n_site
+        phis = [
+            np.diag(np.linspace(-2.0, 2.0, n)) + 0.3 * hermitian(n, 1.0)
+            for _ in range(n_site)
+        ]
+        embedded = [
+            np.kron(np.kron(np.eye(n**j), phis[j]), np.eye(n ** (n_site - j - 1)))
+            for j in range(n_site)
+        ]
+        system = np.kron(expm(-1j * hermitian(n**n_site, 0.5)), np.eye(2))
+        dim = 2 * n**n_site
         for orders in ((1, 1), (2, 2), (2, 1)):
             for s in (1, 2):
                 for coefficients in ((0.0, 0.3), (1.0, 0.3)):
                     for r in (1, 3):
                         h = 1.0 / r
-                        step = nc.merge_pulses(basis_schedule(n_site, coefficients, h, orders, s))
+                        step = nc.merge_pulses(
+                            basis_schedule(n_site, coefficients, h, orders, s)
+                        )
                         U_step = np.eye(dim, dtype=complex)
                         for j in range(n_site):
-                            for harmonic, (c, o) in enumerate(zip(coefficients, orders), 1):
+                            for harmonic, (c, o) in enumerate(
+                                zip(coefficients, orders), 1
+                            ):
                                 if c != 0:
-                                    U_step = nc.trig_block(embedded[j], harmonic, h * c, o, s) * np.exp(1j * h * c) @ U_step
+                                    U_step = (
+                                        nc.trig_block(
+                                            embedded[j], harmonic, h * c, o, s
+                                        )
+                                        * np.exp(1j * h * c)
+                                        @ U_step
+                                    )
                         U_ref = np.eye(dim, dtype=complex)
                         U_new = np.eye(dim, dtype=complex)
                         n_pulses = 0
                         for k in range(r):
-                            pulses = step[(2 if k > 0 else 0):(len(step) - 2 if k < r - 1 else len(step))]
+                            pulses = step[
+                                (2 if k > 0 else 0) : (
+                                    len(step) - 2 if k < r - 1 else len(step)
+                                )
+                            ]
                             n_pulses += len(pulses)
                             U_ref = U_step @ U_ref
                             U_new = _pulse_unitary(pulses, phis) @ U_new
@@ -191,11 +228,18 @@ def verify_circuits(seed=7):
                                 U_ref = system @ U_ref
                                 U_new = system @ U_new
                         phase = np.vdot(U_ref.ravel(), U_new.ravel())
-                        worst = max(worst, float(np.abs(U_new - phase / abs(phase) * U_ref).max()))
-                        count_bad += n_pulses != sum(trig_counts(n_site, coefficients, r, orders, s).values())
+                        worst = max(
+                            worst,
+                            float(np.abs(U_new - phase / abs(phase) * U_ref).max()),
+                        )
+                        count_bad += n_pulses != sum(
+                            trig_counts(n_site, coefficients, r, orders, s).values()
+                        )
                         cases += 1
-    print(f"{cases} whole circuits on 2 and 3 sites reproduce the original construction to {worst:.1e} "
-          f"(global phase removed); pulse-count mismatches: {count_bad}")
+    print(
+        f"{cases} whole circuits on 2 and 3 sites reproduce the original construction to {worst:.1e} "
+        f"(global phase removed); pulse-count mismatches: {count_bad}"
+    )
 
 
 # ------------------------------------------------------------------------------------- recount
@@ -223,12 +267,29 @@ def _update(path, n_site, lam2=None):
 
 def recount_all():
     jobs = [(p, 2, 0.3) for p in sorted((DATA / "dsg_step_scan_parts").glob("*.json"))]
-    jobs += [(p, 2, 0.1) for p in sorted((DATA / "dsg_step_scan_parts_lambda0.1").glob("*.json"))]
-    jobs += [(p, 2, 0.6) for p in sorted((DATA / "dsg_step_scan_parts_lambda0.6").glob("*.json"))]
-    jobs += [(p, 2, None) for p in sorted((DATA / "dsg_common_times_parts").glob("*.json"))]
-    jobs += [(DATA / "dsg_boundary_check_lambda0.6.json", 2, 0.6), (DATA / "dsg_boundary_check_lambda0.6_prep0.75_0.25.json", 2, 0.6)]
-    jobs += [(p, 2, None) for p in sorted((DATA / "dsg_chain_parts_N2_cut128_160").glob("*.json"))]
-    jobs += [(p, 3, None) for p in sorted((DATA / "dsg_chain_parts_N3_cut128_160").glob("*.json"))]
+    jobs += [
+        (p, 2, 0.1)
+        for p in sorted((DATA / "dsg_step_scan_parts_lambda0.1").glob("*.json"))
+    ]
+    jobs += [
+        (p, 2, 0.6)
+        for p in sorted((DATA / "dsg_step_scan_parts_lambda0.6").glob("*.json"))
+    ]
+    jobs += [
+        (p, 2, None) for p in sorted((DATA / "dsg_common_times_parts").glob("*.json"))
+    ]
+    jobs += [
+        (DATA / "dsg_boundary_check_lambda0.6.json", 2, 0.6),
+        (DATA / "dsg_boundary_check_lambda0.6_prep0.75_0.25.json", 2, 0.6),
+    ]
+    jobs += [
+        (p, 2, None)
+        for p in sorted((DATA / "dsg_chain_parts_N2_cut128_160").glob("*.json"))
+    ]
+    jobs += [
+        (p, 3, None)
+        for p in sorted((DATA / "dsg_chain_parts_N3_cut128_160").glob("*.json"))
+    ]
     for path, n_site, lam2 in jobs:
         if path.exists():
             print(path.relative_to(DATA), _update(path, n_site, lam2), "rows")
