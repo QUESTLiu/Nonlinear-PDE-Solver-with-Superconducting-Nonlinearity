@@ -28,6 +28,145 @@ def independent_ladder(n):
 
 
 class RepresentationChecks(unittest.TestCase):
+    def test_gaussian_error_intervals_and_unresolved_selection(self):
+        """Partial trace contracts Bures distance; overlapping bounds cannot select a winner."""
+        from double_sine_gordon_code.audit_gaussian_sequence import distance, interval
+        from double_sine_gordon_code.gaussian_evidence import passes_at
+        rng = np.random.default_rng(4102)
+        old = rng.normal(size=(4, 2)) + 1j * rng.normal(size=(4, 2))
+        old /= np.linalg.norm(old)
+        new = old + .03 * (rng.normal(size=(4, 2)) + 1j * rng.normal(size=(4, 2)))
+        new /= np.linalg.norm(new)
+        target = old[:, 0] / np.linalg.norm(old[:, 0])
+        def reduced_bures(state):
+            fidelity = sum(abs(np.vdot(target, state[:, q]))**2 for q in (0, 1))
+            return np.sqrt(2 - 2 * np.sqrt(fidelity))
+        lower, upper = interval(reduced_bures(old), [distance(old, new)])
+        self.assertLessEqual(lower, reduced_bures(new))
+        self.assertLessEqual(reduced_bures(new), upper)
+        row = dict(acceptance=dict(boundary=True, C12=True, S2=True),
+                   margins=dict(reference=.0001, solver=0.), state_error=.04,
+                   bounds=dict(state_error=[.02, .04]), route='gauss_block', lambda2=.3,
+                   preparation=[1., 0.], cutoffs=[128, 160], r=7, order=3, s=1)
+        with self.assertRaises(ValueError):
+            passes_at(row, np.sqrt(1e-3))
+        row['bounds']['state_error'] = [.035, .04]
+        self.assertFalse(passes_at(row, np.sqrt(1e-3)))
+        row['bounds']['state_error'] = [.02, .025]
+        self.assertTrue(passes_at(row, np.sqrt(1e-3)))
+
+    def test_three_site_gaussian_readouts(self):
+        """Open-chain modes 0,1,3 give an independent dense interval oracle."""
+        from double_sine_gordon_code.dsg_chain import Chain, T, OMEGA_B
+        n, r = 3, 3
+        chain = Chain(3, n, .3, (.7, .2))
+        a = independent_ladder(n)
+        q = (a + a.conj().T) / np.sqrt(2 * OMEGA_B)
+        p = 1j * np.sqrt(OMEGA_B / 2) * (a.conj().T - a)
+        def site_matrix(local, site):
+            out = np.ones((1, 1))
+            for j in range(3):
+                out = np.kron(out, local if j == site else np.eye(n))
+            return out
+        qs, ps = [[site_matrix(local, j) for j in range(3)] for local in (q, p)]
+        modes = [np.ones(3) / np.sqrt(3), np.array([1, 0, -1]) / np.sqrt(2),
+                 np.array([1, -2, 1]) / np.sqrt(6)]
+        def gaussian(tau):
+            Q = np.zeros((n**3, n**3), complex)
+            P = Q.copy()
+            for w, mode in zip((0, 1, np.sqrt(3)), modes):
+                qm, pm = [sum(v * m for v, m in zip(mode, matrices)) for matrices in (qs, ps)]
+                aa = .5 * w * np.tan(.5 * w * tau)
+                bb = np.sin(w * tau) / (2 * w) if w else tau / 2
+                Q += aa * (qm @ qm)
+                P += bb * (pm @ pm)
+            phi = expm(-1j * Q)
+            return np.kron(phi @ expm(-1j * P) @ phi, np.eye(2))
+        h = T / r
+        x, z = np.array([[0, 1], [1, 0]]), np.diag([1, -1])
+        potential = np.eye(2 * n**3, dtype=complex)
+        for coordinate in qs:
+            for m, c in ((1, 1.), (2, .3)):
+                d = expm(.5j * m * np.kron(coordinate, x))
+                rot = expm(.5j * h * c * np.kron(np.eye(n**3), z))
+                potential = np.exp(-1j * h * c) * (d @ rot @ d.conj().T) @ (d.conj().T @ rot @ d) @ potential
+        initial = np.zeros((n, n, n, 2), complex)
+        initial[..., 0] = chain.psi0
+        actual = list(chain.gaussian_readouts(initial, h, r, 1, 1, lambda state: None))
+        half, full = gaussian(h / 2), gaussian(h)
+        state = half @ initial.ravel()
+        for k in range(1, r + 1):
+            state = potential @ state
+            np.testing.assert_allclose(actual[k].ravel(), half @ state, atol=3e-12, rtol=0)
+            state = full @ state
+        self.assertEqual(chain.counts('gauss_block', r, 1, 1)[0]['Gaussian'], 12 * r + 18)
+
+    def test_gaussian_readouts_match_the_counted_interval_sequence(self):
+        """Appendix J counts merged intervals, not repeated finite half steps."""
+        from double_sine_gordon_code import dsg_step_scan as scan
+        n, r, order = 4, 3, 3
+        h = scan.T / r
+        a = independent_ladder(n)
+        q = (a + a.conj().T) / np.sqrt(2 * scan.OMEGA_B)
+        p = 1j * np.sqrt(scan.OMEGA_B / 2) * (a.conj().T - a)
+        eye = np.eye(n)
+        q1, q2 = np.kron(q, eye), np.kron(eye, q)
+        p1, p2 = np.kron(p, eye), np.kron(eye, p)
+        identity = np.eye(n * n)
+        x, z = np.array([[0, 1], [1, 0]]), np.diag([1, -1])
+
+        def gaussian(tau):
+            omega = np.sqrt(2 * scan.KAPPA)
+            aa = omega * np.tan(omega * tau / 2) / 2
+            bb = np.sin(omega * tau) / (2 * omega)
+            phi = expm(-.5j * aa * (q1 - q2) @ (q1 - q2))
+            momentum = expm(-1j * ((tau / 4 + bb / 2) * (p1 @ p1 + p2 @ p2)
+                                  + (tau / 2 - bb) * (p1 @ p2)))
+            return np.kron(phi @ momentum @ phi, np.eye(2))
+
+        # Independent full joint matrices implement the Appendix J exponentials.
+        potential = np.eye(2 * n * n, dtype=complex)
+        for coordinate in (q1, q2):
+            for harmonic, coefficient, block_order in ((1, scan.E_J, 2), (2, scan.LAM2, 1)):
+                controlled = expm(.5j * harmonic * np.kron(coordinate, x))
+                def elementary(v, sign):
+                    rot = expm(1j * v * np.kron(identity, z))
+                    d = controlled if sign == 1 else controlled.conj().T
+                    return d @ rot @ d.conj().T
+                u = h * coefficient
+                if block_order == 1:
+                    block = elementary(u / 2, 1) @ elementary(u / 2, -1)
+                else:
+                    block = elementary(u / 4, 1) @ elementary(u / 2, -1) @ elementary(u / 4, 1)
+                potential = np.exp(-1j * u) * block @ potential
+
+        prep = (.7, .2)
+        problem = build_two_site_problem(n, scan.OMEGA_B, scan.E_J, scan.KAPPA, scan.LAM2)
+        initial = scan._sg_initial(problem['basis'], *prep)
+        target = np.array([expm(-1j * k * h * problem['H_target'].toarray()) @ initial.ravel()
+                           for k in range(r + 1)])
+        obs = [nc.two_site_observables(state.reshape(n, n), problem['basis']) for state in target]
+        reference = dict(states=target, C12=np.array([v['C12_real'] + 1j * v['C12_imag'] for v in obs]),
+                         S2=np.array([v['S2'] for v in obs]))
+        _, actual, _, _ = scan.run_circuit('gauss_block', n, r, order, 1, prep, reference)
+        final_only = list(scan.gauss_block_readouts(problem, actual[0], h, r, order, 1,
+                                                   lambda state: None, final_only=True))
+        np.testing.assert_allclose(final_only[-1], actual[-1], atol=3e-12, rtol=0)
+        half, full = gaussian(h / 2), gaussian(h)
+        joint = np.kron(initial.ravel(), [1, 0])
+        running = half @ joint
+        residuals = []
+        for k in range(1, r + 1):
+            running = potential @ running
+            expected = half @ running
+            residuals.append(float(np.linalg.norm(actual[k].ravel() - expected)))
+            np.testing.assert_allclose(actual[k].ravel(), expected, atol=3e-12, rtol=0)
+            running = full @ running
+        counts, _ = scan.primitive_counts('gauss_block', r, order, 1)
+        # r+2 position factors and r+1 momentum factors, three gates each.
+        self.assertEqual(counts['Gaussian'], 3 * ((r + 2) + (r + 1)))
+        RECORDS['merged_gaussian_dense_oracle'] = {'cutoff': n, 'steps': r, 'state_residuals': residuals}
+
     def test_sg_evaluation_uses_requested_active_space(self):
         from common_code.run_pilot import evaluate_sg
         phases=np.array([[0.,.1,-.2,.3]])

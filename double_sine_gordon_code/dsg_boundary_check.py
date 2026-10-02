@@ -4,7 +4,7 @@ At lambda2 = 0.6 the Gaussian-block circuits with mixed block orders (Josephson 
 order, lambda2 harmonic first order) and r = 10 to 12 meet the state and observable criteria of
 dsg_step_scan.py at cutoffs 128/160 but exceed the boundary limit 1e-6 at padding 128. This script
 applies the same acceptance rule (dsg_step_scan.evaluate, same solver margin) with CUTS = (160, 192)
-to those circuits and to r = 9, and writes data/dsg_boundary_check_lambda0.6.json. About 70 s per
+to those circuits and to r = 9, and writes data/dsg_boundary_check_lambda0.6_merged.json. About 70 s per
 reference at cutoff 192 and a few seconds per circuit.
 
 Usage, from the repository root (interpreter /Users/zhen002/miniconda3/envs/cvdv/bin/python):
@@ -41,7 +41,7 @@ def main():
               f"state={row['state_error']:.4f} C12={row['C12_error']:.4f} S2={row['S2_error']:.4f} "
               f"boundary={row['boundary_low']:.2e}/{row['boundary_high']:.2e} {'PASS' if row['all_criteria'] else row['acceptance']}",
               flush=True)
-    out = scan.DATA / f"dsg_boundary_check_lambda{LAM2:g}{'' if prep == (1.0, 0.0) else '_prep' + scan.prep_tag(prep)}.json"
+    out = scan.DATA / f"dsg_boundary_check_lambda{LAM2:g}{'' if prep == (1.0, 0.0) else '_prep' + scan.prep_tag(prep)}_merged.json"
     out.write_text(json.dumps(dict(description=__doc__.split("\n\n")[0], rows=rows, environment=scan.environment()), indent=1,
                               default=lambda x: [x.real, x.imag] if isinstance(x, complex) else x))
 

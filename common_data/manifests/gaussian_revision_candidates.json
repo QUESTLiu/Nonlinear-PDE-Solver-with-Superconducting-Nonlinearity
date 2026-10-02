@@ -1,0 +1,3054 @@
+{
+  "sequence": "merged_intervals",
+  "candidates": [
+    {
+      "id": "g000",
+      "group": "two_site",
+      "key": [
+        2,
+        0.3,
+        [
+          0.75,
+          0.25
+        ],
+        [
+          128,
+          160
+        ],
+        0,
+        7,
+        2,
+        1
+      ],
+      "source": "double_sine_gordon_data/dsg_step_scan.json",
+      "source_row": 0,
+      "source_sha256": "5ce931233575a5e890f284f85c3f21fafcc4661150f46457fa60b4a3b5140d64",
+      "selected": false,
+      "claims": [
+        "Table III: second-preparation checks"
+      ],
+      "required": true,
+      "reason": "selected or evaluated competitor",
+      "check": "old/new states at both cutoffs; new padding; complex C12; traced S2; merged checkpoints",
+      "priority": 1
+    },
+    {
+      "id": "g001",
+      "group": "two_site",
+      "key": [
+        2,
+        0.3,
+        [
+          0.75,
+          0.25
+        ],
+        [
+          128,
+          160
+        ],
+        0,
+        7,
+        3,
+        1
+      ],
+      "source": "double_sine_gordon_data/dsg_step_scan.json",
+      "source_row": 1,
+      "source_sha256": "5ce931233575a5e890f284f85c3f21fafcc4661150f46457fa60b4a3b5140d64",
+      "selected": true,
+      "claims": [
+        "Table III: second-preparation checks"
+      ],
+      "required": true,
+      "reason": "selected or evaluated competitor",
+      "check": "old/new states at both cutoffs; new padding; complex C12; traced S2; merged checkpoints",
+      "priority": 0
+    },
+    {
+      "id": "g002",
+      "group": "two_site",
+      "key": [
+        2,
+        0.3,
+        [
+          1.0,
+          0.0
+        ],
+        [
+          128,
+          160
+        ],
+        0,
+        6,
+        1,
+        1
+      ],
+      "source": "double_sine_gordon_data/dsg_step_scan.json",
+      "source_row": 2,
+      "source_sha256": "5ce931233575a5e890f284f85c3f21fafcc4661150f46457fa60b4a3b5140d64",
+      "selected": false,
+      "claims": [
+        "Table III and Fig. 6: matched-accuracy resources",
+        "Table VII: tightened thresholds",
+        "Fig. 7: all gate mixes, allowances 0/0.005/0.010/0.020"
+      ],
+      "required": true,
+      "reason": "selected or evaluated competitor",
+      "check": "old/new states at both cutoffs; new padding; complex C12; traced S2; merged checkpoints",
+      "priority": 1
+    },
+    {
+      "id": "g003",
+      "group": "two_site",
+      "key": [
+        2,
+        0.3,
+        [
+          1.0,
+          0.0
+        ],
+        [
+          128,
+          160
+        ],
+        0,
+        6,
+        2,
+        1
+      ],
+      "source": "double_sine_gordon_data/dsg_step_scan.json",
+      "source_row": 3,
+      "source_sha256": "5ce931233575a5e890f284f85c3f21fafcc4661150f46457fa60b4a3b5140d64",
+      "selected": false,
+      "claims": [
+        "Table III and Fig. 6: matched-accuracy resources",
+        "Table VII: tightened thresholds",
+        "Fig. 7: all gate mixes, allowances 0/0.005/0.010/0.020"
+      ],
+      "required": true,
+      "reason": "selected or evaluated competitor",
+      "check": "old/new states at both cutoffs; new padding; complex C12; traced S2; merged checkpoints",
+      "priority": 1
+    },
+    {
+      "id": "g004",
+      "group": "two_site",
+      "key": [
+        2,
+        0.3,
+        [
+          1.0,
+          0.0
+        ],
+        [
+          128,
+          160
+        ],
+        0,
+        7,
+        1,
+        1
+      ],
+      "source": "double_sine_gordon_data/dsg_step_scan.json",
+      "source_row": 4,
+      "source_sha256": "5ce931233575a5e890f284f85c3f21fafcc4661150f46457fa60b4a3b5140d64",
+      "selected": false,
+      "claims": [
+        "Table III and Fig. 6: matched-accuracy resources",
+        "Table VII: tightened thresholds",
+        "Fig. 7: all gate mixes, allowances 0/0.005/0.010/0.020"
+      ],
+      "required": true,
+      "reason": "selected or evaluated competitor",
+      "check": "old/new states at both cutoffs; new padding; complex C12; traced S2; merged checkpoints",
+      "priority": 1
+    },
+    {
+      "id": "g005",
+      "group": "two_site",
+      "key": [
+        2,
+        0.3,
+        [
+          1.0,
+          0.0
+        ],
+        [
+          128,
+          160
+        ],
+        0,
+        7,
+        2,
+        1
+      ],
+      "source": "double_sine_gordon_data/dsg_step_scan.json",
+      "source_row": 5,
+      "source_sha256": "5ce931233575a5e890f284f85c3f21fafcc4661150f46457fa60b4a3b5140d64",
+      "selected": false,
+      "claims": [
+        "Table III and Fig. 6: matched-accuracy resources",
+        "Table VII: tightened thresholds",
+        "Fig. 7: all gate mixes, allowances 0/0.005/0.010/0.020"
+      ],
+      "required": true,
+      "reason": "selected or evaluated competitor",
+      "check": "old/new states at both cutoffs; new padding; complex C12; traced S2; merged checkpoints",
+      "priority": 1
+    },
+    {
+      "id": "g006",
+      "group": "two_site",
+      "key": [
+        2,
+        0.3,
+        [
+          1.0,
+          0.0
+        ],
+        [
+          128,
+          160
+        ],
+        0,
+        8,
+        1,
+        1
+      ],
+      "source": "double_sine_gordon_data/dsg_step_scan.json",
+      "source_row": 6,
+      "source_sha256": "5ce931233575a5e890f284f85c3f21fafcc4661150f46457fa60b4a3b5140d64",
+      "selected": false,
+      "claims": [
+        "Table III and Fig. 6: matched-accuracy resources",
+        "Table VII: tightened thresholds",
+        "Fig. 7: all gate mixes, allowances 0/0.005/0.010/0.020"
+      ],
+      "required": true,
+      "reason": "selected or evaluated competitor",
+      "check": "old/new states at both cutoffs; new padding; complex C12; traced S2; merged checkpoints",
+      "priority": 1
+    },
+    {
+      "id": "g007",
+      "group": "two_site",
+      "key": [
+        2,
+        0.3,
+        [
+          1.0,
+          0.0
+        ],
+        [
+          128,
+          160
+        ],
+        0,
+        8,
+        2,
+        1
+      ],
+      "source": "double_sine_gordon_data/dsg_step_scan.json",
+      "source_row": 7,
+      "source_sha256": "5ce931233575a5e890f284f85c3f21fafcc4661150f46457fa60b4a3b5140d64",
+      "selected": false,
+      "claims": [
+        "Table III and Fig. 6: matched-accuracy resources",
+        "Table VII: tightened thresholds",
+        "Fig. 7: all gate mixes, allowances 0/0.005/0.010/0.020"
+      ],
+      "required": true,
+      "reason": "selected or evaluated competitor",
+      "check": "old/new states at both cutoffs; new padding; complex C12; traced S2; merged checkpoints",
+      "priority": 1
+    },
+    {
+      "id": "g008",
+      "group": "two_site",
+      "key": [
+        2,
+        0.3,
+        [
+          1.0,
+          0.0
+        ],
+        [
+          128,
+          160
+        ],
+        0,
+        9,
+        1,
+        1
+      ],
+      "source": "double_sine_gordon_data/dsg_step_scan.json",
+      "source_row": 8,
+      "source_sha256": "5ce931233575a5e890f284f85c3f21fafcc4661150f46457fa60b4a3b5140d64",
+      "selected": false,
+      "claims": [
+        "Table III and Fig. 6: matched-accuracy resources",
+        "Table VII: tightened thresholds",
+        "Fig. 7: all gate mixes, allowances 0/0.005/0.010/0.020"
+      ],
+      "required": true,
+      "reason": "selected or evaluated competitor",
+      "check": "old/new states at both cutoffs; new padding; complex C12; traced S2; merged checkpoints",
+      "priority": 1
+    },
+    {
+      "id": "g009",
+      "group": "two_site",
+      "key": [
+        2,
+        0.3,
+        [
+          1.0,
+          0.0
+        ],
+        [
+          128,
+          160
+        ],
+        0,
+        9,
+        2,
+        1
+      ],
+      "source": "double_sine_gordon_data/dsg_step_scan.json",
+      "source_row": 9,
+      "source_sha256": "5ce931233575a5e890f284f85c3f21fafcc4661150f46457fa60b4a3b5140d64",
+      "selected": false,
+      "claims": [
+        "Table III and Fig. 6: matched-accuracy resources",
+        "Table VII: tightened thresholds",
+        "Fig. 7: all gate mixes, allowances 0/0.005/0.010/0.020"
+      ],
+      "required": true,
+      "reason": "selected or evaluated competitor",
+      "check": "old/new states at both cutoffs; new padding; complex C12; traced S2; merged checkpoints",
+      "priority": 1
+    },
+    {
+      "id": "g010",
+      "group": "two_site",
+      "key": [
+        2,
+        0.3,
+        [
+          1.0,
+          0.0
+        ],
+        [
+          128,
+          160
+        ],
+        0,
+        10,
+        1,
+        1
+      ],
+      "source": "double_sine_gordon_data/dsg_step_scan.json",
+      "source_row": 10,
+      "source_sha256": "5ce931233575a5e890f284f85c3f21fafcc4661150f46457fa60b4a3b5140d64",
+      "selected": false,
+      "claims": [
+        "Table III and Fig. 6: matched-accuracy resources",
+        "Table VII: tightened thresholds",
+        "Fig. 7: all gate mixes, allowances 0/0.005/0.010/0.020"
+      ],
+      "required": true,
+      "reason": "selected or evaluated competitor",
+      "check": "old/new states at both cutoffs; new padding; complex C12; traced S2; merged checkpoints",
+      "priority": 1
+    },
+    {
+      "id": "g011",
+      "group": "two_site",
+      "key": [
+        2,
+        0.3,
+        [
+          1.0,
+          0.0
+        ],
+        [
+          128,
+          160
+        ],
+        0,
+        10,
+        2,
+        1
+      ],
+      "source": "double_sine_gordon_data/dsg_step_scan.json",
+      "source_row": 11,
+      "source_sha256": "5ce931233575a5e890f284f85c3f21fafcc4661150f46457fa60b4a3b5140d64",
+      "selected": false,
+      "claims": [
+        "Table III and Fig. 6: matched-accuracy resources",
+        "Table VII: tightened thresholds",
+        "Fig. 7: all gate mixes, allowances 0/0.005/0.010/0.020"
+      ],
+      "required": true,
+      "reason": "selected or evaluated competitor",
+      "check": "old/new states at both cutoffs; new padding; complex C12; traced S2; merged checkpoints",
+      "priority": 1
+    },
+    {
+      "id": "g012",
+      "group": "two_site",
+      "key": [
+        2,
+        0.3,
+        [
+          1.0,
+          0.0
+        ],
+        [
+          128,
+          160
+        ],
+        0,
+        12,
+        1,
+        1
+      ],
+      "source": "double_sine_gordon_data/dsg_step_scan.json",
+      "source_row": 12,
+      "source_sha256": "5ce931233575a5e890f284f85c3f21fafcc4661150f46457fa60b4a3b5140d64",
+      "selected": false,
+      "claims": [
+        "Table III and Fig. 6: matched-accuracy resources",
+        "Table VII: tightened thresholds",
+        "Fig. 7: all gate mixes, allowances 0/0.005/0.010/0.020"
+      ],
+      "required": true,
+      "reason": "selected or evaluated competitor",
+      "check": "old/new states at both cutoffs; new padding; complex C12; traced S2; merged checkpoints",
+      "priority": 1
+    },
+    {
+      "id": "g013",
+      "group": "two_site",
+      "key": [
+        2,
+        0.3,
+        [
+          1.0,
+          0.0
+        ],
+        [
+          128,
+          160
+        ],
+        0,
+        12,
+        2,
+        1
+      ],
+      "source": "double_sine_gordon_data/dsg_step_scan.json",
+      "source_row": 13,
+      "source_sha256": "5ce931233575a5e890f284f85c3f21fafcc4661150f46457fa60b4a3b5140d64",
+      "selected": false,
+      "claims": [
+        "Table III and Fig. 6: matched-accuracy resources",
+        "Table VII: tightened thresholds",
+        "Fig. 7: all gate mixes, allowances 0/0.005/0.010/0.020"
+      ],
+      "required": true,
+      "reason": "selected or evaluated competitor",
+      "check": "old/new states at both cutoffs; new padding; complex C12; traced S2; merged checkpoints",
+      "priority": 1
+    },
+    {
+      "id": "g014",
+      "group": "two_site",
+      "key": [
+        2,
+        0.3,
+        [
+          1.0,
+          0.0
+        ],
+        [
+          128,
+          160
+        ],
+        0,
+        14,
+        1,
+        1
+      ],
+      "source": "double_sine_gordon_data/dsg_step_scan.json",
+      "source_row": 14,
+      "source_sha256": "5ce931233575a5e890f284f85c3f21fafcc4661150f46457fa60b4a3b5140d64",
+      "selected": false,
+      "claims": [
+        "Table III and Fig. 6: matched-accuracy resources",
+        "Table VII: tightened thresholds",
+        "Fig. 7: all gate mixes, allowances 0/0.005/0.010/0.020"
+      ],
+      "required": true,
+      "reason": "selected or evaluated competitor",
+      "check": "old/new states at both cutoffs; new padding; complex C12; traced S2; merged checkpoints",
+      "priority": 1
+    },
+    {
+      "id": "g015",
+      "group": "two_site",
+      "key": [
+        2,
+        0.3,
+        [
+          1.0,
+          0.0
+        ],
+        [
+          128,
+          160
+        ],
+        0,
+        14,
+        2,
+        1
+      ],
+      "source": "double_sine_gordon_data/dsg_step_scan.json",
+      "source_row": 15,
+      "source_sha256": "5ce931233575a5e890f284f85c3f21fafcc4661150f46457fa60b4a3b5140d64",
+      "selected": false,
+      "claims": [
+        "Table III and Fig. 6: matched-accuracy resources",
+        "Table VII: tightened thresholds",
+        "Fig. 7: all gate mixes, allowances 0/0.005/0.010/0.020"
+      ],
+      "required": true,
+      "reason": "selected or evaluated competitor",
+      "check": "old/new states at both cutoffs; new padding; complex C12; traced S2; merged checkpoints",
+      "priority": 1
+    },
+    {
+      "id": "g016",
+      "group": "two_site",
+      "key": [
+        2,
+        0.3,
+        [
+          1.0,
+          0.0
+        ],
+        [
+          128,
+          160
+        ],
+        0,
+        6,
+        3,
+        1
+      ],
+      "source": "double_sine_gordon_data/dsg_step_scan.json",
+      "source_row": 16,
+      "source_sha256": "5ce931233575a5e890f284f85c3f21fafcc4661150f46457fa60b4a3b5140d64",
+      "selected": false,
+      "claims": [
+        "Table III and Fig. 6: matched-accuracy resources",
+        "Table VII: tightened thresholds",
+        "Fig. 7: all gate mixes, allowances 0/0.005/0.010/0.020"
+      ],
+      "required": true,
+      "reason": "selected or evaluated competitor",
+      "check": "old/new states at both cutoffs; new padding; complex C12; traced S2; merged checkpoints",
+      "priority": 1
+    },
+    {
+      "id": "g017",
+      "group": "two_site",
+      "key": [
+        2,
+        0.3,
+        [
+          1.0,
+          0.0
+        ],
+        [
+          128,
+          160
+        ],
+        0,
+        7,
+        3,
+        1
+      ],
+      "source": "double_sine_gordon_data/dsg_step_scan.json",
+      "source_row": 17,
+      "source_sha256": "5ce931233575a5e890f284f85c3f21fafcc4661150f46457fa60b4a3b5140d64",
+      "selected": true,
+      "claims": [
+        "Table III and Fig. 6: matched-accuracy resources",
+        "Table VII: tightened thresholds",
+        "Fig. 7: all gate mixes, allowances 0/0.005/0.010/0.020"
+      ],
+      "required": true,
+      "reason": "selected or evaluated competitor",
+      "check": "old/new states at both cutoffs; new padding; complex C12; traced S2; merged checkpoints",
+      "priority": 0
+    },
+    {
+      "id": "g018",
+      "group": "two_site",
+      "key": [
+        2,
+        0.3,
+        [
+          1.0,
+          0.0
+        ],
+        [
+          128,
+          160
+        ],
+        0,
+        8,
+        3,
+        1
+      ],
+      "source": "double_sine_gordon_data/dsg_step_scan.json",
+      "source_row": 18,
+      "source_sha256": "5ce931233575a5e890f284f85c3f21fafcc4661150f46457fa60b4a3b5140d64",
+      "selected": false,
+      "claims": [
+        "Table III and Fig. 6: matched-accuracy resources",
+        "Table VII: tightened thresholds",
+        "Fig. 7: all gate mixes, allowances 0/0.005/0.010/0.020"
+      ],
+      "required": true,
+      "reason": "selected or evaluated competitor",
+      "check": "old/new states at both cutoffs; new padding; complex C12; traced S2; merged checkpoints",
+      "priority": 1
+    },
+    {
+      "id": "g019",
+      "group": "two_site",
+      "key": [
+        2,
+        0.3,
+        [
+          1.0,
+          0.0
+        ],
+        [
+          128,
+          160
+        ],
+        0,
+        9,
+        3,
+        1
+      ],
+      "source": "double_sine_gordon_data/dsg_step_scan.json",
+      "source_row": 19,
+      "source_sha256": "5ce931233575a5e890f284f85c3f21fafcc4661150f46457fa60b4a3b5140d64",
+      "selected": false,
+      "claims": [
+        "Table III and Fig. 6: matched-accuracy resources",
+        "Table VII: tightened thresholds",
+        "Fig. 7: all gate mixes, allowances 0/0.005/0.010/0.020"
+      ],
+      "required": true,
+      "reason": "selected or evaluated competitor",
+      "check": "old/new states at both cutoffs; new padding; complex C12; traced S2; merged checkpoints",
+      "priority": 1
+    },
+    {
+      "id": "g020",
+      "group": "two_site",
+      "key": [
+        2,
+        0.3,
+        [
+          1.0,
+          0.0
+        ],
+        [
+          128,
+          160
+        ],
+        0,
+        10,
+        3,
+        1
+      ],
+      "source": "double_sine_gordon_data/dsg_step_scan.json",
+      "source_row": 20,
+      "source_sha256": "5ce931233575a5e890f284f85c3f21fafcc4661150f46457fa60b4a3b5140d64",
+      "selected": false,
+      "claims": [
+        "Table III and Fig. 6: matched-accuracy resources",
+        "Table VII: tightened thresholds",
+        "Fig. 7: all gate mixes, allowances 0/0.005/0.010/0.020"
+      ],
+      "required": true,
+      "reason": "selected or evaluated competitor",
+      "check": "old/new states at both cutoffs; new padding; complex C12; traced S2; merged checkpoints",
+      "priority": 1
+    },
+    {
+      "id": "g021",
+      "group": "two_site",
+      "key": [
+        2,
+        0.3,
+        [
+          1.0,
+          0.0
+        ],
+        [
+          128,
+          160
+        ],
+        0,
+        11,
+        3,
+        1
+      ],
+      "source": "double_sine_gordon_data/dsg_step_scan.json",
+      "source_row": 21,
+      "source_sha256": "5ce931233575a5e890f284f85c3f21fafcc4661150f46457fa60b4a3b5140d64",
+      "selected": false,
+      "claims": [
+        "Table III and Fig. 6: matched-accuracy resources",
+        "Table VII: tightened thresholds",
+        "Fig. 7: all gate mixes, allowances 0/0.005/0.010/0.020"
+      ],
+      "required": true,
+      "reason": "selected or evaluated competitor",
+      "check": "old/new states at both cutoffs; new padding; complex C12; traced S2; merged checkpoints",
+      "priority": 1
+    },
+    {
+      "id": "g022",
+      "group": "two_site",
+      "key": [
+        2,
+        0.3,
+        [
+          1.0,
+          0.0
+        ],
+        [
+          128,
+          160
+        ],
+        0,
+        12,
+        3,
+        1
+      ],
+      "source": "double_sine_gordon_data/dsg_step_scan.json",
+      "source_row": 22,
+      "source_sha256": "5ce931233575a5e890f284f85c3f21fafcc4661150f46457fa60b4a3b5140d64",
+      "selected": false,
+      "claims": [
+        "Table III and Fig. 6: matched-accuracy resources",
+        "Table VII: tightened thresholds",
+        "Fig. 7: all gate mixes, allowances 0/0.005/0.010/0.020"
+      ],
+      "required": true,
+      "reason": "selected or evaluated competitor",
+      "check": "old/new states at both cutoffs; new padding; complex C12; traced S2; merged checkpoints",
+      "priority": 1
+    },
+    {
+      "id": "g023",
+      "group": "two_site",
+      "key": [
+        2,
+        0.3,
+        [
+          1.0,
+          0.0
+        ],
+        [
+          128,
+          160
+        ],
+        0,
+        13,
+        3,
+        1
+      ],
+      "source": "double_sine_gordon_data/dsg_step_scan.json",
+      "source_row": 23,
+      "source_sha256": "5ce931233575a5e890f284f85c3f21fafcc4661150f46457fa60b4a3b5140d64",
+      "selected": false,
+      "claims": [
+        "Table III and Fig. 6: matched-accuracy resources",
+        "Table VII: tightened thresholds",
+        "Fig. 7: all gate mixes, allowances 0/0.005/0.010/0.020"
+      ],
+      "required": true,
+      "reason": "selected or evaluated competitor",
+      "check": "old/new states at both cutoffs; new padding; complex C12; traced S2; merged checkpoints",
+      "priority": 1
+    },
+    {
+      "id": "g024",
+      "group": "two_site",
+      "key": [
+        2,
+        0.1,
+        [
+          0.75,
+          0.25
+        ],
+        [
+          128,
+          160
+        ],
+        0,
+        6,
+        2,
+        1
+      ],
+      "source": "double_sine_gordon_data/dsg_step_scan_lambda0.1.json",
+      "source_row": 0,
+      "source_sha256": "74b0f897901770300d968bfdf2587e794e35e416b4deab6d0885d23b1b9626d9",
+      "selected": false,
+      "claims": [
+        "Table III: second-preparation checks"
+      ],
+      "required": true,
+      "reason": "selected or evaluated competitor",
+      "check": "old/new states at both cutoffs; new padding; complex C12; traced S2; merged checkpoints",
+      "priority": 1
+    },
+    {
+      "id": "g025",
+      "group": "two_site",
+      "key": [
+        2,
+        0.1,
+        [
+          0.75,
+          0.25
+        ],
+        [
+          128,
+          160
+        ],
+        0,
+        6,
+        3,
+        1
+      ],
+      "source": "double_sine_gordon_data/dsg_step_scan_lambda0.1.json",
+      "source_row": 1,
+      "source_sha256": "74b0f897901770300d968bfdf2587e794e35e416b4deab6d0885d23b1b9626d9",
+      "selected": true,
+      "claims": [
+        "Table III: second-preparation checks"
+      ],
+      "required": true,
+      "reason": "selected or evaluated competitor",
+      "check": "old/new states at both cutoffs; new padding; complex C12; traced S2; merged checkpoints",
+      "priority": 0
+    },
+    {
+      "id": "g026",
+      "group": "two_site",
+      "key": [
+        2,
+        0.1,
+        [
+          1.0,
+          0.0
+        ],
+        [
+          128,
+          160
+        ],
+        0,
+        5,
+        1,
+        1
+      ],
+      "source": "double_sine_gordon_data/dsg_step_scan_lambda0.1.json",
+      "source_row": 2,
+      "source_sha256": "74b0f897901770300d968bfdf2587e794e35e416b4deab6d0885d23b1b9626d9",
+      "selected": false,
+      "claims": [
+        "Table III and Fig. 6: matched-accuracy resources",
+        "Table VII: tightened thresholds"
+      ],
+      "required": true,
+      "reason": "selected or evaluated competitor",
+      "check": "old/new states at both cutoffs; new padding; complex C12; traced S2; merged checkpoints",
+      "priority": 1
+    },
+    {
+      "id": "g027",
+      "group": "two_site",
+      "key": [
+        2,
+        0.1,
+        [
+          1.0,
+          0.0
+        ],
+        [
+          128,
+          160
+        ],
+        0,
+        5,
+        2,
+        1
+      ],
+      "source": "double_sine_gordon_data/dsg_step_scan_lambda0.1.json",
+      "source_row": 3,
+      "source_sha256": "74b0f897901770300d968bfdf2587e794e35e416b4deab6d0885d23b1b9626d9",
+      "selected": false,
+      "claims": [
+        "Table III and Fig. 6: matched-accuracy resources",
+        "Table VII: tightened thresholds"
+      ],
+      "required": true,
+      "reason": "selected or evaluated competitor",
+      "check": "old/new states at both cutoffs; new padding; complex C12; traced S2; merged checkpoints",
+      "priority": 1
+    },
+    {
+      "id": "g028",
+      "group": "two_site",
+      "key": [
+        2,
+        0.1,
+        [
+          1.0,
+          0.0
+        ],
+        [
+          128,
+          160
+        ],
+        0,
+        6,
+        1,
+        1
+      ],
+      "source": "double_sine_gordon_data/dsg_step_scan_lambda0.1.json",
+      "source_row": 4,
+      "source_sha256": "74b0f897901770300d968bfdf2587e794e35e416b4deab6d0885d23b1b9626d9",
+      "selected": false,
+      "claims": [
+        "Table III and Fig. 6: matched-accuracy resources",
+        "Table VII: tightened thresholds"
+      ],
+      "required": true,
+      "reason": "selected or evaluated competitor",
+      "check": "old/new states at both cutoffs; new padding; complex C12; traced S2; merged checkpoints",
+      "priority": 1
+    },
+    {
+      "id": "g029",
+      "group": "two_site",
+      "key": [
+        2,
+        0.1,
+        [
+          1.0,
+          0.0
+        ],
+        [
+          128,
+          160
+        ],
+        0,
+        6,
+        2,
+        1
+      ],
+      "source": "double_sine_gordon_data/dsg_step_scan_lambda0.1.json",
+      "source_row": 5,
+      "source_sha256": "74b0f897901770300d968bfdf2587e794e35e416b4deab6d0885d23b1b9626d9",
+      "selected": false,
+      "claims": [
+        "Table III and Fig. 6: matched-accuracy resources",
+        "Table VII: tightened thresholds"
+      ],
+      "required": true,
+      "reason": "selected or evaluated competitor",
+      "check": "old/new states at both cutoffs; new padding; complex C12; traced S2; merged checkpoints",
+      "priority": 1
+    },
+    {
+      "id": "g030",
+      "group": "two_site",
+      "key": [
+        2,
+        0.1,
+        [
+          1.0,
+          0.0
+        ],
+        [
+          128,
+          160
+        ],
+        0,
+        7,
+        1,
+        1
+      ],
+      "source": "double_sine_gordon_data/dsg_step_scan_lambda0.1.json",
+      "source_row": 6,
+      "source_sha256": "74b0f897901770300d968bfdf2587e794e35e416b4deab6d0885d23b1b9626d9",
+      "selected": false,
+      "claims": [
+        "Table III and Fig. 6: matched-accuracy resources",
+        "Table VII: tightened thresholds"
+      ],
+      "required": true,
+      "reason": "selected or evaluated competitor",
+      "check": "old/new states at both cutoffs; new padding; complex C12; traced S2; merged checkpoints",
+      "priority": 1
+    },
+    {
+      "id": "g031",
+      "group": "two_site",
+      "key": [
+        2,
+        0.1,
+        [
+          1.0,
+          0.0
+        ],
+        [
+          128,
+          160
+        ],
+        0,
+        7,
+        2,
+        1
+      ],
+      "source": "double_sine_gordon_data/dsg_step_scan_lambda0.1.json",
+      "source_row": 7,
+      "source_sha256": "74b0f897901770300d968bfdf2587e794e35e416b4deab6d0885d23b1b9626d9",
+      "selected": false,
+      "claims": [
+        "Table III and Fig. 6: matched-accuracy resources",
+        "Table VII: tightened thresholds"
+      ],
+      "required": true,
+      "reason": "selected or evaluated competitor",
+      "check": "old/new states at both cutoffs; new padding; complex C12; traced S2; merged checkpoints",
+      "priority": 1
+    },
+    {
+      "id": "g032",
+      "group": "two_site",
+      "key": [
+        2,
+        0.1,
+        [
+          1.0,
+          0.0
+        ],
+        [
+          128,
+          160
+        ],
+        0,
+        8,
+        1,
+        1
+      ],
+      "source": "double_sine_gordon_data/dsg_step_scan_lambda0.1.json",
+      "source_row": 8,
+      "source_sha256": "74b0f897901770300d968bfdf2587e794e35e416b4deab6d0885d23b1b9626d9",
+      "selected": false,
+      "claims": [
+        "Table III and Fig. 6: matched-accuracy resources",
+        "Table VII: tightened thresholds"
+      ],
+      "required": true,
+      "reason": "selected or evaluated competitor",
+      "check": "old/new states at both cutoffs; new padding; complex C12; traced S2; merged checkpoints",
+      "priority": 1
+    },
+    {
+      "id": "g033",
+      "group": "two_site",
+      "key": [
+        2,
+        0.1,
+        [
+          1.0,
+          0.0
+        ],
+        [
+          128,
+          160
+        ],
+        0,
+        8,
+        2,
+        1
+      ],
+      "source": "double_sine_gordon_data/dsg_step_scan_lambda0.1.json",
+      "source_row": 9,
+      "source_sha256": "74b0f897901770300d968bfdf2587e794e35e416b4deab6d0885d23b1b9626d9",
+      "selected": false,
+      "claims": [
+        "Table III and Fig. 6: matched-accuracy resources",
+        "Table VII: tightened thresholds"
+      ],
+      "required": true,
+      "reason": "selected or evaluated competitor",
+      "check": "old/new states at both cutoffs; new padding; complex C12; traced S2; merged checkpoints",
+      "priority": 1
+    },
+    {
+      "id": "g034",
+      "group": "two_site",
+      "key": [
+        2,
+        0.1,
+        [
+          1.0,
+          0.0
+        ],
+        [
+          128,
+          160
+        ],
+        0,
+        9,
+        1,
+        1
+      ],
+      "source": "double_sine_gordon_data/dsg_step_scan_lambda0.1.json",
+      "source_row": 10,
+      "source_sha256": "74b0f897901770300d968bfdf2587e794e35e416b4deab6d0885d23b1b9626d9",
+      "selected": false,
+      "claims": [
+        "Table III and Fig. 6: matched-accuracy resources",
+        "Table VII: tightened thresholds"
+      ],
+      "required": true,
+      "reason": "selected or evaluated competitor",
+      "check": "old/new states at both cutoffs; new padding; complex C12; traced S2; merged checkpoints",
+      "priority": 1
+    },
+    {
+      "id": "g035",
+      "group": "two_site",
+      "key": [
+        2,
+        0.1,
+        [
+          1.0,
+          0.0
+        ],
+        [
+          128,
+          160
+        ],
+        0,
+        9,
+        2,
+        1
+      ],
+      "source": "double_sine_gordon_data/dsg_step_scan_lambda0.1.json",
+      "source_row": 11,
+      "source_sha256": "74b0f897901770300d968bfdf2587e794e35e416b4deab6d0885d23b1b9626d9",
+      "selected": false,
+      "claims": [
+        "Table III and Fig. 6: matched-accuracy resources",
+        "Table VII: tightened thresholds"
+      ],
+      "required": true,
+      "reason": "selected or evaluated competitor",
+      "check": "old/new states at both cutoffs; new padding; complex C12; traced S2; merged checkpoints",
+      "priority": 1
+    },
+    {
+      "id": "g036",
+      "group": "two_site",
+      "key": [
+        2,
+        0.1,
+        [
+          1.0,
+          0.0
+        ],
+        [
+          128,
+          160
+        ],
+        0,
+        10,
+        1,
+        1
+      ],
+      "source": "double_sine_gordon_data/dsg_step_scan_lambda0.1.json",
+      "source_row": 12,
+      "source_sha256": "74b0f897901770300d968bfdf2587e794e35e416b4deab6d0885d23b1b9626d9",
+      "selected": false,
+      "claims": [
+        "Table III and Fig. 6: matched-accuracy resources",
+        "Table VII: tightened thresholds"
+      ],
+      "required": true,
+      "reason": "selected or evaluated competitor",
+      "check": "old/new states at both cutoffs; new padding; complex C12; traced S2; merged checkpoints",
+      "priority": 1
+    },
+    {
+      "id": "g037",
+      "group": "two_site",
+      "key": [
+        2,
+        0.1,
+        [
+          1.0,
+          0.0
+        ],
+        [
+          128,
+          160
+        ],
+        0,
+        10,
+        2,
+        1
+      ],
+      "source": "double_sine_gordon_data/dsg_step_scan_lambda0.1.json",
+      "source_row": 13,
+      "source_sha256": "74b0f897901770300d968bfdf2587e794e35e416b4deab6d0885d23b1b9626d9",
+      "selected": false,
+      "claims": [
+        "Table III and Fig. 6: matched-accuracy resources",
+        "Table VII: tightened thresholds"
+      ],
+      "required": true,
+      "reason": "selected or evaluated competitor",
+      "check": "old/new states at both cutoffs; new padding; complex C12; traced S2; merged checkpoints",
+      "priority": 1
+    },
+    {
+      "id": "g038",
+      "group": "two_site",
+      "key": [
+        2,
+        0.1,
+        [
+          1.0,
+          0.0
+        ],
+        [
+          128,
+          160
+        ],
+        0,
+        5,
+        3,
+        1
+      ],
+      "source": "double_sine_gordon_data/dsg_step_scan_lambda0.1.json",
+      "source_row": 14,
+      "source_sha256": "74b0f897901770300d968bfdf2587e794e35e416b4deab6d0885d23b1b9626d9",
+      "selected": false,
+      "claims": [
+        "Table III and Fig. 6: matched-accuracy resources",
+        "Table VII: tightened thresholds"
+      ],
+      "required": true,
+      "reason": "selected or evaluated competitor",
+      "check": "old/new states at both cutoffs; new padding; complex C12; traced S2; merged checkpoints",
+      "priority": 1
+    },
+    {
+      "id": "g039",
+      "group": "two_site",
+      "key": [
+        2,
+        0.1,
+        [
+          1.0,
+          0.0
+        ],
+        [
+          128,
+          160
+        ],
+        0,
+        6,
+        3,
+        1
+      ],
+      "source": "double_sine_gordon_data/dsg_step_scan_lambda0.1.json",
+      "source_row": 15,
+      "source_sha256": "74b0f897901770300d968bfdf2587e794e35e416b4deab6d0885d23b1b9626d9",
+      "selected": true,
+      "claims": [
+        "Table III and Fig. 6: matched-accuracy resources",
+        "Table VII: tightened thresholds"
+      ],
+      "required": true,
+      "reason": "selected or evaluated competitor",
+      "check": "old/new states at both cutoffs; new padding; complex C12; traced S2; merged checkpoints",
+      "priority": 0
+    },
+    {
+      "id": "g040",
+      "group": "two_site",
+      "key": [
+        2,
+        0.1,
+        [
+          1.0,
+          0.0
+        ],
+        [
+          128,
+          160
+        ],
+        0,
+        7,
+        3,
+        1
+      ],
+      "source": "double_sine_gordon_data/dsg_step_scan_lambda0.1.json",
+      "source_row": 16,
+      "source_sha256": "74b0f897901770300d968bfdf2587e794e35e416b4deab6d0885d23b1b9626d9",
+      "selected": false,
+      "claims": [
+        "Table III and Fig. 6: matched-accuracy resources",
+        "Table VII: tightened thresholds"
+      ],
+      "required": true,
+      "reason": "selected or evaluated competitor",
+      "check": "old/new states at both cutoffs; new padding; complex C12; traced S2; merged checkpoints",
+      "priority": 1
+    },
+    {
+      "id": "g041",
+      "group": "two_site",
+      "key": [
+        2,
+        0.1,
+        [
+          1.0,
+          0.0
+        ],
+        [
+          128,
+          160
+        ],
+        0,
+        8,
+        3,
+        1
+      ],
+      "source": "double_sine_gordon_data/dsg_step_scan_lambda0.1.json",
+      "source_row": 17,
+      "source_sha256": "74b0f897901770300d968bfdf2587e794e35e416b4deab6d0885d23b1b9626d9",
+      "selected": false,
+      "claims": [
+        "Table III and Fig. 6: matched-accuracy resources",
+        "Table VII: tightened thresholds"
+      ],
+      "required": true,
+      "reason": "selected or evaluated competitor",
+      "check": "old/new states at both cutoffs; new padding; complex C12; traced S2; merged checkpoints",
+      "priority": 1
+    },
+    {
+      "id": "g042",
+      "group": "two_site",
+      "key": [
+        2,
+        0.1,
+        [
+          1.0,
+          0.0
+        ],
+        [
+          128,
+          160
+        ],
+        0,
+        9,
+        3,
+        1
+      ],
+      "source": "double_sine_gordon_data/dsg_step_scan_lambda0.1.json",
+      "source_row": 18,
+      "source_sha256": "74b0f897901770300d968bfdf2587e794e35e416b4deab6d0885d23b1b9626d9",
+      "selected": false,
+      "claims": [
+        "Table III and Fig. 6: matched-accuracy resources",
+        "Table VII: tightened thresholds"
+      ],
+      "required": true,
+      "reason": "selected or evaluated competitor",
+      "check": "old/new states at both cutoffs; new padding; complex C12; traced S2; merged checkpoints",
+      "priority": 1
+    },
+    {
+      "id": "g043",
+      "group": "two_site",
+      "key": [
+        2,
+        0.1,
+        [
+          1.0,
+          0.0
+        ],
+        [
+          128,
+          160
+        ],
+        0,
+        10,
+        3,
+        1
+      ],
+      "source": "double_sine_gordon_data/dsg_step_scan_lambda0.1.json",
+      "source_row": 19,
+      "source_sha256": "74b0f897901770300d968bfdf2587e794e35e416b4deab6d0885d23b1b9626d9",
+      "selected": false,
+      "claims": [
+        "Table III and Fig. 6: matched-accuracy resources",
+        "Table VII: tightened thresholds"
+      ],
+      "required": true,
+      "reason": "selected or evaluated competitor",
+      "check": "old/new states at both cutoffs; new padding; complex C12; traced S2; merged checkpoints",
+      "priority": 1
+    },
+    {
+      "id": "g044",
+      "group": "two_site",
+      "key": [
+        2,
+        0.6,
+        [
+          0.75,
+          0.25
+        ],
+        [
+          128,
+          160
+        ],
+        0,
+        9,
+        2,
+        1
+      ],
+      "source": "double_sine_gordon_data/dsg_step_scan_lambda0.6.json",
+      "source_row": 0,
+      "source_sha256": "70a0a62b63e0c02f190b406e6c9e10dc3a503aed070c656b375e387191f50b49",
+      "selected": false,
+      "claims": [
+        "Table III: second-preparation checks"
+      ],
+      "required": true,
+      "reason": "selected or evaluated competitor",
+      "check": "old/new states at both cutoffs; new padding; complex C12; traced S2; merged checkpoints",
+      "priority": 1
+    },
+    {
+      "id": "g045",
+      "group": "two_site",
+      "key": [
+        2,
+        0.6,
+        [
+          1.0,
+          0.0
+        ],
+        [
+          128,
+          160
+        ],
+        0,
+        7,
+        1,
+        1
+      ],
+      "source": "double_sine_gordon_data/dsg_step_scan_lambda0.6.json",
+      "source_row": 1,
+      "source_sha256": "70a0a62b63e0c02f190b406e6c9e10dc3a503aed070c656b375e387191f50b49",
+      "selected": false,
+      "claims": [
+        "Table III and Fig. 6: matched-accuracy resources",
+        "Table VII: tightened thresholds"
+      ],
+      "required": true,
+      "reason": "selected or evaluated competitor",
+      "check": "old/new states at both cutoffs; new padding; complex C12; traced S2; merged checkpoints",
+      "priority": 1
+    },
+    {
+      "id": "g046",
+      "group": "two_site",
+      "key": [
+        2,
+        0.6,
+        [
+          1.0,
+          0.0
+        ],
+        [
+          128,
+          160
+        ],
+        0,
+        7,
+        2,
+        1
+      ],
+      "source": "double_sine_gordon_data/dsg_step_scan_lambda0.6.json",
+      "source_row": 2,
+      "source_sha256": "70a0a62b63e0c02f190b406e6c9e10dc3a503aed070c656b375e387191f50b49",
+      "selected": false,
+      "claims": [
+        "Table III and Fig. 6: matched-accuracy resources",
+        "Table VII: tightened thresholds"
+      ],
+      "required": true,
+      "reason": "selected or evaluated competitor",
+      "check": "old/new states at both cutoffs; new padding; complex C12; traced S2; merged checkpoints",
+      "priority": 1
+    },
+    {
+      "id": "g047",
+      "group": "two_site",
+      "key": [
+        2,
+        0.6,
+        [
+          1.0,
+          0.0
+        ],
+        [
+          128,
+          160
+        ],
+        0,
+        8,
+        1,
+        1
+      ],
+      "source": "double_sine_gordon_data/dsg_step_scan_lambda0.6.json",
+      "source_row": 3,
+      "source_sha256": "70a0a62b63e0c02f190b406e6c9e10dc3a503aed070c656b375e387191f50b49",
+      "selected": false,
+      "claims": [
+        "Table III and Fig. 6: matched-accuracy resources",
+        "Table VII: tightened thresholds"
+      ],
+      "required": true,
+      "reason": "selected or evaluated competitor",
+      "check": "old/new states at both cutoffs; new padding; complex C12; traced S2; merged checkpoints",
+      "priority": 1
+    },
+    {
+      "id": "g048",
+      "group": "two_site",
+      "key": [
+        2,
+        0.6,
+        [
+          1.0,
+          0.0
+        ],
+        [
+          128,
+          160
+        ],
+        0,
+        8,
+        2,
+        1
+      ],
+      "source": "double_sine_gordon_data/dsg_step_scan_lambda0.6.json",
+      "source_row": 4,
+      "source_sha256": "70a0a62b63e0c02f190b406e6c9e10dc3a503aed070c656b375e387191f50b49",
+      "selected": false,
+      "claims": [
+        "Table III and Fig. 6: matched-accuracy resources",
+        "Table VII: tightened thresholds"
+      ],
+      "required": true,
+      "reason": "selected or evaluated competitor",
+      "check": "old/new states at both cutoffs; new padding; complex C12; traced S2; merged checkpoints",
+      "priority": 1
+    },
+    {
+      "id": "g049",
+      "group": "two_site",
+      "key": [
+        2,
+        0.6,
+        [
+          1.0,
+          0.0
+        ],
+        [
+          128,
+          160
+        ],
+        0,
+        9,
+        1,
+        1
+      ],
+      "source": "double_sine_gordon_data/dsg_step_scan_lambda0.6.json",
+      "source_row": 5,
+      "source_sha256": "70a0a62b63e0c02f190b406e6c9e10dc3a503aed070c656b375e387191f50b49",
+      "selected": false,
+      "claims": [
+        "Table III and Fig. 6: matched-accuracy resources",
+        "Table VII: tightened thresholds"
+      ],
+      "required": true,
+      "reason": "selected or evaluated competitor",
+      "check": "old/new states at both cutoffs; new padding; complex C12; traced S2; merged checkpoints",
+      "priority": 1
+    },
+    {
+      "id": "g050",
+      "group": "two_site",
+      "key": [
+        2,
+        0.6,
+        [
+          1.0,
+          0.0
+        ],
+        [
+          128,
+          160
+        ],
+        0,
+        9,
+        2,
+        1
+      ],
+      "source": "double_sine_gordon_data/dsg_step_scan_lambda0.6.json",
+      "source_row": 6,
+      "source_sha256": "70a0a62b63e0c02f190b406e6c9e10dc3a503aed070c656b375e387191f50b49",
+      "selected": false,
+      "claims": [
+        "Table III and Fig. 6: matched-accuracy resources",
+        "Table VII: tightened thresholds"
+      ],
+      "required": true,
+      "reason": "selected or evaluated competitor",
+      "check": "old/new states at both cutoffs; new padding; complex C12; traced S2; merged checkpoints",
+      "priority": 1
+    },
+    {
+      "id": "g051",
+      "group": "two_site",
+      "key": [
+        2,
+        0.6,
+        [
+          1.0,
+          0.0
+        ],
+        [
+          128,
+          160
+        ],
+        0,
+        10,
+        1,
+        1
+      ],
+      "source": "double_sine_gordon_data/dsg_step_scan_lambda0.6.json",
+      "source_row": 7,
+      "source_sha256": "70a0a62b63e0c02f190b406e6c9e10dc3a503aed070c656b375e387191f50b49",
+      "selected": false,
+      "claims": [
+        "Table III and Fig. 6: matched-accuracy resources",
+        "Table VII: tightened thresholds"
+      ],
+      "required": true,
+      "reason": "selected or evaluated competitor",
+      "check": "old/new states at both cutoffs; new padding; complex C12; traced S2; merged checkpoints",
+      "priority": 1
+    },
+    {
+      "id": "g052",
+      "group": "two_site",
+      "key": [
+        2,
+        0.6,
+        [
+          1.0,
+          0.0
+        ],
+        [
+          128,
+          160
+        ],
+        0,
+        10,
+        2,
+        1
+      ],
+      "source": "double_sine_gordon_data/dsg_step_scan_lambda0.6.json",
+      "source_row": 8,
+      "source_sha256": "70a0a62b63e0c02f190b406e6c9e10dc3a503aed070c656b375e387191f50b49",
+      "selected": false,
+      "claims": [
+        "Table III and Fig. 6: matched-accuracy resources",
+        "Table VII: tightened thresholds"
+      ],
+      "required": true,
+      "reason": "selected or evaluated competitor",
+      "check": "old/new states at both cutoffs; new padding; complex C12; traced S2; merged checkpoints",
+      "priority": 1
+    },
+    {
+      "id": "g053",
+      "group": "two_site",
+      "key": [
+        2,
+        0.6,
+        [
+          1.0,
+          0.0
+        ],
+        [
+          128,
+          160
+        ],
+        0,
+        12,
+        1,
+        1
+      ],
+      "source": "double_sine_gordon_data/dsg_step_scan_lambda0.6.json",
+      "source_row": 9,
+      "source_sha256": "70a0a62b63e0c02f190b406e6c9e10dc3a503aed070c656b375e387191f50b49",
+      "selected": false,
+      "claims": [
+        "Table III and Fig. 6: matched-accuracy resources",
+        "Table VII: tightened thresholds"
+      ],
+      "required": true,
+      "reason": "selected or evaluated competitor",
+      "check": "old/new states at both cutoffs; new padding; complex C12; traced S2; merged checkpoints",
+      "priority": 1
+    },
+    {
+      "id": "g054",
+      "group": "two_site",
+      "key": [
+        2,
+        0.6,
+        [
+          1.0,
+          0.0
+        ],
+        [
+          128,
+          160
+        ],
+        0,
+        12,
+        2,
+        1
+      ],
+      "source": "double_sine_gordon_data/dsg_step_scan_lambda0.6.json",
+      "source_row": 10,
+      "source_sha256": "70a0a62b63e0c02f190b406e6c9e10dc3a503aed070c656b375e387191f50b49",
+      "selected": false,
+      "claims": [
+        "Table III and Fig. 6: matched-accuracy resources",
+        "Table VII: tightened thresholds"
+      ],
+      "required": true,
+      "reason": "selected or evaluated competitor",
+      "check": "old/new states at both cutoffs; new padding; complex C12; traced S2; merged checkpoints",
+      "priority": 1
+    },
+    {
+      "id": "g055",
+      "group": "two_site",
+      "key": [
+        2,
+        0.6,
+        [
+          1.0,
+          0.0
+        ],
+        [
+          128,
+          160
+        ],
+        0,
+        14,
+        1,
+        1
+      ],
+      "source": "double_sine_gordon_data/dsg_step_scan_lambda0.6.json",
+      "source_row": 11,
+      "source_sha256": "70a0a62b63e0c02f190b406e6c9e10dc3a503aed070c656b375e387191f50b49",
+      "selected": false,
+      "claims": [
+        "Table III and Fig. 6: matched-accuracy resources",
+        "Table VII: tightened thresholds"
+      ],
+      "required": true,
+      "reason": "selected or evaluated competitor",
+      "check": "old/new states at both cutoffs; new padding; complex C12; traced S2; merged checkpoints",
+      "priority": 1
+    },
+    {
+      "id": "g056",
+      "group": "two_site",
+      "key": [
+        2,
+        0.6,
+        [
+          1.0,
+          0.0
+        ],
+        [
+          128,
+          160
+        ],
+        0,
+        14,
+        2,
+        1
+      ],
+      "source": "double_sine_gordon_data/dsg_step_scan_lambda0.6.json",
+      "source_row": 12,
+      "source_sha256": "70a0a62b63e0c02f190b406e6c9e10dc3a503aed070c656b375e387191f50b49",
+      "selected": false,
+      "claims": [
+        "Table III and Fig. 6: matched-accuracy resources",
+        "Table VII: tightened thresholds"
+      ],
+      "required": true,
+      "reason": "selected or evaluated competitor",
+      "check": "old/new states at both cutoffs; new padding; complex C12; traced S2; merged checkpoints",
+      "priority": 1
+    },
+    {
+      "id": "g057",
+      "group": "two_site",
+      "key": [
+        2,
+        0.6,
+        [
+          1.0,
+          0.0
+        ],
+        [
+          128,
+          160
+        ],
+        0,
+        8,
+        3,
+        1
+      ],
+      "source": "double_sine_gordon_data/dsg_step_scan_lambda0.6.json",
+      "source_row": 13,
+      "source_sha256": "70a0a62b63e0c02f190b406e6c9e10dc3a503aed070c656b375e387191f50b49",
+      "selected": false,
+      "claims": [
+        "Table III and Fig. 6: matched-accuracy resources",
+        "Table VII: tightened thresholds"
+      ],
+      "required": true,
+      "reason": "selected or evaluated competitor",
+      "check": "old/new states at both cutoffs; new padding; complex C12; traced S2; merged checkpoints",
+      "priority": 1
+    },
+    {
+      "id": "g058",
+      "group": "two_site",
+      "key": [
+        2,
+        0.6,
+        [
+          1.0,
+          0.0
+        ],
+        [
+          128,
+          160
+        ],
+        0,
+        9,
+        3,
+        1
+      ],
+      "source": "double_sine_gordon_data/dsg_step_scan_lambda0.6.json",
+      "source_row": 14,
+      "source_sha256": "70a0a62b63e0c02f190b406e6c9e10dc3a503aed070c656b375e387191f50b49",
+      "selected": false,
+      "claims": [
+        "Table III and Fig. 6: matched-accuracy resources",
+        "Table VII: tightened thresholds"
+      ],
+      "required": true,
+      "reason": "selected or evaluated competitor",
+      "check": "old/new states at both cutoffs; new padding; complex C12; traced S2; merged checkpoints",
+      "priority": 1
+    },
+    {
+      "id": "g059",
+      "group": "two_site",
+      "key": [
+        2,
+        0.6,
+        [
+          1.0,
+          0.0
+        ],
+        [
+          128,
+          160
+        ],
+        0,
+        10,
+        3,
+        1
+      ],
+      "source": "double_sine_gordon_data/dsg_step_scan_lambda0.6.json",
+      "source_row": 15,
+      "source_sha256": "70a0a62b63e0c02f190b406e6c9e10dc3a503aed070c656b375e387191f50b49",
+      "selected": false,
+      "claims": [
+        "Table III and Fig. 6: matched-accuracy resources",
+        "Table VII: tightened thresholds"
+      ],
+      "required": true,
+      "reason": "selected or evaluated competitor",
+      "check": "old/new states at both cutoffs; new padding; complex C12; traced S2; merged checkpoints",
+      "priority": 1
+    },
+    {
+      "id": "g060",
+      "group": "two_site",
+      "key": [
+        2,
+        0.6,
+        [
+          1.0,
+          0.0
+        ],
+        [
+          128,
+          160
+        ],
+        0,
+        12,
+        3,
+        1
+      ],
+      "source": "double_sine_gordon_data/dsg_step_scan_lambda0.6.json",
+      "source_row": 16,
+      "source_sha256": "70a0a62b63e0c02f190b406e6c9e10dc3a503aed070c656b375e387191f50b49",
+      "selected": false,
+      "claims": [
+        "Table III and Fig. 6: matched-accuracy resources",
+        "Table VII: tightened thresholds"
+      ],
+      "required": true,
+      "reason": "selected or evaluated competitor",
+      "check": "old/new states at both cutoffs; new padding; complex C12; traced S2; merged checkpoints",
+      "priority": 1
+    },
+    {
+      "id": "g061",
+      "group": "two_site",
+      "key": [
+        2,
+        0.6,
+        [
+          1.0,
+          0.0
+        ],
+        [
+          128,
+          160
+        ],
+        0,
+        11,
+        2,
+        1
+      ],
+      "source": "double_sine_gordon_data/dsg_step_scan_lambda0.6.json",
+      "source_row": 17,
+      "source_sha256": "70a0a62b63e0c02f190b406e6c9e10dc3a503aed070c656b375e387191f50b49",
+      "selected": false,
+      "claims": [
+        "Table III and Fig. 6: matched-accuracy resources",
+        "Table VII: tightened thresholds"
+      ],
+      "required": true,
+      "reason": "selected or evaluated competitor",
+      "check": "old/new states at both cutoffs; new padding; complex C12; traced S2; merged checkpoints",
+      "priority": 1
+    },
+    {
+      "id": "g062",
+      "group": "two_site",
+      "key": [
+        2,
+        0.6,
+        [
+          1.0,
+          0.0
+        ],
+        [
+          128,
+          160
+        ],
+        0,
+        13,
+        2,
+        1
+      ],
+      "source": "double_sine_gordon_data/dsg_step_scan_lambda0.6.json",
+      "source_row": 18,
+      "source_sha256": "70a0a62b63e0c02f190b406e6c9e10dc3a503aed070c656b375e387191f50b49",
+      "selected": false,
+      "claims": [
+        "Table III and Fig. 6: matched-accuracy resources",
+        "Table VII: tightened thresholds"
+      ],
+      "required": true,
+      "reason": "selected or evaluated competitor",
+      "check": "old/new states at both cutoffs; new padding; complex C12; traced S2; merged checkpoints",
+      "priority": 1
+    },
+    {
+      "id": "g063",
+      "group": "two_site",
+      "key": [
+        2,
+        0.6,
+        [
+          1.0,
+          0.0
+        ],
+        [
+          128,
+          160
+        ],
+        0,
+        15,
+        2,
+        1
+      ],
+      "source": "double_sine_gordon_data/dsg_step_scan_lambda0.6.json",
+      "source_row": 19,
+      "source_sha256": "70a0a62b63e0c02f190b406e6c9e10dc3a503aed070c656b375e387191f50b49",
+      "selected": false,
+      "claims": [
+        "Table III and Fig. 6: matched-accuracy resources",
+        "Table VII: tightened thresholds"
+      ],
+      "required": true,
+      "reason": "selected or evaluated competitor",
+      "check": "old/new states at both cutoffs; new padding; complex C12; traced S2; merged checkpoints",
+      "priority": 1
+    },
+    {
+      "id": "g064",
+      "group": "two_site",
+      "key": [
+        2,
+        0.6,
+        [
+          1.0,
+          0.0
+        ],
+        [
+          128,
+          160
+        ],
+        0,
+        16,
+        2,
+        1
+      ],
+      "source": "double_sine_gordon_data/dsg_step_scan_lambda0.6.json",
+      "source_row": 20,
+      "source_sha256": "70a0a62b63e0c02f190b406e6c9e10dc3a503aed070c656b375e387191f50b49",
+      "selected": false,
+      "claims": [
+        "Table III and Fig. 6: matched-accuracy resources",
+        "Table VII: tightened thresholds"
+      ],
+      "required": true,
+      "reason": "selected or evaluated competitor",
+      "check": "old/new states at both cutoffs; new padding; complex C12; traced S2; merged checkpoints",
+      "priority": 1
+    },
+    {
+      "id": "g065",
+      "group": "two_site",
+      "key": [
+        2,
+        0.6,
+        [
+          1.0,
+          0.0
+        ],
+        [
+          128,
+          160
+        ],
+        0,
+        13,
+        3,
+        1
+      ],
+      "source": "double_sine_gordon_data/dsg_step_scan_lambda0.6.json",
+      "source_row": 21,
+      "source_sha256": "70a0a62b63e0c02f190b406e6c9e10dc3a503aed070c656b375e387191f50b49",
+      "selected": false,
+      "claims": [
+        "Table III and Fig. 6: matched-accuracy resources",
+        "Table VII: tightened thresholds"
+      ],
+      "required": true,
+      "reason": "selected or evaluated competitor",
+      "check": "old/new states at both cutoffs; new padding; complex C12; traced S2; merged checkpoints",
+      "priority": 1
+    },
+    {
+      "id": "g066",
+      "group": "two_site",
+      "key": [
+        2,
+        0.6,
+        [
+          1.0,
+          0.0
+        ],
+        [
+          128,
+          160
+        ],
+        0,
+        14,
+        3,
+        1
+      ],
+      "source": "double_sine_gordon_data/dsg_step_scan_lambda0.6.json",
+      "source_row": 22,
+      "source_sha256": "70a0a62b63e0c02f190b406e6c9e10dc3a503aed070c656b375e387191f50b49",
+      "selected": false,
+      "claims": [
+        "Table III and Fig. 6: matched-accuracy resources",
+        "Table VII: tightened thresholds"
+      ],
+      "required": true,
+      "reason": "selected or evaluated competitor",
+      "check": "old/new states at both cutoffs; new padding; complex C12; traced S2; merged checkpoints",
+      "priority": 1
+    },
+    {
+      "id": "g067",
+      "group": "two_site",
+      "key": [
+        2,
+        0.6,
+        [
+          1.0,
+          0.0
+        ],
+        [
+          128,
+          160
+        ],
+        0,
+        15,
+        3,
+        1
+      ],
+      "source": "double_sine_gordon_data/dsg_step_scan_lambda0.6.json",
+      "source_row": 23,
+      "source_sha256": "70a0a62b63e0c02f190b406e6c9e10dc3a503aed070c656b375e387191f50b49",
+      "selected": false,
+      "claims": [
+        "Table III and Fig. 6: matched-accuracy resources",
+        "Table VII: tightened thresholds"
+      ],
+      "required": true,
+      "reason": "selected or evaluated competitor",
+      "check": "old/new states at both cutoffs; new padding; complex C12; traced S2; merged checkpoints",
+      "priority": 1
+    },
+    {
+      "id": "g068",
+      "group": "two_site",
+      "key": [
+        2,
+        0.6,
+        [
+          1.0,
+          0.0
+        ],
+        [
+          128,
+          160
+        ],
+        0,
+        16,
+        3,
+        1
+      ],
+      "source": "double_sine_gordon_data/dsg_step_scan_lambda0.6.json",
+      "source_row": 24,
+      "source_sha256": "70a0a62b63e0c02f190b406e6c9e10dc3a503aed070c656b375e387191f50b49",
+      "selected": false,
+      "claims": [
+        "Table III and Fig. 6: matched-accuracy resources",
+        "Table VII: tightened thresholds"
+      ],
+      "required": true,
+      "reason": "selected or evaluated competitor",
+      "check": "old/new states at both cutoffs; new padding; complex C12; traced S2; merged checkpoints",
+      "priority": 1
+    },
+    {
+      "id": "g069",
+      "group": "two_site",
+      "key": [
+        2,
+        0.6,
+        [
+          1.0,
+          0.0
+        ],
+        [
+          128,
+          160
+        ],
+        0,
+        11,
+        3,
+        1
+      ],
+      "source": "double_sine_gordon_data/dsg_step_scan_lambda0.6.json",
+      "source_row": 25,
+      "source_sha256": "70a0a62b63e0c02f190b406e6c9e10dc3a503aed070c656b375e387191f50b49",
+      "selected": false,
+      "claims": [
+        "Table III and Fig. 6: matched-accuracy resources",
+        "Table VII: tightened thresholds"
+      ],
+      "required": true,
+      "reason": "selected or evaluated competitor",
+      "check": "old/new states at both cutoffs; new padding; complex C12; traced S2; merged checkpoints",
+      "priority": 1
+    },
+    {
+      "id": "g070",
+      "group": "two_site",
+      "key": [
+        2,
+        0.6,
+        [
+          1.0,
+          0.0
+        ],
+        [
+          160,
+          192
+        ],
+        0,
+        9,
+        3,
+        1
+      ],
+      "source": "double_sine_gordon_data/dsg_boundary_check_lambda0.6.json",
+      "source_row": 0,
+      "source_sha256": "eb84b2ce1cb212fbf2505b6b1069b883e3b11f47dcd4e4bb4a96978a92300e42",
+      "selected": false,
+      "claims": [
+        "Table III and Fig. 6: matched-accuracy resources",
+        "Table VII: tightened thresholds"
+      ],
+      "required": true,
+      "reason": "selected or evaluated competitor",
+      "check": "old/new states at both cutoffs; new padding; complex C12; traced S2; merged checkpoints",
+      "priority": 1
+    },
+    {
+      "id": "g071",
+      "group": "two_site",
+      "key": [
+        2,
+        0.6,
+        [
+          1.0,
+          0.0
+        ],
+        [
+          160,
+          192
+        ],
+        0,
+        10,
+        3,
+        1
+      ],
+      "source": "double_sine_gordon_data/dsg_boundary_check_lambda0.6.json",
+      "source_row": 1,
+      "source_sha256": "eb84b2ce1cb212fbf2505b6b1069b883e3b11f47dcd4e4bb4a96978a92300e42",
+      "selected": true,
+      "claims": [
+        "Table III and Fig. 6: matched-accuracy resources",
+        "Table VII: tightened thresholds"
+      ],
+      "required": true,
+      "reason": "selected or evaluated competitor",
+      "check": "old/new states at both cutoffs; new padding; complex C12; traced S2; merged checkpoints",
+      "priority": 0
+    },
+    {
+      "id": "g072",
+      "group": "two_site",
+      "key": [
+        2,
+        0.6,
+        [
+          1.0,
+          0.0
+        ],
+        [
+          160,
+          192
+        ],
+        0,
+        11,
+        3,
+        1
+      ],
+      "source": "double_sine_gordon_data/dsg_boundary_check_lambda0.6.json",
+      "source_row": 2,
+      "source_sha256": "eb84b2ce1cb212fbf2505b6b1069b883e3b11f47dcd4e4bb4a96978a92300e42",
+      "selected": false,
+      "claims": [
+        "Table III and Fig. 6: matched-accuracy resources",
+        "Table VII: tightened thresholds"
+      ],
+      "required": true,
+      "reason": "selected or evaluated competitor",
+      "check": "old/new states at both cutoffs; new padding; complex C12; traced S2; merged checkpoints",
+      "priority": 1
+    },
+    {
+      "id": "g073",
+      "group": "two_site",
+      "key": [
+        2,
+        0.6,
+        [
+          1.0,
+          0.0
+        ],
+        [
+          160,
+          192
+        ],
+        0,
+        12,
+        3,
+        1
+      ],
+      "source": "double_sine_gordon_data/dsg_boundary_check_lambda0.6.json",
+      "source_row": 3,
+      "source_sha256": "eb84b2ce1cb212fbf2505b6b1069b883e3b11f47dcd4e4bb4a96978a92300e42",
+      "selected": false,
+      "claims": [
+        "Table III and Fig. 6: matched-accuracy resources",
+        "Table VII: tightened thresholds"
+      ],
+      "required": true,
+      "reason": "selected or evaluated competitor",
+      "check": "old/new states at both cutoffs; new padding; complex C12; traced S2; merged checkpoints",
+      "priority": 1
+    },
+    {
+      "id": "g074",
+      "group": "two_site",
+      "key": [
+        2,
+        0.6,
+        [
+          0.75,
+          0.25
+        ],
+        [
+          160,
+          192
+        ],
+        0,
+        10,
+        3,
+        1
+      ],
+      "source": "double_sine_gordon_data/dsg_boundary_check_lambda0.6_prep0.75_0.25.json",
+      "source_row": 0,
+      "source_sha256": "c244f5ba0be8f1affb222dcf472cf72aae67cb2f0e5c3f30def4a788520d2209",
+      "selected": true,
+      "claims": [
+        "Table III: second-preparation checks"
+      ],
+      "required": true,
+      "reason": "selected or evaluated competitor",
+      "check": "old/new states at both cutoffs; new padding; complex C12; traced S2; merged checkpoints",
+      "priority": 0
+    },
+    {
+      "id": "g075",
+      "group": "chain",
+      "key": [
+        3,
+        0.3,
+        [
+          1.0,
+          0.0
+        ],
+        [
+          128,
+          160
+        ],
+        0,
+        6,
+        3,
+        1
+      ],
+      "source": "double_sine_gordon_data/dsg_chain_N3_cut128_160.json",
+      "source_row": 0,
+      "source_sha256": "9bb6e48d9080d13851986d399737bc3fcee23c12f18906b762c2fbe4bb67cf02",
+      "selected": false,
+      "claims": [
+        "Table III: three-site minimum among evaluated candidates"
+      ],
+      "required": true,
+      "reason": "selected or evaluated competitor",
+      "check": "old/new states at both cutoffs; new padding; complex C12; traced S2; merged checkpoints",
+      "priority": 1
+    },
+    {
+      "id": "g076",
+      "group": "chain",
+      "key": [
+        3,
+        0.3,
+        [
+          1.0,
+          0.0
+        ],
+        [
+          128,
+          160
+        ],
+        0,
+        6,
+        2,
+        1
+      ],
+      "source": "double_sine_gordon_data/dsg_chain_N3_cut128_160.json",
+      "source_row": 1,
+      "source_sha256": "9bb6e48d9080d13851986d399737bc3fcee23c12f18906b762c2fbe4bb67cf02",
+      "selected": false,
+      "claims": [
+        "Table III: three-site minimum among evaluated candidates"
+      ],
+      "required": true,
+      "reason": "selected or evaluated competitor",
+      "check": "old/new states at both cutoffs; new padding; complex C12; traced S2; merged checkpoints",
+      "priority": 1
+    },
+    {
+      "id": "g077",
+      "group": "chain",
+      "key": [
+        3,
+        0.3,
+        [
+          1.0,
+          0.0
+        ],
+        [
+          128,
+          160
+        ],
+        0,
+        7,
+        3,
+        1
+      ],
+      "source": "double_sine_gordon_data/dsg_chain_N3_cut128_160.json",
+      "source_row": 2,
+      "source_sha256": "9bb6e48d9080d13851986d399737bc3fcee23c12f18906b762c2fbe4bb67cf02",
+      "selected": false,
+      "claims": [
+        "Table III: three-site minimum among evaluated candidates"
+      ],
+      "required": true,
+      "reason": "selected or evaluated competitor",
+      "check": "old/new states at both cutoffs; new padding; complex C12; traced S2; merged checkpoints",
+      "priority": 1
+    },
+    {
+      "id": "g078",
+      "group": "chain",
+      "key": [
+        3,
+        0.3,
+        [
+          1.0,
+          0.0
+        ],
+        [
+          128,
+          160
+        ],
+        0,
+        7,
+        2,
+        1
+      ],
+      "source": "double_sine_gordon_data/dsg_chain_N3_cut128_160.json",
+      "source_row": 3,
+      "source_sha256": "9bb6e48d9080d13851986d399737bc3fcee23c12f18906b762c2fbe4bb67cf02",
+      "selected": false,
+      "claims": [
+        "Table III: three-site minimum among evaluated candidates"
+      ],
+      "required": true,
+      "reason": "selected or evaluated competitor",
+      "check": "old/new states at both cutoffs; new padding; complex C12; traced S2; merged checkpoints",
+      "priority": 1
+    },
+    {
+      "id": "g079",
+      "group": "chain",
+      "key": [
+        3,
+        0.3,
+        [
+          1.0,
+          0.0
+        ],
+        [
+          128,
+          160
+        ],
+        0,
+        8,
+        3,
+        1
+      ],
+      "source": "double_sine_gordon_data/dsg_chain_N3_cut128_160.json",
+      "source_row": 4,
+      "source_sha256": "9bb6e48d9080d13851986d399737bc3fcee23c12f18906b762c2fbe4bb67cf02",
+      "selected": true,
+      "claims": [
+        "Table III: three-site minimum among evaluated candidates"
+      ],
+      "required": true,
+      "reason": "selected or evaluated competitor",
+      "check": "old/new states at both cutoffs; new padding; complex C12; traced S2; merged checkpoints",
+      "priority": 0
+    },
+    {
+      "id": "g080",
+      "group": "chain",
+      "key": [
+        3,
+        0.3,
+        [
+          1.0,
+          0.0
+        ],
+        [
+          128,
+          160
+        ],
+        0,
+        8,
+        2,
+        1
+      ],
+      "source": "double_sine_gordon_data/dsg_chain_N3_cut128_160.json",
+      "source_row": 5,
+      "source_sha256": "9bb6e48d9080d13851986d399737bc3fcee23c12f18906b762c2fbe4bb67cf02",
+      "selected": false,
+      "claims": [
+        "Table III: three-site minimum among evaluated candidates"
+      ],
+      "required": false,
+      "reason": "cost exceeds selected three-site count; no three-site timing claim",
+      "check": "old/new states at both cutoffs; new padding; complex C12; traced S2; merged checkpoints",
+      "priority": 1
+    },
+    {
+      "id": "g081",
+      "group": "chain",
+      "key": [
+        3,
+        0.3,
+        [
+          1.0,
+          0.0
+        ],
+        [
+          128,
+          160
+        ],
+        0,
+        9,
+        3,
+        1
+      ],
+      "source": "double_sine_gordon_data/dsg_chain_N3_cut128_160.json",
+      "source_row": 6,
+      "source_sha256": "9bb6e48d9080d13851986d399737bc3fcee23c12f18906b762c2fbe4bb67cf02",
+      "selected": false,
+      "claims": [
+        "Table III: three-site minimum among evaluated candidates"
+      ],
+      "required": false,
+      "reason": "cost exceeds selected three-site count; no three-site timing claim",
+      "check": "old/new states at both cutoffs; new padding; complex C12; traced S2; merged checkpoints",
+      "priority": 1
+    },
+    {
+      "id": "g082",
+      "group": "chain",
+      "key": [
+        3,
+        0.3,
+        [
+          1.0,
+          0.0
+        ],
+        [
+          128,
+          160
+        ],
+        0,
+        9,
+        2,
+        1
+      ],
+      "source": "double_sine_gordon_data/dsg_chain_N3_cut128_160.json",
+      "source_row": 7,
+      "source_sha256": "9bb6e48d9080d13851986d399737bc3fcee23c12f18906b762c2fbe4bb67cf02",
+      "selected": false,
+      "claims": [
+        "Table III: three-site minimum among evaluated candidates"
+      ],
+      "required": false,
+      "reason": "cost exceeds selected three-site count; no three-site timing claim",
+      "check": "old/new states at both cutoffs; new padding; complex C12; traced S2; merged checkpoints",
+      "priority": 1
+    },
+    {
+      "id": "g083",
+      "group": "common",
+      "key": [
+        2,
+        0.1,
+        [
+          1.0,
+          0.0
+        ],
+        [
+          128,
+          160
+        ],
+        20,
+        5,
+        3,
+        1
+      ],
+      "source": "double_sine_gordon_data/dsg_common_times.json",
+      "source_row": 0,
+      "source_sha256": "8e5694a7f153f3fc4090bb1a984eff8e8ed584cfa711c1c65b6c3e67aa754d51",
+      "selected": false,
+      "claims": [
+        "Appendix J: common-time selected circuits and tested neighbors"
+      ],
+      "required": true,
+      "reason": "selected or evaluated competitor",
+      "check": "old/new states at both cutoffs; new padding; complex C12; traced S2; merged checkpoints",
+      "priority": 1
+    },
+    {
+      "id": "g084",
+      "group": "common",
+      "key": [
+        2,
+        0.1,
+        [
+          1.0,
+          0.0
+        ],
+        [
+          128,
+          160
+        ],
+        20,
+        6,
+        3,
+        1
+      ],
+      "source": "double_sine_gordon_data/dsg_common_times.json",
+      "source_row": 1,
+      "source_sha256": "8e5694a7f153f3fc4090bb1a984eff8e8ed584cfa711c1c65b6c3e67aa754d51",
+      "selected": true,
+      "claims": [
+        "Appendix J: common-time selected circuits and tested neighbors"
+      ],
+      "required": true,
+      "reason": "selected or evaluated competitor",
+      "check": "old/new states at both cutoffs; new padding; complex C12; traced S2; merged checkpoints",
+      "priority": 0
+    },
+    {
+      "id": "g085",
+      "group": "common",
+      "key": [
+        2,
+        0.3,
+        [
+          1.0,
+          0.0
+        ],
+        [
+          128,
+          160
+        ],
+        20,
+        6,
+        2,
+        1
+      ],
+      "source": "double_sine_gordon_data/dsg_common_times.json",
+      "source_row": 6,
+      "source_sha256": "8e5694a7f153f3fc4090bb1a984eff8e8ed584cfa711c1c65b6c3e67aa754d51",
+      "selected": false,
+      "claims": [
+        "Appendix J: common-time selected circuits and tested neighbors"
+      ],
+      "required": true,
+      "reason": "selected or evaluated competitor",
+      "check": "old/new states at both cutoffs; new padding; complex C12; traced S2; merged checkpoints",
+      "priority": 1
+    },
+    {
+      "id": "g086",
+      "group": "common",
+      "key": [
+        2,
+        0.3,
+        [
+          1.0,
+          0.0
+        ],
+        [
+          128,
+          160
+        ],
+        20,
+        6,
+        3,
+        1
+      ],
+      "source": "double_sine_gordon_data/dsg_common_times.json",
+      "source_row": 7,
+      "source_sha256": "8e5694a7f153f3fc4090bb1a984eff8e8ed584cfa711c1c65b6c3e67aa754d51",
+      "selected": false,
+      "claims": [
+        "Appendix J: common-time selected circuits and tested neighbors"
+      ],
+      "required": true,
+      "reason": "selected or evaluated competitor",
+      "check": "old/new states at both cutoffs; new padding; complex C12; traced S2; merged checkpoints",
+      "priority": 1
+    },
+    {
+      "id": "g087",
+      "group": "common",
+      "key": [
+        2,
+        0.3,
+        [
+          1.0,
+          0.0
+        ],
+        [
+          128,
+          160
+        ],
+        20,
+        7,
+        3,
+        1
+      ],
+      "source": "double_sine_gordon_data/dsg_common_times.json",
+      "source_row": 8,
+      "source_sha256": "8e5694a7f153f3fc4090bb1a984eff8e8ed584cfa711c1c65b6c3e67aa754d51",
+      "selected": true,
+      "claims": [
+        "Appendix J: common-time selected circuits and tested neighbors"
+      ],
+      "required": true,
+      "reason": "selected or evaluated competitor",
+      "check": "old/new states at both cutoffs; new padding; complex C12; traced S2; merged checkpoints",
+      "priority": 0
+    },
+    {
+      "id": "g088",
+      "group": "common",
+      "key": [
+        2,
+        0.3,
+        [
+          1.0,
+          0.0
+        ],
+        [
+          128,
+          160
+        ],
+        20,
+        8,
+        3,
+        1
+      ],
+      "source": "double_sine_gordon_data/dsg_common_times.json",
+      "source_row": 9,
+      "source_sha256": "8e5694a7f153f3fc4090bb1a984eff8e8ed584cfa711c1c65b6c3e67aa754d51",
+      "selected": false,
+      "claims": [
+        "Appendix J: common-time selected circuits and tested neighbors"
+      ],
+      "required": true,
+      "reason": "selected or evaluated competitor",
+      "check": "old/new states at both cutoffs; new padding; complex C12; traced S2; merged checkpoints",
+      "priority": 1
+    },
+    {
+      "id": "g089",
+      "group": "common",
+      "key": [
+        2,
+        0.6,
+        [
+          1.0,
+          0.0
+        ],
+        [
+          128,
+          160
+        ],
+        20,
+        8,
+        2,
+        1
+      ],
+      "source": "double_sine_gordon_data/dsg_common_times.json",
+      "source_row": 17,
+      "source_sha256": "8e5694a7f153f3fc4090bb1a984eff8e8ed584cfa711c1c65b6c3e67aa754d51",
+      "selected": false,
+      "claims": [
+        "Appendix J: common-time selected circuits and tested neighbors"
+      ],
+      "required": true,
+      "reason": "selected or evaluated competitor",
+      "check": "old/new states at both cutoffs; new padding; complex C12; traced S2; merged checkpoints",
+      "priority": 1
+    },
+    {
+      "id": "g090",
+      "group": "common",
+      "key": [
+        2,
+        0.6,
+        [
+          1.0,
+          0.0
+        ],
+        [
+          128,
+          160
+        ],
+        20,
+        9,
+        2,
+        1
+      ],
+      "source": "double_sine_gordon_data/dsg_common_times.json",
+      "source_row": 18,
+      "source_sha256": "8e5694a7f153f3fc4090bb1a984eff8e8ed584cfa711c1c65b6c3e67aa754d51",
+      "selected": false,
+      "claims": [
+        "Appendix J: common-time selected circuits and tested neighbors"
+      ],
+      "required": true,
+      "reason": "selected or evaluated competitor",
+      "check": "old/new states at both cutoffs; new padding; complex C12; traced S2; merged checkpoints",
+      "priority": 1
+    },
+    {
+      "id": "g091",
+      "group": "common",
+      "key": [
+        2,
+        0.6,
+        [
+          1.0,
+          0.0
+        ],
+        [
+          128,
+          160
+        ],
+        20,
+        9,
+        3,
+        1
+      ],
+      "source": "double_sine_gordon_data/dsg_common_times.json",
+      "source_row": 19,
+      "source_sha256": "8e5694a7f153f3fc4090bb1a984eff8e8ed584cfa711c1c65b6c3e67aa754d51",
+      "selected": false,
+      "claims": [
+        "Appendix J: common-time selected circuits and tested neighbors"
+      ],
+      "required": true,
+      "reason": "selected or evaluated competitor",
+      "check": "old/new states at both cutoffs; new padding; complex C12; traced S2; merged checkpoints",
+      "priority": 1
+    },
+    {
+      "id": "g092",
+      "group": "common",
+      "key": [
+        2,
+        0.6,
+        [
+          1.0,
+          0.0
+        ],
+        [
+          160,
+          192
+        ],
+        20,
+        9,
+        3,
+        1
+      ],
+      "source": "double_sine_gordon_data/dsg_common_times.json",
+      "source_row": 20,
+      "source_sha256": "8e5694a7f153f3fc4090bb1a984eff8e8ed584cfa711c1c65b6c3e67aa754d51",
+      "selected": false,
+      "claims": [
+        "Appendix J: common-time selected circuits and tested neighbors"
+      ],
+      "required": true,
+      "reason": "selected or evaluated competitor",
+      "check": "old/new states at both cutoffs; new padding; complex C12; traced S2; merged checkpoints",
+      "priority": 1
+    },
+    {
+      "id": "g093",
+      "group": "common",
+      "key": [
+        2,
+        0.6,
+        [
+          1.0,
+          0.0
+        ],
+        [
+          128,
+          160
+        ],
+        20,
+        10,
+        3,
+        1
+      ],
+      "source": "double_sine_gordon_data/dsg_common_times.json",
+      "source_row": 21,
+      "source_sha256": "8e5694a7f153f3fc4090bb1a984eff8e8ed584cfa711c1c65b6c3e67aa754d51",
+      "selected": false,
+      "claims": [
+        "Appendix J: common-time selected circuits and tested neighbors"
+      ],
+      "required": true,
+      "reason": "selected or evaluated competitor",
+      "check": "old/new states at both cutoffs; new padding; complex C12; traced S2; merged checkpoints",
+      "priority": 1
+    },
+    {
+      "id": "g094",
+      "group": "common",
+      "key": [
+        2,
+        0.6,
+        [
+          1.0,
+          0.0
+        ],
+        [
+          160,
+          192
+        ],
+        20,
+        10,
+        3,
+        1
+      ],
+      "source": "double_sine_gordon_data/dsg_common_times.json",
+      "source_row": 22,
+      "source_sha256": "8e5694a7f153f3fc4090bb1a984eff8e8ed584cfa711c1c65b6c3e67aa754d51",
+      "selected": true,
+      "claims": [
+        "Appendix J: common-time selected circuits and tested neighbors"
+      ],
+      "required": true,
+      "reason": "selected or evaluated competitor",
+      "check": "old/new states at both cutoffs; new padding; complex C12; traced S2; merged checkpoints",
+      "priority": 0
+    }
+  ],
+  "scope": "All archived two-site Gaussian candidates, boundary rechecks and common-time cases; all three-site candidates no costlier than 382.",
+  "state_thresholds": [
+    0.03162277660168379,
+    0.022360679774997897,
+    0.015811388300841896,
+    0.01
+  ],
+  "allowances": [
+    0.0,
+    0.005,
+    0.01,
+    0.02
+  ]
+}

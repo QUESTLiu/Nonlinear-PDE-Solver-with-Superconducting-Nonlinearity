@@ -13,11 +13,14 @@ Usage, from the repository root (interpreter /Users/zhen002/miniconda3/envs/cvdv
 """
 
 import json
+import sys
 from pathlib import Path
 
 import numpy as np
 
 DATA = Path(__file__).resolve().parents[1] / "double_sine_gordon_data"
+sys.path.insert(0, str(DATA.parent))
+from double_sine_gordon_code.gaussian_evidence import updated_row, passes_at
 PARTS = {0.1: DATA / "dsg_step_scan_parts_lambda0.1", 0.3: DATA / "dsg_step_scan_parts", 0.6: DATA / "dsg_step_scan_parts_lambda0.6"}
 THRESHOLDS = (1e-3, 5e-4, 2.5e-4, 1e-4)
 ROUTES = ("hybrid", "gauss_block", "kin_pot")
@@ -28,11 +31,12 @@ def load(directory, lam2):
     for path in sorted(directory.glob("*.json")):
         for row in json.loads(path.read_text())["rows"]:
             if row["preparation"] == [1.0, 0.0] and row["s"] == 1:
-                unique[(row["route"], row["r"], row["order"])] = dict(row, cutoffs=[128, 160])
+                unique[(row["route"], row["r"], row["order"])] = updated_row(dict(row, lambda2=lam2, cutoffs=[128, 160]))
     # circuits that exceed the boundary limit only at padding 128 and were re-evaluated at cutoffs 160/192
     check = DATA / f"dsg_boundary_check_lambda{lam2:g}.json"
     if check.exists():
         for row in json.loads(check.read_text())["rows"]:
+            row = updated_row(row)
             key = (row["route"], row["r"], row["order"])
             if row["all_criteria"] and key in unique and not unique[key]["all_criteria"] and not unique[key]["acceptance"]["boundary"]:
                 unique[key] = dict(row, cutoffs=[160, 192])
@@ -41,8 +45,7 @@ def load(directory, lam2):
 
 def passes(row, infidelity):
     eps = np.sqrt(infidelity)
-    acc = row["acceptance"]
-    return bool(row["state_error"] <= eps and row["margins"]["reference"] <= eps / 10 and acc["boundary"] and acc["C12"] and acc["S2"])
+    return passes_at(row, eps)
 
 
 def main():
@@ -61,7 +64,8 @@ def main():
                 # every cheaper circuit of the route must have been evaluated and failed, otherwise the minimum is not established
                 unevaluated_gap = best["r"] - 1 not in {r["r"] for r in cheaper if r["order"] == best["order"]}
                 entry[route] = dict(r=best["r"], order=best["order"], primitives=best["total_programmable_primitives"],
-                                    state_error=best["state_error"], cutoffs=best["cutoffs"], previous_step_evaluated=not unevaluated_gap)
+                                    state_error=best["state_error"], cutoffs=best["cutoffs"], previous_step_evaluated=not unevaluated_gap,
+                                    error_evidence=best.get("error_evidence", "direct numerical estimate"))
             if entry["hybrid"] and entry["gauss_block"]:
                 entry["saving_gauss_block"] = entry["gauss_block"]["primitives"] / entry["hybrid"]["primitives"]
             if entry["hybrid"] and entry["kin_pot"]:

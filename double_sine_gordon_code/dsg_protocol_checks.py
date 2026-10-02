@@ -7,10 +7,10 @@ common  Evaluates a circuit at the common readout times t_k = k T / K (default K
         T, whose count is unchanged. The acceptance rule is that of dsg_step_scan.py with every
         maximum taken over the common times (state, observables, margins) and the boundary
         population monitored in every readout circuit.
-gauss   Runs the Gaussian-block circuit and compares, on every state that enters a Gaussian
+gauss   Replays the archived unmerged Gaussian-block circuit and compares, on every state that enters a Gaussian
         factor product Phi(a) Q Phi(a), the factorized step with the exact truncated block
         exp[-i tau (H_kin + H_bond)] of the finite spectral model (sparse matrix exponential).
-merge   Collects the common-time parts into data/dsg_common_times.json.
+merge   Collects current common-time parts into data/dsg_common_times_merged.json.
 
 Usage, from the repository root (interpreter /Users/zhen002/miniconda3/envs/cvdv/bin/python):
     python double_sine_gordon_code/dsg_protocol_checks.py common --route hybrid --orders 1 --r 5,6,7 [--lam2 0.3] [--K 20]
@@ -75,11 +75,15 @@ def run_common(route, n, r, order, s, prep, K, reference):
                      C12_error=abs(obs0["C12_real"] + 1j * obs0["C12_imag"] - reference["C12"][0]),
                      S2_error=abs(obs0["S2"] - reference["S2"][0])))
     for k, t, n_k, h_k in readout_schedule(r, K):
-        step = make_step(route, problem, h_k, order, s, observe)
         joint = initial.copy()
-        for _ in range(n_k):
-            joint = step(joint)
-            observe(joint)
+        if route == "gauss_block":
+            for joint in scan.gauss_block_readouts(problem, joint, h_k, n_k, order, s, observe, final_only=True):
+                pass
+        else:
+            step = make_step(route, problem, h_k, order, s, observe)
+            for _ in range(n_k):
+                joint = step(joint)
+                observe(joint)
         metrics = scan.nc.reduced_metrics(joint, reference["states"][k])
         obs = scan.nc.two_site_observables(joint, basis, joint=True)
         c12 = obs["C12_real"] + 1j * obs["C12_imag"]
@@ -118,6 +122,7 @@ def evaluate_common(route, r, order, s, prep, K):
                       S2=bool(us <= 5e-3 and s2 + us <= 0.02))
     counts, waits = scan.primitive_counts(route, r, order, s)
     return dict(route=route, r=r, order=order, block_orders=list(scan.ORDER_CODES[order]), s=s, preparation=list(prep),
+                gaussian_sequence="merged_intervals" if route == "gauss_block" else None,
                 lambda2=scan.LAM2, cutoffs=list(scan.CUTS), K=K, protocol="common readout times t_k = k T / K, each reached by "
                 "ceil(t_k / h) equal steps", primitive_counts=counts, total_programmable_primitives=int(sum(counts.values())),
                 native_waits=waits, state_error=total, max_bures=max_bures,
@@ -132,7 +137,7 @@ def evaluate_common(route, r, order, s, prep, K):
 
 
 def gauss_check(r, order, s, prep):
-    """Largest distance between the factorized and the exact truncated Gaussian step on its entry states."""
+    """Archived unmerged-sequence diagnostic, not validation of the merged production circuit."""
     result = {}
     for n in scan.CUTS:
         problem = scan.build_two_site_problem(n, scan.OMEGA_B, scan.E_J, scan.KAPPA, scan.LAM2)
@@ -199,7 +204,8 @@ def main():
                       f"state={row['state_error']:.4f} (max at t={row['argmax_time']:.3f}) C12={row['C12_error']:.4f} "
                       f"S2={row['S2_error']:.4f} bnd={row['boundary_population']:.2e} {acc} ({row['wall_seconds']:.0f} s)", flush=True)
                 cuts_tag = "" if scan.CUTS == (128, 160) else f"_cut{scan.CUTS[0]}_{scan.CUTS[1]}"
-                name = f"{args.route}_lambda{scan.LAM2:g}_K{args.K}_prep{scan.prep_tag(prep)}{cuts_tag}{args.tag}.json"
+                sequence_tag = "_merged" if args.route == "gauss_block" else ""
+                name = f"{args.route}_lambda{scan.LAM2:g}_K{args.K}_prep{scan.prep_tag(prep)}{cuts_tag}{args.tag}{sequence_tag}.json"
                 (PARTS / name).write_text(json.dumps(dict(environment=scan.environment(), rows=results), indent=1,
                                                       default=lambda x: [x.real, x.imag] if isinstance(x, complex) else x))
         return
@@ -223,6 +229,8 @@ def main():
     unique = {}
     for path in sorted(PARTS.glob("*.json")):
         for row in json.loads(path.read_text())["rows"]:
+            if row["route"] == "gauss_block" and row.get("gaussian_sequence") != "merged_intervals":
+                continue
             unique[(row["lambda2"], row["K"], row["route"], row["r"], row["order"], tuple(row["preparation"]), tuple(row["cutoffs"]))] = row
     rows = sorted(unique.values(), key=lambda x: (x["lambda2"], x["K"], x["route"], x["order"], x["r"]))
     best = {}
@@ -233,7 +241,7 @@ def main():
         if key not in best or row["total_programmable_primitives"] < best[key]["primitives"]:
             best[key] = dict(r=row["r"], order=row["order"], primitives=row["total_programmable_primitives"], state_error=row["state_error"])
     summary = dict(description=__doc__.split("\n\n")[0], rows=rows, cheapest_passing=best, environment=scan.environment())
-    (scan.DATA / "dsg_common_times.json").write_text(json.dumps(summary, indent=1))
+    (scan.DATA / "dsg_common_times_merged.json").write_text(json.dumps(summary, indent=1))
     for key, value in best.items():
         print(key, value)
 

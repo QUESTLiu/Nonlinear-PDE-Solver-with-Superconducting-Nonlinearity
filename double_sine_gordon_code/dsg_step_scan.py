@@ -8,7 +8,7 @@ blocks for the Josephson harmonic and first-order blocks for the lambda2 harmoni
 
   hybrid       H_SG | Delta H, native lattice plus trigonometric correction (repository route H_trig)
   kin_pot      H_kin | (H_bond + V_J + Delta H), kinetic/potential split (repository route G_trig)
-  gauss_block  (H_kin + H_bond) | (V_J + Delta H), where the exact two-mode Gaussian step
+  gauss_block  (H_kin + H_bond) | (V_J + Delta H), where the canonical two-mode Gaussian step
                exp[-i tau (H_kin + H_bond)] = Phi(a) Q Phi(a) is written as a bond-type quadratic
                phase Phi in the phases and a quadratic phase Q in the momenta (three primitives each)
 
@@ -22,7 +22,8 @@ Usage, from the repository root (interpreter /Users/zhen002/miniconda3/envs/cvdv
     python double_sine_gordon_code/dsg_step_scan.py references --r 5,6,7 [--prep 1,0]
     python double_sine_gordon_code/dsg_step_scan.py scan --route gauss_block --orders 1,2,3 --r 5,6,7 [--prep 1,0]
     python double_sine_gordon_code/dsg_step_scan.py merge
-Reference trajectories are cached in the directory given by DSG_SCAN_CACHE (default /tmp/dsg_scan_cache).
+Fresh Gaussian parts and merge outputs use a _merged suffix. The merge command excludes
+unmerged Gaussian archives. Reference trajectories are cached in DSG_SCAN_CACHE (default /tmp/dsg_scan_cache).
 """
 
 import argparse
@@ -46,6 +47,7 @@ from common_code.run_pilot import _sg_initial  # noqa: E402
 from sine_gordon_code import native_correction as nc  # noqa: E402
 from sine_gordon_code import sglib as sg  # noqa: E402
 from double_sine_gordon_code.run_snapd_end_to_end import build_two_site_problem, exact_trajectory  # noqa: E402
+from double_sine_gordon_code.gaussian_sequence import merged_gaussian_readouts  # noqa: E402
 
 E_J, KAPPA, LAM2, OMEGA_B = 1.0, 1.0, 0.3, np.sqrt(3.0)
 T = 5.2 / np.sqrt(3.0)
@@ -84,20 +86,52 @@ def compute_references(steps, prep):
             print(f"reference N={n} r={r} prep={prep} {time.perf_counter() - started:.1f} s", flush=True)
 
 
-def gaussian_step_factors(basis, tau):
-    """Phases of Phi(a) (phi basis) and Q (momentum basis) with Phi Q Phi = exp[-i tau (H_kin + H_bond)]."""
+def gaussian_generators(basis, tau):
+    """Appendix J quadratic shear generators, exact for canonical quadratures."""
     omega = np.sqrt(2 * KAPPA)
     b = np.sin(omega * tau) / (2 * omega)
     a = 0.5 * omega * np.tan(0.5 * omega * tau)
     L1, L2 = np.meshgrid(basis.lam_phi, basis.lam_phi, indexing="ij")
     lam_pi = np.linalg.eigvalsh(basis.pi)
     P1, P2 = np.meshgrid(lam_pi, lam_pi, indexing="ij")
-    phase_phi = np.exp(-0.5j * a * (L1 - L2) ** 2)
-    phase_pi = np.exp(-1j * ((tau / 4 + b / 2) * (P1 ** 2 + P2 ** 2) + (tau / 2 - b) * P1 * P2))
-    return phase_phi, phase_pi
+    q_phi = 0.5 * a * (L1 - L2) ** 2
+    q_pi = (tau / 4 + b / 2) * (P1 ** 2 + P2 ** 2) + (tau / 2 - b) * P1 * P2
+    return q_phi, q_pi
+
+
+def gaussian_step_factors(basis, tau):
+    """Finite shear phases, without assuming a finite-matrix Gaussian group law."""
+    return tuple(np.exp(-1j * q) for q in gaussian_generators(basis, tau))
+
+
+def gauss_block_readouts(problem, initial, h, r, order, s, observer, *, final_only=False):
+    """Readouts of the merged-interval circuit whose ideal primitive count is quoted."""
+    basis = problem['basis']
+    _, U_pi = np.linalg.eigh(basis.pi)
+    orders = ORDER_CODES[order]
+    blocks = {m: nc.trig_block(basis.phi, m, h * c, o, s)
+              for m, c, o in zip((1, 2), (E_J, LAM2), orders)}
+
+    def diag(state, U, generator):
+        rotated = sg._apply_axis(U.conj().T, sg._apply_axis(U.conj().T, state, 0), 1)
+        out = np.exp(-1j * generator)[:, :, None] * rotated
+        return sg._apply_axis(U, sg._apply_axis(U, out, 0), 1)
+
+    def potential(state, observe):
+        for site in (0, 1):
+            for m in (1, 2):
+                state = nc.apply_joint_local(blocks[m], state, site)
+                observe(state)
+        return state
+
+    return merged_gaussian_readouts(initial, r, gaussian_generators(basis, h / 2),
+                                   gaussian_generators(basis, h),
+                                   lambda state, q: diag(state, basis.U_phi, q),
+                                   lambda state, p: diag(state, U_pi, p), potential, observer, final_only=final_only)
 
 
 def make_gauss_block_step(problem, h, order, s, observer):
+    """Unmerged half-step reference used to reproduce the archived comparisons."""
     basis = problem["basis"]
     U_phi = basis.U_phi
     _, U_pi = np.linalg.eigh(basis.pi)
@@ -193,7 +227,7 @@ def primitive_counts_conjugated(route, r, order, s):
 
 def primitive_counts(route, r, order, s):
     """Counts with the qubit basis change applied once per circuit (trig_counts.py)."""
-    import trig_counts  # noqa: E402
+    from double_sine_gordon_code import trig_counts
     coefficients = (0.0, LAM2) if route == "hybrid" else (E_J, LAM2)
     counts = trig_counts.trig_counts(2, coefficients, r, ORDER_CODES[order], s)
     counts["Gaussian"] = {"hybrid": 0, "kin_pot": 5 * r + 2, "gauss_block": 6 * r + 9}[route]
@@ -212,8 +246,11 @@ def run_circuit(route, n, r, order, s, prep, reference):
             peak[key] = max(peak[key], value)
 
     h = T / r
+    readouts = None
     if route == "gauss_block":
         step, gaussian = make_gauss_block_step(problem, h, order, s, observe)
+        readouts = gauss_block_readouts(problem, joint, h, r, order, s, observe)
+        joint = next(readouts)
         # consistency of the decomposed Gaussian step with the exact truncated block
         test = np.zeros_like(joint)
         test[:, :, 0] = joint[:, :, 0]
@@ -239,7 +276,7 @@ def run_circuit(route, n, r, order, s, prep, reference):
                          C12_error=abs(c12 - reference["C12"][k]), S2_error=abs(obs["S2"] - reference["S2"][k])))
         states.append(joint.copy())
         if k < r:
-            joint = step(joint)
+            joint = next(readouts) if readouts is not None else step(joint)
     return rows, np.array(states), peak, gauss_check
 
 
@@ -277,6 +314,7 @@ def evaluate(route, r, order, s, prep):
                       S2=bool(us <= 5e-3 and s2 + us <= 0.02))
     counts, waits = primitive_counts(route, r, order, s)
     return dict(route=route, r=r, order=order, block_orders=list(ORDER_CODES[order]), s=s, preparation=list(prep), cutoffs=list(CUTS),
+                gaussian_sequence="merged_intervals" if route == "gauss_block" else None,
                 primitive_counts=counts, total_programmable_primitives=int(sum(counts.values())), native_waits=waits,
                 state_error=total, max_bures=max_bures, margins=dict(reference=ref_margin, solver=SOLVER["state"], padding=pad,
                                                                      C12=uc, S2=us),
@@ -325,12 +363,15 @@ def main():
                 print(f"{args.route} r={r} o={order} s={args.s} prims={row['total_programmable_primitives']} "
                       f"state={row['state_error']:.4f} C12={row['C12_error']:.4f} S2={row['S2_error']:.4f} "
                       f"bnd={row['boundary_population']:.2e} {acc} ({row['wall_seconds']:.0f} s)", flush=True)
-                name = f"{args.route}_prep{prep_tag(prep)}{args.tag}.json"
+                sequence_tag = "_merged" if args.route == "gauss_block" else ""
+                name = f"{args.route}_prep{prep_tag(prep)}{args.tag}{sequence_tag}.json"
                 (PARTS / name).write_text(json.dumps(dict(environment=environment(), rows=results), indent=1))
         return
     unique = {}
     for path in sorted(PARTS.glob("*.json")):
         for row in json.loads(path.read_text())["rows"]:
+            if row["route"] == "gauss_block" and row.get("gaussian_sequence") != "merged_intervals":
+                continue  # Unmerged archives are inputs to gaussian_evidence.py, not fresh scans.
             unique[(row["route"], row["r"], row["order"], row["s"], tuple(row["preparation"]))] = row
     rows = list(unique.values())
     best = {}
@@ -345,7 +386,7 @@ def main():
                    cheapest_passing={k: dict(r=v["r"], order=v["order"], s=v["s"], primitives=v["total_programmable_primitives"],
                                              state_error=v["state_error"]) for k, v in best.items()},
                    environment=environment())
-    (DATA / "dsg_step_scan.json").write_text(json.dumps(summary, indent=1))
+    (DATA / "dsg_step_scan_merged.json").write_text(json.dumps(summary, indent=1))
     for k, v in summary["cheapest_passing"].items():
         print(k, v)
 

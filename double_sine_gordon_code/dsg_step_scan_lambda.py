@@ -2,7 +2,7 @@
 
 Runs the circuits and the acceptance rule of dsg_step_scan.py (same model, preparation,
 cutoffs 128/160, s = 1) with the second-harmonic strength lambda2 changed, and writes
-data/dsg_step_scan_lambda{lambda2}.json. Usage, from the repository root
+data/dsg_step_scan_lambda{lambda2}_merged.json. Usage, from the repository root
 (interpreter /Users/zhen002/miniconda3/envs/cvdv/bin/python):
 
     python double_sine_gordon_code/dsg_step_scan_lambda.py references --lam2 0.1 --r 2,3,4
@@ -60,12 +60,15 @@ def main():
                       f"state={row['state_error']:.4f} C12={row['C12_error']:.4f} S2={row['S2_error']:.4f} "
                       f"bnd={row['boundary_population']:.2e} ref={row['margins']['reference']:.1e} {acc} ({row['wall_seconds']:.0f} s)",
                       flush=True)
-                name = f"{args.route}_prep{scan.prep_tag(prep)}{args.tag}.json"
+                sequence_tag = "_merged" if args.route == "gauss_block" else ""
+                name = f"{args.route}_prep{scan.prep_tag(prep)}{args.tag}{sequence_tag}.json"
                 (scan.PARTS / name).write_text(json.dumps(dict(environment=scan.environment(), rows=results), indent=1))
         return
     unique = {}
     for path in sorted(scan.PARTS.glob("*.json")):
         for row in json.loads(path.read_text())["rows"]:
+            if row["route"] == "gauss_block" and row.get("gaussian_sequence") != "merged_intervals":
+                continue
             unique[(row["route"], row["r"], row["order"], row["s"], tuple(row["preparation"]))] = row
     rows = list(unique.values())
     best = {}
@@ -80,7 +83,7 @@ def main():
                    cheapest_passing={k: dict(r=v["r"], order=v["order"], s=v["s"], primitives=v["total_programmable_primitives"],
                                              state_error=v["state_error"]) for k, v in best.items()},
                    environment=scan.environment())
-    out = scan.DATA / f"dsg_step_scan_lambda{args.lam2:g}.json"
+    out = scan.DATA / f"dsg_step_scan_lambda{args.lam2:g}_merged.json"
     out.write_text(json.dumps(summary, indent=1))
     for k, v in summary["cheapest_passing"].items():
         print(k, v)

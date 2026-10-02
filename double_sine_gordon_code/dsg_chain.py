@@ -10,7 +10,7 @@ state is the product coherent state with <phi> = (phi0, 0, ..., 0) and <Pi> = (p
 Routes and order codes are those of dsg_step_scan.py:
   hybrid       H_SG | Delta H with trigonometric gates for Delta H
   kin_pot      H_kin | (H_bond + V_J + Delta H)
-  gauss_block  (H_kin + H_bond) | (V_J + Delta H), with the exact N-mode Gaussian step written as
+  gauss_block  (H_kin + H_bond) | (V_J + Delta H), with the canonical N-mode Gaussian step written as
                exp(-i phi^T A phi) exp(-i Pi^T B Pi) exp(-i phi^T A phi), A and B from the normal
                modes of the bond Laplacian
 Order code 1 or 2 uses first- or second-order trigonometric blocks for every harmonic, and code 3
@@ -20,7 +20,8 @@ Usage, from the repository root (interpreter /Users/zhen002/miniconda3/envs/cvdv
     python double_sine_gordon_code/dsg_chain.py references --sites 3 --cuts 96,128 --r 5,6,7
     python double_sine_gordon_code/dsg_chain.py scan --sites 3 --cuts 96,128 --route hybrid --orders 1 --r 5,6,7
     python double_sine_gordon_code/dsg_chain.py merge --sites 3 --cuts 96,128
-References are cached in DSG_CHAIN_CACHE (default /tmp/dsg_chain_cache).
+Fresh Gaussian parts and merge outputs use a _merged suffix. The merge command excludes
+unmerged Gaussian archives. References are cached in DSG_CHAIN_CACHE (default /tmp/dsg_chain_cache).
 """
 
 import argparse
@@ -43,6 +44,7 @@ REPO = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO))
 from sine_gordon_code import native_correction as nc  # noqa: E402
 from sine_gordon_code import sglib as sg  # noqa: E402
+from double_sine_gordon_code.gaussian_sequence import merged_gaussian_readouts  # noqa: E402
 
 E_J, KAPPA, OMEGA_B = 1.0, 1.0, np.sqrt(3.0)
 T = 5.2 / np.sqrt(3.0)
@@ -202,22 +204,43 @@ class Chain:
     def grid(self, values):
         return np.meshgrid(*([values] * self.N), indexing="ij")
 
-    def quadratic_phase(self, values, matrix):
-        """exp(-i x^T M x) on the product grid of eigenvalues x_j."""
+    def quadratic_generator(self, values, matrix):
+        """x^T M x on the product grid of eigenvalues x_j."""
         g = self.grid(values)
-        form = sum(matrix[i, j] * g[i] * g[j] for i in range(self.N) for j in range(self.N))
-        return np.exp(-1j * form)
+        return sum(matrix[i, j] * g[i] * g[j] for i in range(self.N) for j in range(self.N))
 
-    def gaussian_factors(self, tau):
+    def gaussian_generators(self, tau):
         w2, modes = np.linalg.eigh(self.stiffness)
         w = np.sqrt(np.clip(w2, 0.0, None))
         a = np.where(w > 1e-12, 0.5 * w * np.tan(0.5 * w * tau), 0.0)
         bb = np.where(w > 1e-12, np.sin(w * tau) / (2 * np.where(w > 1e-12, w, 1.0)), 0.5 * tau)
         A = modes @ np.diag(a) @ modes.T
         B = modes @ np.diag(bb) @ modes.T
-        return self.quadratic_phase(self.lam_phi, A), self.quadratic_phase(self.lam_pi, B), A, B
+        return self.quadratic_generator(self.lam_phi, A), self.quadratic_generator(self.lam_pi, B), A, B
+
+    def gaussian_factors(self, tau):
+        q_phi, q_pi, A, B = self.gaussian_generators(tau)
+        return np.exp(-1j * q_phi), np.exp(-1j * q_pi), A, B
+
+    def gaussian_readouts(self, initial, h, r, order, s, observe):
+        """Complete readout circuits with the merged intervals counted by counts()."""
+        blocks = [nc.trig_block(self.phi, m, h * coefficient, o, s)
+                  for m, coefficient, o in zip((1, 2), (E_J, self.lam2), ORDER_CODES[order])]
+
+        def potential(state, checkpoint):
+            for site in range(self.N):
+                for block in blocks:
+                    state = nc.apply_joint_local(block, state, site)
+                    checkpoint(state)
+            return state
+
+        return merged_gaussian_readouts(
+            initial, r, self.gaussian_generators(h / 2)[:2], self.gaussian_generators(h)[:2],
+            lambda state, q: self.diag_phase(state, self.U_phi, np.exp(-1j * q)),
+            lambda state, q: self.diag_phase(state, self.U_pi, np.exp(-1j * q)), potential, observe)
 
     def make_step(self, route, h, order, s, observe):
+        """One outer step; Gaussian half steps reproduce the archived unmerged sequence."""
         order_j, order_2 = ORDER_CODES[order]
         blocks = {}
         if route != "hybrid":
@@ -288,7 +311,7 @@ class Chain:
                         pulse["site"] = site
                     pulses.append(pulse)
         del pulses  # the qubit basis change is applied once per circuit (trig_counts.py)
-        import trig_counts  # noqa: E402
+        from double_sine_gordon_code import trig_counts
         c = trig_counts.trig_counts(self.N, coefficients, r, orders, s)
         n_bonds = len(self.bonds)
         if route == "kin_pot":
@@ -363,7 +386,12 @@ def run_circuit(chain, route, r, order, s, reference):
     def observe(state):
         peak[0] = max(peak[0], chain.boundary(state))
 
-    step = chain.make_step(route, T / r, order, s, observe)
+    readouts = None
+    if route == "gauss_block":
+        readouts = chain.gaussian_readouts(joint, T / r, r, order, s, observe)
+        next(readouts)
+    else:
+        step = chain.make_step(route, T / r, order, s, observe)
     rows, states = [], []
     for k in range(r + 1):
         flat = joint.reshape(-1, 2)
@@ -375,7 +403,7 @@ def run_circuit(chain, route, r, order, s, reference):
                          C12_error=abs(c12 - reference["C12"][k]), S2_error=abs(s2 - reference["S2"][k])))
         states.append(joint.copy())
         if k < r:
-            joint = step(joint)
+            joint = next(readouts) if readouts is not None else step(joint)
     return rows, states, peak[0]
 
 
@@ -415,6 +443,7 @@ def evaluate(sites, cuts, lam2, prep, route, r, order, s):
                       boundary=bool(boundary <= 1e-6), C12=bool(uc <= 1e-3 and c12 + uc <= 0.01),
                       S2=bool(us <= 5e-3 and s2 + us <= 0.02))
     return dict(sites=sites, lambda2=lam2, route=route, r=r, order=order, block_orders=list(ORDER_CODES[order]), s=s,
+                gaussian_sequence="merged_intervals" if route == "gauss_block" else None,
                 preparation=list(prep), cutoffs=list(cuts), primitive_counts={k: int(v) for k, v in counts.items()},
                 total_programmable_primitives=int(sum(counts.values())), native_waits=waits, state_error=total,
                 max_bures=max_bures, margins=dict(reference=ref_margin, solver=solver, padding=pad, C12=uc, S2=us),
@@ -470,12 +499,15 @@ def main():
                       f"state={row['state_error']:.4f} C12={row['C12_error']:.4f} S2={row['S2_error']:.4f} "
                       f"bnd={row['boundary_population']:.2e} ref={row['margins']['reference']:.1e} "
                       f"pad={row['margins']['padding']:.1e} {acc} ({row['wall_seconds']:.0f} s)", flush=True)
-                name = f"{args.route}_{tag(args.sites, args.lam2, prep)}{args.tag}.json"
+                sequence_tag = "_merged" if args.route == "gauss_block" else ""
+                name = f"{args.route}_{tag(args.sites, args.lam2, prep)}{args.tag}{sequence_tag}.json"
                 (parts / name).write_text(json.dumps(dict(environment=environment(), rows=results), indent=1))
         return
     unique = {}
     for path in sorted(parts.glob("*.json")):
         for row in json.loads(path.read_text())["rows"]:
+            if row["route"] == "gauss_block" and row.get("gaussian_sequence") != "merged_intervals":
+                continue
             unique[(row["route"], row["lambda2"], row["r"], row["order"], tuple(row["preparation"]))] = row
     rows = list(unique.values())
     best = {}
@@ -491,7 +523,7 @@ def main():
                                           primitives=v["total_programmable_primitives"], state_error=v["state_error"])
                                      for k, v in sorted(best.items())],
                    environment=environment())
-    out = DATA / f"dsg_chain_N{args.sites}_cut{cuts[0]}_{cuts[1]}.json"
+    out = DATA / f"dsg_chain_N{args.sites}_cut{cuts[0]}_{cuts[1]}_merged.json"
     out.write_text(json.dumps(summary, indent=1))
     for item in summary["cheapest_passing"]:
         print(item)

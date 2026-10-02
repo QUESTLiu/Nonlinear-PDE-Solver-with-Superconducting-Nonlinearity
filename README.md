@@ -16,6 +16,25 @@ This repository contains the manuscript, the code and numerical records behind i
 
 The records were produced with Python 3.13.0, NumPy 2.3.4, SciPy 1.16.3 and Matplotlib 3.10.7 (`requirements.txt`). Run all Python commands from the repository root, scripts as `python <folder>/<script>.py` and pipeline modules as `python -m <folder>.<module>`. The active marked manuscript compiles with `tectonic main_reog_marked_tocheck.tex` in `paper/`, and the Lean project builds with `lake exe cache get` and `lake build` in `lean_proof/`.
 
+## Gaussian circuit evidence
+
+The Gaussian route evaluates the circuit that its primitive count describes. Each complete readout has two boundary half intervals and full interior Gaussian intervals. Commuting position phases merge by adding their quadratic generators. The finite shear matrices do not in general satisfy the canonical Gaussian group law.
+
+`common_data/manifests/gaussian_revision_candidates.json` fixes the sources and candidate dependencies for the resource tables, tighter thresholds, second preparation, common readout times, and duration curves. Records in `common_data/records/gaussian_revision/` compare the merged circuit with the archived repeated-half-step sequence at both cutoffs. They contain measured state separations, observable changes, new padding differences, boundary populations, and pass/fail intervals. Reference and solver margins are empirical numerical estimates.
+
+The original scan JSON files describe the repeated-half-step sequence. `double_sine_gordon_code/gaussian_evidence.py` joins those records to the merged-circuit evidence for figure generation and selection. Its scalar Gaussian error fields are upper bounds, accompanied by lower bounds and an evidence label. It rejects missing evidence and unresolved selection decisions. The hybrid and kinetic–potential records keep their original meaning. Fresh Gaussian scans and merge outputs carry a `_merged` filename suffix, and merge commands exclude the unmerged Gaussian rows. The published figures read the archived sources plus the comparison evidence rather than these fresh scan outputs.
+
+Run the small independent checks and regenerate the affected summaries from the repository root:
+
+```sh
+python -m unittest common_code.test_e0
+python double_sine_gordon_code/dsg_thresholds.py
+python double_sine_gordon_code/dsg_control_tradeoffs.py
+python common_code/make_figures.py
+```
+
+The last three commands read stored data and perform no propagation or fitting. To replay the Gaussian comparison, use the bounded manifests `gaussian_revision_two_site.json`, `gaussian_revision_chain.json`, and `gaussian_revision_common.json` under `common_data/manifests/`. For a fresh run, copy a manifest with a new execution-record path and append `--output-dir <new-directory>` to its command. This preserves the evidence shipped with the paper. The archived runs use one BLAS/OpenMP thread and a 4 GiB process cap. The `references` and `scan` commands of the original simulation drivers can rebuild target trajectories and have substantially larger costs.
+
 ## Where each result comes from
 
 The pipeline drivers run the batches listed in the manifests of each data folder, for example `python -m common_code.run_batch duffing_data/manifests/duffing_padding_manifest.json --batch B3-D`, which prints the commands and runs them with `--execute`. The pipeline records the git commit and a hash of any uncommitted changes in its outputs, so run it from a git checkout with at least one commit. The archived records name the commit and interpreter of the development repository.
@@ -65,7 +84,7 @@ The pipeline modules named `*_sg_*` and the data folders `sg*` belong to this la
 
 The double sine-Gordon scans cache reference trajectories in the directories named by `DSG_SCAN_CACHE` and `DSG_CHAIN_CACHE` (default `/tmp/dsg_scan_cache` and `/tmp/dsg_chain_cache`, about 9 GB for three sites). Each script's docstring gives its commands and cost.
 
-The duration analysis in Fig. 7 is post-processing of 34 evaluated two-site candidates in `dsg_step_scan.json` at λ₂ = 0.3, preparation (1, 0), and s = 1. It selects circuits using their original acceptance results and an additional amplitude-distance allowance, then assigns gate-type durations and an overhead for each native interval. `dsg_control_tradeoffs.json` records the candidates, the selections at allowances 0, 0.005, 0.010, and 0.020, and the duration boundaries. The inputs are the stored ideal-circuit results.
+The duration analysis in Fig. 7 is post-processing of 34 evaluated two-site candidates in `dsg_step_scan.json` at λ₂ = 0.3, preparation (1, 0), and s = 1. It selects circuits using the stated numerical acceptance criteria and an additional amplitude-distance allowance, then assigns gate-type durations and an overhead for each native interval. `dsg_control_tradeoffs.json` records the candidates, the selections at allowances 0, 0.005, 0.010, and 0.020, and the duration boundaries. The inputs are the stored ideal-circuit results.
 
 ### Analytic correction in a Kerr lattice
 

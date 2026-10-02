@@ -3,7 +3,7 @@
 Run from the repository root with the interpreter declared in README.md:
     python double_sine_gordon_code/dsg_control_tradeoffs.py
 
-This script only reads dsg_step_scan.json. It selects the primary preparation
+This script reads dsg_step_scan.json and its merged-Gaussian comparison evidence. It selects the primary preparation
 (1, 0), lambda2 = 0.3, and s = 1, and writes a new JSON record and figure.
 
 The additional amplitude allowance epsilon_add is a bound assumed between an
@@ -45,6 +45,8 @@ import sys
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(REPO))
+from double_sine_gordon_code.gaussian_evidence import updated_row, passes_at
 SOURCE = REPO / "double_sine_gordon_data" / "dsg_step_scan.json"
 OUTPUT = REPO / "double_sine_gordon_data" / "dsg_control_tradeoffs.json"
 EPS = math.sqrt(1e-3)
@@ -57,8 +59,7 @@ def candidate_id(row):
 
 
 def eligible(rows, route, epsilon_add):
-    return [row for row in rows if row["route"] == route and row["all_criteria"]
-            and row["state_error"] + epsilon_add <= EPS]
+    return [row for row in rows if row["route"] == route and passes_at(row, EPS, epsilon_add)]
 
 
 def duration(row, gate_times, pair_time):
@@ -91,6 +92,7 @@ def summary(row, epsilon_add):
     purity = math.exp(-max(row["series"]["S2"]))
     extra_entropy = -math.log1p(-4 * distance / purity) if 4 * distance < purity else None
     return dict(candidate=candidate_id(row), r=row["r"], order=row["order"],
+                error_evidence=row.get("error_evidence", "direct numerical estimate"),
                 primitive_counts=row["primitive_counts"],
                 total_programmable_primitives=row["total_programmable_primitives"],
                 native_waits=row["native_waits"], e_B=row["state_error"],
@@ -104,7 +106,7 @@ def summary(row, epsilon_add):
 
 
 def load_rows():
-    rows = [row for row in json.loads(SOURCE.read_text())["rows"]
+    rows = [updated_row(row) for row in json.loads(SOURCE.read_text())["rows"]
             if row["preparation"] == [1.0, 0.0] and row["s"] == 1
             and row["lambda2"] == 0.3 and row["route"] in ROUTES]
     for row in rows:
@@ -215,6 +217,9 @@ def main():
     output = dict(
         description="Conditional serial-duration comparison within the evaluated two-site DSG candidates.",
         source=str(SOURCE.relative_to(REPO)), source_sha256=hashlib.sha256(SOURCE.read_bytes()).hexdigest(),
+        gaussian_evidence={row["evidence_id"]: hashlib.sha256(
+            (REPO / "common_data/records/gaussian_revision" / (row["evidence_id"] + ".json")).read_bytes()).hexdigest()
+            for row in rows if "evidence_id" in row},
         script_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
         git_head=subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=REPO, text=True).strip(),
         command="python double_sine_gordon_code/dsg_control_tradeoffs.py", environment=environment,

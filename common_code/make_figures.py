@@ -8,6 +8,7 @@ No simulation is run here. Usage, from the repository root:
 
 import argparse
 import json
+import sys
 from pathlib import Path
 
 import matplotlib
@@ -19,6 +20,8 @@ from matplotlib.colors import LogNorm  # noqa: E402
 from matplotlib.lines import Line2D  # noqa: E402
 
 REPO = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(REPO))
+from double_sine_gordon_code.gaussian_evidence import updated_row
 SG_DATA = REPO / "sine_gordon_data"
 DF_DATA = REPO / "duffing_data"
 DSG_DATA = REPO / "double_sine_gordon_data"
@@ -346,7 +349,9 @@ def fig_duffing_training(preview):
 
 # ------------------------------------------------------------ double sine-Gordon
 def _scan():
-    return json.loads((DSG_DATA / "dsg_step_scan.json").read_text())
+    data = json.loads((DSG_DATA / "dsg_step_scan.json").read_text())
+    data["rows"] = [updated_row(row) for row in data["rows"]]
+    return data
 
 
 def _cheapest(scan, route, prep=(1.0, 0.0)):
