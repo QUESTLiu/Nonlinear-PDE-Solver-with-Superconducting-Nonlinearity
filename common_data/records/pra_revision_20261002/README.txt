@@ -11,7 +11,7 @@ propagation and before the first onsite word. The final driver fixes both.
 It also tests the analytic alternating completion sign of arXiv:2609.40078v1,
 Sec. III.4. All final data used by the manuscript are in joint_phase_check.json.
 
-The initial record keeps its original source hashes and values to document the
+The initial record keeps its original numerical values to document the
 executed calculation. Its primitive counts and completeness claim are not the
 final validated result. It is not an input to figure generation or circuit
 selection.

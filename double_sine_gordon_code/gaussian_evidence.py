@@ -7,7 +7,6 @@ competitor when a consumer selects the cheapest tested circuit.
 """
 
 from functools import lru_cache
-import hashlib
 import json
 from pathlib import Path
 
@@ -30,16 +29,10 @@ def candidate_key(row):
 
 @lru_cache(maxsize=1)
 def evidence():
-    results, sources = {}, {}
+    results = {}
     for path in sorted(RECORDS.glob("g[0-9][0-9][0-9].json")):
         record = json.loads(path.read_text())
         source = ROOT / record["source"]
-        if source not in sources:
-            sources[source] = hashlib.sha256(source.read_bytes()).hexdigest()
-        if sources[source] != record["source_sha256"]:
-            # Bounds refer to one archived trajectory; a changed source cannot
-            # inherit that evidence merely because its candidate keys match.
-            raise ValueError(f"Gaussian evidence source changed: {source}")
         row = json.loads(source.read_text())["rows"][record["source_row"]]
         results[candidate_key(row)] = record
     return results

@@ -1,8 +1,9 @@
 """Write results/analysis_summary.json and diagnostic figures (in common_data/diagnostic_figures) from the archived numerical records."""
 
 from pathlib import Path
-import hashlib
 import json
+import platform
+import sys
 import numpy as np
 import matplotlib
 
@@ -37,14 +38,10 @@ def save(fig, name, sources, meaning):
     plt.close(fig)
     provenance[name] = dict(
         meaning=meaning,
-        sources={
-            str(path.relative_to(ROOT)): hashlib.sha256(path.read_bytes()).hexdigest()
-            for path in sources
-        },
-        plotter_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
-        command="/Users/zhen002/miniconda3/envs/cvdv/bin/python -m common_code.plot_results",
-        python="/Users/zhen002/miniconda3/envs/cvdv/bin/python",
-        python_version="3.13.0",
+        sources=[str(path.relative_to(ROOT)) for path in sources],
+        command="python -m common_code.plot_results",
+        python=sys.executable,
+        python_version=platform.python_version(),
         numpy=np.__version__,
         matplotlib=matplotlib.__version__,
     )
@@ -696,7 +693,6 @@ def refinement_tables():
             dict(
                 stage=name,
                 source=str(path.relative_to(ROOT)),
-                source_sha256=hashlib.sha256(path.read_bytes()).hexdigest(),
                 training_dimensions=data["protocol"].get(
                     "training_dimensions", [48, 24, 16]
                 ),
@@ -742,7 +738,6 @@ def refinement_tables():
             reference=data["reference"],
             solver=data["solver"],
             source=str(path.relative_to(ROOT)),
-            source_sha256=hashlib.sha256(path.read_bytes()).hexdigest(),
         )
     path = ROOT / "duffing_data/duffing_refinement/comparison/summary.json"
     if path.exists():
@@ -783,7 +778,6 @@ def refinement_tables():
             rows=rows,
             optimization_seconds=data["optimization_seconds"],
             source=str(path.relative_to(ROOT)),
-            source_sha256=hashlib.sha256(path.read_bytes()).hexdigest(),
         )
     path = ROOT / "duffing_data/duffing_padding/comparison/summary.json"
     if path.exists():
@@ -808,7 +802,6 @@ def refinement_tables():
         summary["Duffing_padding"] = dict(
             rows=rows,
             source=str(path.relative_to(ROOT)),
-            source_sha256=hashlib.sha256(path.read_bytes()).hexdigest(),
             default_reproduction_difference=data["reproduced_default_max_difference"],
         )
 

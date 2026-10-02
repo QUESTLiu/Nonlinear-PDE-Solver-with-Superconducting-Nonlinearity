@@ -18,7 +18,7 @@ solver and padding margins) at most sqrt(1e-3), C12 and S2 errors within 0.01 an
 their margins, and boundary population of the four highest levels below 1e-6 at both cutoffs.
 The solver margins are the archived DOP853 comparison at cutoff 160 (double_sine_gordon_data/sg160).
 
-Usage, from the repository root (interpreter /Users/zhen002/miniconda3/envs/cvdv/bin/python):
+Usage, from the repository root:
     python double_sine_gordon_code/dsg_step_scan.py references --r 5,6,7 [--prep 1,0]
     python double_sine_gordon_code/dsg_step_scan.py scan --route gauss_block --orders 1,2,3 --r 5,6,7 [--prep 1,0]
     python double_sine_gordon_code/dsg_step_scan.py merge

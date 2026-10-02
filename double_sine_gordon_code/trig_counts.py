@@ -16,7 +16,7 @@ This module builds the rewritten pulse schedule, merges it with the rules of the
 (sine_gordon_code.native_correction.merge_pulses), checks it against the exact factors on a small cutoff, and
 recounts the stored circuits. The old counts are kept in each row under "primitive_counts_conjugated".
 
-Usage, from the repository root (interpreter /Users/zhen002/miniconda3/envs/cvdv/bin/python):
+Usage, from the repository root:
     python double_sine_gordon_code/trig_counts.py verify
     python double_sine_gordon_code/trig_counts.py recount
 """

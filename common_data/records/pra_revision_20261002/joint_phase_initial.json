@@ -6,7 +6,6 @@
     "scipy": "1.16.3",
     "threads": "1"
   },
-  "commit": "4be4de32c75a7f8b502dc0a9f579b20d677279b3",
   "command": "python double_sine_gordon_code/check_joint_phase.py",
   "limit_seconds": 600,
   "preparation": [
@@ -30,10 +29,6 @@
     9,
     10
   ],
-  "source_hashes": {
-    "double_sine_gordon_code/check_joint_phase.py": "c07dca06d0fc58741de55d4be4ed619e0aeb9fb6e23d51ac61460472c2283ab5",
-    "double_sine_gordon_code/joint_phase.py": "425d170b529948c687b91c887c6ec036d3a1eba737b759cb8cd9a9125774bc7b"
-  },
   "checks": {
     "dense_pulse_error": 1.6548579774479486e-15,
     "grounding_symplectic_error": 4.1214927040449093e-16

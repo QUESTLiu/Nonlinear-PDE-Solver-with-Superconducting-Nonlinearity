@@ -38,7 +38,6 @@
   "dimensions": "Training N96 and d48; reference 64/80 and circuit padding 96/112; r10 and T1 with beta0.1.",
   "selection": "Minimum training objective within each arm before evaluating either arm. All original ten inputs are development for this refinement.",
   "independent_inputs_file": "duffing_data/manifests/duffing_refinement_inputs.json",
-  "independent_inputs_sha256": "2e2794fb08067f9b8dc93d78dca15c877176bb23f0a97af231055a4b4649640b",
   "optimizer_cap_seconds": 3600,
   "validation_cap_seconds": 600,
   "stopping_rule": "Complete these four starts and two selected-pair evaluations, then stop. The twelve fresh inputs are used once and do not trigger another training adjustment.",

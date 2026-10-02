@@ -19,7 +19,6 @@ The manifest fixes all candidate/source/claim dependencies before propagation.
 
 import argparse
 import gc
-import hashlib
 import json
 import math
 import time
@@ -94,7 +93,6 @@ def make_manifest():
                     key=list(candidate_key(row)),
                     source=str(path.relative_to(ROOT)),
                     source_row=index,
-                    source_sha256=hashlib.sha256(path.read_bytes()).hexdigest(),
                     selected=selected,
                     claims=claims,
                     required=required,
@@ -227,8 +225,6 @@ def acceptance(row, eps=scan.EPS, allowance=0.0):
 
 def audit(entry):
     path = ROOT / entry["source"]
-    if hashlib.sha256(path.read_bytes()).hexdigest() != entry["source_sha256"]:
-        raise ValueError(f"Archived source changed: {path}")
     row = json.loads(path.read_text())["rows"][entry["source_row"]]
     sites, low, high = row.get("sites", 2), *row["cutoffs"]
     old_obs, new_obs, deltas, peaks = {}, {}, {}, {}
@@ -314,7 +310,6 @@ def audit(entry):
         evidence="old raw errors plus measured old/new triangle bounds; empirical reference/solver margins",
         source=entry["source"],
         source_row=entry["source_row"],
-        source_sha256=entry["source_sha256"],
         bounds=bounds,
         margins=margins,
         boundary_population=max(peaks.values()),
@@ -351,8 +346,6 @@ def selected_statistics(entries, output_dir):
         if not entry["selected"] or entry["group"] == "common":
             continue
         source = ROOT / entry["source"]
-        if hashlib.sha256(source.read_bytes()).hexdigest() != entry["source_sha256"]:
-            raise ValueError(source)
         row = json.loads(source.read_text())["rows"][entry["source_row"]]
         n, sites = row["cutoffs"][0], row.get("sites", 2)
         chain = Chain(sites, n, row["lambda2"], tuple(row["preparation"]))

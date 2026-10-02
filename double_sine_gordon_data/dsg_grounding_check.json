@@ -36,18 +36,6 @@
     "double_sine_gordon_code/dsg_grounding_check.py"
   ],
   "wall_limit_seconds": 1200,
-  "git_commit": "b3154de753f0c5895601f89dd646e56dbb4f7ec6",
-  "source_sha256": {
-    "double_sine_gordon_code/dsg_grounding_check.py": "7e692659e1de4a4fcee993bf8b443309e16508e40ad05d9f40922f639e8a327f",
-    "double_sine_gordon_code/dsg_step_scan.py": "6165b642ab0dc320c9343b33c5905e535aeb767570d229faaa3b46501f30cdcd",
-    "sine_gordon_code/native_correction.py": "6ee078cfbc482d43c7d47ca86d0409fa4ed4b8bc7208a9f3b8df3ec7e50ff802",
-    "sine_gordon_code/sglib.py": "5aaa815b08fdd17f303a0d3e5a86876990f48f705dae479ef850c1c6824bffb8",
-    "double_sine_gordon_code/run_snapd_end_to_end.py": "c1fcbf10130c0bc3fd1a75fc7db81c9fcd7e4953a63a363e90120e67085eb259",
-    "double_sine_gordon_code/gaussian_sequence.py": "f60be6a482cb9e006eab9e773ee05f418927373a3114f774e3c8ea237b907e6f",
-    "double_sine_gordon_code/trig_counts.py": "06fd1bee56e285c50ee04b4cdcedd8522d269909920e390d090c82782a2c8515",
-    "common_code/metrics.py": "2c9a0de5259f2a5761c5d2f7005ca8106ced05371630784dbfa384f0a8343fd4",
-    "common_code/run_pilot.py": "db581ab01cc2836205c10afcbe0cf55337b8d1c193c117ef9184611a5620258e"
-  },
   "rows": [
     {
       "route": "hybrid",

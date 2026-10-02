@@ -5,7 +5,7 @@ omega_b = sqrt(3), T = 5.2/sqrt(3)), with exact blocks, local cutoff 64, and r =
 The extreme point (lambda2 = 0.6, kappa = 2) is repeated at local cutoff 80. Usage, from the
 repository root:
 
-    /Users/zhen002/miniconda3/envs/cvdv/bin/python double_sine_gordon_code/splitting_sweep.py
+    python double_sine_gordon_code/splitting_sweep.py
 """
 
 import json

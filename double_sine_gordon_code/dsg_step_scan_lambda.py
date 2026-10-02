@@ -2,8 +2,7 @@
 
 Runs the circuits and the acceptance rule of dsg_step_scan.py (same model, preparation,
 cutoffs 128/160, s = 1) with the second-harmonic strength lambda2 changed, and writes
-data/dsg_step_scan_lambda{lambda2}_merged.json. Usage, from the repository root
-(interpreter /Users/zhen002/miniconda3/envs/cvdv/bin/python):
+data/dsg_step_scan_lambda{lambda2}_merged.json. Usage, from the repository root:
 
     python double_sine_gordon_code/dsg_step_scan_lambda.py references --lam2 0.1 --r 2,3,4
     python double_sine_gordon_code/dsg_step_scan_lambda.py scan --lam2 0.1 --route hybrid --orders 1,2 --r 2,3,4 [--prep 1,0]

@@ -8,7 +8,7 @@ preparation is used. Circuits that exceed the boundary limit only at padding 128
 re-evaluation at cutoffs 160/192 when data/dsg_boundary_check_lambda*.json holds one. Writes
 data/dsg_thresholds.json.
 
-Usage, from the repository root (interpreter /Users/zhen002/miniconda3/envs/cvdv/bin/python):
+Usage, from the repository root:
     python double_sine_gordon_code/dsg_thresholds.py
 """
 

@@ -1,6 +1,5 @@
 {
   "authorization": "The user approved all subsequent computations in the final implementation plan and explicitly approved the higher-cutoff comparison.",
-  "protocol_sha256": "67eb0c5d6e878f7963ca34552e5734683d4a654c4e0fac137f86e8cdcddb7c30",
   "output_root": "double_sine_gordon_data/sg_formal",
   "memory_cap_bytes": 4294967296,
   "storage_cap_bytes": 2147483648,

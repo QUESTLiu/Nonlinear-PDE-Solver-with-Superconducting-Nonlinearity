@@ -6,7 +6,7 @@ Reads the cached exact targets at local cutoff 128 (lambda2 = 0.3, E_J = kappa =
 (DSG_CHAIN_CACHE). For every stored time it computes 1 - sum_{n_j <= 60 for all j} |psi_n|^2, the
 population with at least one mode above level 60, and writes the maxima to data/dsg_fock_tail.json.
 
-Usage, from the repository root (interpreter /Users/zhen002/miniconda3/envs/cvdv/bin/python):
+Usage, from the repository root:
     python double_sine_gordon_code/dsg_fock_tail.py
 """
 

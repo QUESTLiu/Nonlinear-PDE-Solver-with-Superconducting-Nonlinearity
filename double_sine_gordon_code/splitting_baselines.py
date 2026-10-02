@@ -15,7 +15,7 @@ The harmonic part is (E_J + 4 lambda2) phi_j^2 / 2, the curvature of the onsite 
 The error is the maximum projective distance from the exact same-cutoff target over the outer-step
 times. Usage, from the repository root:
 
-    /Users/zhen002/miniconda3/envs/cvdv/bin/python double_sine_gordon_code/splitting_baselines.py
+    python double_sine_gordon_code/splitting_baselines.py
 """
 
 import json

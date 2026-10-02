@@ -12,7 +12,7 @@ gauss   Replays the archived unmerged Gaussian-block circuit and compares, on ev
         exp[-i tau (H_kin + H_bond)] of the finite spectral model (sparse matrix exponential).
 merge   Collects current common-time parts into data/dsg_common_times_merged.json.
 
-Usage, from the repository root (interpreter /Users/zhen002/miniconda3/envs/cvdv/bin/python):
+Usage, from the repository root:
     python double_sine_gordon_code/dsg_protocol_checks.py common --route hybrid --orders 1 --r 5,6,7 [--lam2 0.3] [--K 20]
     python double_sine_gordon_code/dsg_protocol_checks.py gauss --r 7 --orders 3 [--lam2 0.3]
     python double_sine_gordon_code/dsg_protocol_checks.py merge

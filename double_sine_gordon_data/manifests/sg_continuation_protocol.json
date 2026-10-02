@@ -26,6 +26,5 @@
   "validation_cap_seconds": 600,
   "stopping_rule": "Stop after this single continuation and the unchanged full-circuit validation. No new size or initialization search follows in this refinement.",
   "independent_evaluation": "The second physical preparation and fixed trig circuits remain those declared before the preceding initialization comparison. They are not used in this training or selection.",
-  "initial_parameters_file": "double_sine_gordon_data/sg_size/expanded/r10_L12_seed20260729/optimizer.npz",
-  "initial_parameters_sha256": "09a97b8e697246c1f7c0fd26879c999ff297dd2c800bc4ba9545f541d317716c"
+  "initial_parameters_file": "double_sine_gordon_data/sg_size/expanded/r10_L12_seed20260729/optimizer.npz"
 }

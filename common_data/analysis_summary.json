@@ -3215,7 +3215,6 @@
     {
       "stage": "original",
       "source": "double_sine_gordon_data/sg_formal/comparison/summary.json",
-      "source_sha256": "a10aa60339bd46f55e8aa20a38b216086c5872a17187465fb1e97ae07b6b6695",
       "training_dimensions": [
         48,
         24,
@@ -3246,7 +3245,6 @@
     {
       "stage": "paired_frames",
       "source": "double_sine_gordon_data/sg_refinement/paired/summary.json",
-      "source_sha256": "3f9a7ef6a998601ebd99870f643020b65d1b7de6b2dbcf65e394aeb432016860",
       "training_dimensions": [
         48,
         24,
@@ -3277,7 +3275,6 @@
     {
       "stage": "larger_fit",
       "source": "double_sine_gordon_data/sg_size/expanded/summary.json",
-      "source_sha256": "0ffe40346e9775a3681d773bdc24c807f7060ed5cb6ea2aed4b632bf4efa4974",
       "training_dimensions": [
         96,
         48,
@@ -3305,7 +3302,6 @@
     {
       "stage": "continuation",
       "source": "double_sine_gordon_data/sg_continuation/fit/summary.json",
-      "source_sha256": "b541205dd1b71c79760cdb3d3b14dc0d88968d68d3f1c1d7667bfdacf333af0a",
       "training_dimensions": [
         96,
         48,
@@ -3399,8 +3395,7 @@
       "C12": 4.1078725103462085e-12,
       "S2": 4.186206719811181e-12
     },
-    "source": "double_sine_gordon_data/sg_independent/check/summary.json",
-    "source_sha256": "cf6231e6b860e890fd125f2ebaca5a8864d7bb16e67de8be2e87a597168baf38"
+    "source": "double_sine_gordon_data/sg_independent/check/summary.json"
   },
   "Duffing_refinement": {
     "rows": [
@@ -3566,8 +3561,7 @@
       }
     ],
     "optimization_seconds": 686.3854617080069,
-    "source": "duffing_data/duffing_refinement/comparison/summary.json",
-    "source_sha256": "93769442a3a094edf648408bb0fedca2d55ee0f6500027f415b83284c9c68369"
+    "source": "duffing_data/duffing_refinement/comparison/summary.json"
   },
   "Duffing_padding": {
     "rows": [
@@ -3669,7 +3663,6 @@
       }
     ],
     "source": "duffing_data/duffing_padding/comparison/summary.json",
-    "source_sha256": "fc6d0ed11c5bb6d60ca850799cf5f21c5c02e6c061748700065bfa8bd9b47dd8",
     "default_reproduction_difference": 0.0
   }
 }

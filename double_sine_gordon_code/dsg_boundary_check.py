@@ -7,7 +7,7 @@ applies the same acceptance rule (dsg_step_scan.evaluate, same solver margin) wi
 to those circuits and to r = 9, and writes data/dsg_boundary_check_lambda0.6_merged.json. About 70 s per
 reference at cutoff 192 and a few seconds per circuit.
 
-Usage, from the repository root (interpreter /Users/zhen002/miniconda3/envs/cvdv/bin/python):
+Usage, from the repository root:
     python double_sine_gordon_code/dsg_boundary_check.py [0.75,0.25 10]
 """
 

@@ -16,7 +16,7 @@ Routes and order codes are those of dsg_step_scan.py:
 Order code 1 or 2 uses first- or second-order trigonometric blocks for every harmonic, and code 3
 uses second order for the Josephson harmonic and first order for the lambda2 harmonic.
 
-Usage, from the repository root (interpreter /Users/zhen002/miniconda3/envs/cvdv/bin/python):
+Usage, from the repository root:
     python double_sine_gordon_code/dsg_chain.py references --sites 3 --cuts 96,128 --r 5,6,7
     python double_sine_gordon_code/dsg_chain.py scan --sites 3 --cuts 96,128 --route hybrid --orders 1 --r 5,6,7
     python double_sine_gordon_code/dsg_chain.py merge --sites 3 --cuts 96,128

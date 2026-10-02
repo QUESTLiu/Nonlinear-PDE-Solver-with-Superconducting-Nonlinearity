@@ -36,11 +36,9 @@ With ideal minimum purity p_min, |Delta S2| <= -log(1 - 4D/p_min), provided
 stored readout times. They do not bound populations inside the pulse sequence.
 """
 
-import hashlib
 import json
 import math
 import platform
-import subprocess
 import sys
 from pathlib import Path
 
@@ -316,22 +314,9 @@ def main():
     output = dict(
         description="Conditional serial-duration comparison within the evaluated two-site DSG candidates.",
         source=str(SOURCE.relative_to(REPO)),
-        source_sha256=hashlib.sha256(SOURCE.read_bytes()).hexdigest(),
-        gaussian_evidence={
-            row["evidence_id"]: hashlib.sha256(
-                (
-                    REPO
-                    / "common_data/records/gaussian_revision"
-                    / (row["evidence_id"] + ".json")
-                ).read_bytes()
-            ).hexdigest()
-            for row in rows
-            if "evidence_id" in row
-        },
-        script_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
-        git_head=subprocess.check_output(
-            ["git", "rev-parse", "HEAD"], cwd=REPO, text=True
-        ).strip(),
+        gaussian_evidence=sorted(
+            {row["evidence_id"] for row in rows if "evidence_id" in row}
+        ),
         command="python double_sine_gordon_code/dsg_control_tradeoffs.py",
         environment=environment,
         scope=dict(

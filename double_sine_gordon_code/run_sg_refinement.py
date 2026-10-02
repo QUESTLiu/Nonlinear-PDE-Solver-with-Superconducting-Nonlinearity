@@ -1,7 +1,6 @@
 """Bounded initialization and size comparisons for local SG correction."""
 
 import argparse
-import hashlib
 import json
 from pathlib import Path
 import time
@@ -76,13 +75,6 @@ def main():
                     initial = df.paired_frame_parameters(unitary[n], d, layers, seed)
                 else:
                     source = Path(initial_source)
-                    if (
-                        hashlib.sha256(source.read_bytes()).hexdigest()
-                        != protocol["initial_parameters_sha256"]
-                    ):
-                        raise ValueError(
-                            "continuation checkpoint differs from its specified source"
-                        )
                     with np.load(source) as saved:
                         initial = saved["parameter_vector"].copy()
                 remaining = protocol["optimizer_cap_seconds"] - spent

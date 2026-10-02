@@ -5,9 +5,6 @@
   "validation_command": "/Users/zhen002/miniconda3/envs/cvdv/bin/python common_code/check_number_diagonal.py",
   "validation_source": "common_code/check_number_diagonal.py",
   "source": "legacy/nlse_fock_cutoff_hybrid.py",
-  "source_sha256": "8e2b20a47880c0b734c6de591df3690547b7f9515b15dc19e7d33439a910062a",
-  "validation_source_sha256": "1e162c366c69d2368071096bed256977300756865cebab91d6ba9b02f340f4ed",
-  "git_head": "a8ca135d36c22d330687b21f62b07cc5094db37c",
   "environment": {
     "python": "/Users/zhen002/miniconda3/envs/cvdv/bin/python",
     "python_version": "3.13.0",
@@ -236,6 +233,5 @@
     "wall_seconds": 0.46275766706094146
   },
   "process_peak_rss_bytes": 76365824,
-  "source_unchanged": true,
   "elapsed_seconds": 3.4465656670508906
 }

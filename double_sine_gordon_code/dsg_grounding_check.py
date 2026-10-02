@@ -18,11 +18,9 @@ overwritten. No trajectory arrays are saved in the compact output record.
 """
 
 import argparse
-import hashlib
 import json
 from pathlib import Path
 import signal
-import subprocess
 import sys
 import time
 
@@ -397,13 +395,7 @@ def main():
         environment=scan.environment(),
         command=sys.argv,
         wall_limit_seconds=1200,
-        git_commit=subprocess.check_output(
-            ["git", "rev-parse", "HEAD"], cwd=REPO, text=True
-        ).strip(),
-        source_sha256={
-            str(path.relative_to(REPO)): hashlib.sha256(path.read_bytes()).hexdigest()
-            for path in paths
-        },
+        sources=[str(path.relative_to(REPO)) for path in paths],
         rows=[],
     )
 

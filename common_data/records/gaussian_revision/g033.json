@@ -20,7 +20,6 @@
   "evidence": "old raw errors plus measured old/new triangle bounds; empirical reference/solver margins",
   "source": "double_sine_gordon_data/dsg_step_scan_lambda0.1.json",
   "source_row": 9,
-  "source_sha256": "74b0f897901770300d968bfdf2587e794e35e416b4deab6d0885d23b1b9626d9",
   "bounds": {
     "state_error": [
       0.01473602202246396,

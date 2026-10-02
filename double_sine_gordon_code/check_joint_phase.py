@@ -18,11 +18,9 @@ propagator. The full comparison uses the same empirical acceptance margins.
 """
 
 import argparse
-import hashlib
 import json
 from pathlib import Path
 import signal
-import subprocess
 import sys
 import time
 from collections import Counter
@@ -337,17 +335,16 @@ def main():
     signal.alarm(600)
     report = dict(
         environment=scan.environment(),
-        commit=subprocess.check_output(["git", "rev-parse", "HEAD"], text=True).strip(),
         command=" ".join(["python", *sys.argv]),
         limit_seconds=600,
         preparation=[1.0, 0.0],
         steps=[6, 7, 8],
         degrees=list(range(1, 11)),
         completion_patterns=["fixed", "alternating"],
-        source_hashes={
-            str(p.relative_to(REPO)): hashlib.sha256(p.read_bytes()).hexdigest()
+        sources=[
+            str(p.relative_to(REPO))
             for p in (Path(__file__), Path(__file__).with_name("joint_phase.py"))
-        },
+        ],
         checks=independent_checks(),
         compilers=[],
         rows=[],

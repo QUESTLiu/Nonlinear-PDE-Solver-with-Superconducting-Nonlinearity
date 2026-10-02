@@ -6,7 +6,7 @@ evolved with its own Hamiltonian (original native E_J = 1, target with lambda2, 
 lambda2 without lambda2) on a 129-point grid, and the expectation of the onsite curvature V''(phi_j)
 of that Hamiltonian is averaged over the grid and both sites. Writes data/dsg_curvature.json.
 
-Usage, from the repository root (interpreter /Users/zhen002/miniconda3/envs/cvdv/bin/python):
+Usage, from the repository root:
     python double_sine_gordon_code/dsg_curvature.py
 """
 

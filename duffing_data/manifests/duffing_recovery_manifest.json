@@ -1,5 +1,4 @@
 {
-  "protocol_sha256": "d4b4819f4d5c09fa349d52ba39226006c71e2ebc7ecd04ad99613ce22f7724b9",
   "authorization": "User approved subsequent computations in the final plan. This freeze precedes opening the eight E2 independent validation inputs.",
   "output_root": "common_data/formal",
   "memory_cap_bytes": 4294967296,

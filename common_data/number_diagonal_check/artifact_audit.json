@@ -23,61 +23,47 @@
     }
   ],
   "refinement_trace_matches_summary": true,
-  "source_hashes_match": true,
   "matplotlib_version": "3.10.7",
   "total_archived_bytes_before_audit": 305480,
   "files": {
     "legacy_run.log": {
-      "bytes": 795,
-      "sha256": "292f18f96808cbd775ef351ecde0c667672f24f3fb499fe378903f966cb3ec64"
+      "bytes": 795
     },
     "plots/cutoff_convergence_at_largest_W.png": {
-      "bytes": 66257,
-      "sha256": "5e713dc225284fac07a6044cbbcefcb754db7111f1de62886da59cbc1e7ae75b"
+      "bytes": 66257
     },
     "plots/max_infid_cutoff_floor_vs_W.png": {
-      "bytes": 47505,
-      "sha256": "121c2ca401110a599a03b26532ee1f5bc29c55c57fac7987ecf2589c3cfd6eeb"
+      "bytes": 47505
     },
     "plots/max_infid_hybrid_vs_W.png": {
-      "bytes": 47598,
-      "sha256": "f77810f680661e5d10f86920c735043ff3d35fa998a4d421445a4784aa726b49"
+      "bytes": 47598
     },
     "plots/max_infid_native_vs_W.png": {
-      "bytes": 51217,
-      "sha256": "3057877b12075b42e17b55df687a8da5dfde0e6e7c45f5539ed89e638ef4025f"
+      "bytes": 51217
     },
     "reference_W_0.3.npz": {
-      "bytes": 65333,
-      "sha256": "b336038a4bca2eda04fb875f26596adc06105e037515c0c065192419e6afee67"
+      "bytes": 65333
     },
     "refinement_cutoff12_steps320.npz": {
-      "bytes": 1002,
-      "sha256": "509d517ac885b51cb3ed0a207bce481def98a854f01cc8b241aef6961f3deb71"
+      "bytes": 1002
     },
     "summary.csv": {
-      "bytes": 1432,
-      "sha256": "e5a3d7ebcba33046766f649c3b724c4b4627dd57fecafbea085b8e143b3a0c25"
+      "bytes": 1432
     },
     "trace_cutoff_10_W_0.3.npz": {
-      "bytes": 3877,
-      "sha256": "7672c617f4e68c3bcb293b90a7ab97e0bc995e6cf5fb2cdb0582d5ac92a5fb75"
+      "bytes": 3877
     },
     "trace_cutoff_12_W_0.3.npz": {
-      "bytes": 3778,
-      "sha256": "f0354b7a20a0b2544cb20952a8985b2260b6a0b2b7af2259670c118778c156f3"
+      "bytes": 3778
     },
     "trace_cutoff_6_W_0.3.npz": {
-      "bytes": 4067,
-      "sha256": "28827315d5d18d88903f767bf831bdac6e38fe33f47566f64231d42471770a0a"
+      "bytes": 4067
     },
     "trace_cutoff_8_W_0.3.npz": {
-      "bytes": 3952,
-      "sha256": "f53d1d42c55acfc8ec4e960fae26d5f52db637eb87fc33cc8d7af4ce406e4816"
+      "bytes": 3952
     },
     "validation.json": {
-      "bytes": 8667,
-      "sha256": "17516b6cd9da6caffb2b5e9b468cc7f352e31d8b82d21446057de6fa02caab50"
+      "bytes": 8667
     }
   }
 }

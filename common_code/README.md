@@ -4,7 +4,7 @@ This pipeline produced the records in the `*_data/` folders that the manuscript 
 
 ## Environment
 
-The recorded interpreter is `/Users/zhen002/miniconda3/envs/cvdv/bin/python`, version 3.13.0, with NumPy 2.3.4, SciPy 1.16.3 and Matplotlib 3.10.7. `../requirements.txt` describes this environment. Each batch sets BLAS and OpenMP thread counts to one and executes scientific jobs serially.
+The records were produced with Python 3.13.0, NumPy 2.3.4, SciPy 1.16.3 and Matplotlib 3.10.7. `../requirements.txt` describes this environment. Each batch sets BLAS and OpenMP thread counts to one and executes scientific jobs serially.
 
 Run commands from the repository root. The small independent checks are:
 
@@ -12,7 +12,7 @@ Run commands from the repository root. The small independent checks are:
 OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 python -m common_code.run_e0
 ```
 
-`run_e0` rewrites `../common_data/records/e0.json` and `e0.log`. It and the batch runner record the git commit and a SHA-256 hash of the uncommitted diff, so they must run inside a git checkout with at least one commit. `python -m unittest common_code.test_e0` runs the same checks without writing a record.
+`run_e0` rewrites `../common_data/records/e0.json` and `e0.log`. `python -m unittest common_code.test_e0` runs the same checks without writing a record.
 
 Rewrite `../common_data/analysis_summary.json`, which `make_figures.py` and `derived_numbers.py` read, from the existing records without running simulations. The same command draws diagnostic figures into `common_data/diagnostic_figures/`.
 

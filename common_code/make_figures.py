@@ -3,7 +3,7 @@
 All data come from the archived records in the *_data folders.
 No simulation is run here. Usage, from the repository root:
 
-    /Users/zhen002/miniconda3/envs/cvdv/bin/python common_code/make_figures.py [--preview DIR]
+    python common_code/make_figures.py [--preview DIR]
 """
 
 import argparse

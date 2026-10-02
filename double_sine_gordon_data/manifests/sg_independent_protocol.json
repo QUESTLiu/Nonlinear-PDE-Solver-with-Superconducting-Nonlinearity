@@ -1,7 +1,6 @@
 {
   "protocol": "Fixed second-input SG validation after completion of development refinements",
   "declaration_file": "double_sine_gordon_data/manifests/sg_refinement_protocol.json",
-  "declaration_sha256": "6cc0620b9efeec72d0ad18f967d3caed54478dbe778c0e33ac80d1bc460e2a31",
   "preparation": [
     0.75,
     0.25

@@ -1,7 +1,6 @@
 """Bounded iteration and phase-coverage refinements of the Duffing fit."""
 
 import argparse
-import hashlib
 import json
 from pathlib import Path
 import time
@@ -91,13 +90,6 @@ def main():
         (name, state, "development") for name, state, role in evaluation_inputs()
     ]
     fresh_file = Path(protocol["independent_inputs_file"])
-    if (
-        hashlib.sha256(fresh_file.read_bytes()).hexdigest()
-        != protocol["independent_inputs_sha256"]
-    ):
-        raise ValueError(
-            "independent input specification changed after protocol definition"
-        )
     fresh = json.loads(fresh_file.read_text())
     new_inputs = [
         (

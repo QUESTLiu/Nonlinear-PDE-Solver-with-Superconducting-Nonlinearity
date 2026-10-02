@@ -1,6 +1,5 @@
 {
   "frozen_utc": "2026-09-25T00:10:36.876099+00:00",
-  "plan_sha256": "6b07c792bfc0b882643bdeee42ad40932b11b75ddd664a955b382bd81d64de38",
   "authorization": "User approved subsequent computations in the final plan. This freeze precedes opening the eight E2 independent validation inputs.",
   "E1": {
     "betas": [

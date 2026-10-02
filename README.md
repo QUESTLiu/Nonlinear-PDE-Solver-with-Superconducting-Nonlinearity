@@ -36,7 +36,7 @@ The last three commands read stored data and perform no propagation or fitting. 
 
 ## Where each result comes from
 
-The pipeline drivers run the batches listed in the manifests of each data folder, for example `python -m common_code.run_batch duffing_data/manifests/duffing_padding_manifest.json --batch B3-D`, which prints the commands and runs them with `--execute`. The pipeline records the git commit and a hash of any uncommitted changes in its outputs, so run it from a git checkout with at least one commit. The archived records name the commit and interpreter of the development repository.
+The pipeline drivers run the batches listed in the manifests of each data folder, for example `python -m common_code.run_batch duffing_data/manifests/duffing_padding_manifest.json --batch B3-D`, which prints the commands and runs them with `--execute`. The output records include the interpreter and library versions.
 
 ### Sine-Gordon lattice
 
@@ -93,7 +93,7 @@ To repeat this bounded comparison without replacing its evidence, choose a new o
 OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 python double_sine_gordon_code/check_joint_phase.py --output /tmp/joint_phase_replay.json
 ```
 
-The runner refuses an existing output file and enforces a 600-second wall limit. The recorded run took 170 seconds in the environment above. It checks coefficient evaluation, pulse recovery, whole-circuit rotation merging, the matrix-free native propagator, and the quadratic-grounding shear identity before evaluating trajectories. A timed-out run is marked incomplete. Source hashes and the environment are stored with the results.
+The runner refuses an existing output file and enforces a 600-second wall limit. The recorded run took 170 seconds in the environment above. It checks coefficient evaluation, pulse recovery, whole-circuit rotation merging, the matrix-free native propagator, and the quadratic-grounding shear identity before evaluating trajectories. A timed-out run is marked incomplete. Source filenames and the environment are stored with the results.
 
 The grounded-target check adds the same onsite quadratic term to the native and target Hamiltonians at `g_sh = 0.1` and λ₂ = 0.3. It scans 30 hybrid and Gaussian-block circuits with `r = 4,…,9`, the original block-order choices, and cutoffs 128/160. The preparation, basis frequency, horizon, and acceptance thresholds match the primary comparison. A separate DOP853 solution supplies the grounded target's empirical solver margin. The lowest accepted counts in this scan remain 64 and 209, with state errors 0.0270 and 0.0294. The record includes every candidate and its numerical margins.
 
@@ -124,8 +124,8 @@ Outputs are grouped in `common_data/number_diagonal_check/`:
 | `summary.csv`, `trace_cutoff_*_W_0.3.npz` | Parameters and maximum infidelities (CSV), with the corresponding fidelity time series (NPZ) against the cutoff-16 and same-cutoff targets |
 | `reference_W_0.3.npz` | Observation times and final reference state |
 | `refinement_cutoff12_steps320.npz` | Fidelity to the same-cutoff target after step refinement |
-| `validation.json` | Parameters, metric definitions, commands, interpreter and library versions, source hashes, resource measurements, phase checks, and refinement results |
-| `artifact_audit.json` | Agreement between time series and summary values, plus output file sizes and hashes |
+| `validation.json` | Parameters, metric definitions, commands, interpreter and library versions, resource measurements, phase checks, and refinement results |
+| `artifact_audit.json` | Agreement between time series and summary values, plus output file sizes |
 | `legacy_run.log` | Output of the underlying propagation command |
 | `plots/` | Diagnostic plots generated from the cutoff comparison |
 

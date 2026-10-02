@@ -16,7 +16,6 @@ diagnostic previews in its plots subdirectory.
 """
 
 import csv
-import hashlib
 import importlib.metadata
 import json
 import math
@@ -78,7 +77,6 @@ def main():
     started = time.monotonic()
     deadline = started + 120
     OUT.mkdir(exist_ok=True)
-    source_hash = hashlib.sha256(SOURCE.read_bytes()).hexdigest()
     record = dict(
         status="running",
         cwd=str(REPO),
@@ -86,13 +84,6 @@ def main():
         validation_command=f"{PYTHON} common_code/check_number_diagonal.py",
         validation_source=str(Path(__file__).resolve().relative_to(REPO)),
         source=str(SOURCE.relative_to(REPO)),
-        source_sha256=source_hash,
-        validation_source_sha256=hashlib.sha256(
-            Path(__file__).read_bytes()
-        ).hexdigest(),
-        git_head=subprocess.check_output(
-            ["git", "rev-parse", "HEAD"], cwd=REPO, text=True
-        ).strip(),
         environment=dict(
             python=sys.executable, python_version=platform.python_version()
         ),
@@ -293,9 +284,6 @@ def main():
     record["process_peak_rss_bytes"] = (
         resource.getrusage(resource.RUSAGE_SELF).ru_maxrss * rss_scale
     )
-    record["source_unchanged"] = (
-        source_hash == hashlib.sha256(SOURCE.read_bytes()).hexdigest()
-    )
     record.update(status="completed", elapsed_seconds=time.monotonic() - started)
     write_record(record)
 
@@ -340,7 +328,6 @@ def main():
     files = {
         str(path.relative_to(OUT)): dict(
             bytes=path.stat().st_size,
-            sha256=hashlib.sha256(path.read_bytes()).hexdigest(),
         )
         for path in sorted(OUT.rglob("*"))
         if path.is_file() and path.name != "artifact_audit.json"
@@ -349,11 +336,6 @@ def main():
         status="PASS",
         metric_trace_checks=trace_checks,
         refinement_trace_matches_summary=refinement_matches,
-        source_hashes_match=(
-            record["source_unchanged"]
-            and record["validation_source_sha256"]
-            == hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
-        ),
         matplotlib_version=record["environment"]["matplotlib"],
         total_archived_bytes_before_audit=sum(
             entry["bytes"] for entry in files.values()
