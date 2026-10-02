@@ -1,4 +1,4 @@
-# Hardware-native programmable emulation in hybrid oscillator–qubit simulation of nonlinear dynamics
+# Native nonlinear interactions versus programmable emulation in oscillator–qubit simulation
 
 This repository contains the code and numerical records behind the manuscript's numbers, tables and figures, and Lean 4 experiments on selected mathematical statements. Code and data are grouped by benchmark, and each `<topic>_code/` folder writes to the matching `<topic>_data/` folder.
 
@@ -80,8 +80,19 @@ The pipeline modules named `*_sg_*` and the data folders `sg*` belong to this la
 | `double_sine_gordon_code/splitting_baselines.py`, `splitting_sweep.py` | `double_sine_gordon_data/splitting_*.json` | Fig. 6(b) and 6(c) |
 | `double_sine_gordon_code/dsg_curvature.py`, `dsg_fock_tail.py` | `double_sine_gordon_data/dsg_curvature.json`, `dsg_fock_tail.json` | Sec. III C, Appendix G |
 | `double_sine_gordon_code/trig_counts.py` | primitive counts inside the scan records | Tables III and VII, Appendix J |
+| `double_sine_gordon_code/joint_phase.py`, `double_sine_gordon_code/check_joint_phase.py` | `double_sine_gordon_data/joint_phase_check.json` | Joint Fourier phase compilation in Appendix J |
 
 The double sine-Gordon scans cache reference trajectories in the directories named by `DSG_SCAN_CACHE` and `DSG_CHAIN_CACHE` (default `/tmp/dsg_scan_cache` and `/tmp/dsg_chain_cache`, about 9 GB for three sites). Each script's docstring gives its commands and cost.
+
+The joint phase comparison uses two sites at λ₂ = 0.3, outer-step counts 6–8, Fourier degrees 1–10, and fixed or alternating completion signs. It counts recovered controlled-displacement and qubit-rotation sequences after combining adjacent qubit rotations. The record contains 120 compiler configurations and ten full circuit evaluations at cutoffs 128/160. All eight programmable candidates below 209 primitives fail the original acceptance criteria. The two representative accurate circuits use 338 hybrid and 810 programmable primitives and pass those criteria. These results concern the implemented Fourier truncation and spectral completion. They do not establish optimality over quantum signal processing constructions.
+
+To repeat this bounded comparison without replacing its evidence, choose a new output path:
+
+```sh
+OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 python double_sine_gordon_code/check_joint_phase.py --output /tmp/joint_phase_replay.json
+```
+
+The runner refuses an existing output file and enforces a 600-second wall limit. The recorded run took 170 seconds in the environment above. It checks coefficient evaluation, pulse recovery, whole-circuit rotation merging, the matrix-free native propagator, and the quadratic-grounding shear identity before evaluating trajectories. A timed-out run is marked incomplete. Source hashes and the environment are stored with the results.
 
 The duration analysis in Fig. 7 is post-processing of 34 evaluated two-site candidates in `dsg_step_scan.json` at λ₂ = 0.3, preparation (1, 0), and s = 1. It selects circuits using the stated numerical acceptance criteria and an additional amplitude-distance allowance, then assigns gate-type durations and an overhead for each native interval. `dsg_control_tradeoffs.json` records the candidates, the selections at allowances 0, 0.005, 0.010, and 0.020, and the duration boundaries. The inputs are the stored ideal-circuit results.
 
