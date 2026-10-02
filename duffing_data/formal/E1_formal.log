@@ -1,0 +1,14 @@
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/Users/zhen002/GitHub/nonlinear-PDE-simulator/pra/run_pilot.py", line 344, in <module>
+    main()
+    ~~~~^^
+  File "/Users/zhen002/GitHub/nonlinear-PDE-simulator/pra/run_pilot.py", line 333, in main
+    result=e1(args.outdir,formal=True)
+  File "/Users/zhen002/GitHub/nonlinear-PDE-simulator/pra/run_pilot.py", line 76, in e1
+    verdicts=[native_verdict(high["bound"],threshold,amplitude_margin=amplitude_margin,observed_infidelity=high["infidelity"],infidelity_uncertainty=2*(target_difference+native_difference)) for threshold in (1e-3,1e-2,1e-4)]
+              ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/zhen002/GitHub/nonlinear-PDE-simulator/pra/metrics.py", line 62, in native_verdict
+    raise ValueError("inconsistent error evidence")
+ValueError: inconsistent error evidence

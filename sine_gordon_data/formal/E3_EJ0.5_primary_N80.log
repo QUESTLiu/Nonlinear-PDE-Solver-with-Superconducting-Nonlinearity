@@ -1,0 +1,20 @@
+[classical] scaled horizon tau_max=5.2: T=3.28877 (658 steps)
+[setup] sites=2 cutoff=80 dimension=6,400 omega=1.58114
+[setup] conservative split-memory estimate ~0.50 GiB
+[classical] requested phi_j(0) = [1. 0.]
+[classical] matched phi_j(0)   = [1. 0.]
+[classical] oscillation amplitude = 0.717572
+[classical] threshold              = 0.0717572
+[classical] Delta phi              = 0.562341
+[classical] force renormalization = 14.6247%
+[classical] initial representation error = 2.2204e-16
+[classical] max dev vs classical = 2.4478e-01
+[classical] max dev vs DW        = 1.4010e-01
+[classical] DW discrepancy improvement = +42.767%
+[classical] t_E (classical) = 1.91278
+[classical] t_E (DW)        = 2.44079
+[classical] tau_E (classical) = 3.02436
+[classical] tau_E (DW)        = 3.85922
+[classical] max top-level leakage = 3.056e-07
+[classical] time convergence max_t,j |phi(dt)-phi(dt/2)| = 1.862e-06
+[save] wrote /Users/zhen002/GitHub/nonlinear-PDE-simulator/pra/results/formal/E3/E3_EJ0.5_primary_N80.npz

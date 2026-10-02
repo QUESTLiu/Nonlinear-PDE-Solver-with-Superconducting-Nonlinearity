@@ -1,0 +1,212 @@
+[
+  {
+    "xi": 1.0,
+    "step": 1,
+    "initial_discarded_probability": 0.0,
+    "input_norm": 0.9999999999999997,
+    "target_norm": 1.0000000000000004
+  },
+  {
+    "xi": 1.0,
+    "step": 2,
+    "initial_discarded_probability": 0.0,
+    "input_norm": 1.0000000000000013,
+    "target_norm": 1.000000000000002
+  },
+  {
+    "xi": 1.0,
+    "step": 3,
+    "initial_discarded_probability": 0.0,
+    "input_norm": 1.0000000000000022,
+    "target_norm": 1.000000000000003
+  },
+  {
+    "xi": 1.0,
+    "step": 4,
+    "initial_discarded_probability": 0.0,
+    "input_norm": 1.0000000000000036,
+    "target_norm": 1.0000000000000047
+  },
+  {
+    "xi": 1.0,
+    "step": 5,
+    "initial_discarded_probability": 0.0,
+    "input_norm": 1.000000000000005,
+    "target_norm": 1.0000000000000058
+  },
+  {
+    "xi": 1.0,
+    "step": 6,
+    "initial_discarded_probability": 0.0,
+    "input_norm": 1.0000000000000067,
+    "target_norm": 1.000000000000007
+  },
+  {
+    "xi": 1.0,
+    "step": 7,
+    "initial_discarded_probability": 0.0,
+    "input_norm": 1.0000000000000084,
+    "target_norm": 1.0000000000000089
+  },
+  {
+    "xi": 1.0,
+    "step": 8,
+    "initial_discarded_probability": 0.0,
+    "input_norm": 1.0000000000000098,
+    "target_norm": 1.0000000000000107
+  },
+  {
+    "xi": 1.0,
+    "step": 9,
+    "initial_discarded_probability": 0.0,
+    "input_norm": 1.0000000000000113,
+    "target_norm": 1.000000000000012
+  },
+  {
+    "xi": 1.0,
+    "step": 10,
+    "initial_discarded_probability": 0.0,
+    "input_norm": 1.000000000000013,
+    "target_norm": 1.0000000000000142
+  },
+  {
+    "xi": 1.5,
+    "step": 1,
+    "initial_discarded_probability": 0.0,
+    "input_norm": 0.9999999999999993,
+    "target_norm": 1.0000000000000004
+  },
+  {
+    "xi": 1.5,
+    "step": 2,
+    "initial_discarded_probability": 0.0,
+    "input_norm": 1.0,
+    "target_norm": 1.0000000000000009
+  },
+  {
+    "xi": 1.5,
+    "step": 3,
+    "initial_discarded_probability": 0.0,
+    "input_norm": 1.0000000000000004,
+    "target_norm": 1.0000000000000013
+  },
+  {
+    "xi": 1.5,
+    "step": 4,
+    "initial_discarded_probability": 0.0,
+    "input_norm": 1.0000000000000018,
+    "target_norm": 1.0000000000000022
+  },
+  {
+    "xi": 1.5,
+    "step": 5,
+    "initial_discarded_probability": 0.0,
+    "input_norm": 1.0000000000000027,
+    "target_norm": 1.000000000000003
+  },
+  {
+    "xi": 1.5,
+    "step": 6,
+    "initial_discarded_probability": 0.0,
+    "input_norm": 1.0000000000000038,
+    "target_norm": 1.0000000000000044
+  },
+  {
+    "xi": 1.5,
+    "step": 7,
+    "initial_discarded_probability": 0.0,
+    "input_norm": 1.0000000000000049,
+    "target_norm": 1.0000000000000056
+  },
+  {
+    "xi": 1.5,
+    "step": 8,
+    "initial_discarded_probability": 0.0,
+    "input_norm": 1.0000000000000064,
+    "target_norm": 1.000000000000007
+  },
+  {
+    "xi": 1.5,
+    "step": 9,
+    "initial_discarded_probability": 0.0,
+    "input_norm": 1.0000000000000078,
+    "target_norm": 1.0000000000000084
+  },
+  {
+    "xi": 1.5,
+    "step": 10,
+    "initial_discarded_probability": 0.0,
+    "input_norm": 1.000000000000009,
+    "target_norm": 1.0000000000000102
+  },
+  {
+    "xi": 2.25,
+    "step": 1,
+    "initial_discarded_probability": 2.220446049250313e-16,
+    "input_norm": 0.9999999999999996,
+    "target_norm": 0.9999999999999998
+  },
+  {
+    "xi": 2.25,
+    "step": 2,
+    "initial_discarded_probability": 2.220446049250313e-16,
+    "input_norm": 0.9999999999999998,
+    "target_norm": 0.9999999999999998
+  },
+  {
+    "xi": 2.25,
+    "step": 3,
+    "initial_discarded_probability": 2.220446049250313e-16,
+    "input_norm": 1.0000000000000002,
+    "target_norm": 1.0
+  },
+  {
+    "xi": 2.25,
+    "step": 4,
+    "initial_discarded_probability": 2.220446049250313e-16,
+    "input_norm": 1.0000000000000009,
+    "target_norm": 1.0000000000000009
+  },
+  {
+    "xi": 2.25,
+    "step": 5,
+    "initial_discarded_probability": 2.220446049250313e-16,
+    "input_norm": 1.000000000000001,
+    "target_norm": 1.0000000000000013
+  },
+  {
+    "xi": 2.25,
+    "step": 6,
+    "initial_discarded_probability": 2.220446049250313e-16,
+    "input_norm": 1.0000000000000022,
+    "target_norm": 1.0000000000000024
+  },
+  {
+    "xi": 2.25,
+    "step": 7,
+    "initial_discarded_probability": 2.220446049250313e-16,
+    "input_norm": 1.0000000000000036,
+    "target_norm": 1.000000000000004
+  },
+  {
+    "xi": 2.25,
+    "step": 8,
+    "initial_discarded_probability": 2.220446049250313e-16,
+    "input_norm": 1.0000000000000044,
+    "target_norm": 1.0000000000000047
+  },
+  {
+    "xi": 2.25,
+    "step": 9,
+    "initial_discarded_probability": 2.220446049250313e-16,
+    "input_norm": 1.000000000000005,
+    "target_norm": 1.0000000000000058
+  },
+  {
+    "xi": 2.25,
+    "step": 10,
+    "initial_discarded_probability": 2.220446049250313e-16,
+    "input_norm": 1.0000000000000053,
+    "target_norm": 1.0000000000000058
+  }
+]

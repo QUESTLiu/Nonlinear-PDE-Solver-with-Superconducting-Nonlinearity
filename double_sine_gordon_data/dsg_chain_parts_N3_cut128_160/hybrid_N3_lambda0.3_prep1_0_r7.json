@@ -1,0 +1,69 @@
+{
+ "environment": {
+  "python": "/Users/zhen002/miniconda3/envs/cvdv/bin/python",
+  "python_version": "3.13.0",
+  "numpy": "2.3.4",
+  "scipy": "1.16.3",
+  "threads": "12"
+ },
+ "rows": [
+  {
+   "sites": 3,
+   "lambda2": 0.3,
+   "route": "hybrid",
+   "r": 7,
+   "order": 1,
+   "block_orders": [
+    1,
+    1
+   ],
+   "s": 1,
+   "preparation": [
+    1.0,
+    0.0
+   ],
+   "cutoffs": [
+    128,
+    160
+   ],
+   "primitive_counts": {
+    "Ry": 44,
+    "Rz": 2,
+    "CD_Z": 63,
+    "Gaussian": 0
+   },
+   "total_programmable_primitives": 109,
+   "native_waits": 8,
+   "state_error": 0.018678797080043046,
+   "max_bures": 0.018649372547408317,
+   "margins": {
+    "reference": 1.725320252482121e-06,
+    "solver": 2.9802322387695312e-08,
+    "padding": 2.7669410059858657e-05,
+    "C12": 2.8727760419532743e-10,
+    "S2": 1.1866133076132712e-12
+   },
+   "C12_error": 0.0017211247949637572,
+   "S2_error": 0.002087638495395165,
+   "boundary_population": 2.8086588610420904e-10,
+   "boundary_low": 2.8086588610420904e-10,
+   "boundary_high": 1.4793055669315436e-11,
+   "max_ancilla_excited": 0.0001184046619878529,
+   "acceptance": {
+    "state": true,
+    "boundary": true,
+    "C12": true,
+    "S2": true
+   },
+   "all_criteria": true,
+   "wall_seconds": 3945.9395196249825,
+   "primitive_counts_conjugated": {
+    "Ry": 86,
+    "CD_Z": 63,
+    "Rz": 42,
+    "Gaussian": 0
+   },
+   "total_programmable_primitives_conjugated": 191
+  }
+ ]
+}

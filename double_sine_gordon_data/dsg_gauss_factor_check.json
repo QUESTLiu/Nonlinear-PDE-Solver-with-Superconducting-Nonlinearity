@@ -1,0 +1,51 @@
+{
+ "lambda0.3": {
+  "r7_o3": {
+   "128": {
+    "entry_states": 14,
+    "max_difference": 0.0006678787975897058,
+    "max_entry_boundary_population": 4.544429082258042e-08
+   },
+   "160": {
+    "entry_states": 14,
+    "max_difference": 0.00026174953034833906,
+    "max_entry_boundary_population": 4.298740009353423e-09
+   }
+  }
+ },
+ "environment": {
+  "python": "/Users/zhen002/miniconda3/envs/cvdv/bin/python",
+  "python_version": "3.13.0",
+  "numpy": "2.3.4",
+  "scipy": "1.16.3",
+  "threads": "3"
+ },
+ "lambda0.1": {
+  "r6_o3": {
+   "128": {
+    "entry_states": 12,
+    "max_difference": 0.0002870476080812369,
+    "max_entry_boundary_population": 4.027894053449957e-09
+   },
+   "160": {
+    "entry_states": 12,
+    "max_difference": 6.856986641016788e-05,
+    "max_entry_boundary_population": 1.56230740412171e-10
+   }
+  }
+ },
+ "lambda0.6": {
+  "r9_o2": {
+   "128": {
+    "entry_states": 18,
+    "max_difference": 0.0005895128383700082,
+    "max_entry_boundary_population": 4.9870031430294526e-08
+   },
+   "160": {
+    "entry_states": 18,
+    "max_difference": 0.000182640448133868,
+    "max_entry_boundary_population": 4.109578790539046e-09
+   }
+  }
+ }
+}

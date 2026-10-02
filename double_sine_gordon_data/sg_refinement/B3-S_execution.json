@@ -1,0 +1,63 @@
+{
+  "batch": "B3-S",
+  "results": [
+    {
+      "id": "paired_initialization",
+      "status": "completed",
+      "returncode": 0,
+      "reason": null,
+      "wall_seconds": 292.86754599999404,
+      "peak_rss_bytes": 1475952640,
+      "command": [
+        "/Users/zhen002/miniconda3/envs/cvdv/bin/python",
+        "-m",
+        "pra.run_sg_refinement",
+        "--outdir",
+        "/Users/zhen002/GitHub/nonlinear-PDE-simulator/pra/results/sg_refinement/paired",
+        "--protocol",
+        "/Users/zhen002/GitHub/nonlinear-PDE-simulator/pra/sg_refinement_protocol.json",
+        "--reference",
+        "/Users/zhen002/GitHub/nonlinear-PDE-simulator/pra/results/sg128/reference"
+      ]
+    }
+  ],
+  "provenance": {
+    "python": "/Users/zhen002/miniconda3/envs/cvdv/bin/python",
+    "python_version": "3.13.0",
+    "numpy": "2.3.4",
+    "scipy": "1.16.3",
+    "head": "d44945f1009e589bb5b1c647b61c209715dec5c1",
+    "tracked_diff_sha256": "d1e9cc318ea8a7b82720f1995bc027d919228c672b009919d6bf1679ed8cdb59",
+    "source_sha256": {
+      "duffing/duffing_correction_validation.py": "b01c476320d8ba2badad8d4b88d3b4c371923463097067fc20d86bfd1d28465c",
+      "duffing/duffing_padded_hybrid_validation.py": "f92b8c5cef46bcd97b0741ca351b894c8dc37405aa9d4b12bfd56d60e0b63a8e",
+      "duffing/native_comparison.py": "27189d4753261fd27b761466bacf729cffa95cdce5b5f4d4cc58bbde9fc99309",
+      "pra/__init__.py": "75e8fe7f1794f38996d5dd4527dc24daef96861783a7fdc59c77dd352b1ae5fa",
+      "pra/check_sg_split.py": "03271a913d55f6347302651bf20352fda582c70e07b81c2b23c819eb4423d6f0",
+      "pra/metrics.py": "2c9a0de5259f2a5761c5d2f7005ca8106ced05371630784dbfa384f0a8343fd4",
+      "pra/plot_results.py": "de744e40e8f0d3bdf4b0e3f6a9e70ab6b5aee47f526c47a224b659d5cdf89982",
+      "pra/probe_sg_stationary.py": "5fb38f4cc4096048f3babfe51e2b41bf269a58d2e49facd24d8fe7ada5d90a5c",
+      "pra/records.py": "dccff4aa71b382bddfc1c1ad236406003abc3e122535c1c39ba5da39519103bf",
+      "pra/run_batch.py": "d054f7369f4278b384252be0a2820baf44de34439a7ddf8436c93d3e96573188",
+      "pra/run_duffing_formal.py": "bcccfe55bbc6becb531f7b9b9c7fd5874045f03e3213e65833fa2f70db352379",
+      "pra/run_e0.py": "4f1d74f06d2e4d6f29bc64c4ce51f735f6ab176cde1f65b96c9fbda66cdd2981",
+      "pra/run_pilot.py": "24a7828b3b000210ae932b6ad700abf7cba5b03dec1575613f9854ca0d1103c5",
+      "pra/run_scaling.py": "0fd342cf897b768f2605696062eeee5cb3f4abd67b8c58b3618e4f7ee1e3b99c",
+      "pra/run_sg_convention.py": "b88b0e22a78dfa77a58c03105719c85a1e736ac117f9cc7de823f12fa45c87c3",
+      "pra/run_sg_formal.py": "1586d205b2dc68926c1cc2d0308c845c4d1367821eff0271b7308080eb4b05b0",
+      "pra/run_sg_padding160.py": "be986898e02bfc5dcbab016cb04fbaa9b75a99b7874c5519532bc290212eb8e3",
+      "pra/run_sg_refinement.py": "a92b6c260b3c78f85badff72e6859258d4e68b1fcd059a880c5711ab490f97f5",
+      "pra/test_e0.py": "4dfd46a2512abf8f83a8e097c51938798a757aa6b672fd30ceef624cb7f72cb9",
+      "pra/verify_e2_action.py": "a9169bde0966589c6cc0ce14607f7edba1d34bbc3245ca2417ced85eac3c8cf7",
+      "sine_gordon/common.py": "67ca0613082d3eef9693836b26dc80f96def49c1ae74cca8ace5f8d5a2c2551e",
+      "sine_gordon/native_correction.py": "ab7f0ed8debbd00606d9de6796dbc1d903a6c1a92736c896026bd87fd847e148",
+      "sine_gordon/run_classical.py": "312b0a570434f84c04eee0a60b13943b9ce152ca884d2553472802f85a2e6109",
+      "sine_gordon/run_multisite.py": "38fca25b7abed58d7006296e0e7bb9d3f12a406afe39d7520d178892ada14bcb",
+      "sine_gordon/run_polydeg.py": "35635dc10c86ce91d66fac1f4b123fa2f6e28e37d4d176289322baac953996ef",
+      "sine_gordon/run_snapd.py": "589662999238629e3e8de34db530a7d031633cc01735c35c177e5c0d9a62ed46",
+      "sine_gordon/run_snapd_end_to_end.py": "825696ee511c7880f8aaf81032da911b43ea70dc47e969da89cd8dd45c62c2d2",
+      "sine_gordon/run_trotter.py": "01751b2166b3252955dd1e6e45a3c8f2b554f1868f66ebd48479c938a8d613d9",
+      "sine_gordon/sglib.py": "5aaa815b08fdd17f303a0d3e5a86876990f48f705dae479ef850c1c6824bffb8"
+    }
+  }
+}

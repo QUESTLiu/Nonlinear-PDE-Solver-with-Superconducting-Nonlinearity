@@ -1,0 +1,22 @@
+{
+  "output_root": "double_sine_gordon_data/sg_independent",
+  "memory_cap_bytes": 4294967296,
+  "storage_cap_bytes": 1073741824,
+  "execution": "serial processes, one BLAS thread",
+  "jobs": [
+    {
+      "id": "second_preparation",
+      "batch": "B3-S",
+      "wall_cap_seconds": 1200,
+      "command": [
+        "/Users/zhen002/miniconda3/envs/cvdv/bin/python",
+        "-m",
+        "double_sine_gordon_code.run_sg_independent",
+        "--outdir",
+        "./double_sine_gordon_data/sg_independent/check",
+        "--protocol",
+        "./double_sine_gordon_data/manifests/sg_independent_protocol.json"
+      ]
+    }
+  ]
+}

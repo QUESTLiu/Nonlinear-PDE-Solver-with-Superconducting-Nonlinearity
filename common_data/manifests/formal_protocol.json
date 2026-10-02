@@ -1,0 +1,170 @@
+{
+  "frozen_utc": "2026-09-25T00:10:36.876099+00:00",
+  "plan_sha256": "6b07c792bfc0b882643bdeee42ad40932b11b75ddd664a955b382bd81d64de38",
+  "authorization": "User approved subsequent computations in the final plan. This freeze precedes opening the eight E2 independent validation inputs.",
+  "E1": {
+    "betas": [
+      0,
+      0.02,
+      0.05,
+      0.1,
+      0.2
+    ],
+    "xis": [
+      0.5,
+      1,
+      1.75,
+      2,
+      2.5
+    ],
+    "cutoffs": [
+      48,
+      64,
+      80
+    ],
+    "T": 1,
+    "observation_points": 401,
+    "native_quadrature_refinement_points": 801,
+    "long_conditions": [
+      [
+        0.1,
+        1.75,
+        6.283185307179586
+      ],
+      [
+        0.1,
+        2,
+        6.283185307179586
+      ]
+    ],
+    "primary_threshold": 0.001,
+    "secondary_thresholds": [
+      0.01,
+      0.0001
+    ]
+  },
+  "E2": {
+    "r": [
+      10,
+      20
+    ],
+    "L": [
+      4,
+      8,
+      12
+    ],
+    "seeds": [
+      240731,
+      240732,
+      240733
+    ],
+    "selection": "minimum training objective within each r,L; no evaluation used in selection",
+    "reference_cutoffs": [
+      64,
+      80
+    ],
+    "padding": [
+      96,
+      112
+    ],
+    "active": 48,
+    "secondary_access": 24,
+    "thresholds": [
+      0.01,
+      0.001,
+      0.0001
+    ],
+    "inputs": [
+      "real1.75",
+      "real2",
+      "imag1.75",
+      "imag2",
+      "diagonal1.75",
+      "diagonal2",
+      "vacuum",
+      "one",
+      "zero_plus_one",
+      "zero_plus_i_two"
+    ],
+    "input_roles": [
+      "development",
+      "development",
+      "independent_validation",
+      "independent_validation",
+      "independent_validation",
+      "independent_validation",
+      "independent_validation",
+      "independent_validation",
+      "independent_validation",
+      "independent_validation"
+    ],
+    "optimizer": "SLSQP maxiter 1200 ftol 1e-12; common phase; existing fixed constraints",
+    "optimizer_total_cap_seconds": 16200,
+    "restart_wall_cap_seconds": 900
+  },
+  "E2_pilot_reuse": "r=10,L=8,seed=240731 uses the same finite-gradient owner, positive-real training arrays, objective, SLSQP settings and parameter bounds as the pilot. Later changes add complex coherent inputs for validation and output diagnostics; they do not change this training computation. The pilot elapsed time counts toward the 16200-second total.",
+  "E3": {
+    "E_J": [
+      0.25,
+      0.5,
+      1,
+      2,
+      4,
+      8,
+      16,
+      32
+    ],
+    "cutoffs": [
+      48,
+      64,
+      80
+    ],
+    "steps": 1024,
+    "refinement_steps": 2048,
+    "observations": 257,
+    "tau_max": 5.2,
+    "fixed_variance_E_J": [
+      1,
+      8,
+      32
+    ],
+    "fixed_basis_frequency": 1.7320508075688772,
+    "normalized_resolution": 0.005,
+    "validity_threshold": 0.1,
+    "pilot_reuse": "Reuse the six 48/64 baseline records and three N64 time refinements at EJ=1 and EJ=8. They remain marked development, with additional cutoffs supplied now."
+  },
+  "E4": {
+    "compiled_stage": "not_run",
+    "reason": "32-to-48 and 48-to-64 state-resolution estimates exceed sqrt(1e-3)/10. No additional cutoff or relaxed criterion is introduced.",
+    "preserved_results": "native and retuned failure, resolved C12 signal, unresolved state convergence",
+    "continuations": [
+      {
+        "utc": "2026-09-25T00:27:00.150766+00:00",
+        "authorization": "User explicitly requested trying cutoff 128, with intermediate 96, then existing conditional compiled pilot.",
+        "cutoffs": [
+          96,
+          128
+        ],
+        "result": "state resolution 0.0013148576, C12 resolution 1.33654e-6, S2 resolution 1.98939e-11; original continuation criteria passed",
+        "scope": "Same EJ=1, lambda2=0.3, target, input and horizon. No acceptance or E2 selection changes."
+      }
+    ]
+  },
+  "claims": "Report all configurations and negative outcomes. Scope empirical conclusions to the listed finite families and numerical margins.",
+  "implementation_errata": [
+    {
+      "utc": "2026-09-25T00:14:28.333327+00:00",
+      "before_independent_E2_evaluation": true,
+      "defect": "NumPy complex self-overlap left an imaginary roundoff component for identical state columns, causing a spurious positive error for beta=0.",
+      "fix": "Compute the overlap imaginary part as the difference of two identical real products for self-inputs. Self-distance is exactly zero without a tolerance clip. The original failed control records remain archived.",
+      "scope": "The projective metric, thresholds, targets and input families are unchanged."
+    },
+    {
+      "utc": "2026-09-25T00:28:10.174617+00:00",
+      "before_independent_E2_evaluation": true,
+      "defect": "Duplicate seed key in the formal-run summary constructor stopped logging after the first completed optimizer.",
+      "fix": "Use one explicit seed field and reuse the already saved optimizer checkpoint and termination record. No numerical rerun of that restart.",
+      "scope": "Logging and completed-run recovery only. Training objective, candidate set and evaluation protocol are unchanged."
+    }
+  ]
+}
