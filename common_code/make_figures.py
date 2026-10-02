@@ -52,9 +52,9 @@ plt.rcParams.update(
         "axes.unicode_minus": False,
         "font.size": 9,
         "axes.labelsize": 9,
-        "legend.fontsize": 8,
-        "xtick.labelsize": 8,
-        "ytick.labelsize": 8,
+        "legend.fontsize": 8.5,
+        "xtick.labelsize": 8.5,
+        "ytick.labelsize": 8.5,
         "axes.linewidth": 0.7,
         "axes.spines.top": False,
         "axes.spines.right": False,
@@ -70,8 +70,8 @@ plt.rcParams.update(
         "ytick.direction": "out",
         "xtick.top": False,
         "ytick.right": False,
-        "lines.linewidth": 1.3,
-        "lines.markersize": 4.0,
+        "lines.linewidth": 1.4,
+        "lines.markersize": 4.2,
         "legend.frameon": False,
         "legend.handlelength": 1.8,
         "legend.borderaxespad": 0.3,
@@ -109,7 +109,7 @@ def e3(ej, prep, n=80):
 
 def fig_sg_classical(preview):
     ejs = [0.25, 0.5, 1, 2, 4, 8, 16, 32]
-    fig, axes = plt.subplots(2, 2, figsize=(COL2, 4.6))
+    fig, axes = plt.subplots(2, 2, figsize=(COL2, 4.8))
     fig.subplots_adjust(
         left=0.09, right=0.98, bottom=0.10, top=0.93, wspace=0.30, hspace=0.52
     )
@@ -129,6 +129,10 @@ def fig_sg_classical(preview):
         (meta["tau_ehrenfest_dw"], C_DW),
     ):
         ax.plot([t_e], [0.1], marker="v", ms=4, color=c, clip_on=False)
+        ax.annotate(
+            f"{t_e:.2f}", (t_e, 0.1), xytext=(0, -13),
+            textcoords="offset points", ha="center", va="top", color=c, fontsize=8.5,
+        )
     ax.set(
         xlim=(0, 5.2),
         ylim=(0, 0.27),
@@ -211,7 +215,8 @@ def fig_sg_classical(preview):
         [c[0] for c in crossed], [c[1] for c in crossed], "s", color=C_DW, label="DW"
     )
     ax.plot(
-        censored, [5.2] * len(censored), "s", color=C_DW, mfc="white", clip_on=False
+        censored, [5.2] * len(censored), "s", color=C_DW, mfc="white",
+        clip_on=False, label="DW: no crossing",
     )
     ax.set(
         xscale="log",
@@ -229,23 +234,23 @@ def fig_sg_classical(preview):
     ax = axes[3]
     floor = 1e-16
     series = (
-        ("closure_momentum", 1.0, C_TARGET, "-", "closure", (3.6, 1.0)),
-        ("delta_NG_1", meta["E_J"], C_DW, "--", "non-Gaussian part", (0.35, 2e-7)),
-        ("cutoff_momentum", 1.0, C_NATIVE, ":", "finite cutoff", (0.35, 3e-13)),
+        ("closure_momentum", 1.0, C_TARGET, "-", "closure", (3.6, 0.9)),
+        ("delta_NG_1", meta["E_J"], C_DW, "--", "non-Gaussian part", (0.35, 2e-6)),
+        ("cutoff_momentum", 1.0, C_NATIVE, ":", "finite cutoff", (3.5, 2e-8)),
     )
     for key, scale, color, ls, label, (x_text, y_text) in series:
         values = np.maximum(scale * np.max(np.abs(a[key]), axis=1), floor)
         ax.plot(tau, values, color=color, ls=ls)
-        ax.text(x_text, y_text, label, color=color, fontsize=8, ha="left", va="center")
+        ax.text(x_text, y_text, label, color=color, fontsize=8.5, ha="left", va="center")
     ax.set(
         xlim=(0, 5.2),
         yscale="log",
-        ylim=(floor, 1e2),
+        ylim=(floor, 3),
         xlabel=r"$\tau=\Omega t$",
         ylabel="momentum residual",
     )
     ax.set_yticks([1e-16, 1e-12, 1e-8, 1e-4, 1])
-    panel(ax, r"(d) Momentum-equation residuals, $E_J=1$")
+    panel(ax, r"(d) Momentum residuals, $E_J=1$")
     save(fig, "fig_sg_classical", preview)
 
 
@@ -320,7 +325,7 @@ def fig_duffing_native(preview):
     fig, axes = plt.subplots(
         1, 3, figsize=(COL2, 3.45), gridspec_kw=dict(width_ratios=[1.1, 0.9, 1.15])
     )
-    fig.subplots_adjust(left=0.075, right=0.985, bottom=0.24, top=0.76, wspace=0.40)
+    fig.subplots_adjust(left=0.085, right=0.985, bottom=0.24, top=0.76, wspace=0.40)
 
     ax = axes[0]
     for x0 in (1.75, 2.0):
@@ -359,8 +364,9 @@ def fig_duffing_native(preview):
         xlim=(0.25, 2.5),
         ylim=(5e-4, 1.6),
         xlabel=r"$\xi$",
-        ylabel="infidelity or bound",
+        ylabel=r"infidelity $1-F$ or bound",
     )
+    ax.set_xticks([0.5, 1, 1.5, 2, 2.5], labels=["0.5", "1", "1.5", "2", "2.5"])
     handles, labels = ax.get_legend_handles_labels()
     fig.legend(
         handles,
@@ -421,7 +427,7 @@ def fig_duffing_native(preview):
             ha="center",
             va="center",
             fontsize=8,
-            color="white" if v > 0.025 else "black",
+            color="white" if im.cmap(im.norm(v))[0] < 0.46 else "black",
         )
         verdicts = certified[(i, j)]
         if verdicts[0] == "sufficient":
@@ -446,7 +452,7 @@ def fig_duffing_native(preview):
     ax.set_yticks(range(len(xis)), labels=["0.5", "1", "1.75", "2", "2.5"])
     ax.tick_params(which="both", top=False, right=False, length=0)
     ax.set(xlabel=r"$\beta$", ylabel=r"$\xi$")
-    panel(ax, "(c) Maximum native infidelity")
+    panel(ax, "(c) Native infidelity across inputs")
     cax = fig.add_axes([0.735, 0.91, 0.23, 0.035])
     bar = fig.colorbar(im, cax=cax, orientation="horizontal", ticks=[1e-4, 1e-2, 1])
     bar.ax.minorticks_off()
@@ -460,7 +466,7 @@ def fig_duffing_native(preview):
         title="Bound certifies sufficiency",
         title_fontsize=8,
         loc="upper center",
-        bbox_to_anchor=(0.5, -0.28),
+        bbox_to_anchor=(0.5, -0.24),
         ncol=2,
         handlelength=1.1,
         columnspacing=1.2,
@@ -489,8 +495,8 @@ def fig_duffing_correction(preview):
         dev, key=lambda k: routes["native"][k]["max_common_distance"]
     ) + sorted(new, key=lambda k: routes["native"][k]["max_common_distance"])
     x = np.arange(len(order)) + np.array([0] * len(dev) + [1] * len(new))
-    fig, ax = plt.subplots(figsize=(COL1, 3.25))
-    fig.subplots_adjust(left=0.19, right=0.97, bottom=0.14, top=0.76)
+    fig, ax = plt.subplots(figsize=(COL1, 3.5))
+    fig.subplots_adjust(left=0.19, right=0.97, bottom=0.20, top=0.76)
     spec = [
         ("native", "native Kerr", C_NATIVE, "x", {}),
         ("gaussian", "Kerr + squeezing", C_NATIVE, "+", {}),
@@ -528,13 +534,21 @@ def fig_duffing_correction(preview):
         yscale="log",
         ylim=(6e-5, 1.5),
         xlim=(-0.8, x[-1] + 0.8),
-        ylabel=r"${\rm max}_j\, d_{\rm pr}(t_j)$",
+        ylabel=r"projective distance $\max_j\, d_{\rm pr}(t_j)$",
     )
     ax.set_xticks(
         [np.mean(x[: len(dev)]), np.mean(x[len(dev) :])],
         labels=["Development\n(10 inputs)", "Held-out\n(12 coherent states)"],
     )
     ax.tick_params(axis="x", which="both", length=0)
+    ax.text(
+        0.5, -0.24, "Inputs ranked by native Kerr error", transform=ax.transAxes,
+        ha="center", va="top", fontsize=8,
+    )
+    fig.text(
+        0.55, 0.81, r"SNAP replacement: $|\Delta d_{\rm pr}|\leq 2.1\times10^{-5}$",
+        ha="center", fontsize=8,
+    )
     handles, labels = ax.get_legend_handles_labels()
     fig.legend(
         handles,
@@ -616,12 +630,17 @@ def fig_duffing_training(preview):
     ax.plot(
         [hyb[k] for k in names], x, "o", color=C_HYBRID, label="trained on eight phases"
     )
-    ax.axvline(np.sqrt(1e-3), color="0.4", lw=0.8, ls=":")
+    ax.axvline(np.sqrt(1e-3), color="0.4", lw=0.9, ls=":")
+    ax.axhline(5.5, color="0.65", lw=0.7)
+    ax.text(
+        np.sqrt(1e-3), -0.75, r"$\sqrt{10^{-3}}$", ha="center", va="bottom",
+        fontsize=8.5, color="0.3",
+    )
     ax.set(
         xscale="log",
         xlim=(5e-4, 2),
         ylim=(9.6, -0.6),
-        xlabel=r"maximum distance $\max_j\,d_{\rm pr}(t_j)$",
+        xlabel=r"projective distance $\max_j\,d_{\rm pr}(t_j)$",
     )
     ax.set_yticks(x, labels=labels, fontsize=8)
     ax.tick_params(axis="y", which="both", length=0)
@@ -678,8 +697,8 @@ def fig_dsg_dynamics(preview):
     best = {route: _cheapest(scan, route) for route in ROUTE_STYLE}
     mod = lambda re, im: np.abs(np.asarray(re) + 1j * np.asarray(im))
 
-    fig, axes = plt.subplots(1, 3, figsize=(COL2, 3.0))
-    fig.subplots_adjust(left=0.075, right=0.985, bottom=0.17, top=0.71, wspace=0.34)
+    fig, axes = plt.subplots(1, 3, figsize=(COL2, 3.1))
+    fig.subplots_adjust(left=0.075, right=0.985, bottom=0.17, top=0.71, wspace=0.42)
     for ax in axes:
         ax.axvspan(0, t_e, color="0.92", lw=0, zorder=0)
         ax.set_xlim(0, t[-1])
@@ -708,7 +727,7 @@ def fig_dsg_dynamics(preview):
     ax.plot(t, ref["retuned_native_S2"], color=C_RETUNED, ls="-.")
     ax.plot(hyb["t"], hyb["S2"], "o", color=C_HYBRID, ms=3.2)
     ax.set(ylabel=r"$S_2$", ylim=(-0.01, 0.27))
-    panel(ax, r"(b) Second R$\acute{\mathrm{e}}$nyi entropy")
+    panel(ax, r"(b) R$\acute{\mathrm{e}}$nyi entropy")
     ax = axes[2]
     ax.plot(t[1:], ref["native_distance"][1:], color=C_NATIVE, ls="--")
     ax.plot(t[1:], ref["retuned_native_distance"][1:], color=C_RETUNED, ls="-.")
@@ -723,7 +742,11 @@ def fig_dsg_dynamics(preview):
             lw=0.8,
         )
     ax.axhline(np.sqrt(1e-3), color="0.4", lw=0.6, ls=":")
-    ax.set(yscale="log", ylim=(1e-3, 1), ylabel=r"distance from target")
+    ax.set(yscale="log", ylim=(1e-3, 1), ylabel=r"state distance $d_{\rm pr}$ or $d_B$")
+    ax.text(
+        0.05, 0.10, "GB: upper bound", transform=ax.transAxes,
+        fontsize=8, color=C_GAUSS,
+    )
     panel(ax, "(c) State distance")
     h = [
         Line2D([], [], color=C_TARGET, label="target"),
@@ -763,7 +786,7 @@ def fig_dsg_resources(preview):
     sweep = json.loads((DSG_DATA / "splitting_sweep.json").read_text())
     fig, axes = plt.subplots(2, 2, figsize=(COL2, 5.6))
     fig.subplots_adjust(
-        left=0.09, right=0.98, bottom=0.09, top=0.83, wspace=0.32, hspace=0.55
+        left=0.09, right=0.98, bottom=0.09, top=0.83, wspace=0.34, hspace=0.55
     )
     axes = axes.ravel()
 
@@ -813,16 +836,16 @@ def fig_dsg_resources(preview):
             zorder=5,
         )
         offset, ha, va = {
-            "hybrid": ((0, -8), "center", "top"),
-            "gauss_block": ((-7, -5), "right", "top"),
-            "kin_pot": ((13, 8), "left", "bottom"),
+            "hybrid": ((0, -9), "center", "top"),
+            "gauss_block": ((-8, -6), "right", "top"),
+            "kin_pot": ((13, 9), "left", "bottom"),
         }[route]
         ax.annotate(
-            f"{best['total_programmable_primitives']}",
+            f"{best['total_programmable_primitives']}\n$r={best['r']}$",
             (best["total_programmable_primitives"], best["state_error"]),
             xytext=offset,
             textcoords="offset points",
-            fontsize=8,
+            fontsize=8.5,
             ha=ha,
             va=va,
             color=c,
@@ -863,6 +886,8 @@ def fig_dsg_resources(preview):
         columnspacing=0.7,
         handletextpad=0.3,
     )
+    ax.text(0.98, 0.03, "GB: upper bound", transform=ax.transAxes,
+            ha="right", fontsize=8, color=C_GAUSS)
     panel(ax, r"(a) Compiled cost, $\lambda_2=0.3$")
 
     ax = axes[1]
@@ -885,7 +910,7 @@ def fig_dsg_resources(preview):
         xscale="log",
         yscale="log",
         xlabel=r"outer step $h=T/r$",
-        ylabel="outer splitting error",
+        ylabel=r"splitting distance $d_{\rm pr}$",
         ylim=(2e-4, 0.4),
     )
     ax.set_xticks([0.1, 0.2, 0.4], labels=["0.1", "0.2", "0.4"])
@@ -989,8 +1014,8 @@ def fig_dsg_resources(preview):
 def fig_dsg_subdivisions(preview):
     """Archived r = 10, 20 comparison with s = 1..32 at cutoffs 96/128 (appendix)."""
     agg = json.loads((COMMON_DATA / "analysis_summary.json").read_text())["E4_compiled"]
-    fig, axes = plt.subplots(2, 1, figsize=(COL1, 4.8), sharex=True, sharey=True)
-    fig.subplots_adjust(left=0.19, right=0.97, bottom=0.11, top=0.78, hspace=0.40)
+    fig, axes = plt.subplots(2, 1, figsize=(COL1, 5.05), sharex=True, sharey=True)
+    fig.subplots_adjust(left=0.19, right=0.97, bottom=0.11, top=0.75, hspace=0.40)
     style = {
         "H_trig": (C_HYBRID, "hybrid", "o"),
         "H_trig_ret": (C_HYBRID_RET, "retuned hybrid", "^"),
@@ -1029,6 +1054,10 @@ def fig_dsg_subdivisions(preview):
                 ys = [k["amplitude"] for k in cfg]
                 ax.plot(xs, ys, "--" if order == 1 else "-", color=c, lw=1.0, alpha=0.8)
                 ax.plot(xs, ys, mk, color=c, mfc=fill, ms=4.0, mew=0.8)
+                failed = [(x, y) for x, y, row in zip(xs, ys, cfg)
+                          if row["boundary_population"] > 1e-6]
+                if failed:
+                    ax.plot(*zip(*failed), "x", color="0.15", ms=4.5, mew=0.8)
         ax.axhline(np.sqrt(1e-3), color="0.4", lw=0.8, ls=":")
         ax.set(
             xscale="log",
@@ -1069,6 +1098,8 @@ def fig_dsg_subdivisions(preview):
         handletextpad=0.4,
         labelspacing=0.2,
     )
+    fig.text(0.54, 0.812, r"$\times$: boundary population $>10^{-6}$",
+             ha="center", va="bottom", fontsize=8)
     save(fig, "fig_dsg_subdivisions", preview)
 
 

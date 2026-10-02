@@ -182,9 +182,9 @@ def make_figure(rows, gate_curve, switch_curve):
             "mathtext.fontset": "cm",
             "font.size": 9,
             "axes.labelsize": 9,
-            "legend.fontsize": 8,
-            "xtick.labelsize": 8,
-            "ytick.labelsize": 8,
+            "legend.fontsize": 8.5,
+            "xtick.labelsize": 8.5,
+            "ytick.labelsize": 8.5,
         }
     )
     fig, axes = plt.subplots(1, 2, figsize=(7.0, 3.2), gridspec_kw=dict(wspace=0.28))
@@ -215,10 +215,11 @@ def make_figure(rows, gate_curve, switch_curve):
         r"$\epsilon_{\rm add}=0.010$, $w_{\rm sw}=0$",
         transform=ax.transAxes,
         va="bottom",
-        fontsize=8,
+        fontsize=9,
+        bbox=dict(facecolor="0.95", edgecolor="none", pad=2),
     )
-    ax.text(5 / 6, 404, "GB: $r=9$\norders $2/1$", ha="center", va="top", fontsize=8)
-    ax.text(17 / 6, 404, "GB: $r=8$\norders $2/2$", ha="center", va="top", fontsize=8)
+    ax.text(5 / 6, 404, "GB: $r=9$\norders $2/1$", ha="center", va="top", fontsize=8.5)
+    ax.text(17 / 6, 404, "GB: $r=8$\norders $2/2$", ha="center", va="top", fontsize=8.5)
     ax.text(
         1.1, 295, "Gaussian block faster", ha="center", color=gaussian_color, fontsize=8
     )
@@ -262,10 +263,11 @@ def make_figure(rows, gate_curve, switch_curve):
         r"$\epsilon_{\rm add}=0.005$, $w_G=1$",
         transform=ax.transAxes,
         va="bottom",
-        fontsize=8,
+        fontsize=9,
+        bbox=dict(facecolor="0.95", edgecolor="none", pad=2),
     )
-    ax.text(7, 203, "Hybrid: $r=7$\norder $1$", ha="center", va="top", fontsize=8)
-    ax.text(19.5, 203, "Hybrid: $r=6$\norder $2$", ha="center", va="top", fontsize=8)
+    ax.text(7, 203, "Hybrid: $r=7$\norder $1$", ha="center", va="top", fontsize=8.5)
+    ax.text(19.5, 203, "Hybrid: $r=6$\norder $2$", ha="center", va="top", fontsize=8.5)
     ax.text(
         17, 102, "Gaussian block faster", ha="center", color=gaussian_color, fontsize=8
     )
@@ -277,6 +279,7 @@ def make_figure(rows, gate_curve, switch_curve):
     )
     ax.set_xticks([0, 7, 14, 149 / 7, 25], ["0", "7", "14", r"$149/7$", "25"])
     ax.set_yticks([-25, 0, 50, 100, 150, 200])
+    ax.text(0.6, -24, r"$t_{\rm nat}<0$: outside physical domain", fontsize=8, color="0.4")
     for ax in axes:
         ax.set_ylabel(r"Native duration $t_{\rm nat}/\tau_0$")
     fig.subplots_adjust(left=0.075, right=0.985, bottom=0.18, top=0.81)
