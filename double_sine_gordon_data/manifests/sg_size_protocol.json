@@ -1,0 +1,19 @@
+{
+  "protocol": "Bounded larger SG SNAP fit after the initialization-only comparison",
+  "predecessor": "double_sine_gordon_data/manifests/sg_refinement_protocol.json",
+  "selection_evidence": "All six paired-initialization circuits fail the state criterion. Their low/high training objectives agree closely, while some full-circuit tails worsen. This motivates a joint coverage and depth trial, without claiming that either cause has been isolated.",
+  "training_dimensions": [96, 48, 32],
+  "fit_check_cutoff": 128,
+  "outer_steps": [10],
+  "layers": [12],
+  "seeds": [20260729, 20260730, 20260731],
+  "maxiter": 2400,
+  "initialization": "The same diagonal-plus-paired-frame PCG64 rule as the preceding comparison, at the new dimensions.",
+  "objective": "The same common-phase action MSE formula, uniformly weighted on the first 32 columns, with regularization 1e-8 and unchanged phase/displacement bounds.",
+  "selection": "Minimum training objective among all three starts, selected before full-circuit evaluation.",
+  "acceptance": "Original SG thresholds and 96/128 validation. A boundary-only limitation can receive one same-parameter 128/160 refinement.",
+  "optimizer_cap_seconds": 2700,
+  "validation_cap_seconds": 600,
+  "stopping_rule": "Complete this three-start size comparison. Do not launch an unbounded size ladder. An unresolved result remains a bounded negative result, with initialization and size effects reported separately.",
+  "independent_evaluation": "The second physical preparation and fixed trig circuits remain those declared before the preceding initialization comparison. They are not used in this training or selection."
+}

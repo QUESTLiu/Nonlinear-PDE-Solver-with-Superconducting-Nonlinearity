@@ -1,0 +1,475 @@
+{
+ "environment": {
+  "python": "/Users/zhen002/miniconda3/envs/cvdv/bin/python",
+  "python_version": "3.13.0",
+  "numpy": "2.3.4",
+  "scipy": "1.16.3",
+  "threads": "4"
+ },
+ "rows": [
+  {
+   "sites": 3,
+   "lambda2": 0.3,
+   "route": "gauss_block",
+   "r": 6,
+   "order": 3,
+   "block_orders": [
+    2,
+    1
+   ],
+   "s": 1,
+   "preparation": [
+    1.0,
+    0.0
+   ],
+   "cutoffs": [
+    128,
+    160
+   ],
+   "primitive_counts": {
+    "Ry": 92,
+    "Rz": 2,
+    "CD_Z": 108,
+    "Gaussian": 90
+   },
+   "total_programmable_primitives": 292,
+   "native_waits": 0,
+   "state_error": 0.053144012810873546,
+   "max_bures": 0.05294752513474112,
+   "margins": {
+    "reference": 1.725320252482121e-06,
+    "solver": 2.9802322387695312e-08,
+    "padding": 0.00019473255355755242,
+    "C12": 1.0611449755664975e-08,
+    "S2": 1.1614528783177036e-12
+   },
+   "C12_error": 0.005073840150753971,
+   "S2_error": 0.006968294582546379,
+   "boundary_population": 9.324515826136803e-09,
+   "boundary_low": 9.324515826136803e-09,
+   "boundary_high": 5.949210013511674e-10,
+   "max_ancilla_excited": 0.0007082135358177704,
+   "acceptance": {
+    "state": false,
+    "boundary": true,
+    "C12": true,
+    "S2": true
+   },
+   "all_criteria": false,
+   "wall_seconds": 41.353251083986834,
+   "primitive_counts_conjugated": {
+    "Ry": 182,
+    "CD_Z": 108,
+    "Rz": 90,
+    "Gaussian": 90
+   },
+   "total_programmable_primitives_conjugated": 470
+  },
+  {
+   "sites": 3,
+   "lambda2": 0.3,
+   "route": "gauss_block",
+   "r": 6,
+   "order": 2,
+   "block_orders": [
+    2,
+    2
+   ],
+   "s": 1,
+   "preparation": [
+    1.0,
+    0.0
+   ],
+   "cutoffs": [
+    128,
+    160
+   ],
+   "primitive_counts": {
+    "Ry": 110,
+    "Rz": 2,
+    "CD_Z": 126,
+    "Gaussian": 90
+   },
+   "total_programmable_primitives": 328,
+   "native_waits": 0,
+   "state_error": 0.05006104893957201,
+   "max_bures": 0.0499880911850921,
+   "margins": {
+    "reference": 1.725320252482121e-06,
+    "solver": 2.9802322387695312e-08,
+    "padding": 7.120263190503539e-05,
+    "C12": 1.2039651853559737e-09,
+    "S2": 1.172943686622574e-12
+   },
+   "C12_error": 0.0048795139392286595,
+   "S2_error": 0.006268594496500267,
+   "boundary_population": 1.1393472831855433e-09,
+   "boundary_low": 1.1393472831855433e-09,
+   "boundary_high": 7.000455770622693e-11,
+   "max_ancilla_excited": 0.00020535150718780612,
+   "acceptance": {
+    "state": false,
+    "boundary": true,
+    "C12": true,
+    "S2": true
+   },
+   "all_criteria": false,
+   "wall_seconds": 39.755154167010915,
+   "primitive_counts_conjugated": {
+    "Ry": 218,
+    "CD_Z": 126,
+    "Rz": 108,
+    "Gaussian": 90
+   },
+   "total_programmable_primitives_conjugated": 542
+  },
+  {
+   "sites": 3,
+   "lambda2": 0.3,
+   "route": "gauss_block",
+   "r": 7,
+   "order": 3,
+   "block_orders": [
+    2,
+    1
+   ],
+   "s": 1,
+   "preparation": [
+    1.0,
+    0.0
+   ],
+   "cutoffs": [
+    128,
+    160
+   ],
+   "primitive_counts": {
+    "Ry": 107,
+    "Rz": 2,
+    "CD_Z": 126,
+    "Gaussian": 102
+   },
+   "total_programmable_primitives": 337,
+   "native_waits": 0,
+   "state_error": 0.035639297856691184,
+   "max_bures": 0.035522188289972834,
+   "margins": {
+    "reference": 1.725320252482121e-06,
+    "solver": 2.9802322387695312e-08,
+    "padding": 0.00011535444414347789,
+    "C12": 2.641241569651294e-09,
+    "S2": 1.196882870591054e-12
+   },
+   "C12_error": 0.00355862785829493,
+   "S2_error": 0.003949390305685842,
+   "boundary_population": 3.757554489780546e-09,
+   "boundary_low": 3.757554489780546e-09,
+   "boundary_high": 1.6674639446989659e-10,
+   "max_ancilla_excited": 0.00032498230458899836,
+   "acceptance": {
+    "state": false,
+    "boundary": true,
+    "C12": true,
+    "S2": true
+   },
+   "all_criteria": false,
+   "wall_seconds": 50.199536375002936,
+   "primitive_counts_conjugated": {
+    "Ry": 212,
+    "CD_Z": 126,
+    "Rz": 105,
+    "Gaussian": 102
+   },
+   "total_programmable_primitives_conjugated": 545
+  },
+  {
+   "sites": 3,
+   "lambda2": 0.3,
+   "route": "gauss_block",
+   "r": 7,
+   "order": 2,
+   "block_orders": [
+    2,
+    2
+   ],
+   "s": 1,
+   "preparation": [
+    1.0,
+    0.0
+   ],
+   "cutoffs": [
+    128,
+    160
+   ],
+   "primitive_counts": {
+    "Ry": 128,
+    "Rz": 2,
+    "CD_Z": 147,
+    "Gaussian": 102
+   },
+   "total_programmable_primitives": 379,
+   "native_waits": 0,
+   "state_error": 0.03459532050964355,
+   "max_bures": 0.03456227266473124,
+   "margins": {
+    "reference": 1.725320252482121e-06,
+    "solver": 2.9802322387695312e-08,
+    "padding": 3.1292722337434656e-05,
+    "C12": 2.1187268109518202e-10,
+    "S2": 1.219017942144518e-12
+   },
+   "C12_error": 0.0035864933242256486,
+   "S2_error": 0.003571642289002426,
+   "boundary_population": 2.489736194988268e-10,
+   "boundary_low": 2.489736194988268e-10,
+   "boundary_high": 1.2795431381107392e-11,
+   "max_ancilla_excited": 6.325034188697445e-05,
+   "acceptance": {
+    "state": false,
+    "boundary": true,
+    "C12": true,
+    "S2": true
+   },
+   "all_criteria": false,
+   "wall_seconds": 50.56674441599171,
+   "primitive_counts_conjugated": {
+    "Ry": 254,
+    "CD_Z": 147,
+    "Rz": 126,
+    "Gaussian": 102
+   },
+   "total_programmable_primitives_conjugated": 629
+  },
+  {
+   "sites": 3,
+   "lambda2": 0.3,
+   "route": "gauss_block",
+   "r": 8,
+   "order": 3,
+   "block_orders": [
+    2,
+    1
+   ],
+   "s": 1,
+   "preparation": [
+    1.0,
+    0.0
+   ],
+   "cutoffs": [
+    128,
+    160
+   ],
+   "primitive_counts": {
+    "Ry": 122,
+    "Rz": 2,
+    "CD_Z": 144,
+    "Gaussian": 114
+   },
+   "total_programmable_primitives": 382,
+   "native_waits": 0,
+   "state_error": 0.026222910834741344,
+   "max_bures": 0.026143941285221736,
+   "margins": {
+    "reference": 1.725320252482121e-06,
+    "solver": 2.9802322387695312e-08,
+    "padding": 7.721442694473918e-05,
+    "C12": 1.225997466150673e-09,
+    "S2": 1.2492160084143222e-12
+   },
+   "C12_error": 0.0026333440732631123,
+   "S2_error": 0.002646273313473231,
+   "boundary_population": 1.7934086438131658e-09,
+   "boundary_low": 1.7934086438131658e-09,
+   "boundary_high": 8.050193844866271e-11,
+   "max_ancilla_excited": 0.00016501142195275587,
+   "acceptance": {
+    "state": true,
+    "boundary": true,
+    "C12": true,
+    "S2": true
+   },
+   "all_criteria": true,
+   "wall_seconds": 57.71305108300294,
+   "primitive_counts_conjugated": {
+    "Ry": 242,
+    "CD_Z": 144,
+    "Rz": 120,
+    "Gaussian": 114
+   },
+   "total_programmable_primitives_conjugated": 620
+  },
+  {
+   "sites": 3,
+   "lambda2": 0.3,
+   "route": "gauss_block",
+   "r": 8,
+   "order": 2,
+   "block_orders": [
+    2,
+    2
+   ],
+   "s": 1,
+   "preparation": [
+    1.0,
+    0.0
+   ],
+   "cutoffs": [
+    128,
+    160
+   ],
+   "primitive_counts": {
+    "Ry": 146,
+    "Rz": 2,
+    "CD_Z": 168,
+    "Gaussian": 114
+   },
+   "total_programmable_primitives": 430,
+   "native_waits": 0,
+   "state_error": 0.02552169322996815,
+   "max_bures": 0.02550357351132756,
+   "margins": {
+    "reference": 1.725320252482121e-06,
+    "solver": 2.9802322387695312e-08,
+    "padding": 1.6364596065723802e-05,
+    "C12": 6.408486854820739e-11,
+    "S2": 1.2516862546441132e-12
+   },
+   "C12_error": 0.002659180846668829,
+   "S2_error": 0.0024432779139590896,
+   "boundary_population": 8.015743624412153e-11,
+   "boundary_low": 8.015743624412153e-11,
+   "boundary_high": 3.085087740828385e-12,
+   "max_ancilla_excited": 2.365766942954025e-05,
+   "acceptance": {
+    "state": true,
+    "boundary": true,
+    "C12": true,
+    "S2": true
+   },
+   "all_criteria": true,
+   "wall_seconds": 57.48843100000522,
+   "primitive_counts_conjugated": {
+    "Ry": 290,
+    "CD_Z": 168,
+    "Rz": 144,
+    "Gaussian": 114
+   },
+   "total_programmable_primitives_conjugated": 716
+  },
+  {
+   "sites": 3,
+   "lambda2": 0.3,
+   "route": "gauss_block",
+   "r": 9,
+   "order": 3,
+   "block_orders": [
+    2,
+    1
+   ],
+   "s": 1,
+   "preparation": [
+    1.0,
+    0.0
+   ],
+   "cutoffs": [
+    128,
+    160
+   ],
+   "primitive_counts": {
+    "Ry": 137,
+    "Rz": 2,
+    "CD_Z": 162,
+    "Gaussian": 126
+   },
+   "total_programmable_primitives": 427,
+   "native_waits": 0,
+   "state_error": 0.01992546186006926,
+   "max_bures": 0.019866741354221167,
+   "margins": {
+    "reference": 1.725320252482121e-06,
+    "solver": 2.9802322387695312e-08,
+    "padding": 5.696538327322406e-05,
+    "C12": 5.697670404938512e-10,
+    "S2": 1.3196457815389806e-12
+   },
+   "C12_error": 0.0022473848029861353,
+   "S2_error": 0.0019562630253375443,
+   "boundary_population": 1.1564761370763676e-09,
+   "boundary_low": 1.1564761370763676e-09,
+   "boundary_high": 4.2755021745222166e-11,
+   "max_ancilla_excited": 7.958894622245687e-05,
+   "acceptance": {
+    "state": true,
+    "boundary": true,
+    "C12": true,
+    "S2": true
+   },
+   "all_criteria": true,
+   "wall_seconds": 60.36511541600339,
+   "primitive_counts_conjugated": {
+    "Ry": 272,
+    "CD_Z": 162,
+    "Rz": 135,
+    "Gaussian": 126
+   },
+   "total_programmable_primitives_conjugated": 695
+  },
+  {
+   "sites": 3,
+   "lambda2": 0.3,
+   "route": "gauss_block",
+   "r": 9,
+   "order": 2,
+   "block_orders": [
+    2,
+    2
+   ],
+   "s": 1,
+   "preparation": [
+    1.0,
+    0.0
+   ],
+   "cutoffs": [
+    128,
+    160
+   ],
+   "primitive_counts": {
+    "Ry": 164,
+    "Rz": 2,
+    "CD_Z": 189,
+    "Gaussian": 126
+   },
+   "total_programmable_primitives": 481,
+   "native_waits": 0,
+   "state_error": 0.019457139224949876,
+   "max_bures": 0.019444753212528643,
+   "margins": {
+    "reference": 1.725320252482121e-06,
+    "solver": 2.9802322387695312e-08,
+    "padding": 1.0630889846364347e-05,
+    "C12": 2.7957402730875918e-11,
+    "S2": 1.3079051730535696e-12
+   },
+   "C12_error": 0.002260689426744115,
+   "S2_error": 0.001860763337172909,
+   "boundary_population": 4.008504639330113e-11,
+   "boundary_low": 4.008504639330113e-11,
+   "boundary_high": 1.2135847882177586e-12,
+   "max_ancilla_excited": 1.0654167412833838e-05,
+   "acceptance": {
+    "state": true,
+    "boundary": true,
+    "C12": true,
+    "S2": true
+   },
+   "all_criteria": true,
+   "wall_seconds": 61.988200291991234,
+   "primitive_counts_conjugated": {
+    "Ry": 326,
+    "CD_Z": 189,
+    "Rz": 162,
+    "Gaussian": 126
+   },
+   "total_programmable_primitives_conjugated": 803
+  }
+ ]
+}

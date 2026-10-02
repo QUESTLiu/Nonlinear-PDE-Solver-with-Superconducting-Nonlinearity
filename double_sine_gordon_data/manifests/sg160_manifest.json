@@ -1,0 +1,19 @@
+{
+  "authorization": "User explicitly asked to raise N after the completed formal comparison, with prior authorization for subsequent calculations.",
+  "output_root": "double_sine_gordon_data/sg160",
+  "memory_cap_bytes": 4294967296,
+  "storage_cap_bytes": 2147483648,
+  "scope": "One target reference at N160 plus independent DOP853 on 257 times, reference/padding comparison128/160, H_trig r10 order2 s1 and G_trig r20 order1/2 s1. Reuse existing N128 circuit records. No training, target, input, gate parameter or threshold change.",
+  "jobs": [
+    {
+      "id": "E4_padding160",
+      "batch": "B3-S",
+      "wall_cap_seconds": 900,
+      "command": [
+        "/Users/zhen002/miniconda3/envs/cvdv/bin/python",
+        "-m",
+        "double_sine_gordon_code.run_sg_padding160"
+      ]
+    }
+  ]
+}

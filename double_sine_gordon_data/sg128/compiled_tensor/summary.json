@@ -1,0 +1,794 @@
+{
+  "development": true,
+  "optimization": {
+    "seed": 20260729,
+    "objective": 0.003406444306207058,
+    "evaluations": 10,
+    "elapsed_seconds": 0.03544854198116809,
+    "status": "solver_success",
+    "iterations": null,
+    "cpu_seconds": null,
+    "message": "Completed checkpoint reused after interruption of downstream validation; iteration and CPU counters were not serialized.",
+    "constraint_violation": 0.0,
+    "common_phase": 0.0674569037418681,
+    "method": "SLSQP",
+    "maxiter": 1200,
+    "ftol": 1e-12,
+    "regularization": 1e-08,
+    "source": "/Users/zhen002/GitHub/nonlinear-PDE-simulator/pra/results/sg128/compiled",
+    "training_provenance": {
+      "job": "e4-compiled",
+      "development": true,
+      "provenance": {
+        "python": "/Users/zhen002/miniconda3/envs/cvdv/bin/python",
+        "python_version": "3.13.0",
+        "numpy": "2.3.4",
+        "scipy": "1.16.3",
+        "head": "d44945f1009e589bb5b1c647b61c209715dec5c1",
+        "tracked_diff_sha256": "7bd6754a4391603a3250620454fff85004585db974b2603099093cf5c41f8eaa",
+        "source_sha256": {
+          "duffing/duffing_correction_validation.py": "b01c476320d8ba2badad8d4b88d3b4c371923463097067fc20d86bfd1d28465c",
+          "duffing/duffing_padded_hybrid_validation.py": "644984ef0d440063e284c0e6ff88ae67c0b529461ddf412fe4a05dba66a1271f",
+          "duffing/native_comparison.py": "27189d4753261fd27b761466bacf729cffa95cdce5b5f4d4cc58bbde9fc99309",
+          "pra/__init__.py": "75e8fe7f1794f38996d5dd4527dc24daef96861783a7fdc59c77dd352b1ae5fa",
+          "pra/metrics.py": "2c9a0de5259f2a5761c5d2f7005ca8106ced05371630784dbfa384f0a8343fd4",
+          "pra/plot_results.py": "4c742acce87487d5938f210f6525bf52e135cc8c2b7bde1970e384e525d2c881",
+          "pra/records.py": "dccff4aa71b382bddfc1c1ad236406003abc3e122535c1c39ba5da39519103bf",
+          "pra/run_batch.py": "d054f7369f4278b384252be0a2820baf44de34439a7ddf8436c93d3e96573188",
+          "pra/run_duffing_formal.py": "bcccfe55bbc6becb531f7b9b9c7fd5874045f03e3213e65833fa2f70db352379",
+          "pra/run_e0.py": "4f1d74f06d2e4d6f29bc64c4ce51f735f6ab176cde1f65b96c9fbda66cdd2981",
+          "pra/run_pilot.py": "f204a7b03f0e8d97af1440568ae54ab8fe90e7f5261d3dce9616c5715c20f919",
+          "pra/run_scaling.py": "0fd342cf897b768f2605696062eeee5cb3f4abd67b8c58b3618e4f7ee1e3b99c",
+          "pra/run_sg_convention.py": "b88b0e22a78dfa77a58c03105719c85a1e736ac117f9cc7de823f12fa45c87c3",
+          "pra/test_e0.py": "1c4443ddc8c169d47260f2245e718826b75f67683788c51a9af7d870e695cca1",
+          "pra/verify_e2_action.py": "a9169bde0966589c6cc0ce14607f7edba1d34bbc3245ca2417ced85eac3c8cf7",
+          "sine_gordon/common.py": "67ca0613082d3eef9693836b26dc80f96def49c1ae74cca8ace5f8d5a2c2551e",
+          "sine_gordon/native_correction.py": "075230d54e45275b56165b7b338a677b5be669d7fc631a18df5bf6191e00a3c9",
+          "sine_gordon/run_classical.py": "312b0a570434f84c04eee0a60b13943b9ce152ca884d2553472802f85a2e6109",
+          "sine_gordon/run_multisite.py": "38fca25b7abed58d7006296e0e7bb9d3f12a406afe39d7520d178892ada14bcb",
+          "sine_gordon/run_polydeg.py": "35635dc10c86ce91d66fac1f4b123fa2f6e28e37d4d176289322baac953996ef",
+          "sine_gordon/run_snapd.py": "589662999238629e3e8de34db530a7d031633cc01735c35c177e5c0d9a62ed46",
+          "sine_gordon/run_snapd_end_to_end.py": "37eff7ff0309e9e10f536505016e261f89fbf55ee622e7588bfbbb25ae0592cc",
+          "sine_gordon/run_trotter.py": "01751b2166b3252955dd1e6e45a3c8f2b554f1868f66ebd48479c938a8d613d9",
+          "sine_gordon/sglib.py": "5aaa815b08fdd17f303a0d3e5a86876990f48f705dae479ef850c1c6824bffb8"
+        }
+      }
+    }
+  },
+  "training_cutoff": 48,
+  "validation_cutoffs": [
+    96,
+    128
+  ],
+  "reference_source": "/Users/zhen002/GitHub/nonlinear-PDE-simulator/pra/results/sg128/reference",
+  "configurations": [
+    {
+      "name": "E4_H_SNAP_o2_s1_N96",
+      "route": "H_SNAP",
+      "r": 10,
+      "layers": 4,
+      "order": 2,
+      "subdivisions": 1,
+      "cutoff": 96,
+      "max_bures_distance": 0.14140972132309718,
+      "max_endpoint_bures_distance": 0.14140972132309718,
+      "max_C12_error": 0.0443147555543717,
+      "max_S2_error": 0.03902963966178136,
+      "action_sum": 0.6145284464881596,
+      "max_population_at_monitored_locations": {
+        "outside_joint_access": 0.0032749263199631784,
+        "outside_local_active_max": 0.0012933825534456106,
+        "boundary_band_population": 3.3573546844837116e-07
+      },
+      "population_scope": "native-half and potential-block endpoints; SNAP route also each local SNAP and displacement",
+      "empirical_margins": {
+        "reference": 0.0013148548922630218,
+        "solver": 2.683275150530903e-09,
+        "padding_joint_distance": 0.0008762481805740466,
+        "C12": 1.960149474057217e-06,
+        "S2": 2.2664353033219342e-11
+      },
+      "numerical_acceptance": {
+        "state": false,
+        "C12": false,
+        "S2": false,
+        "amplitude_total": 0.1436008270792094
+      }
+    },
+    {
+      "name": "E4_H_trig_o1_s1_N96",
+      "route": "H_trig",
+      "r": 10,
+      "layers": null,
+      "order": 1,
+      "subdivisions": 1,
+      "cutoff": 96,
+      "max_bures_distance": 0.006519289888661704,
+      "max_endpoint_bures_distance": 0.006519289888661704,
+      "max_C12_error": 0.0008435571024049037,
+      "max_S2_error": 0.0010949064183541635,
+      "action_sum": 0.05499104670182274,
+      "max_population_at_monitored_locations": {
+        "outside_joint_access": 0.004326485219356524,
+        "outside_local_active_max": 0.0020010502337406617,
+        "boundary_band_population": 1.0288362380580234e-06
+      },
+      "population_scope": "native-half and potential-block endpoints; SNAP route also each local SNAP and displacement",
+      "empirical_margins": {
+        "reference": 0.0013148548922630218,
+        "solver": 2.683275150530903e-09,
+        "padding_joint_distance": 0.0015192996134321135,
+        "C12": 3.027298291676552e-06,
+        "S2": 4.0878449930614735e-11
+      },
+      "numerical_acceptance": {
+        "state": false,
+        "C12": true,
+        "S2": true,
+        "amplitude_total": 0.00935344707763199
+      }
+    },
+    {
+      "name": "E4_H_trig_o1_s4_N96",
+      "route": "H_trig",
+      "r": 10,
+      "layers": null,
+      "order": 1,
+      "subdivisions": 4,
+      "cutoff": 96,
+      "max_bures_distance": 0.006053740181892274,
+      "max_endpoint_bures_distance": 0.006053740181892274,
+      "max_C12_error": 0.0008174366608962509,
+      "max_S2_error": 0.0010688299930547152,
+      "action_sum": 0.05149365274386385,
+      "max_population_at_monitored_locations": {
+        "outside_joint_access": 0.0043247672460386966,
+        "outside_local_active_max": 0.0019998571576499606,
+        "boundary_band_population": 9.377417142948755e-07
+      },
+      "population_scope": "native-half and potential-block endpoints; SNAP route also each local SNAP and displacement",
+      "empirical_margins": {
+        "reference": 0.0013148548922630218,
+        "solver": 2.683275150530903e-09,
+        "padding_joint_distance": 0.0014423776772341987,
+        "C12": 2.9107887574235312e-06,
+        "S2": 3.9943961332999933e-11
+      },
+      "numerical_acceptance": {
+        "state": true,
+        "C12": true,
+        "S2": true,
+        "amplitude_total": 0.008810975434664645
+      }
+    },
+    {
+      "name": "E4_H_trig_o2_s1_N96",
+      "route": "H_trig",
+      "r": 10,
+      "layers": null,
+      "order": 2,
+      "subdivisions": 1,
+      "cutoff": 96,
+      "max_bures_distance": 0.006021981032759522,
+      "max_endpoint_bures_distance": 0.006021981032759522,
+      "max_C12_error": 0.0008191049269411882,
+      "max_S2_error": 0.001067374275023375,
+      "action_sum": 0.05121716706732141,
+      "max_population_at_monitored_locations": {
+        "outside_joint_access": 0.004324457836671569,
+        "outside_local_active_max": 0.0019996715252452546,
+        "boundary_band_population": 9.330851838714068e-07
+      },
+      "population_scope": "native-half and potential-block endpoints; SNAP route also each local SNAP and displacement",
+      "empirical_margins": {
+        "reference": 0.0013148548922630218,
+        "solver": 2.683275150530903e-09,
+        "padding_joint_distance": 0.0014387859435778787,
+        "C12": 2.9050318612691807e-06,
+        "S2": 3.9899191589531924e-11
+      },
+      "numerical_acceptance": {
+        "state": true,
+        "C12": true,
+        "S2": true,
+        "amplitude_total": 0.008775624551875572
+      }
+    },
+    {
+      "name": "E4_H_trig_o2_s4_N96",
+      "route": "H_trig",
+      "r": 10,
+      "layers": null,
+      "order": 2,
+      "subdivisions": 4,
+      "cutoff": 96,
+      "max_bures_distance": 0.006028015012906916,
+      "max_endpoint_bures_distance": 0.006028015012906916,
+      "max_C12_error": 0.0008162536919338811,
+      "max_S2_error": 0.0010671091900317092,
+      "action_sum": 0.05124970676465377,
+      "max_population_at_monitored_locations": {
+        "outside_joint_access": 0.004324640711666938,
+        "outside_local_active_max": 0.0019997711092929857,
+        "boundary_band_population": 9.317623160445157e-07
+      },
+      "population_scope": "native-half and potential-block endpoints; SNAP route also each local SNAP and displacement",
+      "empirical_margins": {
+        "reference": 0.0013148548922630218,
+        "solver": 2.683275150530903e-09,
+        "padding_joint_distance": 0.0014372158026075895,
+        "C12": 2.9031493829967282e-06,
+        "S2": 3.9892016773235284e-11
+      },
+      "numerical_acceptance": {
+        "state": true,
+        "C12": true,
+        "S2": true,
+        "amplitude_total": 0.008780088391052678
+      }
+    },
+    {
+      "name": "E4_G_trig_o1_s1_N96",
+      "route": "G_trig",
+      "r": 10,
+      "layers": null,
+      "order": 1,
+      "subdivisions": 1,
+      "cutoff": 96,
+      "max_bures_distance": 0.06094214630087171,
+      "max_endpoint_bures_distance": 0.06094214630087171,
+      "max_C12_error": 0.01521600451886644,
+      "max_S2_error": 0.014702263445300387,
+      "action_sum": 0.3134312868396114,
+      "max_population_at_monitored_locations": {
+        "outside_joint_access": 0.005205805567493171,
+        "outside_local_active_max": 0.0022832016878736867,
+        "boundary_band_population": 2.303493089988964e-06
+      },
+      "population_scope": "native-half and potential-block endpoints; SNAP route also each local SNAP and displacement",
+      "empirical_margins": {
+        "reference": 0.0013148548922630218,
+        "solver": 2.683275150530903e-09,
+        "padding_joint_distance": 0.0024022293114246236,
+        "C12": 4.01761188329797e-06,
+        "S2": 9.406762521702028e-11
+      },
+      "numerical_acceptance": {
+        "state": false,
+        "C12": false,
+        "S2": true,
+        "amplitude_total": 0.06465923318783451
+      }
+    },
+    {
+      "name": "E4_G_trig_o1_s4_N96",
+      "route": "G_trig",
+      "r": 10,
+      "layers": null,
+      "order": 1,
+      "subdivisions": 4,
+      "cutoff": 96,
+      "max_bures_distance": 0.04430946464155042,
+      "max_endpoint_bures_distance": 0.04430946464155042,
+      "max_C12_error": 0.012608939052298412,
+      "max_S2_error": 0.011182125202339091,
+      "action_sum": 0.2086822607050391,
+      "max_population_at_monitored_locations": {
+        "outside_joint_access": 0.004638225314443245,
+        "outside_local_active_max": 0.002155779148947051,
+        "boundary_band_population": 1.302871986913861e-06
+      },
+      "population_scope": "native-half and potential-block endpoints; SNAP route also each local SNAP and displacement",
+      "empirical_margins": {
+        "reference": 0.0013148548922630218,
+        "solver": 2.683275150530903e-09,
+        "padding_joint_distance": 0.0016687761428610935,
+        "C12": 3.1152140962083935e-06,
+        "S2": 7.899926199317342e-11
+      },
+      "numerical_acceptance": {
+        "state": false,
+        "C12": false,
+        "S2": true,
+        "amplitude_total": 0.04729309835994969
+      }
+    },
+    {
+      "name": "E4_G_trig_o2_s1_N96",
+      "route": "G_trig",
+      "r": 10,
+      "layers": null,
+      "order": 2,
+      "subdivisions": 1,
+      "cutoff": 96,
+      "max_bures_distance": 0.043120275590447205,
+      "max_endpoint_bures_distance": 0.043120275590447205,
+      "max_C12_error": 0.01272458738560456,
+      "max_S2_error": 0.011333876298842901,
+      "action_sum": 0.20199280925737348,
+      "max_population_at_monitored_locations": {
+        "outside_joint_access": 0.004617361279535048,
+        "outside_local_active_max": 0.002152190653024721,
+        "boundary_band_population": 1.2509599016682926e-06
+      },
+      "population_scope": "native-half and potential-block endpoints; SNAP route also each local SNAP and displacement",
+      "empirical_margins": {
+        "reference": 0.0013148548922630218,
+        "solver": 2.683275150530903e-09,
+        "padding_joint_distance": 0.0016209716149623145,
+        "C12": 3.0767098693265624e-06,
+        "S2": 7.785362285406272e-11
+      },
+      "numerical_acceptance": {
+        "state": false,
+        "C12": false,
+        "S2": true,
+        "amplitude_total": 0.046056104780947696
+      }
+    },
+    {
+      "name": "E4_G_trig_o2_s4_N96",
+      "route": "G_trig",
+      "r": 10,
+      "layers": null,
+      "order": 2,
+      "subdivisions": 4,
+      "cutoff": 96,
+      "max_bures_distance": 0.04305869366865939,
+      "max_endpoint_bures_distance": 0.04305869366865939,
+      "max_C12_error": 0.012453990345240156,
+      "max_S2_error": 0.010980353049533417,
+      "action_sum": 0.199824734110818,
+      "max_population_at_monitored_locations": {
+        "outside_joint_access": 0.004601318453189562,
+        "outside_local_active_max": 0.0021475742154924557,
+        "boundary_band_population": 1.2388845512727578e-06
+      },
+      "population_scope": "native-half and potential-block endpoints; SNAP route also each local SNAP and displacement",
+      "empirical_margins": {
+        "reference": 0.0013148548922630218,
+        "solver": 2.683275150530903e-09,
+        "padding_joint_distance": 0.001610675382243237,
+        "C12": 3.0690489885842825e-06,
+        "S2": 7.811882737907005e-11
+      },
+      "numerical_acceptance": {
+        "state": false,
+        "C12": false,
+        "S2": true,
+        "amplitude_total": 0.0459842266264408
+      }
+    },
+    {
+      "name": "E4_H_trig_ret_o1_s1_N96",
+      "route": "H_trig_ret",
+      "r": 10,
+      "layers": null,
+      "order": 1,
+      "subdivisions": 1,
+      "cutoff": 96,
+      "max_bures_distance": 0.10376659506894904,
+      "max_endpoint_bures_distance": 0.10376659506894904,
+      "max_C12_error": 0.0021025240044334993,
+      "max_S2_error": 0.006442284781011151,
+      "action_sum": 0.33549762189490584,
+      "max_population_at_monitored_locations": {
+        "outside_joint_access": 0.00415145213511936,
+        "outside_local_active_max": 0.0019208725778284397,
+        "boundary_band_population": 9.142387388140994e-07
+      },
+      "population_scope": "native-half and potential-block endpoints; SNAP route also each local SNAP and displacement",
+      "empirical_margins": {
+        "reference": 0.0013148548922630218,
+        "solver": 2.683275150530903e-09,
+        "padding_joint_distance": 0.0014577446969014738,
+        "C12": 2.910551264641808e-06,
+        "S2": 4.161867725449575e-11
+      },
+      "numerical_acceptance": {
+        "state": false,
+        "C12": true,
+        "S2": true,
+        "amplitude_total": 0.10653919734138868
+      }
+    },
+    {
+      "name": "E4_H_trig_ret_o1_s4_N96",
+      "route": "H_trig_ret",
+      "r": 10,
+      "layers": null,
+      "order": 1,
+      "subdivisions": 4,
+      "cutoff": 96,
+      "max_bures_distance": 0.026158406058041823,
+      "max_endpoint_bures_distance": 0.026158406058041823,
+      "max_C12_error": 0.0009456614160408712,
+      "max_S2_error": 0.000723157428979132,
+      "action_sum": 0.08913572915913999,
+      "max_population_at_monitored_locations": {
+        "outside_joint_access": 0.004237866588625572,
+        "outside_local_active_max": 0.001962445654833747,
+        "boundary_band_population": 8.863965045671317e-07
+      },
+      "population_scope": "native-half and potential-block endpoints; SNAP route also each local SNAP and displacement",
+      "empirical_margins": {
+        "reference": 0.0013148548922630218,
+        "solver": 2.683275150530903e-09,
+        "padding_joint_distance": 0.0014086820374894541,
+        "C12": 2.834286146623947e-06,
+        "S2": 3.921515542848475e-11
+      },
+      "numerical_acceptance": {
+        "state": true,
+        "C12": true,
+        "S2": true,
+        "amplitude_total": 0.02888194567106945
+      }
+    },
+    {
+      "name": "E4_H_trig_ret_o2_s1_N96",
+      "route": "H_trig_ret",
+      "r": 10,
+      "layers": null,
+      "order": 2,
+      "subdivisions": 1,
+      "cutoff": 96,
+      "max_bures_distance": 0.009122389083910491,
+      "max_endpoint_bures_distance": 0.009122389083910491,
+      "max_C12_error": 0.0014017766476597463,
+      "max_S2_error": 0.0012822760207921585,
+      "action_sum": 0.0372052835035266,
+      "max_population_at_monitored_locations": {
+        "outside_joint_access": 0.0042174209848542255,
+        "outside_local_active_max": 0.0019566081551159677,
+        "boundary_band_population": 8.824485458969391e-07
+      },
+      "population_scope": "native-half and potential-block endpoints; SNAP route also each local SNAP and displacement",
+      "empirical_margins": {
+        "reference": 0.0013148548922630218,
+        "solver": 2.683275150530903e-09,
+        "padding_joint_distance": 0.0014070950147422416,
+        "C12": 2.833028247112289e-06,
+        "S2": 3.9218680386587934e-11
+      },
+      "numerical_acceptance": {
+        "state": true,
+        "C12": true,
+        "S2": true,
+        "amplitude_total": 0.011844341674190904
+      }
+    },
+    {
+      "name": "E4_H_trig_ret_o2_s4_N96",
+      "route": "H_trig_ret",
+      "r": 10,
+      "layers": null,
+      "order": 2,
+      "subdivisions": 4,
+      "cutoff": 96,
+      "max_bures_distance": 0.006323495230790259,
+      "max_endpoint_bures_distance": 0.006323495230790259,
+      "max_C12_error": 0.0009296956233017209,
+      "max_S2_error": 0.000771198868434686,
+      "action_sum": 0.03218682896512312,
+      "max_population_at_monitored_locations": {
+        "outside_joint_access": 0.004242158578543265,
+        "outside_local_active_max": 0.001964754010174705,
+        "boundary_band_population": 8.850137900937922e-07
+      },
+      "population_scope": "native-half and potential-block endpoints; SNAP route also each local SNAP and displacement",
+      "empirical_margins": {
+        "reference": 0.0013148548922630218,
+        "solver": 2.683275150530903e-09,
+        "padding_joint_distance": 0.0014059457651546337,
+        "C12": 2.8300477089705895e-06,
+        "S2": 3.902045006554111e-11
+      },
+      "numerical_acceptance": {
+        "state": true,
+        "C12": true,
+        "S2": true,
+        "amplitude_total": 0.009044298571483065
+      }
+    },
+    {
+      "name": "E4_H_SNAP_o2_s1_N128",
+      "route": "H_SNAP",
+      "r": 10,
+      "layers": 4,
+      "order": 2,
+      "subdivisions": 1,
+      "cutoff": 128,
+      "max_bures_distance": 0.1414097006170296,
+      "max_endpoint_bures_distance": 0.1414097006170296,
+      "max_C12_error": 0.04431475555435459,
+      "max_S2_error": 0.03902963966163994,
+      "action_sum": 0.6145285086123766,
+      "max_population_at_monitored_locations": {
+        "outside_joint_access": 0.0032749263195956946,
+        "outside_local_active_max": 0.0012933825547238548,
+        "boundary_band_population": 9.144466769771454e-09
+      },
+      "population_scope": "native-half and potential-block endpoints; SNAP route also each local SNAP and displacement"
+    },
+    {
+      "name": "E4_H_trig_o1_s1_N128",
+      "route": "H_trig",
+      "r": 10,
+      "layers": null,
+      "order": 1,
+      "subdivisions": 1,
+      "cutoff": 128,
+      "max_bures_distance": 0.006519300498074713,
+      "max_endpoint_bures_distance": 0.006519300498074713,
+      "max_C12_error": 0.0008435525318759563,
+      "max_S2_error": 0.0010949064181211554,
+      "action_sum": 0.054991039469599254,
+      "max_population_at_monitored_locations": {
+        "outside_joint_access": 0.004326485191180618,
+        "outside_local_active_max": 0.002001050858173928,
+        "boundary_band_population": 4.5434842442803876e-08
+      },
+      "population_scope": "native-half and potential-block endpoints; SNAP route also each local SNAP and displacement"
+    },
+    {
+      "name": "E4_H_trig_o1_s4_N128",
+      "route": "H_trig",
+      "r": 10,
+      "layers": null,
+      "order": 1,
+      "subdivisions": 4,
+      "cutoff": 128,
+      "max_bures_distance": 0.006053740179361429,
+      "max_endpoint_bures_distance": 0.006053740179361429,
+      "max_C12_error": 0.0008174101868599652,
+      "max_S2_error": 0.0010688299927879563,
+      "action_sum": 0.051493645049040415,
+      "max_population_at_monitored_locations": {
+        "outside_joint_access": 0.004324767209949343,
+        "outside_local_active_max": 0.0019998574266020547,
+        "boundary_band_population": 3.468290085414863e-08
+      },
+      "population_scope": "native-half and potential-block endpoints; SNAP route also each local SNAP and displacement"
+    },
+    {
+      "name": "E4_H_trig_o2_s1_N128",
+      "route": "H_trig",
+      "r": 10,
+      "layers": null,
+      "order": 2,
+      "subdivisions": 1,
+      "cutoff": 128,
+      "max_bures_distance": 0.0060219810313030635,
+      "max_endpoint_bures_distance": 0.0060219810313030635,
+      "max_C12_error": 0.000819103482469409,
+      "max_S2_error": 0.0010673742747815407,
+      "action_sum": 0.05121715931366095,
+      "max_population_at_monitored_locations": {
+        "outside_joint_access": 0.004324457801282877,
+        "outside_local_active_max": 0.0019996718166365095,
+        "boundary_band_population": 3.419366162073618e-08
+      },
+      "population_scope": "native-half and potential-block endpoints; SNAP route also each local SNAP and displacement"
+    },
+    {
+      "name": "E4_H_trig_o2_s4_N128",
+      "route": "H_trig",
+      "r": 10,
+      "layers": null,
+      "order": 2,
+      "subdivisions": 4,
+      "cutoff": 128,
+      "max_bures_distance": 0.006028015011286156,
+      "max_endpoint_bures_distance": 0.006028015011286156,
+      "max_C12_error": 0.0008162287285477959,
+      "max_S2_error": 0.0010671091897626467,
+      "action_sum": 0.05124969903426872,
+      "max_population_at_monitored_locations": {
+        "outside_joint_access": 0.004324640675126057,
+        "outside_local_active_max": 0.001999771357274661,
+        "boundary_band_population": 3.398256752731682e-08
+      },
+      "population_scope": "native-half and potential-block endpoints; SNAP route also each local SNAP and displacement"
+    },
+    {
+      "name": "E4_G_trig_o1_s1_N128",
+      "route": "G_trig",
+      "r": 10,
+      "layers": null,
+      "order": 1,
+      "subdivisions": 1,
+      "cutoff": 128,
+      "max_bures_distance": 0.06094020394582488,
+      "max_endpoint_bures_distance": 0.06094020394582488,
+      "max_C12_error": 0.01521592964404454,
+      "max_S2_error": 0.014702263385289932,
+      "action_sum": 0.31340896256817463,
+      "max_population_at_monitored_locations": {
+        "outside_joint_access": 0.005205807933892692,
+        "outside_local_active_max": 0.0022832043613025413,
+        "boundary_band_population": 2.192835975925067e-07
+      },
+      "population_scope": "native-half and potential-block endpoints; SNAP route also each local SNAP and displacement"
+    },
+    {
+      "name": "E4_G_trig_o1_s4_N128",
+      "route": "G_trig",
+      "r": 10,
+      "layers": null,
+      "order": 1,
+      "subdivisions": 4,
+      "cutoff": 128,
+      "max_bures_distance": 0.044309341625282994,
+      "max_endpoint_bures_distance": 0.044309341625282994,
+      "max_C12_error": 0.012608865324592503,
+      "max_S2_error": 0.011182125201720919,
+      "action_sum": 0.2086451364948644,
+      "max_population_at_monitored_locations": {
+        "outside_joint_access": 0.004638225297220133,
+        "outside_local_active_max": 0.002155782077663257,
+        "boundary_band_population": 5.6152704253018275e-08
+      },
+      "population_scope": "native-half and potential-block endpoints; SNAP route also each local SNAP and displacement"
+    },
+    {
+      "name": "E4_G_trig_o2_s1_N128",
+      "route": "G_trig",
+      "r": 10,
+      "layers": null,
+      "order": 2,
+      "subdivisions": 1,
+      "cutoff": 128,
+      "max_bures_distance": 0.04312014981469676,
+      "max_endpoint_bures_distance": 0.04312014981469676,
+      "max_C12_error": 0.012724514648923152,
+      "max_S2_error": 0.011333876298304554,
+      "action_sum": 0.2019537280205833,
+      "max_population_at_monitored_locations": {
+        "outside_joint_access": 0.004617361063821379,
+        "outside_local_active_max": 0.0021521941626018383,
+        "boundary_band_population": 4.767786553868569e-08
+      },
+      "population_scope": "native-half and potential-block endpoints; SNAP route also each local SNAP and displacement"
+    },
+    {
+      "name": "E4_G_trig_o2_s4_N128",
+      "route": "G_trig",
+      "r": 10,
+      "layers": null,
+      "order": 2,
+      "subdivisions": 4,
+      "cutoff": 128,
+      "max_bures_distance": 0.04305856716317119,
+      "max_endpoint_bures_distance": 0.04305856716317119,
+      "max_C12_error": 0.012453916567476084,
+      "max_S2_error": 0.010980353048931843,
+      "action_sum": 0.19978524504866882,
+      "max_population_at_monitored_locations": {
+        "outside_joint_access": 0.004601318270491261,
+        "outside_local_active_max": 0.0021475771948245765,
+        "boundary_band_population": 4.5781034942437864e-08
+      },
+      "population_scope": "native-half and potential-block endpoints; SNAP route also each local SNAP and displacement"
+    },
+    {
+      "name": "E4_H_trig_ret_o1_s1_N128",
+      "route": "H_trig_ret",
+      "r": 10,
+      "layers": null,
+      "order": 1,
+      "subdivisions": 1,
+      "cutoff": 128,
+      "max_bures_distance": 0.10376659506886773,
+      "max_endpoint_bures_distance": 0.10376659506886773,
+      "max_C12_error": 0.002102761845534711,
+      "max_S2_error": 0.00644228478114954,
+      "action_sum": 0.33549753582052655,
+      "max_population_at_monitored_locations": {
+        "outside_joint_access": 0.004151451925242244,
+        "outside_local_active_max": 0.0019208730910330956,
+        "boundary_band_population": 3.893338350447903e-08
+      },
+      "population_scope": "native-half and potential-block endpoints; SNAP route also each local SNAP and displacement"
+    },
+    {
+      "name": "E4_H_trig_ret_o1_s4_N128",
+      "route": "H_trig_ret",
+      "r": 10,
+      "layers": null,
+      "order": 1,
+      "subdivisions": 4,
+      "cutoff": 128,
+      "max_bures_distance": 0.02615840605858084,
+      "max_endpoint_bures_distance": 0.02615840605858084,
+      "max_C12_error": 0.000945673613334374,
+      "max_S2_error": 0.0007231574289939258,
+      "action_sum": 0.0891354042495351,
+      "max_population_at_monitored_locations": {
+        "outside_joint_access": 0.004237866541674462,
+        "outside_local_active_max": 0.0019624459169689788,
+        "boundary_band_population": 3.116987273216262e-08
+      },
+      "population_scope": "native-half and potential-block endpoints; SNAP route also each local SNAP and displacement"
+    },
+    {
+      "name": "E4_H_trig_ret_o2_s1_N128",
+      "route": "H_trig_ret",
+      "r": 10,
+      "layers": null,
+      "order": 2,
+      "subdivisions": 1,
+      "cutoff": 128,
+      "max_bures_distance": 0.009122141743811105,
+      "max_endpoint_bures_distance": 0.009122141743811105,
+      "max_C12_error": 0.001401790240842673,
+      "max_S2_error": 0.0012822760208775763,
+      "action_sum": 0.03720450544687174,
+      "max_population_at_monitored_locations": {
+        "outside_joint_access": 0.004217420950601736,
+        "outside_local_active_max": 0.0019566084418007556,
+        "boundary_band_population": 3.078301650807722e-08
+      },
+      "population_scope": "native-half and potential-block endpoints; SNAP route also each local SNAP and displacement"
+    },
+    {
+      "name": "E4_H_trig_ret_o2_s4_N128",
+      "route": "H_trig_ret",
+      "r": 10,
+      "layers": null,
+      "order": 2,
+      "subdivisions": 4,
+      "cutoff": 128,
+      "max_bures_distance": 0.006323195631763365,
+      "max_endpoint_bures_distance": 0.006323195631763365,
+      "max_C12_error": 0.0009297057502807908,
+      "max_S2_error": 0.0007711988684501736,
+      "action_sum": 0.03218593591606166,
+      "max_population_at_monitored_locations": {
+        "outside_joint_access": 0.004242158543864005,
+        "outside_local_active_max": 0.0019647542572079403,
+        "boundary_band_population": 3.0728185908582224e-08
+      },
+      "population_scope": "native-half and potential-block endpoints; SNAP route also each local SNAP and displacement"
+    }
+  ],
+  "acceptance": "finite-family numerical assessment with empirical reference/solver/padding estimates; no continuum or hardware guarantee",
+  "wall_seconds": 240.3845112079871,
+  "cpu_seconds": 238.518334,
+  "peak_memory_bytes": 1470939136,
+  "provenance": {
+    "python": "/Users/zhen002/miniconda3/envs/cvdv/bin/python",
+    "python_version": "3.13.0",
+    "numpy": "2.3.4",
+    "scipy": "1.16.3",
+    "head": "d44945f1009e589bb5b1c647b61c209715dec5c1",
+    "tracked_diff_sha256": "33a455dedb92ee018f20072d4df571834e592b73536fb244ba8a498bbc724a71",
+    "source_sha256": {
+      "duffing/duffing_correction_validation.py": "b01c476320d8ba2badad8d4b88d3b4c371923463097067fc20d86bfd1d28465c",
+      "duffing/duffing_padded_hybrid_validation.py": "644984ef0d440063e284c0e6ff88ae67c0b529461ddf412fe4a05dba66a1271f",
+      "duffing/native_comparison.py": "27189d4753261fd27b761466bacf729cffa95cdce5b5f4d4cc58bbde9fc99309",
+      "pra/__init__.py": "75e8fe7f1794f38996d5dd4527dc24daef96861783a7fdc59c77dd352b1ae5fa",
+      "pra/metrics.py": "2c9a0de5259f2a5761c5d2f7005ca8106ced05371630784dbfa384f0a8343fd4",
+      "pra/plot_results.py": "4c742acce87487d5938f210f6525bf52e135cc8c2b7bde1970e384e525d2c881",
+      "pra/records.py": "dccff4aa71b382bddfc1c1ad236406003abc3e122535c1c39ba5da39519103bf",
+      "pra/run_batch.py": "d054f7369f4278b384252be0a2820baf44de34439a7ddf8436c93d3e96573188",
+      "pra/run_duffing_formal.py": "bcccfe55bbc6becb531f7b9b9c7fd5874045f03e3213e65833fa2f70db352379",
+      "pra/run_e0.py": "4f1d74f06d2e4d6f29bc64c4ce51f735f6ab176cde1f65b96c9fbda66cdd2981",
+      "pra/run_pilot.py": "2ff6c9417f97b0bd4b774053d231d3f0531a35e08156eac87772f8e089180d2d",
+      "pra/run_scaling.py": "0fd342cf897b768f2605696062eeee5cb3f4abd67b8c58b3618e4f7ee1e3b99c",
+      "pra/run_sg_convention.py": "b88b0e22a78dfa77a58c03105719c85a1e736ac117f9cc7de823f12fa45c87c3",
+      "pra/run_sg_formal.py": "1c826cd44c1f7f06cfaaef325803e63328062382d6fbb54ab07e3c7c1bee881b",
+      "pra/test_e0.py": "f5e469638266da58775ccedca88cc599e860029cfb1f76ef097f42e1646438ec",
+      "pra/verify_e2_action.py": "a9169bde0966589c6cc0ce14607f7edba1d34bbc3245ca2417ced85eac3c8cf7",
+      "sine_gordon/common.py": "67ca0613082d3eef9693836b26dc80f96def49c1ae74cca8ace5f8d5a2c2551e",
+      "sine_gordon/native_correction.py": "ab7f0ed8debbd00606d9de6796dbc1d903a6c1a92736c896026bd87fd847e148",
+      "sine_gordon/run_classical.py": "312b0a570434f84c04eee0a60b13943b9ce152ca884d2553472802f85a2e6109",
+      "sine_gordon/run_multisite.py": "38fca25b7abed58d7006296e0e7bb9d3f12a406afe39d7520d178892ada14bcb",
+      "sine_gordon/run_polydeg.py": "35635dc10c86ce91d66fac1f4b123fa2f6e28e37d4d176289322baac953996ef",
+      "sine_gordon/run_snapd.py": "589662999238629e3e8de34db530a7d031633cc01735c35c177e5c0d9a62ed46",
+      "sine_gordon/run_snapd_end_to_end.py": "825696ee511c7880f8aaf81032da911b43ea70dc47e969da89cd8dd45c62c2d2",
+      "sine_gordon/run_trotter.py": "01751b2166b3252955dd1e6e45a3c8f2b554f1868f66ebd48479c938a8d613d9",
+      "sine_gordon/sglib.py": "5aaa815b08fdd17f303a0d3e5a86876990f48f705dae479ef850c1c6824bffb8"
+    }
+  }
+}

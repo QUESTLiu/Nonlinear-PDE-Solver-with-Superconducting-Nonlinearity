@@ -1,0 +1,30 @@
+{
+  "output_root": "common_data/records/gaussian_revision",
+  "execution_record": "07_final_checks_execution.json",
+  "memory_cap_bytes": 4294967296,
+  "storage_cap_bytes": 33554432,
+  "jobs": [
+    {
+      "id": "selected_readout_statistics",
+      "batch": "B0",
+      "wall_cap_seconds": 100,
+      "command": [
+        "/Users/zhen002/miniconda3/envs/cvdv/bin/python",
+        "-m",
+        "double_sine_gordon_code.audit_gaussian_sequence",
+        "statistics"
+      ]
+    },
+    {
+      "id": "final_small_suite",
+      "batch": "B0",
+      "wall_cap_seconds": 60,
+      "command": [
+        "/Users/zhen002/miniconda3/envs/cvdv/bin/python",
+        "-m",
+        "unittest",
+        "common_code.test_e0"
+      ]
+    }
+  ]
+}

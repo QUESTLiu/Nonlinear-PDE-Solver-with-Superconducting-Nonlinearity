@@ -1,0 +1,1600 @@
+{
+  "r": 10,
+  "layers": 12,
+  "padding_cutoffs": [
+    128,
+    160
+  ],
+  "reference_cutoffs": [
+    64,
+    80
+  ],
+  "replacement_bound_cutoff": 128,
+  "rows": [
+    {
+      "input": "real1.75",
+      "input_role": "development",
+      "route": "native",
+      "max_common_distance": 0.37948326241866664,
+      "max_endpoint_distance": 0.37948326241866664
+    },
+    {
+      "input": "real1.75",
+      "input_role": "development",
+      "route": "gaussian",
+      "max_common_distance": 0.33464873466303324,
+      "max_endpoint_distance": 0.33464873466303324
+    },
+    {
+      "input": "real1.75",
+      "input_role": "development",
+      "route": "exact_split",
+      "max_common_distance": 0.007109042429652042,
+      "max_endpoint_distance": 0.007109042429652042
+    },
+    {
+      "input": "real1.75",
+      "input_role": "development",
+      "route": "hybrid",
+      "max_common_distance": 0.009487044043793899,
+      "max_endpoint_distance": 0.009487044043793899,
+      "reference_margin": 0.00014502195124042216,
+      "solver_margin": 6.007871222818886e-14,
+      "padding_margin": 5.457129669582658e-06,
+      "total_amplitude_estimate": 0.009637523124763982,
+      "action_sum": 0.021362117933067356,
+      "same_space_final_distance": 0.0073625465161100655,
+      "max_same_space_distance": 0.009487231231164725,
+      "boundary_population": 2.441512961942907e-11,
+      "above_active_population": 0.00011056777266290927,
+      "boundary_population_high_cutoff": 8.358830394973753e-20,
+      "boundary_population_both_cutoffs": 2.441512961942907e-11,
+      "boundary_acceptance_scope": "both cutoffs",
+      "acceptance": {
+        "0.01": true,
+        "0.001": true,
+        "0.0001": true
+      },
+      "replacement_bound": null
+    },
+    {
+      "input": "real1.75",
+      "input_role": "development",
+      "route": "replacement",
+      "max_common_distance": 0.009488868942691329,
+      "max_endpoint_distance": 0.009488868942691329,
+      "reference_margin": 0.00014502195124042216,
+      "solver_margin": 6.007871222818886e-14,
+      "padding_margin": 1.3562788350155871e-06,
+      "total_amplitude_estimate": 0.009635247172826844,
+      "action_sum": 0.021943977946708024,
+      "same_space_final_distance": 0.0074094914254339,
+      "max_same_space_distance": 0.009489008202120517,
+      "boundary_population": 9.975408536278408e-11,
+      "above_active_population": 0.00011168895860854003,
+      "boundary_population_high_cutoff": 3.4487161184300075e-26,
+      "boundary_population_both_cutoffs": 9.975408536278408e-11,
+      "boundary_acceptance_scope": "both cutoffs",
+      "acceptance": {
+        "0.01": true,
+        "0.001": true,
+        "0.0001": true
+      },
+      "replacement_bound": 0.005184545785937175
+    },
+    {
+      "input": "real2",
+      "input_role": "development",
+      "route": "native",
+      "max_common_distance": 0.5095659649105263,
+      "max_endpoint_distance": 0.5095659649105263
+    },
+    {
+      "input": "real2",
+      "input_role": "development",
+      "route": "gaussian",
+      "max_common_distance": 0.47126686591146866,
+      "max_endpoint_distance": 0.47126686591146866
+    },
+    {
+      "input": "real2",
+      "input_role": "development",
+      "route": "exact_split",
+      "max_common_distance": 0.013871685116283313,
+      "max_endpoint_distance": 0.013871685116283313
+    },
+    {
+      "input": "real2",
+      "input_role": "development",
+      "route": "hybrid",
+      "max_common_distance": 0.017898627685367575,
+      "max_endpoint_distance": 0.017898627685367575,
+      "reference_margin": 0.0006171490012053195,
+      "solver_margin": 5.673820937445453e-14,
+      "padding_margin": 1.6279954081262563e-05,
+      "total_amplitude_estimate": 0.018532056640710896,
+      "action_sum": 0.04109227182275645,
+      "same_space_final_distance": 0.015115804854801166,
+      "max_same_space_distance": 0.017899829897233013,
+      "boundary_population": 2.0971337393997981e-10,
+      "above_active_population": 0.0007342097822274887,
+      "boundary_population_high_cutoff": 7.080915573964492e-19,
+      "boundary_population_both_cutoffs": 2.0971337393997981e-10,
+      "boundary_acceptance_scope": "both cutoffs",
+      "acceptance": {
+        "0.01": true,
+        "0.001": true,
+        "0.0001": false
+      },
+      "replacement_bound": null
+    },
+    {
+      "input": "real2",
+      "input_role": "development",
+      "route": "replacement",
+      "max_common_distance": 0.017896150832822144,
+      "max_endpoint_distance": 0.017896150832822144,
+      "reference_margin": 0.0006171490012053195,
+      "solver_margin": 5.673820937445453e-14,
+      "padding_margin": 3.1599357677135637e-06,
+      "total_amplitude_estimate": 0.018516459769851914,
+      "action_sum": 0.044896015150783855,
+      "same_space_final_distance": 0.015280618523472535,
+      "max_same_space_distance": 0.017896966668884524,
+      "boundary_population": 5.242787311434123e-10,
+      "above_active_population": 0.0007419887799566668,
+      "boundary_population_high_cutoff": 2.6436378140335713e-25,
+      "boundary_population_both_cutoffs": 5.242787311434123e-10,
+      "boundary_acceptance_scope": "both cutoffs",
+      "acceptance": {
+        "0.01": true,
+        "0.001": true,
+        "0.0001": false
+      },
+      "replacement_bound": 0.01429900374838277
+    },
+    {
+      "input": "imag1.75",
+      "input_role": "development",
+      "route": "native",
+      "max_common_distance": 0.3675909668158642,
+      "max_endpoint_distance": 0.3675909668158642
+    },
+    {
+      "input": "imag1.75",
+      "input_role": "development",
+      "route": "gaussian",
+      "max_common_distance": 0.28607111435421934,
+      "max_endpoint_distance": 0.28607111435421934
+    },
+    {
+      "input": "imag1.75",
+      "input_role": "development",
+      "route": "exact_split",
+      "max_common_distance": 0.0011533982086132416,
+      "max_endpoint_distance": 0.0011533982086132416
+    },
+    {
+      "input": "imag1.75",
+      "input_role": "development",
+      "route": "hybrid",
+      "max_common_distance": 0.002908728997488667,
+      "max_endpoint_distance": 0.002908728997488667,
+      "reference_margin": 2.560898992230885e-10,
+      "solver_margin": 6.710037998759251e-14,
+      "padding_margin": 2.5606579164490085e-06,
+      "total_amplitude_estimate": 0.002911289911562116,
+      "action_sum": 0.011308093892738123,
+      "same_space_final_distance": 0.002057909069422718,
+      "max_same_space_distance": 0.0029087289974878325,
+      "boundary_population": 1.0951793751059365e-12,
+      "above_active_population": 4.078051695380985e-08,
+      "boundary_population_high_cutoff": 8.512430220074974e-21,
+      "boundary_population_both_cutoffs": 1.0951793751059365e-12,
+      "boundary_acceptance_scope": "both cutoffs",
+      "acceptance": {
+        "0.01": true,
+        "0.001": true,
+        "0.0001": true
+      },
+      "replacement_bound": null
+    },
+    {
+      "input": "imag1.75",
+      "input_role": "development",
+      "route": "replacement",
+      "max_common_distance": 0.002909419277680855,
+      "max_endpoint_distance": 0.002909419277680855,
+      "reference_margin": 2.560898992230885e-10,
+      "solver_margin": 6.710037998759251e-14,
+      "padding_margin": 2.1841968316067866e-07,
+      "total_amplitude_estimate": 0.0029096379535210157,
+      "action_sum": 0.011308093883866478,
+      "same_space_final_distance": 0.0020593281200328504,
+      "max_same_space_distance": 0.0029094192776805985,
+      "boundary_population": 3.420986674597652e-13,
+      "above_active_population": 4.3695212483210945e-08,
+      "boundary_population_high_cutoff": 1.0901664359203743e-24,
+      "boundary_population_both_cutoffs": 3.420986674597652e-13,
+      "boundary_acceptance_scope": "both cutoffs",
+      "acceptance": {
+        "0.01": true,
+        "0.001": true,
+        "0.0001": true
+      },
+      "replacement_bound": 0.0015217890971668253
+    },
+    {
+      "input": "imag2",
+      "input_role": "development",
+      "route": "native",
+      "max_common_distance": 0.46141618843417365,
+      "max_endpoint_distance": 0.46141618843417365
+    },
+    {
+      "input": "imag2",
+      "input_role": "development",
+      "route": "gaussian",
+      "max_common_distance": 0.38031096829135924,
+      "max_endpoint_distance": 0.38031096829135924
+    },
+    {
+      "input": "imag2",
+      "input_role": "development",
+      "route": "exact_split",
+      "max_common_distance": 0.0017706402637164393,
+      "max_endpoint_distance": 0.0017706402637164393
+    },
+    {
+      "input": "imag2",
+      "input_role": "development",
+      "route": "hybrid",
+      "max_common_distance": 0.0034717853640969386,
+      "max_endpoint_distance": 0.0034717853640969386,
+      "reference_margin": 3.2130216752386773e-10,
+      "solver_margin": 6.669897179322902e-14,
+      "padding_margin": 5.180234938123549e-06,
+      "total_amplitude_estimate": 0.0034769659204039287,
+      "action_sum": 0.016041478238021364,
+      "same_space_final_distance": 0.0026726622558492174,
+      "max_same_space_distance": 0.003471785364097275,
+      "boundary_population": 4.717461442035636e-12,
+      "above_active_population": 2.44440998042939e-07,
+      "boundary_population_high_cutoff": 2.670418645296438e-20,
+      "boundary_population_both_cutoffs": 4.717461442035636e-12,
+      "boundary_acceptance_scope": "both cutoffs",
+      "acceptance": {
+        "0.01": true,
+        "0.001": true,
+        "0.0001": true
+      },
+      "replacement_bound": null
+    },
+    {
+      "input": "imag2",
+      "input_role": "development",
+      "route": "replacement",
+      "max_common_distance": 0.0034758787093910385,
+      "max_endpoint_distance": 0.0034758787093910385,
+      "reference_margin": 3.2130216752386773e-10,
+      "solver_margin": 6.669897179322902e-14,
+      "padding_margin": 6.298449902112125e-07,
+      "total_amplitude_estimate": 0.003476508875750116,
+      "action_sum": 0.01604147824865338,
+      "same_space_final_distance": 0.0026842369668110913,
+      "max_same_space_distance": 0.003475878709388439,
+      "boundary_population": 2.3779478215114958e-12,
+      "above_active_population": 2.486518117405626e-07,
+      "boundary_population_high_cutoff": 1.7346537801854587e-23,
+      "boundary_population_both_cutoffs": 2.3779478215114958e-12,
+      "boundary_acceptance_scope": "both cutoffs",
+      "acceptance": {
+        "0.01": true,
+        "0.001": true,
+        "0.0001": true
+      },
+      "replacement_bound": 0.00334237775860691
+    },
+    {
+      "input": "diagonal1.75",
+      "input_role": "development",
+      "route": "native",
+      "max_common_distance": 0.35583650121673377,
+      "max_endpoint_distance": 0.35583650121673377
+    },
+    {
+      "input": "diagonal1.75",
+      "input_role": "development",
+      "route": "gaussian",
+      "max_common_distance": 0.2772529701772944,
+      "max_endpoint_distance": 0.2772529701772944
+    },
+    {
+      "input": "diagonal1.75",
+      "input_role": "development",
+      "route": "exact_split",
+      "max_common_distance": 0.00437949956688606,
+      "max_endpoint_distance": 0.00437949956688606
+    },
+    {
+      "input": "diagonal1.75",
+      "input_role": "development",
+      "route": "hybrid",
+      "max_common_distance": 0.004716542979823822,
+      "max_endpoint_distance": 0.004716542979823822,
+      "reference_margin": 6.032678834412423e-06,
+      "solver_margin": 5.948306625372364e-14,
+      "padding_margin": 8.452933475505463e-07,
+      "total_amplitude_estimate": 0.004723420952065268,
+      "action_sum": 0.012160266323431824,
+      "same_space_final_distance": 0.004647662315350959,
+      "max_same_space_distance": 0.0047165478027201635,
+      "boundary_population": 1.2117498513411396e-13,
+      "above_active_population": 1.3217828306975657e-06,
+      "boundary_population_high_cutoff": 7.537458556753967e-22,
+      "boundary_population_both_cutoffs": 1.2117498513411396e-13,
+      "boundary_acceptance_scope": "both cutoffs",
+      "acceptance": {
+        "0.01": true,
+        "0.001": true,
+        "0.0001": true
+      },
+      "replacement_bound": null
+    },
+    {
+      "input": "diagonal1.75",
+      "input_role": "development",
+      "route": "replacement",
+      "max_common_distance": 0.0047167568121497,
+      "max_endpoint_distance": 0.0047167568121497,
+      "reference_margin": 6.032678834412423e-06,
+      "solver_margin": 5.948306625372364e-14,
+      "padding_margin": 1.7020284733566048e-07,
+      "total_amplitude_estimate": 0.004722959693890931,
+      "action_sum": 0.012163215182998082,
+      "same_space_final_distance": 0.0046479260518981665,
+      "max_same_space_distance": 0.004716762429648078,
+      "boundary_population": 1.4717886200147797e-12,
+      "above_active_population": 1.3260452957946465e-06,
+      "boundary_population_high_cutoff": 5.788024244050821e-26,
+      "boundary_population_both_cutoffs": 1.4717886200147797e-12,
+      "boundary_acceptance_scope": "both cutoffs",
+      "acceptance": {
+        "0.01": true,
+        "0.001": true,
+        "0.0001": true
+      },
+      "replacement_bound": 0.0007425381475385246
+    },
+    {
+      "input": "diagonal2",
+      "input_role": "development",
+      "route": "native",
+      "max_common_distance": 0.44446267969232617,
+      "max_endpoint_distance": 0.44446267969232617
+    },
+    {
+      "input": "diagonal2",
+      "input_role": "development",
+      "route": "gaussian",
+      "max_common_distance": 0.36189820014287244,
+      "max_endpoint_distance": 0.36189820014287244
+    },
+    {
+      "input": "diagonal2",
+      "input_role": "development",
+      "route": "exact_split",
+      "max_common_distance": 0.006936150394860862,
+      "max_endpoint_distance": 0.006936150394860862
+    },
+    {
+      "input": "diagonal2",
+      "input_role": "development",
+      "route": "hybrid",
+      "max_common_distance": 0.007310580700097891,
+      "max_endpoint_distance": 0.007310580700097891,
+      "reference_margin": 2.208285828291994e-05,
+      "solver_margin": 5.833883437463154e-14,
+      "padding_margin": 1.5748711725651922e-06,
+      "total_amplitude_estimate": 0.007334238429611715,
+      "action_sum": 0.017429802784012502,
+      "same_space_final_distance": 0.007154132806678059,
+      "max_same_space_distance": 0.0073105943730078895,
+      "boundary_population": 6.756126190507903e-13,
+      "above_active_population": 8.725399387459238e-06,
+      "boundary_population_high_cutoff": 4.670231200711264e-21,
+      "boundary_population_both_cutoffs": 6.756126190507903e-13,
+      "boundary_acceptance_scope": "both cutoffs",
+      "acceptance": {
+        "0.01": true,
+        "0.001": true,
+        "0.0001": true
+      },
+      "replacement_bound": null
+    },
+    {
+      "input": "diagonal2",
+      "input_role": "development",
+      "route": "replacement",
+      "max_common_distance": 0.007311340998970624,
+      "max_endpoint_distance": 0.007311340998970624,
+      "reference_margin": 2.208285828291994e-05,
+      "solver_margin": 5.833883437463154e-14,
+      "padding_margin": 3.808909337093177e-07,
+      "total_amplitude_estimate": 0.0073338047482455915,
+      "action_sum": 0.017453358271399537,
+      "same_space_final_distance": 0.007155675703163431,
+      "max_same_space_distance": 0.007311351758347817,
+      "boundary_population": 6.7762541461586345e-12,
+      "above_active_population": 8.811940437991952e-06,
+      "boundary_population_high_cutoff": 4.347485321766484e-25,
+      "boundary_population_both_cutoffs": 6.7762541461586345e-12,
+      "boundary_acceptance_scope": "both cutoffs",
+      "acceptance": {
+        "0.01": true,
+        "0.001": true,
+        "0.0001": true
+      },
+      "replacement_bound": 0.0019427464630930025
+    },
+    {
+      "input": "vacuum",
+      "input_role": "development",
+      "route": "native",
+      "max_common_distance": 0.041517438861621646,
+      "max_endpoint_distance": 0.041517438861621646
+    },
+    {
+      "input": "vacuum",
+      "input_role": "development",
+      "route": "gaussian",
+      "max_common_distance": 0.013270800746523913,
+      "max_endpoint_distance": 0.013270800746523913
+    },
+    {
+      "input": "vacuum",
+      "input_role": "development",
+      "route": "exact_split",
+      "max_common_distance": 0.00014404005482659445,
+      "max_endpoint_distance": 0.00014404005482659445
+    },
+    {
+      "input": "vacuum",
+      "input_role": "development",
+      "route": "hybrid",
+      "max_common_distance": 0.001217132010963839,
+      "max_endpoint_distance": 0.001217132010963839,
+      "reference_margin": 1.6914647947719222e-10,
+      "solver_margin": 6.522706214015064e-15,
+      "padding_margin": 2.837583794831961e-08,
+      "total_amplitude_estimate": 0.0012171605559547895,
+      "action_sum": 0.004456270714898294,
+      "same_space_final_distance": 0.001108834073267263,
+      "max_same_space_distance": 0.0012171320109703714,
+      "boundary_population": 4.3294566277569984e-16,
+      "above_active_population": 3.645951193830637e-11,
+      "boundary_population_high_cutoff": 1.5956059827506032e-24,
+      "boundary_population_both_cutoffs": 4.3294566277569984e-16,
+      "boundary_acceptance_scope": "both cutoffs",
+      "acceptance": {
+        "0.01": true,
+        "0.001": true,
+        "0.0001": true
+      },
+      "replacement_bound": null
+    },
+    {
+      "input": "vacuum",
+      "input_role": "development",
+      "route": "replacement",
+      "max_common_distance": 0.0012171319918818058,
+      "max_endpoint_distance": 0.0012171319918818058,
+      "reference_margin": 1.6914647947719222e-10,
+      "solver_margin": 6.522706214015064e-15,
+      "padding_margin": 1.5141655799361788e-09,
+      "total_amplitude_estimate": 0.001217133675200388,
+      "action_sum": 0.004456270715013618,
+      "same_space_final_distance": 0.0011088336168923272,
+      "max_same_space_distance": 0.0012171319918885377,
+      "boundary_population": 6.543607050435622e-17,
+      "above_active_population": 3.604947790327593e-11,
+      "boundary_population_high_cutoff": 1.0961476786339209e-29,
+      "boundary_population_both_cutoffs": 6.543607050435622e-17,
+      "boundary_acceptance_scope": "both cutoffs",
+      "acceptance": {
+        "0.01": true,
+        "0.001": true,
+        "0.0001": true
+      },
+      "replacement_bound": 1.6919686151564032e-05
+    },
+    {
+      "input": "one",
+      "input_role": "development",
+      "route": "native",
+      "max_common_distance": 0.11283430324646238,
+      "max_endpoint_distance": 0.11283430324646238
+    },
+    {
+      "input": "one",
+      "input_role": "development",
+      "route": "gaussian",
+      "max_common_distance": 0.04517704211984765,
+      "max_endpoint_distance": 0.04517704211984765
+    },
+    {
+      "input": "one",
+      "input_role": "development",
+      "route": "exact_split",
+      "max_common_distance": 0.00038819677207157756,
+      "max_endpoint_distance": 0.00038819677207157756
+    },
+    {
+      "input": "one",
+      "input_role": "development",
+      "route": "hybrid",
+      "max_common_distance": 0.0011372845291094176,
+      "max_endpoint_distance": 0.0011372845291094176,
+      "reference_margin": 1.3881168140130078e-09,
+      "solver_margin": 2.6641935006829692e-14,
+      "padding_margin": 4.760241235442131e-08,
+      "total_amplitude_estimate": 0.0011373335196652279,
+      "action_sum": 0.004971831826603882,
+      "same_space_final_distance": 0.0010321110681826065,
+      "max_same_space_distance": 0.0011372845291109475,
+      "boundary_population": 1.487212558917622e-15,
+      "above_active_population": 1.718888099771135e-10,
+      "boundary_population_high_cutoff": 1.0842602357801454e-23,
+      "boundary_population_both_cutoffs": 1.487212558917622e-15,
+      "boundary_acceptance_scope": "both cutoffs",
+      "acceptance": {
+        "0.01": true,
+        "0.001": true,
+        "0.0001": true
+      },
+      "replacement_bound": null
+    },
+    {
+      "input": "one",
+      "input_role": "development",
+      "route": "replacement",
+      "max_common_distance": 0.0011372842976223741,
+      "max_endpoint_distance": 0.0011372842976223741,
+      "reference_margin": 1.3881168140130078e-09,
+      "solver_margin": 2.6641935006829692e-14,
+      "padding_margin": 3.565873332118308e-09,
+      "total_amplitude_estimate": 0.001137289251639162,
+      "action_sum": 0.004971831831732011,
+      "same_space_final_distance": 0.00103210366890274,
+      "max_same_space_distance": 0.0011372842976236858,
+      "boundary_population": 2.3384866302723305e-16,
+      "above_active_population": 1.7124016008872847e-10,
+      "boundary_population_high_cutoff": 3.128002991392308e-29,
+      "boundary_population_both_cutoffs": 2.3384866302723305e-16,
+      "boundary_acceptance_scope": "both cutoffs",
+      "acceptance": {
+        "0.01": true,
+        "0.001": true,
+        "0.0001": true
+      },
+      "replacement_bound": 4.9109229670838615e-05
+    },
+    {
+      "input": "zero_plus_one",
+      "input_role": "development",
+      "route": "native",
+      "max_common_distance": 0.08508183793908211,
+      "max_endpoint_distance": 0.08508183793908211
+    },
+    {
+      "input": "zero_plus_one",
+      "input_role": "development",
+      "route": "gaussian",
+      "max_common_distance": 0.033108355927982946,
+      "max_endpoint_distance": 0.033108355927982946
+    },
+    {
+      "input": "zero_plus_one",
+      "input_role": "development",
+      "route": "exact_split",
+      "max_common_distance": 0.00029399442487581254,
+      "max_endpoint_distance": 0.00029399442487581254
+    },
+    {
+      "input": "zero_plus_one",
+      "input_role": "development",
+      "route": "hybrid",
+      "max_common_distance": 0.0011445116497288406,
+      "max_endpoint_distance": 0.0011445116497288406,
+      "reference_margin": 9.888070444292582e-10,
+      "solver_margin": 2.5087246283587008e-14,
+      "padding_margin": 3.210371040652327e-08,
+      "total_amplitude_estimate": 0.0011445447422713789,
+      "action_sum": 0.004509923220107759,
+      "same_space_final_distance": 0.0010998551514796783,
+      "max_same_space_distance": 0.0011445116497332956,
+      "boundary_population": 7.375229315078114e-16,
+      "above_active_population": 1.0893250043863628e-10,
+      "boundary_population_high_cutoff": 4.75034775799961e-24,
+      "boundary_population_both_cutoffs": 7.375229315078114e-16,
+      "boundary_acceptance_scope": "both cutoffs",
+      "acceptance": {
+        "0.01": true,
+        "0.001": true,
+        "0.0001": true
+      },
+      "replacement_bound": null
+    },
+    {
+      "input": "zero_plus_one",
+      "input_role": "development",
+      "route": "replacement",
+      "max_common_distance": 0.0011445115746291147,
+      "max_endpoint_distance": 0.0011445115746291147,
+      "reference_margin": 9.888070444292582e-10,
+      "solver_margin": 2.5087246283587008e-14,
+      "padding_margin": 3.0139128242691e-09,
+      "total_amplitude_estimate": 0.0011445155773740707,
+      "action_sum": 0.004509923223411113,
+      "same_space_final_distance": 0.0010998529273432527,
+      "max_same_space_distance": 0.0011445115746334486,
+      "boundary_population": 1.2924967339896211e-16,
+      "above_active_population": 1.1095901347953986e-10,
+      "boundary_population_high_cutoff": 3.8064211658558076e-29,
+      "boundary_population_both_cutoffs": 1.2924967339896211e-16,
+      "boundary_acceptance_scope": "both cutoffs",
+      "acceptance": {
+        "0.01": true,
+        "0.001": true,
+        "0.0001": true
+      },
+      "replacement_bound": 3.3450483903465834e-05
+    },
+    {
+      "input": "zero_plus_i_two",
+      "input_role": "development",
+      "route": "native",
+      "max_common_distance": 0.15689243067748357,
+      "max_endpoint_distance": 0.15689243067748357
+    },
+    {
+      "input": "zero_plus_i_two",
+      "input_role": "development",
+      "route": "gaussian",
+      "max_common_distance": 0.08875556838016128,
+      "max_endpoint_distance": 0.08875556838016128
+    },
+    {
+      "input": "zero_plus_i_two",
+      "input_role": "development",
+      "route": "exact_split",
+      "max_common_distance": 0.0006234171943397743,
+      "max_endpoint_distance": 0.0006234171943397743
+    },
+    {
+      "input": "zero_plus_i_two",
+      "input_role": "development",
+      "route": "hybrid",
+      "max_common_distance": 0.001648133650812058,
+      "max_endpoint_distance": 0.001648133650812058,
+      "reference_margin": 8.48758114229939e-09,
+      "solver_margin": 6.622839542337802e-15,
+      "padding_margin": 2.0607952520237306e-07,
+      "total_amplitude_estimate": 0.0016483482179250255,
+      "action_sum": 0.007244118378184706,
+      "same_space_final_distance": 0.001590215766767073,
+      "max_same_space_distance": 0.0016481336516329746,
+      "boundary_population": 1.1554312027780751e-14,
+      "above_active_population": 1.0779601541398842e-09,
+      "boundary_population_high_cutoff": 1.3290567462095863e-22,
+      "boundary_population_both_cutoffs": 1.1554312027780751e-14,
+      "boundary_acceptance_scope": "both cutoffs",
+      "acceptance": {
+        "0.01": true,
+        "0.001": true,
+        "0.0001": true
+      },
+      "replacement_bound": null
+    },
+    {
+      "input": "zero_plus_i_two",
+      "input_role": "development",
+      "route": "replacement",
+      "max_common_distance": 0.0016481238377024873,
+      "max_endpoint_distance": 0.0016481238377024873,
+      "reference_margin": 8.48758114229939e-09,
+      "solver_margin": 6.622839542337802e-15,
+      "padding_margin": 9.519637004341494e-09,
+      "total_amplitude_estimate": 0.0016481418449272565,
+      "action_sum": 0.007244118441759771,
+      "same_space_final_distance": 0.001590190824372048,
+      "max_same_space_distance": 0.0016481238389292286,
+      "boundary_population": 2.1412798943048005e-15,
+      "above_active_population": 1.0504891347499128e-09,
+      "boundary_population_high_cutoff": 1.7083516011452946e-28,
+      "boundary_population_both_cutoffs": 2.1412798943048005e-15,
+      "boundary_acceptance_scope": "both cutoffs",
+      "acceptance": {
+        "0.01": true,
+        "0.001": true,
+        "0.0001": true
+      },
+      "replacement_bound": 9.938329934274317e-05
+    },
+    {
+      "input": "fresh_00",
+      "input_role": "independent_validation",
+      "route": "native",
+      "max_common_distance": 0.30097872451870555,
+      "max_endpoint_distance": 0.30097872451870555
+    },
+    {
+      "input": "fresh_00",
+      "input_role": "independent_validation",
+      "route": "gaussian",
+      "max_common_distance": 0.2426830751843604,
+      "max_endpoint_distance": 0.2426830751843604
+    },
+    {
+      "input": "fresh_00",
+      "input_role": "independent_validation",
+      "route": "exact_split",
+      "max_common_distance": 0.00502023612903997,
+      "max_endpoint_distance": 0.00502023612903997
+    },
+    {
+      "input": "fresh_00",
+      "input_role": "independent_validation",
+      "route": "hybrid",
+      "max_common_distance": 0.0066118946223983335,
+      "max_endpoint_distance": 0.0066118946223983335,
+      "reference_margin": 4.089551852934957e-05,
+      "solver_margin": 5.790529307762337e-14,
+      "padding_margin": 2.0012137830730288e-06,
+      "total_amplitude_estimate": 0.006654791354768662,
+      "action_sum": 0.014560992368492417,
+      "same_space_final_distance": 0.0057580265019483625,
+      "max_same_space_distance": 0.006611854195140898,
+      "boundary_population": 3.695841622435962e-12,
+      "above_active_population": 1.9731659084815083e-05,
+      "boundary_population_high_cutoff": 1.0707404358219699e-20,
+      "boundary_population_both_cutoffs": 3.695841622435962e-12,
+      "boundary_acceptance_scope": "both cutoffs",
+      "acceptance": {
+        "0.01": true,
+        "0.001": true,
+        "0.0001": true
+      },
+      "replacement_bound": null
+    },
+    {
+      "input": "fresh_00",
+      "input_role": "independent_validation",
+      "route": "replacement",
+      "max_common_distance": 0.006614446070898631,
+      "max_endpoint_distance": 0.006614446070898631,
+      "reference_margin": 4.089551852934957e-05,
+      "solver_margin": 5.790529307762337e-14,
+      "padding_margin": 5.836730464484193e-07,
+      "total_amplitude_estimate": 0.0066559252625323344,
+      "action_sum": 0.014649198812043811,
+      "same_space_final_distance": 0.005766655619304067,
+      "max_same_space_distance": 0.006614407007157329,
+      "boundary_population": 1.841700869199877e-11,
+      "above_active_population": 1.9916026758736676e-05,
+      "boundary_population_high_cutoff": 8.376829837544275e-27,
+      "boundary_population_both_cutoffs": 1.841700869199877e-11,
+      "boundary_acceptance_scope": "both cutoffs",
+      "acceptance": {
+        "0.01": true,
+        "0.001": true,
+        "0.0001": true
+      },
+      "replacement_bound": 0.0019913167869838096
+    },
+    {
+      "input": "fresh_01",
+      "input_role": "independent_validation",
+      "route": "native",
+      "max_common_distance": 0.18812267556754084,
+      "max_endpoint_distance": 0.18812267556754084
+    },
+    {
+      "input": "fresh_01",
+      "input_role": "independent_validation",
+      "route": "gaussian",
+      "max_common_distance": 0.13240578890997423,
+      "max_endpoint_distance": 0.13240578890997423
+    },
+    {
+      "input": "fresh_01",
+      "input_role": "independent_validation",
+      "route": "exact_split",
+      "max_common_distance": 0.001665366258971731,
+      "max_endpoint_distance": 0.001665366258971731
+    },
+    {
+      "input": "fresh_01",
+      "input_role": "independent_validation",
+      "route": "hybrid",
+      "max_common_distance": 0.0023272574283249815,
+      "max_endpoint_distance": 0.0023272574283249815,
+      "reference_margin": 1.138774421881131e-06,
+      "solver_margin": 5.062939340492446e-14,
+      "padding_margin": 2.8120736590524056e-07,
+      "total_amplitude_estimate": 0.002328677410163397,
+      "action_sum": 0.007521429383885459,
+      "same_space_final_distance": 0.002293107984552815,
+      "max_same_space_distance": 0.00232725747984351,
+      "boundary_population": 4.681037975128444e-14,
+      "above_active_population": 1.5379351333839876e-07,
+      "boundary_population_high_cutoff": 1.7558685563677835e-22,
+      "boundary_population_both_cutoffs": 4.681037975128444e-14,
+      "boundary_acceptance_scope": "both cutoffs",
+      "acceptance": {
+        "0.01": true,
+        "0.001": true,
+        "0.0001": true
+      },
+      "replacement_bound": null
+    },
+    {
+      "input": "fresh_01",
+      "input_role": "independent_validation",
+      "route": "replacement",
+      "max_common_distance": 0.0023273089036573297,
+      "max_endpoint_distance": 0.0023273089036573297,
+      "reference_margin": 1.138774421881131e-06,
+      "solver_margin": 5.062939340492446e-14,
+      "padding_margin": 5.568798312485793e-08,
+      "total_amplitude_estimate": 0.002328503366112965,
+      "action_sum": 0.007521660874080284,
+      "same_space_final_distance": 0.0022932305365311045,
+      "max_same_space_distance": 0.0023273090179645444,
+      "boundary_population": 1.7324622087884143e-13,
+      "above_active_population": 1.5540647510728923e-07,
+      "boundary_population_high_cutoff": 1.4484568143719648e-28,
+      "boundary_population_both_cutoffs": 1.7324622087884143e-13,
+      "boundary_acceptance_scope": "both cutoffs",
+      "acceptance": {
+        "0.01": true,
+        "0.001": true,
+        "0.0001": true
+      },
+      "replacement_bound": 0.00023133987025612368
+    },
+    {
+      "input": "fresh_02",
+      "input_role": "independent_validation",
+      "route": "native",
+      "max_common_distance": 0.504070681813934,
+      "max_endpoint_distance": 0.504070681813934
+    },
+    {
+      "input": "fresh_02",
+      "input_role": "independent_validation",
+      "route": "gaussian",
+      "max_common_distance": 0.43898935745124185,
+      "max_endpoint_distance": 0.43898935745124185
+    },
+    {
+      "input": "fresh_02",
+      "input_role": "independent_validation",
+      "route": "exact_split",
+      "max_common_distance": 0.00159731041657134,
+      "max_endpoint_distance": 0.00159731041657134
+    },
+    {
+      "input": "fresh_02",
+      "input_role": "independent_validation",
+      "route": "hybrid",
+      "max_common_distance": 0.0026598826415147824,
+      "max_endpoint_distance": 0.0026598826415147824,
+      "reference_margin": 1.0099222652002881e-05,
+      "solver_margin": 6.359874577843249e-14,
+      "padding_margin": 7.83357786104807e-07,
+      "total_amplitude_estimate": 0.002670765222016489,
+      "action_sum": 0.012521616222366147,
+      "same_space_final_distance": 0.002236691300858344,
+      "max_same_space_distance": 0.0026598815143927955,
+      "boundary_population": 6.335469513682227e-13,
+      "above_active_population": 3.6155263154650205e-06,
+      "boundary_population_high_cutoff": 3.29739647291823e-21,
+      "boundary_population_both_cutoffs": 6.335469513682227e-13,
+      "boundary_acceptance_scope": "both cutoffs",
+      "acceptance": {
+        "0.01": true,
+        "0.001": true,
+        "0.0001": true
+      },
+      "replacement_bound": null
+    },
+    {
+      "input": "fresh_02",
+      "input_role": "independent_validation",
+      "route": "replacement",
+      "max_common_distance": 0.0026598459580059013,
+      "max_endpoint_distance": 0.0026598459580059013,
+      "reference_margin": 1.0099222652002881e-05,
+      "solver_margin": 6.359874577843249e-14,
+      "padding_margin": 3.5843827979617077e-07,
+      "total_amplitude_estimate": 0.002670303619001299,
+      "action_sum": 0.012530741131070054,
+      "same_space_final_distance": 0.002240633878289497,
+      "max_same_space_distance": 0.0026598445578332164,
+      "boundary_population": 7.287146973127499e-12,
+      "above_active_population": 3.637887079086999e-06,
+      "boundary_population_high_cutoff": 6.379896933980088e-27,
+      "boundary_population_both_cutoffs": 7.287146973127499e-12,
+      "boundary_acceptance_scope": "both cutoffs",
+      "acceptance": {
+        "0.01": true,
+        "0.001": true,
+        "0.0001": true
+      },
+      "replacement_bound": 0.0010279698607639502
+    },
+    {
+      "input": "fresh_03",
+      "input_role": "independent_validation",
+      "route": "native",
+      "max_common_distance": 0.47858147932424083,
+      "max_endpoint_distance": 0.47858147932424083
+    },
+    {
+      "input": "fresh_03",
+      "input_role": "independent_validation",
+      "route": "gaussian",
+      "max_common_distance": 0.4355572292736719,
+      "max_endpoint_distance": 0.4355572292736719
+    },
+    {
+      "input": "fresh_03",
+      "input_role": "independent_validation",
+      "route": "exact_split",
+      "max_common_distance": 0.007996679865059786,
+      "max_endpoint_distance": 0.007996679865059786
+    },
+    {
+      "input": "fresh_03",
+      "input_role": "independent_validation",
+      "route": "hybrid",
+      "max_common_distance": 0.010459276058775514,
+      "max_endpoint_distance": 0.010459276058775514,
+      "reference_margin": 0.00021671633313464047,
+      "solver_margin": 6.020624841729002e-14,
+      "padding_margin": 7.572792089352856e-06,
+      "total_amplitude_estimate": 0.010683565184059714,
+      "action_sum": 0.02554919314561191,
+      "same_space_final_distance": 0.008187065093473398,
+      "max_same_space_distance": 0.010459695345714592,
+      "boundary_population": 4.951216800851026e-11,
+      "above_active_population": 0.00019145510592685349,
+      "boundary_population_high_cutoff": 1.8616730847033336e-19,
+      "boundary_population_both_cutoffs": 4.951216800851026e-11,
+      "boundary_acceptance_scope": "both cutoffs",
+      "acceptance": {
+        "0.01": true,
+        "0.001": true,
+        "0.0001": false
+      },
+      "replacement_bound": null
+    },
+    {
+      "input": "fresh_03",
+      "input_role": "independent_validation",
+      "route": "replacement",
+      "max_common_distance": 0.010460918409956636,
+      "max_endpoint_distance": 0.010460918409956636,
+      "reference_margin": 0.00021671633313464047,
+      "solver_margin": 6.020624841729002e-14,
+      "padding_margin": 1.8231803054289593e-06,
+      "total_amplitude_estimate": 0.010679457923456911,
+      "action_sum": 0.02655385299477569,
+      "same_space_final_distance": 0.008253801027505609,
+      "max_same_space_distance": 0.010461222617508575,
+      "boundary_population": 1.8190054957389278e-10,
+      "above_active_population": 0.0001934875369810681,
+      "boundary_population_high_cutoff": 9.309186763568354e-26,
+      "boundary_population_both_cutoffs": 1.8190054957389278e-10,
+      "boundary_acceptance_scope": "both cutoffs",
+      "acceptance": {
+        "0.01": true,
+        "0.001": true,
+        "0.0001": false
+      },
+      "replacement_bound": 0.007338409220562712
+    },
+    {
+      "input": "fresh_04",
+      "input_role": "independent_validation",
+      "route": "native",
+      "max_common_distance": 0.23768560278510165,
+      "max_endpoint_distance": 0.23768560278510165
+    },
+    {
+      "input": "fresh_04",
+      "input_role": "independent_validation",
+      "route": "gaussian",
+      "max_common_distance": 0.16417210778873934,
+      "max_endpoint_distance": 0.16417210778873934
+    },
+    {
+      "input": "fresh_04",
+      "input_role": "independent_validation",
+      "route": "exact_split",
+      "max_common_distance": 0.0006105601621423323,
+      "max_endpoint_distance": 0.0006105601621423323
+    },
+    {
+      "input": "fresh_04",
+      "input_role": "independent_validation",
+      "route": "hybrid",
+      "max_common_distance": 0.0017646111754977076,
+      "max_endpoint_distance": 0.0017646111754977076,
+      "reference_margin": 2.147379585839318e-10,
+      "solver_margin": 5.057600216057318e-14,
+      "padding_margin": 5.5003436298997865e-08,
+      "total_amplitude_estimate": 0.0017646663937225414,
+      "action_sum": 0.007378557558245427,
+      "same_space_final_distance": 0.0015246728967441938,
+      "max_same_space_distance": 0.0017646111754981838,
+      "boundary_population": 1.03488834203485e-15,
+      "above_active_population": 2.225978627607679e-10,
+      "boundary_population_high_cutoff": 6.395845249198133e-24,
+      "boundary_population_both_cutoffs": 1.03488834203485e-15,
+      "boundary_acceptance_scope": "both cutoffs",
+      "acceptance": {
+        "0.01": true,
+        "0.001": true,
+        "0.0001": true
+      },
+      "replacement_bound": null
+    },
+    {
+      "input": "fresh_04",
+      "input_role": "independent_validation",
+      "route": "replacement",
+      "max_common_distance": 0.001764611289402098,
+      "max_endpoint_distance": 0.001764611289402098,
+      "reference_margin": 2.147379585839318e-10,
+      "solver_margin": 5.057600216057318e-14,
+      "padding_margin": 3.3374819935878867e-09,
+      "total_amplitude_estimate": 0.0017646148416726262,
+      "action_sum": 0.007378557558452964,
+      "same_space_final_distance": 0.0015246756934909219,
+      "max_same_space_distance": 0.0017646112894025886,
+      "boundary_population": 5.646946053252945e-17,
+      "above_active_population": 2.468863043755549e-10,
+      "boundary_population_high_cutoff": 7.200873194332342e-28,
+      "boundary_population_both_cutoffs": 5.646946053252945e-17,
+      "boundary_acceptance_scope": "both cutoffs",
+      "acceptance": {
+        "0.01": true,
+        "0.001": true,
+        "0.0001": true
+      },
+      "replacement_bound": 3.197237422993063e-05
+    },
+    {
+      "input": "fresh_05",
+      "input_role": "independent_validation",
+      "route": "native",
+      "max_common_distance": 0.6208132257329607,
+      "max_endpoint_distance": 0.6208132257329607
+    },
+    {
+      "input": "fresh_05",
+      "input_role": "independent_validation",
+      "route": "gaussian",
+      "max_common_distance": 0.5848539323333929,
+      "max_endpoint_distance": 0.5848539323333929
+    },
+    {
+      "input": "fresh_05",
+      "input_role": "independent_validation",
+      "route": "exact_split",
+      "max_common_distance": 0.016512543826136813,
+      "max_endpoint_distance": 0.016512543826136813
+    },
+    {
+      "input": "fresh_05",
+      "input_role": "independent_validation",
+      "route": "hybrid",
+      "max_common_distance": 0.021248595192174778,
+      "max_endpoint_distance": 0.021248595192174778,
+      "reference_margin": 0.0009513690996187439,
+      "solver_margin": 5.59175910650585e-14,
+      "padding_margin": 2.400019180823266e-05,
+      "total_amplitude_estimate": 0.022223964483657672,
+      "action_sum": 0.05266605118953674,
+      "same_space_final_distance": 0.019675197251430347,
+      "max_same_space_distance": 0.02125136865663869,
+      "boundary_population": 4.517760138619668e-10,
+      "above_active_population": 0.0012911891505207572,
+      "boundary_population_high_cutoff": 1.6251518074764207e-18,
+      "boundary_population_both_cutoffs": 4.517760138619668e-10,
+      "boundary_acceptance_scope": "both cutoffs",
+      "acceptance": {
+        "0.01": true,
+        "0.001": true,
+        "0.0001": false
+      },
+      "replacement_bound": null
+    },
+    {
+      "input": "fresh_05",
+      "input_role": "independent_validation",
+      "route": "replacement",
+      "max_common_distance": 0.021232526704269086,
+      "max_endpoint_distance": 0.021232526704269086,
+      "reference_margin": 0.0009513690996187439,
+      "solver_margin": 5.59175910650585e-14,
+      "padding_margin": 4.185713948041632e-06,
+      "total_amplitude_estimate": 0.02218808151789179,
+      "action_sum": 0.059074873004560276,
+      "same_space_final_distance": 0.019879816332109133,
+      "max_same_space_distance": 0.02123433164554146,
+      "boundary_population": 9.213296522338554e-10,
+      "above_active_population": 0.0013057502110433252,
+      "boundary_population_high_cutoff": 8.207434912126054e-25,
+      "boundary_population_both_cutoffs": 9.213296522338554e-10,
+      "boundary_acceptance_scope": "both cutoffs",
+      "acceptance": {
+        "0.01": true,
+        "0.001": true,
+        "0.0001": false
+      },
+      "replacement_bound": 0.02078345971704322
+    },
+    {
+      "input": "fresh_06",
+      "input_role": "independent_validation",
+      "route": "native",
+      "max_common_distance": 0.3185727001556231,
+      "max_endpoint_distance": 0.3185727001556231
+    },
+    {
+      "input": "fresh_06",
+      "input_role": "independent_validation",
+      "route": "gaussian",
+      "max_common_distance": 0.2675013284374927,
+      "max_endpoint_distance": 0.2675013284374927
+    },
+    {
+      "input": "fresh_06",
+      "input_role": "independent_validation",
+      "route": "exact_split",
+      "max_common_distance": 0.002181581948928236,
+      "max_endpoint_distance": 0.002181581948928236
+    },
+    {
+      "input": "fresh_06",
+      "input_role": "independent_validation",
+      "route": "hybrid",
+      "max_common_distance": 0.0037447053394695238,
+      "max_endpoint_distance": 0.0037447053394695238,
+      "reference_margin": 1.4022307043849607e-05,
+      "solver_margin": 5.4513589073045014e-14,
+      "padding_margin": 1.117325254309544e-05,
+      "total_amplitude_estimate": 0.003769900899110983,
+      "action_sum": 0.011863516683748389,
+      "same_space_final_distance": 0.003744735622873005,
+      "max_same_space_distance": 0.003744735622873005,
+      "boundary_population": 2.920295663712229e-11,
+      "above_active_population": 2.5272158914849512e-05,
+      "boundary_population_high_cutoff": 3.3568826892303287e-19,
+      "boundary_population_both_cutoffs": 2.920295663712229e-11,
+      "boundary_acceptance_scope": "both cutoffs",
+      "acceptance": {
+        "0.01": true,
+        "0.001": true,
+        "0.0001": true
+      },
+      "replacement_bound": null
+    },
+    {
+      "input": "fresh_06",
+      "input_role": "independent_validation",
+      "route": "replacement",
+      "max_common_distance": 0.0037344447613506045,
+      "max_endpoint_distance": 0.0037344447613506045,
+      "reference_margin": 1.4022307043849607e-05,
+      "solver_margin": 5.4513589073045014e-14,
+      "padding_margin": 1.0335934615579504e-06,
+      "total_amplitude_estimate": 0.0037495006619105258,
+      "action_sum": 0.01188358258575149,
+      "same_space_final_distance": 0.0037344684411830193,
+      "max_same_space_distance": 0.0037344684411830193,
+      "boundary_population": 3.139063445603174e-11,
+      "above_active_population": 2.5447140625679543e-05,
+      "boundary_population_high_cutoff": 1.1619740342745374e-24,
+      "boundary_population_both_cutoffs": 3.139063445603174e-11,
+      "boundary_acceptance_scope": "both cutoffs",
+      "acceptance": {
+        "0.01": true,
+        "0.001": true,
+        "0.0001": true
+      },
+      "replacement_bound": 0.004083774441874315
+    },
+    {
+      "input": "fresh_07",
+      "input_role": "independent_validation",
+      "route": "native",
+      "max_common_distance": 0.22877205526328248,
+      "max_endpoint_distance": 0.22877205526328248
+    },
+    {
+      "input": "fresh_07",
+      "input_role": "independent_validation",
+      "route": "gaussian",
+      "max_common_distance": 0.1702166297479775,
+      "max_endpoint_distance": 0.1702166297479775
+    },
+    {
+      "input": "fresh_07",
+      "input_role": "independent_validation",
+      "route": "exact_split",
+      "max_common_distance": 0.002417795032888848,
+      "max_endpoint_distance": 0.002417795032888848
+    },
+    {
+      "input": "fresh_07",
+      "input_role": "independent_validation",
+      "route": "hybrid",
+      "max_common_distance": 0.0030961847016517715,
+      "max_endpoint_distance": 0.0030961847016517715,
+      "reference_margin": 3.546753005387713e-06,
+      "solver_margin": 5.353219315254676e-14,
+      "padding_margin": 4.7133224131103796e-07,
+      "total_amplitude_estimate": 0.0031002027869520025,
+      "action_sum": 0.008787549361799431,
+      "same_space_final_distance": 0.0030004086318777615,
+      "max_same_space_distance": 0.003096184044214662,
+      "boundary_population": 1.3172645871484743e-13,
+      "above_active_population": 7.077732006211667e-07,
+      "boundary_population_high_cutoff": 4.0928862804915156e-22,
+      "boundary_population_both_cutoffs": 1.3172645871484743e-13,
+      "boundary_acceptance_scope": "both cutoffs",
+      "acceptance": {
+        "0.01": true,
+        "0.001": true,
+        "0.0001": true
+      },
+      "replacement_bound": null
+    },
+    {
+      "input": "fresh_07",
+      "input_role": "independent_validation",
+      "route": "replacement",
+      "max_common_distance": 0.0030963634200573747,
+      "max_endpoint_distance": 0.0030963634200573747,
+      "reference_margin": 3.546753005387713e-06,
+      "solver_margin": 5.353219315254676e-14,
+      "padding_margin": 1.193718277643704e-07,
+      "total_amplitude_estimate": 0.0031000295449440593,
+      "action_sum": 0.008789188774732542,
+      "same_space_final_distance": 0.0030008338935941974,
+      "max_same_space_distance": 0.0030963631662957237,
+      "boundary_population": 7.837045923203674e-13,
+      "above_active_population": 7.148746617847944e-07,
+      "boundary_population_high_cutoff": 9.879162601167181e-28,
+      "boundary_population_both_cutoffs": 7.837045923203674e-13,
+      "boundary_acceptance_scope": "both cutoffs",
+      "acceptance": {
+        "0.01": true,
+        "0.001": true,
+        "0.0001": true
+      },
+      "replacement_bound": 0.00043683291442413484
+    },
+    {
+      "input": "fresh_08",
+      "input_role": "independent_validation",
+      "route": "native",
+      "max_common_distance": 0.21971841031143344,
+      "max_endpoint_distance": 0.21971841031143344
+    },
+    {
+      "input": "fresh_08",
+      "input_role": "independent_validation",
+      "route": "gaussian",
+      "max_common_distance": 0.16596426919996113,
+      "max_endpoint_distance": 0.16596426919996113
+    },
+    {
+      "input": "fresh_08",
+      "input_role": "independent_validation",
+      "route": "exact_split",
+      "max_common_distance": 0.0008439143191818567,
+      "max_endpoint_distance": 0.0008439143191818567
+    },
+    {
+      "input": "fresh_08",
+      "input_role": "independent_validation",
+      "route": "hybrid",
+      "max_common_distance": 0.0020040563234659417,
+      "max_endpoint_distance": 0.0020040563234659417,
+      "reference_margin": 1.3063906831132674e-06,
+      "solver_margin": 4.621801951261871e-14,
+      "padding_margin": 3.385422716632182e-06,
+      "total_amplitude_estimate": 0.0020087481369119053,
+      "action_sum": 0.008264462659264532,
+      "same_space_final_distance": 0.0020040574644017194,
+      "max_same_space_distance": 0.0020040574644017194,
+      "boundary_population": 1.5528137068914245e-12,
+      "above_active_population": 1.0876613398655315e-06,
+      "boundary_population_high_cutoff": 2.4816541160976465e-20,
+      "boundary_population_both_cutoffs": 1.5528137068914245e-12,
+      "boundary_acceptance_scope": "both cutoffs",
+      "acceptance": {
+        "0.01": true,
+        "0.001": true,
+        "0.0001": true
+      },
+      "replacement_bound": null
+    },
+    {
+      "input": "fresh_08",
+      "input_role": "independent_validation",
+      "route": "replacement",
+      "max_common_distance": 0.001999421189043132,
+      "max_endpoint_distance": 0.001999421189043132,
+      "reference_margin": 1.3063906831132674e-06,
+      "solver_margin": 4.621801951261871e-14,
+      "padding_margin": 3.2396788720061856e-07,
+      "total_amplitude_estimate": 0.002001051547659664,
+      "action_sum": 0.008264802529860041,
+      "same_space_final_distance": 0.001999422419942248,
+      "max_same_space_distance": 0.001999422419942248,
+      "boundary_population": 2.725004082771202e-12,
+      "above_active_population": 1.0925734633751868e-06,
+      "boundary_population_high_cutoff": 1.3512420864424348e-25,
+      "boundary_population_both_cutoffs": 2.725004082771202e-12,
+      "boundary_acceptance_scope": "both cutoffs",
+      "acceptance": {
+        "0.01": true,
+        "0.001": true,
+        "0.0001": true
+      },
+      "replacement_bound": 0.0013117993118127106
+    },
+    {
+      "input": "fresh_09",
+      "input_role": "independent_validation",
+      "route": "native",
+      "max_common_distance": 0.17521652079129846,
+      "max_endpoint_distance": 0.17521652079129846
+    },
+    {
+      "input": "fresh_09",
+      "input_role": "independent_validation",
+      "route": "gaussian",
+      "max_common_distance": 0.12406448481850392,
+      "max_endpoint_distance": 0.12406448481850392
+    },
+    {
+      "input": "fresh_09",
+      "input_role": "independent_validation",
+      "route": "exact_split",
+      "max_common_distance": 0.0015933050515204085,
+      "max_endpoint_distance": 0.0015933050515204085
+    },
+    {
+      "input": "fresh_09",
+      "input_role": "independent_validation",
+      "route": "hybrid",
+      "max_common_distance": 0.002093438553361967,
+      "max_endpoint_distance": 0.002093438553361967,
+      "reference_margin": 1.6941775614991544e-06,
+      "solver_margin": 5.102791903119863e-14,
+      "padding_margin": 2.768818164970714e-06,
+      "total_amplitude_estimate": 0.002097901549139465,
+      "action_sum": 0.007918431857462858,
+      "same_space_final_distance": 0.0015183327360958293,
+      "max_same_space_distance": 0.0020934380005329517,
+      "boundary_population": 1.9310534309821475e-12,
+      "above_active_population": 1.3492283020720271e-06,
+      "boundary_population_high_cutoff": 2.8529280209594306e-20,
+      "boundary_population_both_cutoffs": 1.9310534309821475e-12,
+      "boundary_acceptance_scope": "both cutoffs",
+      "acceptance": {
+        "0.01": true,
+        "0.001": true,
+        "0.0001": true
+      },
+      "replacement_bound": null
+    },
+    {
+      "input": "fresh_09",
+      "input_role": "independent_validation",
+      "route": "replacement",
+      "max_common_distance": 0.0020937034835596365,
+      "max_endpoint_distance": 0.0020937034835596365,
+      "reference_margin": 1.6941775614991544e-06,
+      "solver_margin": 5.102791903119863e-14,
+      "padding_margin": 1.8088388853048745e-07,
+      "total_amplitude_estimate": 0.002095578545060694,
+      "action_sum": 0.007918953918136917,
+      "same_space_final_distance": 0.0015163044407493413,
+      "max_same_space_distance": 0.0020937032660308472,
+      "boundary_population": 1.2356677272825975e-12,
+      "above_active_population": 1.3212159371150237e-06,
+      "boundary_population_high_cutoff": 5.061921907580437e-27,
+      "boundary_population_both_cutoffs": 1.2356677272825975e-12,
+      "boundary_acceptance_scope": "both cutoffs",
+      "acceptance": {
+        "0.01": true,
+        "0.001": true,
+        "0.0001": true
+      },
+      "replacement_bound": 0.0009824270765275362
+    },
+    {
+      "input": "fresh_10",
+      "input_role": "independent_validation",
+      "route": "native",
+      "max_common_distance": 0.4227224652928403,
+      "max_endpoint_distance": 0.4227224652928403
+    },
+    {
+      "input": "fresh_10",
+      "input_role": "independent_validation",
+      "route": "gaussian",
+      "max_common_distance": 0.35634417107133465,
+      "max_endpoint_distance": 0.35634417107133465
+    },
+    {
+      "input": "fresh_10",
+      "input_role": "independent_validation",
+      "route": "exact_split",
+      "max_common_distance": 0.010773727595424273,
+      "max_endpoint_distance": 0.010773727595424273
+    },
+    {
+      "input": "fresh_10",
+      "input_role": "independent_validation",
+      "route": "hybrid",
+      "max_common_distance": 0.01303085461521098,
+      "max_endpoint_distance": 0.01303085461521098,
+      "reference_margin": 0.00022136560946781409,
+      "solver_margin": 5.4707465005101093e-14,
+      "padding_margin": 5.4212807452423065e-06,
+      "total_amplitude_estimate": 0.013257641505478744,
+      "action_sum": 0.027822209932515947,
+      "same_space_final_distance": 0.011219942606876157,
+      "max_same_space_distance": 0.013030528917413459,
+      "boundary_population": 3.2409326843573594e-11,
+      "above_active_population": 0.00017759402123143978,
+      "boundary_population_high_cutoff": 1.0292777804342334e-19,
+      "boundary_population_both_cutoffs": 3.2409326843573594e-11,
+      "boundary_acceptance_scope": "both cutoffs",
+      "acceptance": {
+        "0.01": true,
+        "0.001": true,
+        "0.0001": false
+      },
+      "replacement_bound": null
+    },
+    {
+      "input": "fresh_10",
+      "input_role": "independent_validation",
+      "route": "replacement",
+      "max_common_distance": 0.0130461724637732,
+      "max_endpoint_distance": 0.0130461724637732,
+      "reference_margin": 0.00022136560946781409,
+      "solver_margin": 5.4707465005101093e-14,
+      "padding_margin": 1.6008537238352886e-06,
+      "total_amplitude_estimate": 0.013269138927019558,
+      "action_sum": 0.028752202141044726,
+      "same_space_final_distance": 0.011256999530344992,
+      "max_same_space_distance": 0.013045828341004168,
+      "boundary_population": 1.3319314183191873e-10,
+      "above_active_population": 0.00017906989169764545,
+      "boundary_population_high_cutoff": 1.0296921932730242e-25,
+      "boundary_population_both_cutoffs": 1.3319314183191873e-10,
+      "boundary_acceptance_scope": "both cutoffs",
+      "acceptance": {
+        "0.01": true,
+        "0.001": true,
+        "0.0001": false
+      },
+      "replacement_bound": 0.005503044279495668
+    },
+    {
+      "input": "fresh_11",
+      "input_role": "independent_validation",
+      "route": "native",
+      "max_common_distance": 0.20497608105516787,
+      "max_endpoint_distance": 0.20497608105516787
+    },
+    {
+      "input": "fresh_11",
+      "input_role": "independent_validation",
+      "route": "gaussian",
+      "max_common_distance": 0.13810303873023866,
+      "max_endpoint_distance": 0.13810303873023866
+    },
+    {
+      "input": "fresh_11",
+      "input_role": "independent_validation",
+      "route": "exact_split",
+      "max_common_distance": 0.0015028403736220225,
+      "max_endpoint_distance": 0.0015028403736220225
+    },
+    {
+      "input": "fresh_11",
+      "input_role": "independent_validation",
+      "route": "hybrid",
+      "max_common_distance": 0.0021170046417177736,
+      "max_endpoint_distance": 0.0021170046417177736,
+      "reference_margin": 1.8054500773017798e-07,
+      "solver_margin": 5.1066745222247426e-14,
+      "padding_margin": 3.8444020559018606e-07,
+      "total_amplitude_estimate": 0.0021175696269821608,
+      "action_sum": 0.0073526679048777814,
+      "same_space_final_distance": 0.002117004657701161,
+      "max_same_space_distance": 0.002117004657701161,
+      "boundary_population": 4.191117770043957e-14,
+      "above_active_population": 1.1149511619252436e-08,
+      "boundary_population_high_cutoff": 2.481762944384666e-22,
+      "boundary_population_both_cutoffs": 4.191117770043957e-14,
+      "boundary_acceptance_scope": "both cutoffs",
+      "acceptance": {
+        "0.01": true,
+        "0.001": true,
+        "0.0001": true
+      },
+      "replacement_bound": null
+    },
+    {
+      "input": "fresh_11",
+      "input_role": "independent_validation",
+      "route": "replacement",
+      "max_common_distance": 0.002117012333613393,
+      "max_endpoint_distance": 0.002117012333613393,
+      "reference_margin": 1.8054500773017798e-07,
+      "solver_margin": 5.1066745222247426e-14,
+      "padding_margin": 1.7346731746967466e-08,
+      "total_amplitude_estimate": 0.002117210225403937,
+      "action_sum": 0.007352674296370938,
+      "same_space_final_distance": 0.0021170123266802472,
+      "max_same_space_distance": 0.0021170123266802472,
+      "boundary_population": 1.1619822892593015e-14,
+      "above_active_population": 1.1129102675622644e-08,
+      "boundary_population_high_cutoff": 3.99198441498188e-27,
+      "boundary_population_both_cutoffs": 1.1619822892593015e-14,
+      "boundary_acceptance_scope": "both cutoffs",
+      "acceptance": {
+        "0.01": true,
+        "0.001": true,
+        "0.0001": true
+      },
+      "replacement_bound": 0.0001913814720311128
+    }
+  ],
+  "family_acceptance": {
+    "hybrid": {
+      "0.01": true,
+      "0.001": true,
+      "0.0001": false
+    },
+    "replacement": {
+      "0.01": true,
+      "0.001": true,
+      "0.0001": false
+    }
+  },
+  "secondary_rectangular_norm": null,
+  "resources": {
+    "system_modes": 1,
+    "residual_snap": 120,
+    "residual_displacements": 120,
+    "gaussian_half_pulses": 20,
+    "merged_native_waits": 11,
+    "replacement_extra_snap": 11,
+    "native_simulated_time": 1.0
+  },
+  "evidence_scope": "finite-family numerical validation with empirical reference and padding differences"
+}

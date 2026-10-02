@@ -1,0 +1,249 @@
+⚠ [2156/2181] Replayed Cvdv.Telescoping
+warning: Cvdv/Telescoping.lean:1:1: * '-/':
+Copyright too short!
+
+
+Note: This linter can be disabled with `set_option linter.style.header false`
+⚠ [2157/2181] Replayed Cvdv.NativeCorrection
+warning: Cvdv/NativeCorrection.lean:1:1: * '-/':
+Copyright too short!
+
+
+Note: This linter can be disabled with `set_option linter.style.header false`
+⚠ [2158/2181] Replayed Cvdv.FockAlgebra
+warning: Cvdv/FockAlgebra.lean:1:1: * '-/':
+Copyright too short!
+
+
+Note: This linter can be disabled with `set_option linter.style.header false`
+⚠ [2174/2199] Replayed Cvdv.StateGeometry
+warning: Cvdv/StateGeometry.lean:1:1: * '-/':
+Copyright too short!
+
+
+Note: This linter can be disabled with `set_option linter.style.header false`
+⚠ [2390/2401] Replayed Cvdv.DiagonalCeiling
+warning: Cvdv/DiagonalCeiling.lean:1:1: * '-/':
+Copyright too short!
+
+
+Note: This linter can be disabled with `set_option linter.style.header false`
+warning: Cvdv/DiagonalCeiling.lean:115:2: The `show` tactic should only be used to indicate intermediate goal states for readability.
+However, this tactic invocation changed the goal. Please use `change` instead for these purposes.
+
+Note: This linter can be disabled with `set_option linter.style.show false`
+⚠ [2398/2421] Replayed Cvdv.FockCutoff
+warning: Cvdv/FockCutoff.lean:1:1: * '-/':
+Copyright too short!
+
+
+Note: This linter can be disabled with `set_option linter.style.header false`
+warning: Cvdv/FockCutoff.lean:172:4: `simp` is a flexible tactic modifying `⊢`. Try `simp?` and use the suggested `simp only [...]`. Alternatively, use `suffices` to explicitly state the simplified form.
+
+Note: This linter can be disabled with `set_option linter.flexible false`
+info: Cvdv/FockCutoff.lean:172:4: Try this:
+  [apply] simp only [Finsupp.smul_single, smul_eq_mul, mul_one, smul_add, Finsupp.coe_add, Pi.add_apply,
+    Finsupp.single_eq_same, ne_eq, OfNat.zero_ne_ofNat, not_false_eq_true, Finsupp.single_eq_of_ne, add_zero]
+info: Cvdv/FockCutoff.lean:173:4: `rw [← Complex.ofReal_mul, Real.mul_self_sqrt (by norm_num : (0 : ℝ) ≤ 2)]`
+modifies the current goal, which was modified by the flexible tactic `simp` on line 172!
+warning: Cvdv/FockCutoff.lean:208:100: This line exceeds the 100 character limit, please shorten it!
+
+Note: This linter can be disabled with `set_option linter.style.longLine false`
+⚠ [2399/2421] Replayed Cvdv.FockCommutator
+warning: Cvdv/FockCommutator.lean:1:1: * '-/':
+Copyright too short!
+
+
+Note: This linter can be disabled with `set_option linter.style.header false`
+⚠ [2400/2421] Replayed Cvdv.FockHermitian
+warning: Cvdv/FockHermitian.lean:1:1: * '-/':
+Copyright too short!
+
+
+Note: This linter can be disabled with `set_option linter.style.header false`
+⚠ [3083/3119] Replayed Cvdv.Duhamel
+warning: Cvdv/Duhamel.lean:1:1: * '-/':
+Copyright too short!
+
+
+Note: This linter can be disabled with `set_option linter.style.header false`
+warning: Cvdv/Duhamel.lean:201:100: This line exceeds the 100 character limit, please shorten it!
+
+Note: This linter can be disabled with `set_option linter.style.longLine false`
+warning: Cvdv/Duhamel.lean:237:100: This line exceeds the 100 character limit, please shorten it!
+
+Note: This linter can be disabled with `set_option linter.style.longLine false`
+⚠ [3084/3119] Replayed Cvdv.SqueezingBlock
+warning: Cvdv/SqueezingBlock.lean:1:1: * '-/':
+Copyright too short!
+
+
+Note: This linter can be disabled with `set_option linter.style.header false`
+⚠ [3085/3119] Replayed Cvdv.CoherentQuadrature
+warning: Cvdv/CoherentQuadrature.lean:1:1: * '-/':
+Copyright too short!
+
+
+Note: This linter can be disabled with `set_option linter.style.header false`
+⚠ [3086/3119] Replayed Cvdv.QuadraticClosure
+warning: Cvdv/QuadraticClosure.lean:1:1: * '-/':
+Copyright too short!
+
+
+Note: This linter can be disabled with `set_option linter.style.header false`
+warning: Cvdv/QuadraticClosure.lean:561:2: `simp at h1 h2` is a flexible tactic modifying `h1`. Try `simp?` and use the suggested `simp only [...]`. Alternatively, use `suffices` to explicitly state the simplified form.
+
+Note: This linter can be disabled with `set_option linter.flexible false`
+info: Cvdv/QuadraticClosure.lean:562:2: `rw [← h1] at h2`
+uses `h1`, which was modified by the flexible tactic `simp` on line 561!
+warning: Cvdv/QuadraticClosure.lean:561:2: `simp at h1 h2` is a flexible tactic modifying `h2`. Try `simp?` and use the suggested `simp only [...]`. Alternatively, use `suffices` to explicitly state the simplified form.
+
+Note: This linter can be disabled with `set_option linter.flexible false`
+info: Cvdv/QuadraticClosure.lean:562:2: `rw [← h1] at h2`
+uses `h2`, which was modified by the flexible tactic `simp` on line 561!
+warning: Cvdv/QuadraticClosure.lean:561:2: `simp at h1 h2` is a flexible tactic modifying `h2`. Try `simp?` and use the suggested `simp only [...]`. Alternatively, use `suffices` to explicitly state the simplified form.
+
+Note: This linter can be disabled with `set_option linter.flexible false`
+info: Cvdv/QuadraticClosure.lean:565:2: `have h3 : ((Real.sqrt 2 : ℝ) : ℂ) = 0 := by linear_combination (-(1 : ℂ) / 2) * h2`
+uses `h2`, which was modified by the flexible tactic `simp` on line 561!
+warning: Cvdv/QuadraticClosure.lean:561:2: `simp at h1 h2` is a flexible tactic modifying `h1`. Try `simp?` and use the suggested `simp only [...]`. Alternatively, use `suffices` to explicitly state the simplified form.
+
+Note: This linter can be disabled with `set_option linter.flexible false`
+info: Cvdv/QuadraticClosure.lean:565:2: `have h3 : ((Real.sqrt 2 : ℝ) : ℂ) = 0 := by linear_combination (-(1 : ℂ) / 2) * h2`
+uses `h1`, which was modified by the flexible tactic `simp` on line 561!
+⚠ [3087/3119] Replayed Cvdv.CircuitScaling
+warning: Cvdv/CircuitScaling.lean:1:1: * '-/':
+Copyright too short!
+
+
+Note: This linter can be disabled with `set_option linter.style.header false`
+⚠ [3098/3147] Replayed Cvdv.EnergyShift
+warning: Cvdv/EnergyShift.lean:1:1: * '-/':
+Copyright too short!
+
+
+Note: This linter can be disabled with `set_option linter.style.header false`
+⚠ [3099/3147] Replayed Cvdv.TrotterBound
+warning: Cvdv/TrotterBound.lean:1:1: * '-/':
+Copyright too short!
+
+
+Note: This linter can be disabled with `set_option linter.style.header false`
+⚠ [3100/3147] Replayed Cvdv.FiniteDuffing
+warning: Cvdv/FiniteDuffing.lean:1:1: * '-/':
+Copyright too short!
+
+
+Note: This linter can be disabled with `set_option linter.style.header false`
+⚠ [3101/3147] Replayed Cvdv.KerrCollapse
+warning: Cvdv/KerrCollapse.lean:1:1: * '-/':
+Copyright too short!
+
+
+Note: This linter can be disabled with `set_option linter.style.header false`
+⚠ [3102/3147] Replayed Cvdv.DuffingLadder
+warning: Cvdv/DuffingLadder.lean:1:1: * '-/':
+Copyright too short!
+
+
+Note: This linter can be disabled with `set_option linter.style.header false`
+⚠ [3103/3147] Replayed Cvdv.LLEAlgebra
+warning: Cvdv/LLEAlgebra.lean:1:1: * '-/':
+Copyright too short!
+
+
+Note: This linter can be disabled with `set_option linter.style.header false`
+⚠ [3107/3147] Replayed Cvdv.LLEDisplacement
+warning: Cvdv/LLEDisplacement.lean:1:1: * '-/':
+Copyright too short!
+
+
+Note: This linter can be disabled with `set_option linter.style.header false`
+⚠ [3108/3147] Replayed Cvdv.LLENormalizedExpectation
+warning: Cvdv/LLENormalizedExpectation.lean:1:1: * '-/':
+Copyright too short!
+
+
+Note: This linter can be disabled with `set_option linter.style.header false`
+⚠ [3109/3147] Replayed Cvdv.StrangBound
+warning: Cvdv/StrangBound.lean:1:1: * '-/':
+Copyright too short!
+
+
+Note: This linter can be disabled with `set_option linter.style.header false`
+⚠ [3110/3147] Replayed Cvdv.LLEHardwareCompilation
+warning: Cvdv/LLEHardwareCompilation.lean:1:1: * '-/':
+Copyright too short!
+
+
+Note: This linter can be disabled with `set_option linter.style.header false`
+⚠ [3111/3147] Replayed Cvdv.SiteLift
+warning: Cvdv/SiteLift.lean:1:1: * '-/':
+Copyright too short!
+
+
+Note: This linter can be disabled with `set_option linter.style.header false`
+⚠ [3112/3147] Replayed Cvdv.DuffingStrang
+warning: Cvdv/DuffingStrang.lean:1:1: * '-/':
+Copyright too short!
+
+
+Note: This linter can be disabled with `set_option linter.style.header false`
+⚠ [3114/3147] Replayed Cvdv.SGClassical
+warning: Cvdv/SGClassical.lean:1:1: * '-/':
+Copyright too short!
+
+
+Note: This linter can be disabled with `set_option linter.style.header false`
+⚠ [3115/3147] Replayed Cvdv.FiniteSineGordon
+warning: Cvdv/FiniteSineGordon.lean:1:1: * '-/':
+Copyright too short!
+
+
+Note: This linter can be disabled with `set_option linter.style.header false`
+warning: Cvdv/FiniteSineGordon.lean:147:2: The `show` tactic should only be used to indicate intermediate goal states for readability.
+However, this tactic invocation changed the goal. Please use `change` instead for these purposes.
+
+Note: This linter can be disabled with `set_option linter.style.show false`
+warning: Cvdv/FiniteSineGordon.lean:164:2: The `show` tactic should only be used to indicate intermediate goal states for readability.
+However, this tactic invocation changed the goal. Please use `change` instead for these purposes.
+
+Note: This linter can be disabled with `set_option linter.style.show false`
+⚠ [3130/3147] Replayed Cvdv.LLEFinite
+warning: Cvdv/LLEFinite.lean:1:1: * '-/':
+Copyright too short!
+
+
+Note: This linter can be disabled with `set_option linter.style.header false`
+⚠ [3131/3147] Replayed Cvdv.LLEExactLCHS
+warning: Cvdv/LLEExactLCHS.lean:1:1: * '-/':
+Copyright too short!
+
+
+Note: This linter can be disabled with `set_option linter.style.header false`
+⚠ [3132/3147] Replayed Cvdv.KroneckerDilation
+warning: Cvdv/KroneckerDilation.lean:1:1: * '-/':
+Copyright too short!
+
+
+Note: This linter can be disabled with `set_option linter.style.header false`
+⚠ [3133/3147] Replayed Cvdv.LLEMeanField
+warning: Cvdv/LLEMeanField.lean:1:1: * '-/':
+Copyright too short!
+
+
+Note: This linter can be disabled with `set_option linter.style.header false`
+⚠ [3142/3147] Replayed Cvdv.GaussianSine
+warning: Cvdv/GaussianSine.lean:1:1: * '-/':
+Copyright too short!
+
+
+Note: This linter can be disabled with `set_option linter.style.header false`
+⚠ [3145/3147] Replayed Cvdv.LLEMultimodeCompilation
+warning: Cvdv/LLEMultimodeCompilation.lean:1:1: * '-/':
+Copyright too short!
+
+
+Note: This linter can be disabled with `set_option linter.style.header false`
+✔ [3146/3147] Built Cvdv (50s)
+Build completed successfully (3147 jobs).

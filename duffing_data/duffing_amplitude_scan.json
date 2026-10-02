@@ -1,0 +1,542 @@
+{
+ "description": "Duffing native-Kerr diagnostics, omega0=1, beta=0.1, T=1, 401-point grid, strict physical sandwich",
+ "N_ref": 80,
+ "N_check": 64,
+ "K_eff": 0.037500000000000006,
+ "lambda_": 0.00625,
+ "rows": [
+  {
+   "xi": 0.25,
+   "n0": 0.0625,
+   "max_native_infidelity": 0.002481390533916583,
+   "duhamel_infidelity_bound": 0.00567685002643651,
+   "centered_infidelity_bound": 0.005667698682924919,
+   "diagonal_ceiling_T": 0.9976883492318108,
+   "max_r_psi": 0.2628703291046404
+  },
+  {
+   "xi": 0.3,
+   "n0": 0.09,
+   "max_native_infidelity": 0.0028347929944623463,
+   "duhamel_infidelity_bound": 0.006598250629424013,
+   "centered_infidelity_bound": 0.00657868090694792,
+   "diagonal_ceiling_T": 0.997359503305985,
+   "max_r_psi": 0.2398362525800211
+  },
+  {
+   "xi": 0.35,
+   "n0": 0.12249999999999998,
+   "max_native_infidelity": 0.0032679705990193444,
+   "duhamel_infidelity_bound": 0.007748195891680213,
+   "centered_infidelity_bound": 0.007710555431274601,
+   "diagonal_ceiling_T": 0.9969446052556069,
+   "max_r_psi": 0.22527885567781436
+  },
+  {
+   "xi": 0.4,
+   "n0": 0.16000000000000003,
+   "max_native_infidelity": 0.0037887020809168528,
+   "duhamel_infidelity_bound": 0.009160095138231482,
+   "centered_infidelity_bound": 0.009092998661813716,
+   "diagonal_ceiling_T": 0.9964374581723292,
+   "max_r_psi": 0.21603832160138203
+  },
+  {
+   "xi": 0.45,
+   "n0": 0.2025,
+   "max_native_infidelity": 0.004405993766491636,
+   "duhamel_infidelity_bound": 0.010874561289038657,
+   "centered_infidelity_bound": 0.010761580193968875,
+   "diagonal_ceiling_T": 0.9958300355057603,
+   "max_r_psi": 0.21033239650783325
+  },
+  {
+   "xi": 0.5,
+   "n0": 0.25,
+   "max_native_infidelity": 0.005130110403044812,
+   "duhamel_infidelity_bound": 0.012940301535208762,
+   "centered_infidelity_bound": 0.012758271732761083,
+   "diagonal_ceiling_T": 0.9951124997951594,
+   "max_r_psi": 0.20709314989837194
+  },
+  {
+   "xi": 0.55,
+   "n0": 0.30250000000000005,
+   "max_native_infidelity": 0.0059726229830505745,
+   "duhamel_infidelity_bound": 0.01541518163536031,
+   "centered_infidelity_bound": 0.015132037466135171,
+   "diagonal_ceiling_T": 0.9942733723945106,
+   "max_r_psi": 0.20564788831160744
+  },
+  {
+   "xi": 0.6,
+   "n0": 0.36,
+   "max_native_infidelity": 0.006946479195118724,
+   "duhamel_infidelity_bound": 0.018367480058019213,
+   "centered_infidelity_bound": 0.017939506137802888,
+   "diagonal_ceiling_T": 0.9932997043774353,
+   "max_r_psi": 0.20555427749868105
+  },
+  {
+   "xi": 0.65,
+   "n0": 0.42250000000000004,
+   "max_native_infidelity": 0.00806610304150684,
+   "duhamel_infidelity_bound": 0.021877348688258195,
+   "centered_infidelity_bound": 0.021245723667384114,
+   "diagonal_ceiling_T": 0.9921772068603109,
+   "max_r_psi": 0.20651010185016258
+  },
+  {
+   "xi": 0.7,
+   "n0": 0.48999999999999994,
+   "max_native_infidelity": 0.0093475309801995,
+   "duhamel_infidelity_bound": 0.026038498704122174,
+   "centered_infidelity_bound": 0.025124985152544056,
+   "diagonal_ceiling_T": 0.990890341964973,
+   "max_r_psi": 0.2083014962764691
+  },
+  {
+   "xi": 0.75,
+   "n0": 0.5625,
+   "max_native_infidelity": 0.010808592576284796,
+   "duhamel_infidelity_bound": 0.03096013262131978,
+   "centered_infidelity_bound": 0.029661745493037364,
+   "diagonal_ceiling_T": 0.9894223880701932,
+   "max_r_psi": 0.21404927667859022
+  },
+  {
+   "xi": 0.8,
+   "n0": 0.6400000000000001,
+   "max_native_infidelity": 0.012469143956064379,
+   "duhamel_infidelity_bound": 0.03676914601152788,
+   "centered_infidelity_bound": 0.034951608279650194,
+   "diagonal_ceiling_T": 0.9877554932374493,
+   "max_r_psi": 0.22318465013604805
+  },
+  {
+   "xi": 0.85,
+   "n0": 0.7224999999999999,
+   "max_native_infidelity": 0.01435136219475345,
+   "duhamel_infidelity_bound": 0.04361262489082683,
+   "centered_infidelity_bound": 0.04110239285652407,
+   "diagonal_ceiling_T": 0.9858707272307089,
+   "max_r_psi": 0.2334589446061957
+  },
+  {
+   "xi": 0.9,
+   "n0": 0.81,
+   "max_native_infidelity": 0.016480107955629493,
+   "duhamel_infidelity_bound": 0.05166066722346546,
+   "centered_infidelity_bound": 0.048235279572665386,
+   "diagonal_ceiling_T": 0.9837481388625023,
+   "max_r_psi": 0.24482081877157594
+  },
+  {
+   "xi": 0.95,
+   "n0": 0.9025,
+   "max_native_infidelity": 0.01888336203350652,
+   "duhamel_infidelity_bound": 0.06110955939216046,
+   "centered_infidelity_bound": 0.056486033201771715,
+   "diagonal_ceiling_T": 0.9813668226108939,
+   "max_r_psi": 0.2572359072858052
+  },
+  {
+   "xi": 1.0,
+   "n0": 1.0,
+   "max_native_infidelity": 0.021592738721594396,
+   "duhamel_infidelity_bound": 0.07218534084813008,
+   "centered_infidelity_bound": 0.0660063043479261,
+   "diagonal_ceiling_T": 0.9787049966777039,
+   "max_r_psi": 0.2706807933005578
+  },
+  {
+   "xi": 1.05,
+   "n0": 1.1025,
+   "max_native_infidelity": 0.02464407489817203,
+   "duhamel_infidelity_bound": 0.08514779246318693,
+   "centered_infidelity_bound": 0.07696500838387822,
+   "diagonal_ceiling_T": 0.9757400936629765,
+   "max_r_psi": 0.28514347767666354
+  },
+  {
+   "xi": 1.1,
+   "n0": 1.2100000000000002,
+   "max_native_infidelity": 0.028078088213708764,
+   "duhamel_infidelity_bound": 0.10029488634714598,
+   "centered_infidelity_bound": 0.08954978110000211,
+   "diagonal_ceiling_T": 0.9724488645262994,
+   "max_r_psi": 0.30061783995474195
+  },
+  {
+   "xi": 1.15,
+   "n0": 1.3224999999999998,
+   "max_native_infidelity": 0.031941090588063735,
+   "duhamel_infidelity_bound": 0.11796773704675992,
+   "centered_infidelity_bound": 0.10396850978332668,
+   "diagonal_ceiling_T": 0.9688074962611792,
+   "max_r_psi": 0.3171057636094834
+  },
+  {
+   "xi": 1.2,
+   "n0": 1.44,
+   "max_native_infidelity": 0.036285734317055646,
+   "duhamel_infidelity_bound": 0.1385560960838935,
+   "centered_infidelity_bound": 0.1204509379013911,
+   "diagonal_ceiling_T": 0.9647917435715136,
+   "max_r_psi": 0.3346137092476177
+  },
+  {
+   "xi": 1.25,
+   "n0": 1.5625,
+   "max_native_infidelity": 0.041171757476435644,
+   "duhamel_infidelity_bound": 0.162504433692788,
+   "centered_infidelity_bound": 0.1392503409346146,
+   "diagonal_ceiling_T": 0.9603770747228861,
+   "max_r_psi": 0.35315257023762625
+  },
+  {
+   "xi": 1.3,
+   "n0": 1.6900000000000002,
+   "max_native_infidelity": 0.04666668321222634,
+   "duhamel_infidelity_bound": 0.19031865334472578,
+   "centered_infidelity_bound": 0.16064527017670563,
+   "diagonal_ceiling_T": 0.9555388316049241,
+   "max_r_psi": 0.37273751502001345
+  },
+  {
+   "xi": 1.35,
+   "n0": 1.8225000000000002,
+   "max_native_infidelity": 0.05284641436357331,
+   "duhamel_infidelity_bound": 0.22257348615946718,
+   "centered_infidelity_bound": 0.18494136049024498,
+   "diagonal_ceiling_T": 0.9502524038696025,
+   "max_r_psi": 0.393386887526991
+  },
+  {
+   "xi": 1.4,
+   "n0": 1.9599999999999997,
+   "max_native_infidelity": 0.0597956514066904,
+   "duhamel_infidelity_bound": 0.25992061354039553,
+   "centered_infidelity_bound": 0.2124731970381636,
+   "diagonal_ceiling_T": 0.9444934168035398,
+   "max_r_psi": 0.4151214082302965
+  },
+  {
+   "xi": 1.45,
+   "n0": 2.1025,
+   "max_native_infidelity": 0.0676080489926121,
+   "duhamel_infidelity_bound": 0.30309756726177406,
+   "centered_infidelity_bound": 0.24360623487236205,
+   "diagonal_ceiling_T": 0.9382379323543999,
+   "max_r_psi": 0.4379654403637365
+  },
+  {
+   "xi": 1.5,
+   "n0": 2.25,
+   "max_native_infidelity": 0.07638601577985223,
+   "duhamel_infidelity_bound": 0.352937456689622,
+   "centered_infidelity_bound": 0.27873876389445784,
+   "diagonal_ceiling_T": 0.931462662469208,
+   "max_r_psi": 0.46194474648626643
+  },
+  {
+   "xi": 1.55,
+   "n0": 2.4025000000000003,
+   "max_native_infidelity": 0.08624005556475994,
+   "duhamel_infidelity_bound": 0.4103795727159583,
+   "centered_infidelity_bound": 0.31830391004061936,
+   "diagonal_ceiling_T": 0.9241451936217339,
+   "max_r_psi": 0.48708719074247286
+  },
+  {
+   "xi": 1.6,
+   "n0": 2.5600000000000005,
+   "max_native_infidelity": 0.09728754686998774,
+   "duhamel_infidelity_bound": 0.4764809171853943,
+   "centered_infidelity_bound": 0.3627716614968849,
+   "diagonal_ceiling_T": 0.9162642211132271,
+   "max_r_psi": 0.5134238347329916
+  },
+  {
+   "xi": 1.65,
+   "n0": 2.7224999999999997,
+   "max_native_infidelity": 0.10965086526203531,
+   "duhamel_infidelity_bound": 0.5524287049175722,
+   "centered_infidelity_bound": 0.4126509062237162,
+   "diagonal_ceiling_T": 0.9077997914310517,
+   "max_r_psi": 0.5409864823137261
+  },
+  {
+   "xi": 1.7,
+   "n0": 2.8899999999999997,
+   "max_native_infidelity": 0.12345476973107161,
+   "duhamel_infidelity_bound": 0.6395538826683282,
+   "centered_infidelity_bound": 0.4684914639497326,
+   "diagonal_ceiling_T": 0.8987335506488252,
+   "max_r_psi": 0.5698086853672887
+  },
+  {
+   "xi": 1.75,
+   "n0": 3.0625,
+   "max_native_infidelity": 0.13882300309685167,
+   "duhamel_infidelity_bound": 0.7393457052800034,
+   "centered_infidelity_bound": 0.5308860919746996,
+   "diagonal_ceiling_T": 0.8890489965552044,
+   "max_r_psi": 0.5999260534487213
+  },
+  {
+   "xi": 1.8,
+   "n0": 3.24,
+   "max_native_infidelity": 0.15587409749938125,
+   "duhamel_infidelity_bound": 0.853467403563779,
+   "centered_infidelity_bound": 0.600472439501761,
+   "diagonal_ceiling_T": 0.8787317319126994,
+   "max_r_psi": 0.6313756060036794
+  },
+  {
+   "xi": 1.85,
+   "n0": 3.4225000000000003,
+   "max_native_infidelity": 0.17471642940527918,
+   "duhamel_infidelity_bound": 0.9837729708173181,
+   "centered_infidelity_bound": 0.6779349197292902,
+   "diagonal_ceiling_T": 0.8677697159792392,
+   "max_r_psi": 0.6641957021163949
+  },
+  {
+   "xi": 1.9,
+   "n0": 3.61,
+   "max_native_infidelity": 0.19544263260568606,
+   "duhamel_infidelity_bound": 1.1323250849658466,
+   "centered_infidelity_bound": 0.7640064625578312,
+   "diagonal_ceiling_T": 0.8561535111808125,
+   "max_r_psi": 0.6984259691212238
+  },
+  {
+   "xi": 1.95,
+   "n0": 3.8024999999999998,
+   "max_native_infidelity": 0.21812354912966897,
+   "duhamel_infidelity_bound": 1.3014141707652886,
+   "centered_infidelity_bound": 0.8594701035789817,
+   "diagonal_ceiling_T": 0.8438765216104205,
+   "max_r_psi": 0.7341072239360134
+  },
+  {
+   "xi": 2.0,
+   "n0": 4.0,
+   "max_native_infidelity": 0.24280197182656452,
+   "duhamel_infidelity_bound": 1.4935785909681212,
+   "centered_infidelity_bound": 0.9651603572119651,
+   "diagonal_ceiling_T": 0.8309352198542991,
+   "max_r_psi": 0.7712826310103842
+  },
+  {
+   "xi": 2.05,
+   "n0": 4.2025,
+   "max_native_infidelity": 0.26948650194403034,
+   "duhamel_infidelity_bound": 1.7116259365020363,
+   "centered_infidelity_bound": 1.0819643138242978,
+   "diagonal_ceiling_T": 0.8173293585181224,
+   "max_r_psi": 0.8099947064482171
+  },
+  {
+   "xi": 2.1,
+   "n0": 4.41,
+   "max_native_infidelity": 0.2981459025001821,
+   "duhamel_infidelity_bound": 1.9586553632935013,
+   "centered_infidelity_bound": 1.2108223930517834,
+   "diagonal_ceiling_T": 0.8030621627507473,
+   "max_r_psi": 0.8502867180917715
+  },
+  {
+   "xi": 2.15,
+   "n0": 4.6225,
+   "max_native_infidelity": 0.328704365258181,
+   "duhamel_infidelity_bound": 2.238080897244967,
+   "centered_infidelity_bound": 1.3527286792905693,
+   "diagonal_ceiling_T": 0.7881405000477466,
+   "max_r_psi": 0.8922053653013678
+  },
+  {
+   "xi": 2.2,
+   "n0": 4.840000000000001,
+   "max_native_infidelity": 0.3610381177321624,
+   "duhamel_infidelity_bound": 2.553655599087816,
+   "centered_infidelity_bound": 1.5087307618800039,
+   "diagonal_ceiling_T": 0.7725750236670417,
+   "max_r_psi": 0.9357939021225359
+  },
+  {
+   "xi": 2.25,
+   "n0": 5.0625,
+   "max_native_infidelity": 0.39497377050338,
+   "duhamel_infidelity_bound": 2.90949644768624,
+   "centered_infidelity_bound": 1.6799290038046866,
+   "diagonal_ceiling_T": 0.7563802861097259,
+   "max_r_psi": 0.9810987212685458
+  },
+  {
+   "xi": 2.3,
+   "n0": 5.289999999999999,
+   "max_native_infidelity": 0.43028874051586247,
+   "duhamel_infidelity_bound": 3.3101097645175046,
+   "centered_infidelity_bound": 1.867475171515632,
+   "diagonal_ceiling_T": 0.7395748193141023,
+   "max_r_psi": 1.0281637176322032
+  },
+  {
+   "xi": 2.35,
+   "n0": 5.522500000000001,
+   "max_native_infidelity": 0.46671398295621863,
+   "duhamel_infidelity_bound": 3.760416964633341,
+   "centered_infidelity_bound": 2.0725703783140013,
+   "diagonal_ceiling_T": 0.7221811784827014,
+   "max_r_psi": 1.0770334726253772
+  },
+  {
+   "xi": 2.4,
+   "n0": 5.76,
+   "max_native_infidelity": 0.5039391271687285,
+   "duhamel_infidelity_bound": 4.265780382156108,
+   "centered_infidelity_bound": 2.2964623294088002,
+   "diagonal_ceiling_T": 0.7042259468112482,
+   "max_r_psi": 1.1277481346240674
+  },
+  {
+   "xi": 2.45,
+   "n0": 6.002500000000001,
+   "max_native_infidelity": 0.5416199497069134,
+   "duhamel_infidelity_bound": 4.832028883795846,
+   "centered_infidelity_bound": 2.540441914411029,
+   "diagonal_ceiling_T": 0.6857396988145595,
+   "max_r_psi": 1.180349066991801
+  },
+  {
+   "xi": 2.5,
+   "n0": 6.25,
+   "max_native_infidelity": 0.5793879430398303,
+   "duhamel_infidelity_bound": 5.465482955454258,
+   "centered_infidelity_bound": 2.8058392805143355,
+   "diagonal_ceiling_T": 0.6667569204443525,
+   "max_r_psi": 1.234867829829971
+  }
+ ],
+ "fit": {
+  "infidelity_exponent": 1.8880980033390231,
+  "duhamel_exponent": 2.431510735393996,
+  "centered_exponent": 2.1004594559274588,
+  "points": 30
+ },
+ "unity_crossing": {
+  "duhamel_xi": 1.8554617294663533,
+  "centered_xi": 2.014913725441539
+ },
+ "benchmark": {
+  "1.75": {
+   "xi": 1.75,
+   "n0": 3.0625,
+   "max_native_infidelity": 0.13882300309685167,
+   "duhamel_infidelity_bound": 0.7393457052800034,
+   "centered_infidelity_bound": 0.5308860919746996,
+   "diagonal_ceiling_T": 0.8890489965552044,
+   "max_r_psi": 0.5999260534487213
+  },
+  "2.0": {
+   "xi": 2.0,
+   "n0": 4.0,
+   "max_native_infidelity": 0.24280197182656452,
+   "duhamel_infidelity_bound": 1.4935785909681212,
+   "centered_infidelity_bound": 0.9651603572119651,
+   "diagonal_ceiling_T": 0.8309352198542991,
+   "max_r_psi": 0.7712826310103842
+  }
+ },
+ "cutoff_convergence": {
+  "1.75": [
+   {
+    "N": 24,
+    "max_infidelity": 0.0014465720246437488
+   },
+   {
+    "N": 28,
+    "max_infidelity": 0.0004163451946135072
+   },
+   {
+    "N": 32,
+    "max_infidelity": 0.00011567741685502226
+   },
+   {
+    "N": 36,
+    "max_infidelity": 3.378612094881275e-05
+   },
+   {
+    "N": 40,
+    "max_infidelity": 1.0747038089652689e-05
+   },
+   {
+    "N": 44,
+    "max_infidelity": 3.5950382670957248e-06
+   },
+   {
+    "N": 48,
+    "max_infidelity": 1.2393407539167049e-06
+   },
+   {
+    "N": 56,
+    "max_infidelity": 1.5559494353278014e-07
+   },
+   {
+    "N": 64,
+    "max_infidelity": 2.103298036279398e-08
+   },
+   {
+    "N": 72,
+    "max_infidelity": 3.0377827723638435e-09
+   }
+  ],
+  "2.0": [
+   {
+    "N": 24,
+    "max_infidelity": 0.0081040477923319
+   },
+   {
+    "N": 28,
+    "max_infidelity": 0.0027439105370919933
+   },
+   {
+    "N": 32,
+    "max_infidelity": 0.0008796083914463298
+   },
+   {
+    "N": 36,
+    "max_infidelity": 0.0002928641977746044
+   },
+   {
+    "N": 40,
+    "max_infidelity": 0.00010583755549002034
+   },
+   {
+    "N": 44,
+    "max_infidelity": 3.9882930320194954e-05
+   },
+   {
+    "N": 48,
+    "max_infidelity": 1.535635453704317e-05
+   },
+   {
+    "N": 56,
+    "max_infidelity": 2.3521022354528514e-06
+   },
+   {
+    "N": 64,
+    "max_infidelity": 3.811025225625258e-07
+   },
+   {
+    "N": 72,
+    "max_infidelity": 6.468123381880807e-08
+   }
+  ]
+ },
+ "max_infidelity_change_N64_to_N80": 2.1431340436750546e-06,
+ "python": "/Users/zhen002/miniconda3/envs/cvdv/bin/python",
+ "numpy": "2.3.4"
+}

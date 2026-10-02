@@ -1,0 +1,62 @@
+{
+  "protocol": "manuscript-revision-plan-2026-09-24 Stage 1 development only",
+  "authorization": "User approved B0 and conditional B1, then authorized all subsequent computations within the final plan on 2026-09-24. Existing workload caps, continuation criteria and protocol freeze still apply.",
+  "output_root": "double_sine_gordon_data/stage1_continuation",
+  "memory_cap_bytes": 4294967296,
+  "storage_cap_bytes": 2147483648,
+  "execution": "serial processes, one BLAS thread",
+  "B0_wall_cap_seconds": 300,
+  "B1_wall_cap_seconds": 5400,
+  "B1_optimizer_cap_seconds": 1800,
+  "independent_validation_inputs": "sealed: never evaluated by these commands",
+  "jobs": [
+    {
+      "id": "E4_reference64",
+      "batch": "B1",
+      "wall_cap_seconds": 600,
+      "command": [
+        "/Users/zhen002/miniconda3/envs/cvdv/bin/python",
+        "-m",
+        "common_code.run_pilot",
+        "e4-refinement",
+        "--previous-reference",
+        "./double_sine_gordon_data/stage1/E4_reference",
+        "--outdir",
+        "./double_sine_gordon_data/stage1_continuation/E4_reference64"
+      ]
+    },
+    {
+      "id": "E4_compiled",
+      "batch": "B1",
+      "wall_cap_seconds": 1950,
+      "optimizer_cap_seconds": 900,
+      "requires_summary_true": [
+        "double_sine_gordon_data/stage1_continuation/E4_reference64/summary.json",
+        "continuation_signal_resolved"
+      ],
+      "command": [
+        "/Users/zhen002/miniconda3/envs/cvdv/bin/python",
+        "-m",
+        "common_code.run_pilot",
+        "e4-compiled",
+        "--outdir",
+        "./double_sine_gordon_data/stage1_continuation/E4_compiled"
+      ]
+    }
+  ],
+  "scope": {
+    "E1": "six beta/xi points, cutoffs 48/64, 401-point target and 801-point native quadrature check",
+    "E3": "three physical conditions, cutoffs 48/64, 1024 steps plus high-cutoff 2048-step check: nine integrations",
+    "E2": "one 15-minute H restart at r=10,L=8,seed=240731; constructive S_K; two development inputs; reference 64/80 and same-parameter pad 96/112; two rectangular norms",
+    "E4_reference": "lambda2=0,0.3 at 32/48, target/native/retuned/exact split with 257-point and 11-point grids",
+    "E4_compiled": "conditional one 15-minute local restart r=10,L=4,seed=20260729; twelve trig configurations; same-parameter 48/64 validation"
+  },
+  "limitations": [
+    "B0 runtime is unknown until approved measurement",
+    "Formal batches and noise are not authorized",
+    "Resource monitor samples process RSS and output size every 0.5 seconds",
+    "Reaching a cap stops the batch without extending dimensions or compute"
+  ],
+  "budget_accounting": "Continuation uses the unspent original B1 budget. Prior execution used under 60 seconds. This manifest caps additional work at 2550 seconds, below the original remaining 5400-second total.",
+  "reason": "The 32-to-48 state-distance difference did not resolve the primary threshold. N=64 is the final plan-permitted reference refinement."
+}

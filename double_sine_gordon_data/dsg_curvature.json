@@ -1,0 +1,46 @@
+{
+ "native": {
+  "E_J": 1.0,
+  "lambda2": 0.0,
+  "mean_curvature": 0.6645641760552479,
+  "mean_curvature_sites": [
+   0.6231560209509374,
+   0.705972331159558
+  ],
+  "min_curvature": 0.4676832456804283,
+  "max_abs_C12": 0.2792084010623616,
+  "max_S2": 0.24035914652958137,
+  "mean_cos2phi_site1": 0.13200974317424363,
+  "min_cos2phi_site1": -0.23361813981587734
+ },
+ "target": {
+  "E_J": 1.0,
+  "lambda2": 0.3,
+  "mean_curvature": 1.0209277335534221,
+  "mean_curvature_sites": [
+   0.8375357228517806,
+   1.2043197442550635
+  ],
+  "min_curvature": 0.1873414779013755,
+  "max_abs_C12": 0.1850301999355471,
+  "max_S2": 0.1523956209984739,
+  "mean_cos2phi_site1": 0.16584708119859007,
+  "min_cos2phi_site1": -0.23361813981587734
+ },
+ "retuned": {
+  "E_J": 2.2,
+  "lambda2": 0.0,
+  "mean_curvature": 1.6325354503373977,
+  "mean_curvature_sites": [
+   1.5127700910369997,
+   1.7523008096377946
+  ],
+  "min_curvature": 1.0289031404969424,
+  "max_abs_C12": 0.10264885272552032,
+  "max_S2": 0.0724632694318213,
+  "mean_cos2phi_site1": 0.1924343410878814,
+  "min_cos2phi_site1": -0.23361813981587734
+ },
+ "description": "Onsite curvature averaged along the native, target, and retuned double sine-Gordon trajectories.",
+ "cutoff": 128
+}

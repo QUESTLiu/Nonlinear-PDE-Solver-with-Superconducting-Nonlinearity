@@ -1,0 +1,243 @@
+{
+ "environment": {
+  "python": "/Users/zhen002/miniconda3/envs/cvdv/bin/python",
+  "python_version": "3.13.0",
+  "numpy": "2.3.4",
+  "scipy": "1.16.3",
+  "threads": "4"
+ },
+ "rows": [
+  {
+   "sites": 3,
+   "lambda2": 0.3,
+   "route": "kin_pot",
+   "r": 11,
+   "order": 3,
+   "block_orders": [
+    2,
+    1
+   ],
+   "s": 1,
+   "preparation": [
+    1.0,
+    0.0
+   ],
+   "cutoffs": [
+    128,
+    160
+   ],
+   "primitive_counts": {
+    "Ry": 167,
+    "Rz": 2,
+    "CD_Z": 198,
+    "Gaussian": 91
+   },
+   "total_programmable_primitives": 458,
+   "native_waits": 0,
+   "state_error": 0.04295428901068276,
+   "max_bures": 0.04290699683182253,
+   "margins": {
+    "reference": 1.725320252482121e-06,
+    "solver": 2.9802322387695312e-08,
+    "padding": 4.55370562853566e-05,
+    "C12": 2.644379409537635e-10,
+    "S2": 1.435247753978075e-12
+   },
+   "C12_error": 0.007288182296206294,
+   "S2_error": 0.00797669255277713,
+   "boundary_population": 1.0348916168467781e-09,
+   "boundary_low": 1.0348916168467781e-09,
+   "boundary_high": 2.461320036672987e-11,
+   "max_ancilla_excited": 1.885123093219246e-05,
+   "acceptance": {
+    "state": false,
+    "boundary": true,
+    "C12": true,
+    "S2": true
+   },
+   "all_criteria": false,
+   "wall_seconds": 49.093579125008546,
+   "primitive_counts_conjugated": {
+    "Ry": 332,
+    "CD_Z": 198,
+    "Rz": 165,
+    "Gaussian": 91
+   },
+   "total_programmable_primitives_conjugated": 786
+  },
+  {
+   "sites": 3,
+   "lambda2": 0.3,
+   "route": "kin_pot",
+   "r": 12,
+   "order": 3,
+   "block_orders": [
+    2,
+    1
+   ],
+   "s": 1,
+   "preparation": [
+    1.0,
+    0.0
+   ],
+   "cutoffs": [
+    128,
+    160
+   ],
+   "primitive_counts": {
+    "Ry": 182,
+    "Rz": 2,
+    "CD_Z": 216,
+    "Gaussian": 99
+   },
+   "total_programmable_primitives": 499,
+   "native_waits": 0,
+   "state_error": 0.03520382732377339,
+   "max_bures": 0.03515822104337778,
+   "margins": {
+    "reference": 1.725320252482121e-06,
+    "solver": 2.9802322387695312e-08,
+    "padding": 4.385115782073679e-05,
+    "C12": 3.053059638078647e-10,
+    "S2": 1.1973547153765196e-12
+   },
+   "C12_error": 0.006030477644816315,
+   "S2_error": 0.006456637223763294,
+   "boundary_population": 9.658068789164531e-10,
+   "boundary_low": 9.658068789164531e-10,
+   "boundary_high": 2.209976646128098e-11,
+   "max_ancilla_excited": 9.31587779325595e-06,
+   "acceptance": {
+    "state": false,
+    "boundary": true,
+    "C12": true,
+    "S2": true
+   },
+   "all_criteria": false,
+   "wall_seconds": 56.34236116599641,
+   "primitive_counts_conjugated": {
+    "Ry": 362,
+    "CD_Z": 216,
+    "Rz": 180,
+    "Gaussian": 99
+   },
+   "total_programmable_primitives_conjugated": 857
+  },
+  {
+   "sites": 3,
+   "lambda2": 0.3,
+   "route": "kin_pot",
+   "r": 13,
+   "order": 3,
+   "block_orders": [
+    2,
+    1
+   ],
+   "s": 1,
+   "preparation": [
+    1.0,
+    0.0
+   ],
+   "cutoffs": [
+    128,
+    160
+   ],
+   "primitive_counts": {
+    "Ry": 197,
+    "Rz": 2,
+    "CD_Z": 234,
+    "Gaussian": 107
+   },
+   "total_programmable_primitives": 540,
+   "native_waits": 0,
+   "state_error": 0.03032873939855897,
+   "max_bures": 0.030284971890213296,
+   "margins": {
+    "reference": 1.725320252482121e-06,
+    "solver": 2.9802322387695312e-08,
+    "padding": 4.201238577080396e-05,
+    "C12": 4.1077538770990714e-10,
+    "S2": 1.211163114245295e-12
+   },
+   "C12_error": 0.004972528300243977,
+   "S2_error": 0.005570563009565842,
+   "boundary_population": 8.629089665035394e-10,
+   "boundary_low": 8.629089665035394e-10,
+   "boundary_high": 2.0123458455145737e-11,
+   "max_ancilla_excited": 5.143045521032499e-06,
+   "acceptance": {
+    "state": true,
+    "boundary": true,
+    "C12": true,
+    "S2": true
+   },
+   "all_criteria": true,
+   "wall_seconds": 63.07713158399565,
+   "primitive_counts_conjugated": {
+    "Ry": 392,
+    "CD_Z": 234,
+    "Rz": 195,
+    "Gaussian": 107
+   },
+   "total_programmable_primitives_conjugated": 928
+  },
+  {
+   "sites": 3,
+   "lambda2": 0.3,
+   "route": "kin_pot",
+   "r": 14,
+   "order": 3,
+   "block_orders": [
+    2,
+    1
+   ],
+   "s": 1,
+   "preparation": [
+    1.0,
+    0.0
+   ],
+   "cutoffs": [
+    128,
+    160
+   ],
+   "primitive_counts": {
+    "Ry": 212,
+    "Rz": 2,
+    "CD_Z": 252,
+    "Gaussian": 115
+   },
+   "total_programmable_primitives": 581,
+   "native_waits": 0,
+   "state_error": 0.026144033823512526,
+   "max_bures": 0.02610309831411448,
+   "margins": {
+    "reference": 1.725320252482121e-06,
+    "solver": 2.9802322387695312e-08,
+    "padding": 3.918038682317908e-05,
+    "C12": 4.578120694198067e-10,
+    "S2": 1.2088732792570056e-12
+   },
+   "C12_error": 0.004356082486314552,
+   "S2_error": 0.004743223702333994,
+   "boundary_population": 7.049006933712576e-10,
+   "boundary_low": 7.049006933712576e-10,
+   "boundary_high": 1.8222090503172694e-11,
+   "max_ancilla_excited": 3.2281273849197337e-06,
+   "acceptance": {
+    "state": true,
+    "boundary": true,
+    "C12": true,
+    "S2": true
+   },
+   "all_criteria": true,
+   "wall_seconds": 68.798600582988,
+   "primitive_counts_conjugated": {
+    "Ry": 422,
+    "CD_Z": 252,
+    "Rz": 210,
+    "Gaussian": 115
+   },
+   "total_programmable_primitives_conjugated": 999
+  }
+ ]
+}
