@@ -1,6 +1,6 @@
-# Native nonlinear interactions versus programmable emulation in hybrid oscillator–qubit simulation
+# Hardware-native programmable emulation in hybrid oscillator–qubit simulation of nonlinear dynamics
 
-This repository contains the manuscript, the code and numerical records behind its numbers, tables and figures, and a Lean 4 formalization of several of its statements. Code and data are grouped by benchmark, and each `<topic>_code/` folder writes to the matching `<topic>_data/` folder.
+This repository contains the manuscript, the code and numerical records behind its numbers, tables and figures, and Lean 4 experiments on selected mathematical statements. Code and data are grouped by benchmark, and each `<topic>_code/` folder writes to the matching `<topic>_data/` folder.
 
 | Folder | Content |
 |---|---|
@@ -9,8 +9,8 @@ This repository contains the manuscript, the code and numerical records behind i
 | `duffing_code/`, `duffing_data/` | Duffing oscillator, Sec. III B and Appendix H |
 | `double_sine_gordon_code/`, `double_sine_gordon_data/` | Double sine-Gordon lattice, Sec. III C and Appendices I, J and K |
 | `common_code/`, `common_data/` | Pipeline infrastructure shared by the benchmarks, the figure script, and records that span several benchmarks |
-| `lean_proof/` | Lean 4 formalization of the statements in Appendix L |
-| `legacy/` | Earlier implementations, including the Kerr-lattice calculation used in Appendix M |
+| `lean_proof/` | Lean 4 formalization experiments |
+| `legacy/` | Earlier implementations, including the Kerr-lattice calculation used in Appendix L |
 
 ## Environment
 
@@ -69,7 +69,7 @@ The duration analysis in Fig. 7 is post-processing of 34 evaluated two-site cand
 
 ### Analytic correction in a Kerr lattice
 
-Appendix M uses `legacy/nlse_fock_cutoff_hybrid.py` to compare a native Kerr lattice with a target containing the local interaction W N(N−1)(N−2)/6. `common_code/check_number_diagonal.py` reruns one parameter point, checks the analytic SNAP phases independently using integer occupations, and halves the time step at the largest tested cutoff.
+Appendix L uses `legacy/nlse_fock_cutoff_hybrid.py` to compare a native Kerr lattice with a target containing the local interaction W N(N−1)(N−2)/6. `common_code/check_number_diagonal.py` reruns one parameter point, checks the analytic SNAP phases independently using integer occupations, and halves the time step at the largest tested cutoff.
 
 Run from the repository root in the environment above:
 
@@ -103,8 +103,8 @@ The reported error is the maximum infidelity, 1 − |overlap|², over the 81 sto
 | `common_code/derived_numbers.py` | `common_data/derived_numbers.json` | numbers in Secs. III A and III B and Appendix F |
 | `common_code/class_diagnostics.py` | `common_data/class_diagnostics.json` | Table IV |
 | `common_code/make_figures.py` | `paper/figures/*.pdf` | Figs. 2–6 and 8–10 |
-| `legacy/nlse_fock_cutoff_hybrid.py`, `common_code/check_number_diagonal.py` | `common_data/number_diagonal_check/` | Appendix M, analytic number-diagonal correction and the cutoff check at W = 0.3 |
-| `lean_proof/` | `common_data/records/lean-build.log`, `lean-axioms.log` | Appendix L |
+| `legacy/nlse_fock_cutoff_hybrid.py`, `common_code/check_number_diagonal.py` | `common_data/number_diagonal_check/` | Appendix L, analytic number-diagonal correction and the cutoff check at W = 0.3 |
+| `lean_proof/` | `common_data/records/lean-build.log`, `lean-axioms.log` | Formalization experiments |
 
 `python common_code/make_figures.py` redraws the benchmark figures from the data folders in a few seconds. `python double_sine_gordon_code/dsg_control_tradeoffs.py` reads the stored two-site step scan and regenerates the conditional duration comparison in Fig. 7, including its JSON record. Fig. 1 is drawn with TikZ, and `tectonic fig_overview.tex` in `paper/figures/` rebuilds it.
 
