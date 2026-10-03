@@ -79,7 +79,9 @@ def local_op(op: sp.spmatrix, site: int, sites: int, cutoff: int) -> sp.csr_matr
     return out.tocsr()
 
 
-def build_ops(sites: int, cutoff: int) -> Tuple[List[sp.csr_matrix], List[sp.csr_matrix]]:
+def build_ops(
+    sites: int, cutoff: int
+) -> Tuple[List[sp.csr_matrix], List[sp.csr_matrix]]:
     a = destroy(cutoff).astype(complex)
     n = (a.conjugate().transpose() @ a).tocsr()
     a_ops = [local_op(a, j, sites, cutoff) for j in range(sites)]
@@ -106,7 +108,7 @@ def build_hamiltonians(
 
     The diagonal of H_corr is returned separately for fast SNAP-like correction phases.
     """
-    dim = cutoff ** sites
+    dim = cutoff**sites
     I = sp.identity(dim, format="csr", dtype=complex)
     a_ops, n_ops = build_ops(sites, cutoff)
 
@@ -114,6 +116,9 @@ def build_hamiltonians(
     H_corr = sp.csr_matrix((dim, dim), dtype=complex)
 
     for n_j in n_ops:
+        # Normal ordering gives a^dag2*a^2=n(n-1) and
+        # a^dag3*a^3=n(n-1)(n-2). The factors 1/2! and 1/3! set the
+        # pair/triple interaction convention, including the zero low-level phases.
         H_native += omega * n_j
         H_native += 0.5 * U * (n_j @ (n_j - I))
         H_corr += (W / 6.0) * (n_j @ (n_j - I) @ (n_j - 2.0 * I))
@@ -161,7 +166,7 @@ def initial_coherent_wavepacket(
     center = 0.5 * (sites - 1)
     local = []
     for j in range(sites):
-        envelope = math.exp(-((j - center) ** 2) / (2.0 * sigma ** 2))
+        envelope = math.exp(-((j - center) ** 2) / (2.0 * sigma**2))
         phase = np.exp(1j * k0 * (j - center))
         alpha_j = amp * envelope * phase
         local.append(coherent_coeff(alpha_j, cutoff))
@@ -171,7 +176,14 @@ def initial_coherent_wavepacket(
 def evolve_exact(H: sp.csr_matrix, psi0: np.ndarray, times: np.ndarray) -> np.ndarray:
     """Return states psi(t_i)=exp(-i H t_i) psi0 for all times."""
     A = (-1j) * H
-    return expm_multiply(A, psi0, start=float(times[0]), stop=float(times[-1]), num=len(times), endpoint=True)
+    return expm_multiply(
+        A,
+        psi0,
+        start=float(times[0]),
+        stop=float(times[-1]),
+        num=len(times),
+        endpoint=True,
+    )
 
 
 def evolve_hybrid_strang(
@@ -192,7 +204,9 @@ def evolve_hybrid_strang(
     H_corr is a diagonal number-selective correction pulse, analogous to a SNAP/number-phase layer.
     """
     if trotter_steps % (n_time - 1) != 0:
-        raise ValueError("For simple sampling, choose trotter_steps divisible by n_time-1.")
+        raise ValueError(
+            "For simple sampling, choose trotter_steps divisible by n_time-1."
+        )
 
     sample_every = trotter_steps // (n_time - 1)
     dt = T / trotter_steps
@@ -201,6 +215,9 @@ def evolve_hybrid_strang(
     times = [0.0]
 
     phase_corr = np.exp(-1j * H_corr_diag * dt)
+    # The onsite number polynomials commute, so this phase is the exact product
+    # of local SNAP corrections at the chosen cutoff. Splitting error comes from
+    # hopping between sites, which generally does not commute with H_corr.
     A_half = (-1j * H_native) * (0.5 * dt)
 
     for step in range(1, trotter_steps + 1):
@@ -226,11 +243,13 @@ def flat_index(occ: Sequence[int], cutoff: int) -> int:
     return idx
 
 
-def embed_state(psi_small: np.ndarray, sites: int, cutoff_small: int, cutoff_ref: int) -> np.ndarray:
+def embed_state(
+    psi_small: np.ndarray, sites: int, cutoff_small: int, cutoff_ref: int
+) -> np.ndarray:
     """Embed a state from smaller local cutoff into the larger reference Fock space."""
     if cutoff_small == cutoff_ref:
         return psi_small.copy()
-    out = np.zeros(cutoff_ref ** sites, dtype=complex)
+    out = np.zeros(cutoff_ref**sites, dtype=complex)
     for occ in basis_tuples(sites, cutoff_small):
         i_small = flat_index(occ, cutoff_small)
         i_ref = flat_index(occ, cutoff_ref)
@@ -247,14 +266,18 @@ def fidelity(psi: np.ndarray, phi: np.ndarray) -> float:
     return float(abs(np.vdot(psi / n1, phi / n2)) ** 2)
 
 
-def max_infidelity(states_a: np.ndarray, states_b: np.ndarray) -> Tuple[float, float, np.ndarray]:
+def max_infidelity(
+    states_a: np.ndarray, states_b: np.ndarray
+) -> Tuple[float, float, np.ndarray]:
     fids = np.array([fidelity(a, b) for a, b in zip(states_a, states_b)], dtype=float)
     infids = 1.0 - fids
     imax = int(np.argmax(infids))
     return float(infids[imax]), float(fids[-1]), fids
 
 
-def photon_tail_probability(psi_ref: np.ndarray, sites: int, cutoff: int, cutoff_ref: int) -> float:
+def photon_tail_probability(
+    psi_ref: np.ndarray, sites: int, cutoff: int, cutoff_ref: int
+) -> float:
     """Probability weight in reference state outside the smaller local cutoff."""
     if cutoff >= cutoff_ref:
         return 0.0
@@ -266,7 +289,9 @@ def photon_tail_probability(psi_ref: np.ndarray, sites: int, cutoff: int, cutoff
     return float(max(0.0, 1.0 - prob_inside))
 
 
-def write_csv(path: str, rows: List[Dict[str, object]], fieldnames: Sequence[str]) -> None:
+def write_csv(
+    path: str, rows: List[Dict[str, object]], fieldnames: Sequence[str]
+) -> None:
     with open(path, "w", newline="") as f:
         writer = csv.DictWriter(f, fieldnames=fieldnames)
         writer.writeheader()
@@ -287,16 +312,32 @@ def maybe_plot(outdir: str, rows: List[Dict[str, object]]) -> None:
 
     # Plot max infidelity versus W for each cutoff.
     for key, ylabel, fname in [
-        ("max_infid_native_vs_ref", "max infidelity: native only", "max_infid_native_vs_W.png"),
-        ("max_infid_hybrid_vs_ref", "max infidelity: hybrid corrected", "max_infid_hybrid_vs_W.png"),
-        ("max_infid_cutoff_floor", "max infidelity: finite-cutoff target", "max_infid_cutoff_floor_vs_W.png"),
+        (
+            "max_infid_native_vs_ref",
+            "max infidelity: native only",
+            "max_infid_native_vs_W.png",
+        ),
+        (
+            "max_infid_hybrid_vs_ref",
+            "max infidelity: hybrid corrected",
+            "max_infid_hybrid_vs_W.png",
+        ),
+        (
+            "max_infid_cutoff_floor",
+            "max infidelity: finite-cutoff target",
+            "max_infid_cutoff_floor_vs_W.png",
+        ),
     ]:
         plt.figure()
         for nc in cutoffs:
             xs = []
             ys = []
             for W in Wvals:
-                match = [r for r in rows if int(r["cutoff"]) == nc and abs(float(r["W"]) - W) < 1e-15]
+                match = [
+                    r
+                    for r in rows
+                    if int(r["cutoff"]) == nc and abs(float(r["W"]) - W) < 1e-15
+                ]
                 if match:
                     xs.append(W)
                     ys.append(float(match[0][key]))
@@ -316,7 +357,11 @@ def maybe_plot(outdir: str, rows: List[Dict[str, object]]) -> None:
     hybrid = []
     floor = []
     for nc in cutoffs:
-        match = [r for r in rows if int(r["cutoff"]) == nc and abs(float(r["W"]) - Wmax) < 1e-15]
+        match = [
+            r
+            for r in rows
+            if int(r["cutoff"]) == nc and abs(float(r["W"]) - Wmax) < 1e-15
+        ]
         if match:
             xs.append(nc)
             native.append(float(match[0]["max_infid_native_vs_ref"]))
@@ -338,27 +383,55 @@ def run(params: Params, cutoffs: Sequence[int]) -> None:
     times = np.linspace(0.0, params.T, params.n_time)
 
     fieldnames = [
-        "sites", "cutoff", "ref_cutoff", "dim", "ref_dim", "W", "omega", "J", "U", "T",
-        "n_time", "trotter_steps", "periodic", "initial_amp", "initial_sigma", "initial_k0",
-        "max_infid_native_vs_ref", "final_fid_native_vs_ref",
-        "max_infid_cutoff_floor", "final_fid_cutoff_floor",
-        "max_infid_hybrid_vs_ref", "final_fid_hybrid_vs_ref",
-        "max_infid_hybrid_vs_finite_target", "final_fid_hybrid_vs_finite_target",
-        "final_ref_tail_prob_outside_cutoff", "runtime_seconds"
+        "sites",
+        "cutoff",
+        "ref_cutoff",
+        "dim",
+        "ref_dim",
+        "W",
+        "omega",
+        "J",
+        "U",
+        "T",
+        "n_time",
+        "trotter_steps",
+        "periodic",
+        "initial_amp",
+        "initial_sigma",
+        "initial_k0",
+        "max_infid_native_vs_ref",
+        "final_fid_native_vs_ref",
+        "max_infid_cutoff_floor",
+        "final_fid_cutoff_floor",
+        "max_infid_hybrid_vs_ref",
+        "final_fid_hybrid_vs_ref",
+        "max_infid_hybrid_vs_finite_target",
+        "final_fid_hybrid_vs_finite_target",
+        "final_ref_tail_prob_outside_cutoff",
+        "runtime_seconds",
     ]
     all_rows: List[Dict[str, object]] = []
 
     for W in params.W_values:
         t0_W = time.time()
-        print(f"\n=== W = {W:g}: building reference cutoff {params.ref_cutoff} ===", flush=True)
+        print(
+            f"\n=== W = {W:g}: building reference cutoff {params.ref_cutoff} ===",
+            flush=True,
+        )
         Hn_ref, Hc_ref, Ht_ref, _ = build_hamiltonians(
-            params.sites, params.ref_cutoff, params.omega, params.J, params.U, W, params.periodic
+            params.sites,
+            params.ref_cutoff,
+            params.omega,
+            params.J,
+            params.U,
+            W,
+            params.periodic,
         )
         psi0_ref = initial_coherent_wavepacket(
             params.sites, params.ref_cutoff, params.amp, params.sigma, params.k0
         )
         ref_states = evolve_exact(Ht_ref, psi0_ref, times)
-        print(f"Reference evolution done in {time.time()-t0_W:.2f} s", flush=True)
+        print(f"Reference evolution done in {time.time() - t0_W:.2f} s", flush=True)
 
         # Save reference final state for reproducibility/debugging.
         np.savez_compressed(
@@ -374,9 +447,17 @@ def run(params: Params, cutoffs: Sequence[int]) -> None:
             t0 = time.time()
             print(f"--- cutoff = {cutoff} ---", flush=True)
             Hn, Hc, Ht, Hc_diag = build_hamiltonians(
-                params.sites, cutoff, params.omega, params.J, params.U, W, params.periodic
+                params.sites,
+                cutoff,
+                params.omega,
+                params.J,
+                params.U,
+                W,
+                params.periodic,
             )
-            psi0 = initial_coherent_wavepacket(params.sites, cutoff, params.amp, params.sigma, params.k0)
+            psi0 = initial_coherent_wavepacket(
+                params.sites, cutoff, params.amp, params.sigma, params.k0
+            )
 
             native_states = evolve_exact(Hn, psi0, times)
             finite_target_states = evolve_exact(Ht, psi0, times)
@@ -386,15 +467,34 @@ def run(params: Params, cutoffs: Sequence[int]) -> None:
             if not np.allclose(t_hybrid, times):
                 raise RuntimeError("Internal time grid mismatch.")
 
-            native_emb = np.asarray([embed_state(s, params.sites, cutoff, params.ref_cutoff) for s in native_states])
-            target_emb = np.asarray([embed_state(s, params.sites, cutoff, params.ref_cutoff) for s in finite_target_states])
-            hybrid_emb = np.asarray([embed_state(s, params.sites, cutoff, params.ref_cutoff) for s in hybrid_states])
+            native_emb = np.asarray(
+                [
+                    embed_state(s, params.sites, cutoff, params.ref_cutoff)
+                    for s in native_states
+                ]
+            )
+            target_emb = np.asarray(
+                [
+                    embed_state(s, params.sites, cutoff, params.ref_cutoff)
+                    for s in finite_target_states
+                ]
+            )
+            hybrid_emb = np.asarray(
+                [
+                    embed_state(s, params.sites, cutoff, params.ref_cutoff)
+                    for s in hybrid_states
+                ]
+            )
 
             max_nat, final_nat, fid_nat = max_infidelity(ref_states, native_emb)
             max_floor, final_floor, fid_floor = max_infidelity(ref_states, target_emb)
             max_hyb, final_hyb, fid_hyb = max_infidelity(ref_states, hybrid_emb)
-            max_trot, final_trot, fid_trot = max_infidelity(finite_target_states, hybrid_states)
-            tail_final = photon_tail_probability(ref_states[-1], params.sites, cutoff, params.ref_cutoff)
+            max_trot, final_trot, fid_trot = max_infidelity(
+                finite_target_states, hybrid_states
+            )
+            tail_final = photon_tail_probability(
+                ref_states[-1], params.sites, cutoff, params.ref_cutoff
+            )
 
             # Save time traces for this parameter pair.
             np.savez_compressed(
@@ -413,8 +513,8 @@ def run(params: Params, cutoffs: Sequence[int]) -> None:
                 "sites": params.sites,
                 "cutoff": cutoff,
                 "ref_cutoff": params.ref_cutoff,
-                "dim": cutoff ** params.sites,
-                "ref_dim": params.ref_cutoff ** params.sites,
+                "dim": cutoff**params.sites,
+                "ref_dim": params.ref_cutoff**params.sites,
                 "W": W,
                 "omega": params.omega,
                 "J": params.J,
@@ -458,11 +558,20 @@ def main() -> None:
     ap.add_argument("--cutoffs", type=str, default="4,6,8,10,12")
     ap.add_argument("--ref-cutoff", type=int, default=16)
     ap.add_argument("--omega", type=float, default=0.0)
-    ap.add_argument("--J", type=float, default=0.5, help="Use J=0.5 for a=1 so Ja^2=1/2.")
-    ap.add_argument("--U", type=float, default=0.8, help="Native cubic/Kerr nonlinearity strength.")
+    ap.add_argument(
+        "--J", type=float, default=0.5, help="Use J=0.5 for a=1 so Ja^2=1/2."
+    )
+    ap.add_argument(
+        "--U", type=float, default=0.8, help="Native cubic/Kerr nonlinearity strength."
+    )
     ap.add_argument("--W-values", type=str, default="0,0.05,0.10,0.15,0.20,0.25,0.30")
     ap.add_argument("--T", type=float, default=4.0)
-    ap.add_argument("--n-time", type=int, default=81, help="Number of saved times. trotter_steps must be divisible by n_time-1.")
+    ap.add_argument(
+        "--n-time",
+        type=int,
+        default=81,
+        help="Number of saved times. trotter_steps must be divisible by n_time-1.",
+    )
     ap.add_argument("--trotter-steps", type=int, default=160)
     ap.add_argument("--amp", type=float, default=1.25)
     ap.add_argument("--sigma", type=float, default=0.9)

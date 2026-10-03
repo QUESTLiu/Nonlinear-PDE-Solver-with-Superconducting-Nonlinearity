@@ -1,0 +1,16 @@
+{
+  "status": "solver_success",
+  "message": "Optimization terminated successfully",
+  "iterations": 58,
+  "evaluations": 65,
+  "objective": 0.000851982740593874,
+  "elapsed_seconds": 0.3525229999795556,
+  "cpu_seconds": 0.21525199999999955,
+  "constraint_violation": 0.0,
+  "seed": 20260730,
+  "method": "SLSQP",
+  "maxiter": 1200,
+  "ftol": 1e-12,
+  "common_phase": 0.03294089970501656,
+  "regularization": 1e-08
+}

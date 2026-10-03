@@ -1,0 +1,199 @@
+{
+  "development": true,
+  "T": 3.002221399786054,
+  "omega_b": 1.7320508075688772,
+  "Omega_time": 1.7320508075688772,
+  "records": [
+    {
+      "lambda2": 0.0,
+      "N": 48,
+      "name": "/Users/zhen002/GitHub/nonlinear-PDE-simulator/pra/results/stage1/E4_reference/E4_reference_lambda0_N48",
+      "routes": {
+        "target": {
+          "max_distance": 0.0
+        },
+        "native": {
+          "max_distance": 0.0
+        },
+        "retuned_native": {
+          "max_distance": 0.0
+        },
+        "exact_split": {
+          "max_distance": 1.49764974879423e-14
+        }
+      },
+      "solver": {
+        "state_distance": 5.189018084928179e-11,
+        "C12": 2.743307527648345e-12,
+        "S2": 2.766842310819584e-12
+      },
+      "comparator_solver": {},
+      "mean_field_crossing": {
+        "crossed": true,
+        "time": 1.4286533463131004,
+        "bracket": [
+          1.4190187084926271,
+          1.4307461358355413
+        ],
+        "right_censored_at": null
+      },
+      "classical_amplitude": 0.8295384713122245
+    },
+    {
+      "lambda2": 0.3,
+      "N": 48,
+      "name": "/Users/zhen002/GitHub/nonlinear-PDE-simulator/pra/results/stage1/E4_reference/E4_reference_lambda0.3_N48",
+      "routes": {
+        "target": {
+          "max_distance": 0.0
+        },
+        "native": {
+          "max_distance": 0.41076399307607947
+        },
+        "retuned_native": {
+          "max_distance": 0.5283194341020918
+        },
+        "exact_split": {
+          "max_distance": 0.0060284301686150355
+        }
+      },
+      "solver": {
+        "state_distance": 6.741054403129331e-11,
+        "C12": 2.306517827860802e-12,
+        "S2": 2.4391654061123313e-12
+      },
+      "comparator_solver": {
+        "native": {
+          "state_distance": 5.189018084928179e-11,
+          "C12": 2.743307527648345e-12,
+          "S2": 2.766842310819584e-12
+        },
+        "retuned_native": {
+          "state_distance": 5.3067604149689373e-11,
+          "C12": 3.4185562727177935e-12,
+          "S2": 6.117016615458937e-12
+        }
+      },
+      "mean_field_crossing": {
+        "crossed": true,
+        "time": 0.7030028604752551,
+        "bracket": [
+          0.6919182132319421,
+          0.7036456405748565
+        ],
+        "right_censored_at": null
+      },
+      "classical_amplitude": 0.911092892657328
+    },
+    {
+      "lambda2": 0.0,
+      "N": 64,
+      "name": "E4_reference_lambda0_N64",
+      "routes": {
+        "target": {
+          "max_distance": 0.0
+        },
+        "native": {
+          "max_distance": 0.0
+        },
+        "retuned_native": {
+          "max_distance": 0.0
+        },
+        "exact_split": {
+          "max_distance": 2.87879956768824e-14
+        }
+      },
+      "solver": {
+        "state_distance": 1.1533525209501107e-08,
+        "C12": 3.738306768715013e-12,
+        "S2": 3.472081996913623e-12
+      },
+      "comparator_solver": {},
+      "mean_field_crossing": {
+        "crossed": true,
+        "time": 1.4286533420064331,
+        "bracket": [
+          1.4190187084926271,
+          1.4307461358355413
+        ],
+        "right_censored_at": null
+      },
+      "classical_amplitude": 0.8295384713122245
+    },
+    {
+      "lambda2": 0.3,
+      "N": 64,
+      "name": "E4_reference_lambda0.3_N64",
+      "routes": {
+        "target": {
+          "max_distance": 0.0
+        },
+        "native": {
+          "max_distance": 0.4107827069667859
+        },
+        "retuned_native": {
+          "max_distance": 0.5283111205239241
+        },
+        "exact_split": {
+          "max_distance": 0.006028430168554698
+        }
+      },
+      "solver": {
+        "state_distance": 7.338770311221429e-09,
+        "C12": 2.8992462002305552e-12,
+        "S2": 3.0648943127355166e-12
+      },
+      "comparator_solver": {
+        "native": {
+          "state_distance": 1.1533525209501107e-08,
+          "C12": 3.738306768715013e-12,
+          "S2": 3.472081996913623e-12
+        },
+        "retuned_native": {
+          "state_distance": 5.333124872436433e-09,
+          "C12": 4.666275991710533e-12,
+          "S2": 8.127234996102572e-12
+        }
+      },
+      "mean_field_crossing": {
+        "crossed": true,
+        "time": 0.7030028604744992,
+        "bracket": [
+          0.6919182132319421,
+          0.7036456405748565
+        ],
+        "right_censored_at": null
+      },
+      "classical_amplitude": 0.911092892657328
+    }
+  ],
+  "empirical_cutoff_estimates": {
+    "state_distance": 0.01676079622733833,
+    "C12": 8.984469395367491e-05,
+    "S2": 4.3294687543382615e-08
+  },
+  "C12_effects": {
+    "native": 0.1151663060322247,
+    "retuned_native": 0.13807757734888487
+  },
+  "combined_signal_uncertainty": {
+    "native": 0.00015870957649822778,
+    "retuned_native": 0.00010437226100791668
+  },
+  "empirical_total_estimates": {
+    "state_distance": 0.01676080356610864,
+    "C12": 8.984469685292111e-05,
+    "S2": 4.329775243769535e-08
+  },
+  "continuation_signal_resolved": false,
+  "continuation_scope": "cutoff comparison and independent DOP853 reference check; development numerical evidence",
+  "wall_seconds": 30.874138208979275,
+  "cpu_seconds": 30.7009,
+  "peak_memory_bytes": 488161280,
+  "provenance": {
+    "python": "/Users/zhen002/miniconda3/envs/cvdv/bin/python",
+    "python_version": "3.13.0",
+    "numpy": "2.3.4",
+    "scipy": "1.16.3"
+  }
+}

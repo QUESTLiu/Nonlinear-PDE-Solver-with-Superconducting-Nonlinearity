@@ -1,0 +1,32 @@
+{
+  "batch": "B3-S",
+  "results": [
+    {
+      "id": "E4_formal",
+      "status": "completed",
+      "returncode": 0,
+      "reason": null,
+      "wall_seconds": 1260.251582041994,
+      "peak_rss_bytes": 1632976896,
+      "command": [
+        "/Users/zhen002/miniconda3/envs/cvdv/bin/python",
+        "-m",
+        "pra.run_sg_formal",
+        "--reference",
+        "/Users/zhen002/GitHub/nonlinear-PDE-simulator/pra/results/sg128/reference",
+        "--pilot",
+        "/Users/zhen002/GitHub/nonlinear-PDE-simulator/pra/results/sg128/compiled_tensor",
+        "--protocol",
+        "/Users/zhen002/GitHub/nonlinear-PDE-simulator/pra/sg_formal_protocol.json",
+        "--outdir",
+        "/Users/zhen002/GitHub/nonlinear-PDE-simulator/pra/results/sg_formal/comparison"
+      ]
+    }
+  ],
+  "provenance": {
+    "python": "/Users/zhen002/miniconda3/envs/cvdv/bin/python",
+    "python_version": "3.13.0",
+    "numpy": "2.3.4",
+    "scipy": "1.16.3"
+  }
+}

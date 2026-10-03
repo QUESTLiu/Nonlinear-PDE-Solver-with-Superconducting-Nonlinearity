@@ -1,0 +1,30 @@
+{
+  "batch": "B3-S",
+  "results": [
+    {
+      "id": "paired_initialization",
+      "status": "completed",
+      "returncode": 0,
+      "reason": null,
+      "wall_seconds": 292.86754599999404,
+      "peak_rss_bytes": 1475952640,
+      "command": [
+        "/Users/zhen002/miniconda3/envs/cvdv/bin/python",
+        "-m",
+        "pra.run_sg_refinement",
+        "--outdir",
+        "/Users/zhen002/GitHub/nonlinear-PDE-simulator/pra/results/sg_refinement/paired",
+        "--protocol",
+        "/Users/zhen002/GitHub/nonlinear-PDE-simulator/pra/sg_refinement_protocol.json",
+        "--reference",
+        "/Users/zhen002/GitHub/nonlinear-PDE-simulator/pra/results/sg128/reference"
+      ]
+    }
+  ],
+  "provenance": {
+    "python": "/Users/zhen002/miniconda3/envs/cvdv/bin/python",
+    "python_version": "3.13.0",
+    "numpy": "2.3.4",
+    "scipy": "1.16.3"
+  }
+}

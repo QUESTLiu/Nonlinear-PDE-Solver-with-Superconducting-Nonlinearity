@@ -1,0 +1,1029 @@
+{
+ "description": "Double sine-Gordon circuits on an open chain of N sites.",
+ "sites": 3,
+ "cutoffs": [
+  128,
+  160
+ ],
+ "rows": [
+  {
+   "sites": 3,
+   "lambda2": 0.3,
+   "route": "gauss_block",
+   "r": 6,
+   "order": 3,
+   "block_orders": [
+    2,
+    1
+   ],
+   "s": 1,
+   "preparation": [
+    1.0,
+    0.0
+   ],
+   "cutoffs": [
+    128,
+    160
+   ],
+   "primitive_counts": {
+    "Ry": 92,
+    "Rz": 2,
+    "CD_Z": 108,
+    "Gaussian": 90
+   },
+   "total_programmable_primitives": 292,
+   "native_waits": 0,
+   "state_error": 0.053144012810873546,
+   "max_bures": 0.05294752513474112,
+   "margins": {
+    "reference": 1.725320252482121e-06,
+    "solver": 2.9802322387695312e-08,
+    "padding": 0.00019473255355755242,
+    "C12": 1.0611449755664975e-08,
+    "S2": 1.1614528783177036e-12
+   },
+   "C12_error": 0.005073840150753971,
+   "S2_error": 0.006968294582546379,
+   "boundary_population": 9.324515826136803e-09,
+   "boundary_low": 9.324515826136803e-09,
+   "boundary_high": 5.949210013511674e-10,
+   "max_ancilla_excited": 0.0007082135358177704,
+   "acceptance": {
+    "state": false,
+    "boundary": true,
+    "C12": true,
+    "S2": true
+   },
+   "all_criteria": false,
+   "wall_seconds": 41.353251083986834,
+   "primitive_counts_conjugated": {
+    "Ry": 182,
+    "CD_Z": 108,
+    "Rz": 90,
+    "Gaussian": 90
+   },
+   "total_programmable_primitives_conjugated": 470
+  },
+  {
+   "sites": 3,
+   "lambda2": 0.3,
+   "route": "gauss_block",
+   "r": 6,
+   "order": 2,
+   "block_orders": [
+    2,
+    2
+   ],
+   "s": 1,
+   "preparation": [
+    1.0,
+    0.0
+   ],
+   "cutoffs": [
+    128,
+    160
+   ],
+   "primitive_counts": {
+    "Ry": 110,
+    "Rz": 2,
+    "CD_Z": 126,
+    "Gaussian": 90
+   },
+   "total_programmable_primitives": 328,
+   "native_waits": 0,
+   "state_error": 0.05006104893957201,
+   "max_bures": 0.0499880911850921,
+   "margins": {
+    "reference": 1.725320252482121e-06,
+    "solver": 2.9802322387695312e-08,
+    "padding": 7.120263190503539e-05,
+    "C12": 1.2039651853559737e-09,
+    "S2": 1.172943686622574e-12
+   },
+   "C12_error": 0.0048795139392286595,
+   "S2_error": 0.006268594496500267,
+   "boundary_population": 1.1393472831855433e-09,
+   "boundary_low": 1.1393472831855433e-09,
+   "boundary_high": 7.000455770622693e-11,
+   "max_ancilla_excited": 0.00020535150718780612,
+   "acceptance": {
+    "state": false,
+    "boundary": true,
+    "C12": true,
+    "S2": true
+   },
+   "all_criteria": false,
+   "wall_seconds": 39.755154167010915,
+   "primitive_counts_conjugated": {
+    "Ry": 218,
+    "CD_Z": 126,
+    "Rz": 108,
+    "Gaussian": 90
+   },
+   "total_programmable_primitives_conjugated": 542
+  },
+  {
+   "sites": 3,
+   "lambda2": 0.3,
+   "route": "gauss_block",
+   "r": 7,
+   "order": 3,
+   "block_orders": [
+    2,
+    1
+   ],
+   "s": 1,
+   "preparation": [
+    1.0,
+    0.0
+   ],
+   "cutoffs": [
+    128,
+    160
+   ],
+   "primitive_counts": {
+    "Ry": 107,
+    "Rz": 2,
+    "CD_Z": 126,
+    "Gaussian": 102
+   },
+   "total_programmable_primitives": 337,
+   "native_waits": 0,
+   "state_error": 0.035639297856691184,
+   "max_bures": 0.035522188289972834,
+   "margins": {
+    "reference": 1.725320252482121e-06,
+    "solver": 2.9802322387695312e-08,
+    "padding": 0.00011535444414347789,
+    "C12": 2.641241569651294e-09,
+    "S2": 1.196882870591054e-12
+   },
+   "C12_error": 0.00355862785829493,
+   "S2_error": 0.003949390305685842,
+   "boundary_population": 3.757554489780546e-09,
+   "boundary_low": 3.757554489780546e-09,
+   "boundary_high": 1.6674639446989659e-10,
+   "max_ancilla_excited": 0.00032498230458899836,
+   "acceptance": {
+    "state": false,
+    "boundary": true,
+    "C12": true,
+    "S2": true
+   },
+   "all_criteria": false,
+   "wall_seconds": 50.199536375002936,
+   "primitive_counts_conjugated": {
+    "Ry": 212,
+    "CD_Z": 126,
+    "Rz": 105,
+    "Gaussian": 102
+   },
+   "total_programmable_primitives_conjugated": 545
+  },
+  {
+   "sites": 3,
+   "lambda2": 0.3,
+   "route": "gauss_block",
+   "r": 7,
+   "order": 2,
+   "block_orders": [
+    2,
+    2
+   ],
+   "s": 1,
+   "preparation": [
+    1.0,
+    0.0
+   ],
+   "cutoffs": [
+    128,
+    160
+   ],
+   "primitive_counts": {
+    "Ry": 128,
+    "Rz": 2,
+    "CD_Z": 147,
+    "Gaussian": 102
+   },
+   "total_programmable_primitives": 379,
+   "native_waits": 0,
+   "state_error": 0.03459532050964355,
+   "max_bures": 0.03456227266473124,
+   "margins": {
+    "reference": 1.725320252482121e-06,
+    "solver": 2.9802322387695312e-08,
+    "padding": 3.1292722337434656e-05,
+    "C12": 2.1187268109518202e-10,
+    "S2": 1.219017942144518e-12
+   },
+   "C12_error": 0.0035864933242256486,
+   "S2_error": 0.003571642289002426,
+   "boundary_population": 2.489736194988268e-10,
+   "boundary_low": 2.489736194988268e-10,
+   "boundary_high": 1.2795431381107392e-11,
+   "max_ancilla_excited": 6.325034188697445e-05,
+   "acceptance": {
+    "state": false,
+    "boundary": true,
+    "C12": true,
+    "S2": true
+   },
+   "all_criteria": false,
+   "wall_seconds": 50.56674441599171,
+   "primitive_counts_conjugated": {
+    "Ry": 254,
+    "CD_Z": 147,
+    "Rz": 126,
+    "Gaussian": 102
+   },
+   "total_programmable_primitives_conjugated": 629
+  },
+  {
+   "sites": 3,
+   "lambda2": 0.3,
+   "route": "gauss_block",
+   "r": 8,
+   "order": 3,
+   "block_orders": [
+    2,
+    1
+   ],
+   "s": 1,
+   "preparation": [
+    1.0,
+    0.0
+   ],
+   "cutoffs": [
+    128,
+    160
+   ],
+   "primitive_counts": {
+    "Ry": 122,
+    "Rz": 2,
+    "CD_Z": 144,
+    "Gaussian": 114
+   },
+   "total_programmable_primitives": 382,
+   "native_waits": 0,
+   "state_error": 0.026222910834741344,
+   "max_bures": 0.026143941285221736,
+   "margins": {
+    "reference": 1.725320252482121e-06,
+    "solver": 2.9802322387695312e-08,
+    "padding": 7.721442694473918e-05,
+    "C12": 1.225997466150673e-09,
+    "S2": 1.2492160084143222e-12
+   },
+   "C12_error": 0.0026333440732631123,
+   "S2_error": 0.002646273313473231,
+   "boundary_population": 1.7934086438131658e-09,
+   "boundary_low": 1.7934086438131658e-09,
+   "boundary_high": 8.050193844866271e-11,
+   "max_ancilla_excited": 0.00016501142195275587,
+   "acceptance": {
+    "state": true,
+    "boundary": true,
+    "C12": true,
+    "S2": true
+   },
+   "all_criteria": true,
+   "wall_seconds": 57.71305108300294,
+   "primitive_counts_conjugated": {
+    "Ry": 242,
+    "CD_Z": 144,
+    "Rz": 120,
+    "Gaussian": 114
+   },
+   "total_programmable_primitives_conjugated": 620
+  },
+  {
+   "sites": 3,
+   "lambda2": 0.3,
+   "route": "gauss_block",
+   "r": 8,
+   "order": 2,
+   "block_orders": [
+    2,
+    2
+   ],
+   "s": 1,
+   "preparation": [
+    1.0,
+    0.0
+   ],
+   "cutoffs": [
+    128,
+    160
+   ],
+   "primitive_counts": {
+    "Ry": 146,
+    "Rz": 2,
+    "CD_Z": 168,
+    "Gaussian": 114
+   },
+   "total_programmable_primitives": 430,
+   "native_waits": 0,
+   "state_error": 0.02552169322996815,
+   "max_bures": 0.02550357351132756,
+   "margins": {
+    "reference": 1.725320252482121e-06,
+    "solver": 2.9802322387695312e-08,
+    "padding": 1.6364596065723802e-05,
+    "C12": 6.408486854820739e-11,
+    "S2": 1.2516862546441132e-12
+   },
+   "C12_error": 0.002659180846668829,
+   "S2_error": 0.0024432779139590896,
+   "boundary_population": 8.015743624412153e-11,
+   "boundary_low": 8.015743624412153e-11,
+   "boundary_high": 3.085087740828385e-12,
+   "max_ancilla_excited": 2.365766942954025e-05,
+   "acceptance": {
+    "state": true,
+    "boundary": true,
+    "C12": true,
+    "S2": true
+   },
+   "all_criteria": true,
+   "wall_seconds": 57.48843100000522,
+   "primitive_counts_conjugated": {
+    "Ry": 290,
+    "CD_Z": 168,
+    "Rz": 144,
+    "Gaussian": 114
+   },
+   "total_programmable_primitives_conjugated": 716
+  },
+  {
+   "sites": 3,
+   "lambda2": 0.3,
+   "route": "gauss_block",
+   "r": 9,
+   "order": 3,
+   "block_orders": [
+    2,
+    1
+   ],
+   "s": 1,
+   "preparation": [
+    1.0,
+    0.0
+   ],
+   "cutoffs": [
+    128,
+    160
+   ],
+   "primitive_counts": {
+    "Ry": 137,
+    "Rz": 2,
+    "CD_Z": 162,
+    "Gaussian": 126
+   },
+   "total_programmable_primitives": 427,
+   "native_waits": 0,
+   "state_error": 0.01992546186006926,
+   "max_bures": 0.019866741354221167,
+   "margins": {
+    "reference": 1.725320252482121e-06,
+    "solver": 2.9802322387695312e-08,
+    "padding": 5.696538327322406e-05,
+    "C12": 5.697670404938512e-10,
+    "S2": 1.3196457815389806e-12
+   },
+   "C12_error": 0.0022473848029861353,
+   "S2_error": 0.0019562630253375443,
+   "boundary_population": 1.1564761370763676e-09,
+   "boundary_low": 1.1564761370763676e-09,
+   "boundary_high": 4.2755021745222166e-11,
+   "max_ancilla_excited": 7.958894622245687e-05,
+   "acceptance": {
+    "state": true,
+    "boundary": true,
+    "C12": true,
+    "S2": true
+   },
+   "all_criteria": true,
+   "wall_seconds": 60.36511541600339,
+   "primitive_counts_conjugated": {
+    "Ry": 272,
+    "CD_Z": 162,
+    "Rz": 135,
+    "Gaussian": 126
+   },
+   "total_programmable_primitives_conjugated": 695
+  },
+  {
+   "sites": 3,
+   "lambda2": 0.3,
+   "route": "gauss_block",
+   "r": 9,
+   "order": 2,
+   "block_orders": [
+    2,
+    2
+   ],
+   "s": 1,
+   "preparation": [
+    1.0,
+    0.0
+   ],
+   "cutoffs": [
+    128,
+    160
+   ],
+   "primitive_counts": {
+    "Ry": 164,
+    "Rz": 2,
+    "CD_Z": 189,
+    "Gaussian": 126
+   },
+   "total_programmable_primitives": 481,
+   "native_waits": 0,
+   "state_error": 0.019457139224949876,
+   "max_bures": 0.019444753212528643,
+   "margins": {
+    "reference": 1.725320252482121e-06,
+    "solver": 2.9802322387695312e-08,
+    "padding": 1.0630889846364347e-05,
+    "C12": 2.7957402730875918e-11,
+    "S2": 1.3079051730535696e-12
+   },
+   "C12_error": 0.002260689426744115,
+   "S2_error": 0.001860763337172909,
+   "boundary_population": 4.008504639330113e-11,
+   "boundary_low": 4.008504639330113e-11,
+   "boundary_high": 1.2135847882177586e-12,
+   "max_ancilla_excited": 1.0654167412833838e-05,
+   "acceptance": {
+    "state": true,
+    "boundary": true,
+    "C12": true,
+    "S2": true
+   },
+   "all_criteria": true,
+   "wall_seconds": 61.988200291991234,
+   "primitive_counts_conjugated": {
+    "Ry": 326,
+    "CD_Z": 189,
+    "Rz": 162,
+    "Gaussian": 126
+   },
+   "total_programmable_primitives_conjugated": 803
+  },
+  {
+   "sites": 3,
+   "lambda2": 0.3,
+   "route": "hybrid",
+   "r": 5,
+   "order": 1,
+   "block_orders": [
+    1,
+    1
+   ],
+   "s": 1,
+   "preparation": [
+    1.0,
+    0.0
+   ],
+   "cutoffs": [
+    128,
+    160
+   ],
+   "primitive_counts": {
+    "Ry": 32,
+    "Rz": 2,
+    "CD_Z": 45,
+    "Gaussian": 0
+   },
+   "total_programmable_primitives": 79,
+   "native_waits": 6,
+   "state_error": 0.060917822405077496,
+   "max_bures": 0.06082344312923876,
+   "margins": {
+    "reference": 1.725320252482121e-06,
+    "solver": 2.9802322387695312e-08,
+    "padding": 9.26241532638597e-05,
+    "C12": 2.451865604465033e-09,
+    "S2": 1.2918902059233517e-12
+   },
+   "C12_error": 0.004975833815936791,
+   "S2_error": 0.006950072037483164,
+   "boundary_population": 3.4921209257632313e-09,
+   "boundary_low": 3.4921209257632313e-09,
+   "boundary_high": 1.5989520818493475e-10,
+   "max_ancilla_excited": 0.00047273019227728744,
+   "acceptance": {
+    "state": false,
+    "boundary": true,
+    "C12": true,
+    "S2": true
+   },
+   "all_criteria": false,
+   "wall_seconds": 3535.5273932499986,
+   "primitive_counts_conjugated": {
+    "Ry": 62,
+    "CD_Z": 45,
+    "Rz": 30,
+    "Gaussian": 0
+   },
+   "total_programmable_primitives_conjugated": 137
+  },
+  {
+   "sites": 3,
+   "lambda2": 0.3,
+   "route": "hybrid",
+   "r": 6,
+   "order": 1,
+   "block_orders": [
+    1,
+    1
+   ],
+   "s": 1,
+   "preparation": [
+    1.0,
+    0.0
+   ],
+   "cutoffs": [
+    128,
+    160
+   ],
+   "primitive_counts": {
+    "Ry": 38,
+    "Rz": 2,
+    "CD_Z": 54,
+    "Gaussian": 0
+   },
+   "total_programmable_primitives": 94,
+   "native_waits": 7,
+   "state_error": 0.03151313857954955,
+   "max_bures": 0.03145837633391318,
+   "margins": {
+    "reference": 1.725320252482121e-06,
+    "solver": 2.9802322387695312e-08,
+    "padding": 5.300712306149623e-05,
+    "C12": 9.844729865559716e-10,
+    "S2": 1.2475784294530001e-12
+   },
+   "C12_error": 0.002578256411645205,
+   "S2_error": 0.0031798930735962364,
+   "boundary_population": 1.0526207683270172e-09,
+   "boundary_low": 1.0526207683270172e-09,
+   "boundary_high": 5.528122404285796e-11,
+   "max_ancilla_excited": 0.0002412038108350949,
+   "acceptance": {
+    "state": true,
+    "boundary": true,
+    "C12": true,
+    "S2": true
+   },
+   "all_criteria": true,
+   "wall_seconds": 3549.6669255000015,
+   "primitive_counts_conjugated": {
+    "Ry": 74,
+    "CD_Z": 54,
+    "Rz": 36,
+    "Gaussian": 0
+   },
+   "total_programmable_primitives_conjugated": 164
+  },
+  {
+   "sites": 3,
+   "lambda2": 0.3,
+   "route": "hybrid",
+   "r": 7,
+   "order": 1,
+   "block_orders": [
+    1,
+    1
+   ],
+   "s": 1,
+   "preparation": [
+    1.0,
+    0.0
+   ],
+   "cutoffs": [
+    128,
+    160
+   ],
+   "primitive_counts": {
+    "Ry": 44,
+    "Rz": 2,
+    "CD_Z": 63,
+    "Gaussian": 0
+   },
+   "total_programmable_primitives": 109,
+   "native_waits": 8,
+   "state_error": 0.018678797080043046,
+   "max_bures": 0.018649372547408317,
+   "margins": {
+    "reference": 1.725320252482121e-06,
+    "solver": 2.9802322387695312e-08,
+    "padding": 2.7669410059858657e-05,
+    "C12": 2.8727760419532743e-10,
+    "S2": 1.1866133076132712e-12
+   },
+   "C12_error": 0.0017211247949637572,
+   "S2_error": 0.002087638495395165,
+   "boundary_population": 2.8086588610420904e-10,
+   "boundary_low": 2.8086588610420904e-10,
+   "boundary_high": 1.4793055669315436e-11,
+   "max_ancilla_excited": 0.0001184046619878529,
+   "acceptance": {
+    "state": true,
+    "boundary": true,
+    "C12": true,
+    "S2": true
+   },
+   "all_criteria": true,
+   "wall_seconds": 3945.9395196249825,
+   "primitive_counts_conjugated": {
+    "Ry": 86,
+    "CD_Z": 63,
+    "Rz": 42,
+    "Gaussian": 0
+   },
+   "total_programmable_primitives_conjugated": 191
+  },
+  {
+   "sites": 3,
+   "lambda2": 0.3,
+   "route": "kin_pot",
+   "r": 11,
+   "order": 3,
+   "block_orders": [
+    2,
+    1
+   ],
+   "s": 1,
+   "preparation": [
+    1.0,
+    0.0
+   ],
+   "cutoffs": [
+    128,
+    160
+   ],
+   "primitive_counts": {
+    "Ry": 167,
+    "Rz": 2,
+    "CD_Z": 198,
+    "Gaussian": 91
+   },
+   "total_programmable_primitives": 458,
+   "native_waits": 0,
+   "state_error": 0.04295428901068276,
+   "max_bures": 0.04290699683182253,
+   "margins": {
+    "reference": 1.725320252482121e-06,
+    "solver": 2.9802322387695312e-08,
+    "padding": 4.55370562853566e-05,
+    "C12": 2.644379409537635e-10,
+    "S2": 1.435247753978075e-12
+   },
+   "C12_error": 0.007288182296206294,
+   "S2_error": 0.00797669255277713,
+   "boundary_population": 1.0348916168467781e-09,
+   "boundary_low": 1.0348916168467781e-09,
+   "boundary_high": 2.461320036672987e-11,
+   "max_ancilla_excited": 1.885123093219246e-05,
+   "acceptance": {
+    "state": false,
+    "boundary": true,
+    "C12": true,
+    "S2": true
+   },
+   "all_criteria": false,
+   "wall_seconds": 49.093579125008546,
+   "primitive_counts_conjugated": {
+    "Ry": 332,
+    "CD_Z": 198,
+    "Rz": 165,
+    "Gaussian": 91
+   },
+   "total_programmable_primitives_conjugated": 786
+  },
+  {
+   "sites": 3,
+   "lambda2": 0.3,
+   "route": "kin_pot",
+   "r": 12,
+   "order": 3,
+   "block_orders": [
+    2,
+    1
+   ],
+   "s": 1,
+   "preparation": [
+    1.0,
+    0.0
+   ],
+   "cutoffs": [
+    128,
+    160
+   ],
+   "primitive_counts": {
+    "Ry": 182,
+    "Rz": 2,
+    "CD_Z": 216,
+    "Gaussian": 99
+   },
+   "total_programmable_primitives": 499,
+   "native_waits": 0,
+   "state_error": 0.03520382732377339,
+   "max_bures": 0.03515822104337778,
+   "margins": {
+    "reference": 1.725320252482121e-06,
+    "solver": 2.9802322387695312e-08,
+    "padding": 4.385115782073679e-05,
+    "C12": 3.053059638078647e-10,
+    "S2": 1.1973547153765196e-12
+   },
+   "C12_error": 0.006030477644816315,
+   "S2_error": 0.006456637223763294,
+   "boundary_population": 9.658068789164531e-10,
+   "boundary_low": 9.658068789164531e-10,
+   "boundary_high": 2.209976646128098e-11,
+   "max_ancilla_excited": 9.31587779325595e-06,
+   "acceptance": {
+    "state": false,
+    "boundary": true,
+    "C12": true,
+    "S2": true
+   },
+   "all_criteria": false,
+   "wall_seconds": 56.34236116599641,
+   "primitive_counts_conjugated": {
+    "Ry": 362,
+    "CD_Z": 216,
+    "Rz": 180,
+    "Gaussian": 99
+   },
+   "total_programmable_primitives_conjugated": 857
+  },
+  {
+   "sites": 3,
+   "lambda2": 0.3,
+   "route": "kin_pot",
+   "r": 13,
+   "order": 3,
+   "block_orders": [
+    2,
+    1
+   ],
+   "s": 1,
+   "preparation": [
+    1.0,
+    0.0
+   ],
+   "cutoffs": [
+    128,
+    160
+   ],
+   "primitive_counts": {
+    "Ry": 197,
+    "Rz": 2,
+    "CD_Z": 234,
+    "Gaussian": 107
+   },
+   "total_programmable_primitives": 540,
+   "native_waits": 0,
+   "state_error": 0.03032873939855897,
+   "max_bures": 0.030284971890213296,
+   "margins": {
+    "reference": 1.725320252482121e-06,
+    "solver": 2.9802322387695312e-08,
+    "padding": 4.201238577080396e-05,
+    "C12": 4.1077538770990714e-10,
+    "S2": 1.211163114245295e-12
+   },
+   "C12_error": 0.004972528300243977,
+   "S2_error": 0.005570563009565842,
+   "boundary_population": 8.629089665035394e-10,
+   "boundary_low": 8.629089665035394e-10,
+   "boundary_high": 2.0123458455145737e-11,
+   "max_ancilla_excited": 5.143045521032499e-06,
+   "acceptance": {
+    "state": true,
+    "boundary": true,
+    "C12": true,
+    "S2": true
+   },
+   "all_criteria": true,
+   "wall_seconds": 63.07713158399565,
+   "primitive_counts_conjugated": {
+    "Ry": 392,
+    "CD_Z": 234,
+    "Rz": 195,
+    "Gaussian": 107
+   },
+   "total_programmable_primitives_conjugated": 928
+  },
+  {
+   "sites": 3,
+   "lambda2": 0.3,
+   "route": "kin_pot",
+   "r": 14,
+   "order": 3,
+   "block_orders": [
+    2,
+    1
+   ],
+   "s": 1,
+   "preparation": [
+    1.0,
+    0.0
+   ],
+   "cutoffs": [
+    128,
+    160
+   ],
+   "primitive_counts": {
+    "Ry": 212,
+    "Rz": 2,
+    "CD_Z": 252,
+    "Gaussian": 115
+   },
+   "total_programmable_primitives": 581,
+   "native_waits": 0,
+   "state_error": 0.026144033823512526,
+   "max_bures": 0.02610309831411448,
+   "margins": {
+    "reference": 1.725320252482121e-06,
+    "solver": 2.9802322387695312e-08,
+    "padding": 3.918038682317908e-05,
+    "C12": 4.578120694198067e-10,
+    "S2": 1.2088732792570056e-12
+   },
+   "C12_error": 0.004356082486314552,
+   "S2_error": 0.004743223702333994,
+   "boundary_population": 7.049006933712576e-10,
+   "boundary_low": 7.049006933712576e-10,
+   "boundary_high": 1.8222090503172694e-11,
+   "max_ancilla_excited": 3.2281273849197337e-06,
+   "acceptance": {
+    "state": true,
+    "boundary": true,
+    "C12": true,
+    "S2": true
+   },
+   "all_criteria": true,
+   "wall_seconds": 68.798600582988,
+   "primitive_counts_conjugated": {
+    "Ry": 422,
+    "CD_Z": 252,
+    "Rz": 210,
+    "Gaussian": 115
+   },
+   "total_programmable_primitives_conjugated": 999
+  },
+  {
+   "sites": 3,
+   "lambda2": 0.3,
+   "route": "kin_pot",
+   "r": 17,
+   "order": 1,
+   "block_orders": [
+    1,
+    1
+   ],
+   "s": 1,
+   "preparation": [
+    1.0,
+    0.0
+   ],
+   "cutoffs": [
+    128,
+    160
+   ],
+   "primitive_counts": {
+    "Ry": 206,
+    "Rz": 2,
+    "CD_Z": 255,
+    "Gaussian": 139
+   },
+   "total_programmable_primitives": 602,
+   "native_waits": 0,
+   "state_error": 0.022619810289119267,
+   "max_bures": 0.022593434132525368,
+   "margins": {
+    "reference": 1.725320252482121e-06,
+    "solver": 2.9802322387695312e-08,
+    "padding": 2.462103401903007e-05,
+    "C12": 2.0285606161431587e-10,
+    "S2": 1.24624616182345e-12
+   },
+   "C12_error": 0.003307974992000223,
+   "S2_error": 0.0037556584980973293,
+   "boundary_population": 2.1657386994888839e-10,
+   "boundary_low": 2.1657386994888839e-10,
+   "boundary_high": 1.1153855616896635e-11,
+   "max_ancilla_excited": 0.00028916736039684676,
+   "acceptance": {
+    "state": true,
+    "boundary": true,
+    "C12": true,
+    "S2": true
+   },
+   "all_criteria": true,
+   "wall_seconds": 76.08913683399442,
+   "primitive_counts_conjugated": {
+    "Ry": 410,
+    "CD_Z": 255,
+    "Rz": 204,
+    "Gaussian": 139
+   },
+   "total_programmable_primitives_conjugated": 1008
+  },
+  {
+   "sites": 3,
+   "lambda2": 0.3,
+   "route": "kin_pot",
+   "r": 18,
+   "order": 1,
+   "block_orders": [
+    1,
+    1
+   ],
+   "s": 1,
+   "preparation": [
+    1.0,
+    0.0
+   ],
+   "cutoffs": [
+    128,
+    160
+   ],
+   "primitive_counts": {
+    "Ry": 218,
+    "Rz": 2,
+    "CD_Z": 270,
+    "Gaussian": 147
+   },
+   "total_programmable_primitives": 637,
+   "native_waits": 0,
+   "state_error": 0.02054780686384243,
+   "max_bures": 0.02052705022479545,
+   "margins": {
+    "reference": 1.725320252482121e-06,
+    "solver": 2.9802322387695312e-08,
+    "padding": 1.9001516472107994e-05,
+    "C12": 1.1068327493038665e-10,
+    "S2": 1.2477588406945017e-12
+   },
+   "C12_error": 0.00298652963682672,
+   "S2_error": 0.0032967850654609734,
+   "boundary_population": 1.2459966391986654e-10,
+   "boundary_low": 1.2459966391986654e-10,
+   "boundary_high": 7.7134965081882e-12,
+   "max_ancilla_excited": 0.00025460900388649967,
+   "acceptance": {
+    "state": true,
+    "boundary": true,
+    "C12": true,
+    "S2": true
+   },
+   "all_criteria": true,
+   "wall_seconds": 85.57531370798824,
+   "primitive_counts_conjugated": {
+    "Ry": 434,
+    "CD_Z": 270,
+    "Rz": 216,
+    "Gaussian": 147
+   },
+   "total_programmable_primitives_conjugated": 1067
+  }
+ ],
+ "cheapest_passing": [
+  {
+   "route": "gauss_block",
+   "lambda2": 0.3,
+   "r": 8,
+   "order": 3,
+   "primitives": 382,
+   "state_error": 0.026222910834741344
+  },
+  {
+   "route": "hybrid",
+   "lambda2": 0.3,
+   "r": 6,
+   "order": 1,
+   "primitives": 94,
+   "state_error": 0.03151313857954955
+  },
+  {
+   "route": "kin_pot",
+   "lambda2": 0.3,
+   "r": 13,
+   "order": 3,
+   "primitives": 540,
+   "state_error": 0.03032873939855897
+  }
+ ],
+ "environment": {
+  "python": "/Users/zhen002/miniconda3/envs/cvdv/bin/python",
+  "python_version": "3.13.0",
+  "numpy": "2.3.4",
+  "scipy": "1.16.3",
+  "threads": null
+ }
+}

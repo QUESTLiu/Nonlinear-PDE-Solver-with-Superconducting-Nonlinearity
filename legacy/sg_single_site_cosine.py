@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""
+r"""
 Single-site quantum cosine oscillator benchmark for Sine-Gordon native nonlinearity.
 
 Hamiltonian:
@@ -36,6 +36,7 @@ import numpy as np
 from scipy.linalg import eigh
 
 import matplotlib
+
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
@@ -80,7 +81,9 @@ def coherent_state(alpha: complex, n_cut: int) -> np.ndarray:
 
     norm = np.linalg.norm(psi)
     if norm < 1e-14:
-        raise RuntimeError("Initial coherent state has near-zero norm after truncation.")
+        raise RuntimeError(
+            "Initial coherent state has near-zero norm after truncation."
+        )
 
     return psi / norm
 
@@ -293,33 +296,37 @@ def write_timeseries_csv(
 ) -> None:
     with open(path, "w", newline="") as f:
         writer = csv.writer(f)
-        writer.writerow([
-            "time",
-            "F_quartic",
-            "F_sixth",
-            "F_trotter",
-            "phi_cos",
-            "phi_quartic",
-            "phi_sixth",
-            "phi_trotter",
-            "n_cos",
-            "E_cos_reference",
-            "E_cos_trotter",
-        ])
+        writer.writerow(
+            [
+                "time",
+                "F_quartic",
+                "F_sixth",
+                "F_trotter",
+                "phi_cos",
+                "phi_quartic",
+                "phi_sixth",
+                "phi_trotter",
+                "n_cos",
+                "E_cos_reference",
+                "E_cos_trotter",
+            ]
+        )
         for i in range(len(times)):
-            writer.writerow([
-                float(times[i]),
-                float(F4[i]),
-                float(F6[i]),
-                float(Ftrot[i]),
-                float(np.real(phi_cos[i])),
-                float(np.real(phi4[i])),
-                float(np.real(phi6[i])),
-                float(np.real(phi_trot[i])),
-                float(np.real(n_cos[i])),
-                float(np.real(E_cos_ref[i])),
-                float(np.real(E_cos_trot[i])),
-            ])
+            writer.writerow(
+                [
+                    float(times[i]),
+                    float(F4[i]),
+                    float(F6[i]),
+                    float(Ftrot[i]),
+                    float(np.real(phi_cos[i])),
+                    float(np.real(phi4[i])),
+                    float(np.real(phi6[i])),
+                    float(np.real(phi_trot[i])),
+                    float(np.real(n_cos[i])),
+                    float(np.real(E_cos_ref[i])),
+                    float(np.real(E_cos_trot[i])),
+                ]
+            )
 
 
 def write_metrics_csv(path: str, metrics: Dict[str, object]) -> None:
@@ -533,11 +540,31 @@ def aggregate_results(args: argparse.Namespace) -> None:
     phi0s = sorted({float(r["phi0"]) for r in rows})
 
     for metric_name, ylabel, filename in [
-        ("max_infidelity_quartic", "Max infidelity: quartic", "aggregate_quartic_max_infid.png"),
-        ("max_infidelity_sixth", "Max infidelity: sixth-order", "aggregate_sixth_max_infid.png"),
-        ("max_infidelity_trotter", "Max infidelity: Strang Trotter", "aggregate_trotter_max_infid.png"),
-        ("max_phi_error_quartic", r"Max $|\Delta \langle \phi \rangle|$: quartic", "aggregate_quartic_phi_error.png"),
-        ("max_phi_error_sixth", r"Max $|\Delta \langle \phi \rangle|$: sixth-order", "aggregate_sixth_phi_error.png"),
+        (
+            "max_infidelity_quartic",
+            "Max infidelity: quartic",
+            "aggregate_quartic_max_infid.png",
+        ),
+        (
+            "max_infidelity_sixth",
+            "Max infidelity: sixth-order",
+            "aggregate_sixth_max_infid.png",
+        ),
+        (
+            "max_infidelity_trotter",
+            "Max infidelity: Strang Trotter",
+            "aggregate_trotter_max_infid.png",
+        ),
+        (
+            "max_phi_error_quartic",
+            r"Max $|\Delta \langle \phi \rangle|$: quartic",
+            "aggregate_quartic_phi_error.png",
+        ),
+        (
+            "max_phi_error_sixth",
+            r"Max $|\Delta \langle \phi \rangle|$: sixth-order",
+            "aggregate_sixth_phi_error.png",
+        ),
     ]:
         plt.figure(figsize=(7, 4.5))
         for ncut in ncuts:
@@ -545,7 +572,8 @@ def aggregate_results(args: argparse.Namespace) -> None:
             ys = []
             for phi0 in phi0s:
                 match = [
-                    r for r in rows
+                    r
+                    for r in rows
                     if int(r["n_cut"]) == ncut and abs(float(r["phi0"]) - phi0) < 1e-12
                 ]
                 if match:

@@ -1,0 +1,25 @@
+{
+  "batch": "B0",
+  "results": [
+    {
+      "id": "pre_fix_dense_oracle",
+      "status": "failed",
+      "returncode": 1,
+      "reason": null,
+      "wall_seconds": 4.083413749933243,
+      "peak_rss_bytes": 90030080,
+      "command": [
+        "/Users/zhen002/miniconda3/envs/cvdv/bin/python",
+        "-m",
+        "unittest",
+        "common_code.test_e0.RepresentationChecks.test_gaussian_readouts_match_the_counted_interval_sequence"
+      ]
+    }
+  ],
+  "provenance": {
+    "python": "/Users/zhen002/miniconda3/envs/cvdv/bin/python",
+    "python_version": "3.13.0",
+    "numpy": "2.3.4",
+    "scipy": "1.16.3"
+  }
+}

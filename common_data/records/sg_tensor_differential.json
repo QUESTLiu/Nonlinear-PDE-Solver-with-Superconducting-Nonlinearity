@@ -1,0 +1,21 @@
+{
+  "rows": [
+    {
+      "file": "E4_H_trig_o1_s1_N96.npz",
+      "max_joint_distance": 3.9488559857312226e-14,
+      "max_metric_difference": 3.2811427186363318e-12
+    },
+    {
+      "file": "E4_H_SNAP_o2_s1_N96.npz",
+      "max_joint_distance": 3.772293669899574e-14,
+      "max_metric_difference": 6.855627177060342e-14
+    }
+  ],
+  "scope": "Existing completed sparse-path cases versus tensor-path validation, using the same archived optimizer parameters.",
+  "provenance": {
+    "python": "/Users/zhen002/miniconda3/envs/cvdv/bin/python",
+    "python_version": "3.13.0",
+    "numpy": "2.3.4",
+    "scipy": "1.16.3"
+  }
+}

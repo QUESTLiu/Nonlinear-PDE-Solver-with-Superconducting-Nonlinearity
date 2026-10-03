@@ -1,0 +1,28 @@
+{
+  "seed": 20260729,
+  "objective": 0.003406444306207058,
+  "evaluations": 10,
+  "elapsed_seconds": 0.03544854198116809,
+  "status": "solver_success",
+  "iterations": null,
+  "cpu_seconds": null,
+  "message": "Completed checkpoint reused after interruption of downstream validation; iteration and CPU counters were not serialized.",
+  "constraint_violation": 0.0,
+  "common_phase": 0.0674569037418681,
+  "method": "SLSQP",
+  "maxiter": 1200,
+  "ftol": 1e-12,
+  "regularization": 1e-08,
+  "source": "/Users/zhen002/GitHub/nonlinear-PDE-simulator/pra/results/sg128/compiled",
+  "training_provenance": {
+    "job": "e4-compiled",
+    "development": true,
+    "provenance": {
+      "python": "/Users/zhen002/miniconda3/envs/cvdv/bin/python",
+      "python_version": "3.13.0",
+      "numpy": "2.3.4",
+      "scipy": "1.16.3"
+    }
+  },
+  "reused_pilot": true
+}

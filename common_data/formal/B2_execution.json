@@ -1,0 +1,27 @@
+{
+  "batch": "B2",
+  "results": [
+    {
+      "id": "E1_formal",
+      "status": "failed",
+      "returncode": 1,
+      "reason": null,
+      "wall_seconds": 1.0176059170044027,
+      "peak_rss_bytes": 81313792,
+      "command": [
+        "/Users/zhen002/miniconda3/envs/cvdv/bin/python",
+        "-m",
+        "pra.run_pilot",
+        "e1-formal",
+        "--outdir",
+        "/Users/zhen002/GitHub/nonlinear-PDE-simulator/pra/results/formal/E1"
+      ]
+    }
+  ],
+  "provenance": {
+    "python": "/Users/zhen002/miniconda3/envs/cvdv/bin/python",
+    "python_version": "3.13.0",
+    "numpy": "2.3.4",
+    "scipy": "1.16.3"
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "rows": [
+    {
+      "N": 16,
+      "d": 12,
+      "columns": 8,
+      "zero_displacement_loss": 0.003134887254061318,
+      "paired_displacement_loss": 0.003134887254061309,
+      "same_initial_unitary_difference": 2.7665752857012655e-15,
+      "zero_displacement_gradient_norm": 2.841005985626198e-16,
+      "paired_displacement_gradient_norm": 0.008617805594691257,
+      "paired_snap_gradient_norm": 0.008617805241676562
+    },
+    {
+      "N": 48,
+      "d": 24,
+      "columns": 16,
+      "zero_displacement_loss": 0.0034064443058922757,
+      "paired_displacement_loss": 0.0034064443058922787,
+      "same_initial_unitary_difference": 8.859841979457418e-15,
+      "zero_displacement_gradient_norm": 4.515455072444539e-16,
+      "paired_displacement_gradient_norm": 0.004808135773036355,
+      "paired_snap_gradient_norm": 0.004808135773036355
+    }
+  ],
+  "regularization": 0.0,
+  "scope": "One objective and gradient evaluation per parameterization. Opposite adjacent displacements cancel at zero intervening SNAP phases, leaving the same diagonal unitary. No optimizer or trajectory run. This isolates the parameterization geometry, not achievable final accuracy.",
+  "diagonal_phases": "arg of the exact local target diagonal on the input columns",
+  "provenance": {
+    "python": "/Users/zhen002/miniconda3/envs/cvdv/bin/python",
+    "python_version": "3.13.0",
+    "numpy": "2.3.4",
+    "scipy": "1.16.3"
+  }
+}

@@ -1,0 +1,120 @@
+{
+  "optimization": {
+    "status": "solver_terminated",
+    "message": "Iteration limit reached",
+    "iterations": 1200,
+    "evaluations": 1206,
+    "objective": 4.2539524304192246e-05,
+    "elapsed_seconds": 20.487878999992972,
+    "cpu_seconds": 18.160522999999998,
+    "constraint_violation": 0.0,
+    "seed": 240731,
+    "method": "SLSQP",
+    "maxiter": 1200,
+    "ftol": 1e-12,
+    "common_phase": 1.5088139345798701,
+    "regularization": 1e-08
+  },
+  "points": [
+    {
+      "xi": 1.75,
+      "routes": {
+        "hybrid": {
+          "max_distance": 0.013076857748902215,
+          "empirical_reference_margin": 0.00014502195124042216,
+          "empirical_solver_margin": 6.007871222818886e-14,
+          "empirical_padding_margin": 1.2566076858670296e-07,
+          "total_amplitude_estimate": 0.013222005360971303,
+          "max_boundary_gate_population": 8.53115722224849e-14,
+          "max_above_active_gate_population": 5.229296142012922e-07,
+          "action_sum": 0.04041771877791367,
+          "rectangular_action_norm": 1.9714730563374974,
+          "thresholds": {
+            "0.01": true,
+            "0.001": true,
+            "0.0001": false
+          }
+        },
+        "replacement": {
+          "max_distance": 0.013078235442215291,
+          "empirical_reference_margin": 0.00014502195124042216,
+          "empirical_solver_margin": 6.007871222818886e-14,
+          "empirical_padding_margin": 8.95955662080555e-06,
+          "total_amplitude_estimate": 0.013232216950136598,
+          "max_boundary_gate_population": 3.389036955925724e-11,
+          "max_above_active_gate_population": 5.222494252573081e-07,
+          "action_sum": 0.04080797702460337,
+          "rectangular_action_norm": 1.9714723519287574,
+          "thresholds": {
+            "0.01": true,
+            "0.001": true,
+            "0.0001": false
+          }
+        }
+      },
+      "replacement_bound": 0.0038926671229178125,
+      "extra_snap_count": 11,
+      "caveat": "development finite-family validation with empirical margins; finite-matrix primitive endpoints do not bound a physical pulse's continuous-time path"
+    },
+    {
+      "xi": 2.0,
+      "routes": {
+        "hybrid": {
+          "max_distance": 0.019005260629576293,
+          "empirical_reference_margin": 0.0006171490012053193,
+          "empirical_solver_margin": 5.673820937445453e-14,
+          "empirical_padding_margin": 2.86434947861832e-07,
+          "total_amplitude_estimate": 0.019622696065786212,
+          "max_boundary_gate_population": 3.469896823727827e-13,
+          "max_above_active_gate_population": 1.477471945302528e-06,
+          "action_sum": 0.055758494956587926,
+          "rectangular_action_norm": 1.9714730563374974,
+          "thresholds": {
+            "0.01": true,
+            "0.001": true,
+            "0.0001": false
+          }
+        },
+        "replacement": {
+          "max_distance": 0.019018210253829784,
+          "empirical_reference_margin": 0.0006171490012053193,
+          "empirical_solver_margin": 5.673820937445453e-14,
+          "empirical_padding_margin": 2.0272327167811324e-05,
+          "total_amplitude_estimate": 0.019655631582259653,
+          "max_boundary_gate_population": 6.553236143882098e-10,
+          "max_above_active_gate_population": 1.4665878933846297e-06,
+          "action_sum": 0.058997778137956626,
+          "rectangular_action_norm": 1.9714723519287574,
+          "thresholds": {
+            "0.01": true,
+            "0.001": true,
+            "0.0001": false
+          }
+        }
+      },
+      "replacement_bound": 0.00729143021017683,
+      "extra_snap_count": 11,
+      "caveat": "development finite-family validation with empirical margins; finite-matrix primitive endpoints do not bound a physical pulse's continuous-time path"
+    }
+  ],
+  "development": true,
+  "resource_counts": {
+    "system_modes": 1,
+    "residual_snap": 80,
+    "residual_displacements": 80,
+    "gaussian_half_pulses": 20,
+    "native_waits_after_merging": 11,
+    "extra_replacement_snap": 11,
+    "native_simulated_time": 1.0,
+    "physical_duration": "requires K_phys and pulse durations"
+  },
+  "wall_seconds": 20.65002674999414,
+  "cpu_seconds": 18.321219,
+  "peak_memory_bytes": 168542208,
+  "provenance": {
+    "python": "/Users/zhen002/miniconda3/envs/cvdv/bin/python",
+    "python_version": "3.13.0",
+    "numpy": "2.3.4",
+    "scipy": "1.16.3"
+  }
+}

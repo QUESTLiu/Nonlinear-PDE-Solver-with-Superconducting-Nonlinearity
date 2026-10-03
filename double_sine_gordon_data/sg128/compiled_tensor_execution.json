@@ -1,0 +1,48 @@
+{
+  "batch": "B1",
+  "results": [
+    {
+      "id": "E4_compiled128_tensor",
+      "status": "completed",
+      "returncode": 0,
+      "reason": null,
+      "wall_seconds": 241.23686325000017,
+      "peak_rss_bytes": 1470873600,
+      "command": [
+        "/Users/zhen002/miniconda3/envs/cvdv/bin/python",
+        "-m",
+        "pra.run_pilot",
+        "e4-compiled",
+        "--previous-reference",
+        "/Users/zhen002/GitHub/nonlinear-PDE-simulator/pra/results/sg128/reference",
+        "--outdir",
+        "/Users/zhen002/GitHub/nonlinear-PDE-simulator/pra/results/sg128/compiled_tensor",
+        "--optimizer-source",
+        "/Users/zhen002/GitHub/nonlinear-PDE-simulator/pra/results/sg128/compiled"
+      ]
+    },
+    {
+      "id": "E4_convention128",
+      "status": "completed",
+      "returncode": 0,
+      "reason": null,
+      "wall_seconds": 42.056918999995105,
+      "peak_rss_bytes": 778469376,
+      "command": [
+        "/Users/zhen002/miniconda3/envs/cvdv/bin/python",
+        "-m",
+        "pra.run_sg_convention",
+        "--reference",
+        "/Users/zhen002/GitHub/nonlinear-PDE-simulator/pra/results/sg128/reference",
+        "--outdir",
+        "/Users/zhen002/GitHub/nonlinear-PDE-simulator/pra/results/sg128/convention"
+      ]
+    }
+  ],
+  "provenance": {
+    "python": "/Users/zhen002/miniconda3/envs/cvdv/bin/python",
+    "python_version": "3.13.0",
+    "numpy": "2.3.4",
+    "scipy": "1.16.3"
+  }
+}

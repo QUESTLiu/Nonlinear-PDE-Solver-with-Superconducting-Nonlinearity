@@ -1,0 +1,43 @@
+{
+  "parameters": {
+    "E_J": 1.0,
+    "lambda2": 0.3,
+    "kappa": 1.0,
+    "omega_b": 1.7320508075688772,
+    "T": 3.002221399786054
+  },
+  "conventions": "spectral Hamiltonian and exp(i phi_N) versus physical-sandwich Hamiltonian and P exp(i phi) P, at fixed basis, input family and horizon",
+  "rows": [
+    {
+      "N": 96,
+      "spectral_to_physical_state_distance": 0.0005951158975323808,
+      "C12_difference": 1.1926789118727656e-07,
+      "S2_difference": 5.990014040335723e-12,
+      "C12_observable_convention_change_on_physical_states": 9.006998811077164e-08,
+      "max_boundary_population": 4.149247753504193e-07
+    },
+    {
+      "N": 128,
+      "spectral_to_physical_state_distance": 9.89580584940726e-05,
+      "C12_difference": 5.606334404621533e-09,
+      "S2_difference": 8.183731470268185e-14,
+      "C12_observable_convention_change_on_physical_states": 3.6102290524045044e-09,
+      "max_boundary_population": 1.3647105846443285e-08
+    }
+  ],
+  "physical_cutoff_change": {
+    "state_distance": 0.001406500379894963,
+    "C12": 1.2624515846828774e-06,
+    "S2": 8.264527950885281e-12
+  },
+  "scope": "State comparison on 11 common times and observable comparison on 257 times. These empirical differences do not prove infinite-dimensional convergence.",
+  "wall_seconds": 41.028945416997885,
+  "cpu_seconds": 39.624041,
+  "peak_memory_bytes": 779993088,
+  "provenance": {
+    "python": "/Users/zhen002/miniconda3/envs/cvdv/bin/python",
+    "python_version": "3.13.0",
+    "numpy": "2.3.4",
+    "scipy": "1.16.3"
+  }
+}

@@ -1,0 +1,1345 @@
+{
+  "status": "completed",
+  "parameters": {
+    "g_sh": 0.1,
+    "E_J": 1.0,
+    "kappa": 1.0,
+    "lambda2": 0.3,
+    "omega_b": 1.7320508075688772,
+    "T": 3.002221399786054,
+    "preparation": [
+      1.0,
+      0.0
+    ],
+    "cutoffs": [
+      128,
+      160
+    ],
+    "steps": [
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ],
+    "s": 1
+  },
+  "environment": {
+    "python": "/Users/zhen002/miniconda3/envs/cvdv/bin/python",
+    "python_version": "3.13.0",
+    "numpy": "2.3.4",
+    "scipy": "1.16.3",
+    "threads": "1"
+  },
+  "command": [
+    "double_sine_gordon_code/dsg_grounding_check.py"
+  ],
+  "wall_limit_seconds": 1200,
+  "rows": [
+    {
+      "route": "hybrid",
+      "r": 6,
+      "order": 1,
+      "block_orders": [
+        1,
+        1
+      ],
+      "primitive_counts": {
+        "Ry": 26,
+        "Rz": 2,
+        "CD_Z": 36,
+        "Gaussian": 0
+      },
+      "total_primitives": 64,
+      "native_waits": 7,
+      "errors": {
+        "state": 0.02700687119164617,
+        "C12": 0.003034068020571383,
+        "S2": 0.0035726048269046906
+      },
+      "max_bures": 0.026810917860673463,
+      "margins": {
+        "reference": 1.3711801484385514e-05,
+        "padding": 0.00018224122452937673,
+        "solver": 3.049589436568223e-10,
+        "C12": 1.18662443041462e-08,
+        "S2": 2.383787611748289e-13
+      },
+      "boundary_population": 1.5633270480878506e-08,
+      "criteria": {
+        "state": true,
+        "C12": true,
+        "S2": true,
+        "boundary": true
+      },
+      "all_criteria": true,
+      "wall_seconds": 18.66608970798552
+    },
+    {
+      "route": "gauss_block",
+      "r": 7,
+      "order": 3,
+      "block_orders": [
+        2,
+        1
+      ],
+      "primitive_counts": {
+        "Ry": 72,
+        "Rz": 2,
+        "CD_Z": 84,
+        "Gaussian": 51
+      },
+      "total_primitives": 209,
+      "native_waits": 0,
+      "errors": {
+        "state": 0.029408836110258067,
+        "C12": 0.004991569265714959,
+        "S2": 0.0061503249691163
+      },
+      "max_bures": 0.02917516664965871,
+      "margins": {
+        "reference": 1.3711801484389468e-05,
+        "padding": 0.0002199573541560251,
+        "solver": 3.049589436568223e-10,
+        "C12": 2.2830540890485986e-08,
+        "S2": 1.7959245202092688e-13
+      },
+      "boundary_population": 1.4307090452307902e-08,
+      "criteria": {
+        "state": true,
+        "C12": true,
+        "S2": true,
+        "boundary": true
+      },
+      "all_criteria": true,
+      "wall_seconds": 0.35337083402555436
+    },
+    {
+      "route": "hybrid",
+      "r": 4,
+      "order": 1,
+      "block_orders": [
+        1,
+        1
+      ],
+      "primitive_counts": {
+        "Ry": 18,
+        "Rz": 2,
+        "CD_Z": 24,
+        "Gaussian": 0
+      },
+      "total_primitives": 44,
+      "native_waits": 5,
+      "errors": {
+        "state": 0.11005185590916493,
+        "C12": 0.014931567773233612,
+        "S2": 0.02120479089355652
+      },
+      "max_bures": 0.1097211235150761,
+      "margins": {
+        "reference": 1.3711801484394592e-05,
+        "padding": 0.00031702028764549845,
+        "solver": 3.049589436568223e-10,
+        "C12": 4.6077501458832983e-08,
+        "S2": 1.0343670364676427e-12
+      },
+      "boundary_population": 4.291088562414093e-08,
+      "criteria": {
+        "state": false,
+        "C12": false,
+        "S2": false,
+        "boundary": true
+      },
+      "all_criteria": false,
+      "wall_seconds": 15.818823750014417
+    },
+    {
+      "route": "hybrid",
+      "r": 4,
+      "order": 2,
+      "block_orders": [
+        2,
+        2
+      ],
+      "primitive_counts": {
+        "Ry": 26,
+        "Rz": 2,
+        "CD_Z": 32,
+        "Gaussian": 0
+      },
+      "total_primitives": 60,
+      "native_waits": 5,
+      "errors": {
+        "state": 0.10733727915723922,
+        "C12": 0.01469393674438146,
+        "S2": 0.0203205642600377
+      },
+      "max_bures": 0.10710267216102082,
+      "margins": {
+        "reference": 1.3711801484394592e-05,
+        "padding": 0.00022089488977506481,
+        "solver": 3.049589436568223e-10,
+        "C12": 2.4280561892485185e-08,
+        "S2": 1.081759681831329e-12
+      },
+      "boundary_population": 2.1523734704633122e-08,
+      "criteria": {
+        "state": false,
+        "C12": false,
+        "S2": false,
+        "boundary": true
+      },
+      "all_criteria": false,
+      "wall_seconds": 15.99559974996373
+    },
+    {
+      "route": "gauss_block",
+      "r": 4,
+      "order": 1,
+      "block_orders": [
+        1,
+        1
+      ],
+      "primitive_counts": {
+        "Ry": 34,
+        "Rz": 2,
+        "CD_Z": 40,
+        "Gaussian": 33
+      },
+      "total_primitives": 109,
+      "native_waits": 0,
+      "errors": {
+        "state": 0.289227186476007,
+        "C12": 0.06405375187869124,
+        "S2": 0.1371571653723876
+      },
+      "max_bures": 0.2879268561141126,
+      "margins": {
+        "reference": 1.3711801484394592e-05,
+        "padding": 0.0012866182554509963,
+        "solver": 3.049589436568223e-10,
+        "C12": 4.882592127909532e-07,
+        "S2": 2.151634426184046e-11
+      },
+      "boundary_population": 3.71705867986311e-07,
+      "criteria": {
+        "state": false,
+        "C12": false,
+        "S2": false,
+        "boundary": true
+      },
+      "all_criteria": false,
+      "wall_seconds": 0.23309908295050263
+    },
+    {
+      "route": "gauss_block",
+      "r": 4,
+      "order": 2,
+      "block_orders": [
+        2,
+        2
+      ],
+      "primitive_counts": {
+        "Ry": 50,
+        "Rz": 2,
+        "CD_Z": 56,
+        "Gaussian": 33
+      },
+      "total_primitives": 141,
+      "native_waits": 0,
+      "errors": {
+        "state": 0.165928066550409,
+        "C12": 0.0352596530697252,
+        "S2": 0.05228022723121062
+      },
+      "max_bures": 0.16542526715417105,
+      "margins": {
+        "reference": 1.3711801484394592e-05,
+        "padding": 0.0004890872897945984,
+        "solver": 3.049589436568223e-10,
+        "C12": 1.2492972669508625e-07,
+        "S2": 2.6394164631682315e-12
+      },
+      "boundary_population": 5.3308144917103016e-08,
+      "criteria": {
+        "state": false,
+        "C12": false,
+        "S2": false,
+        "boundary": true
+      },
+      "all_criteria": false,
+      "wall_seconds": 0.22144979191944003
+    },
+    {
+      "route": "gauss_block",
+      "r": 4,
+      "order": 3,
+      "block_orders": [
+        2,
+        1
+      ],
+      "primitive_counts": {
+        "Ry": 42,
+        "Rz": 2,
+        "CD_Z": 48,
+        "Gaussian": 33
+      },
+      "total_primitives": 125,
+      "native_waits": 0,
+      "errors": {
+        "state": 0.1696132397641573,
+        "C12": 0.035780582556260154,
+        "S2": 0.05433757566302354
+      },
+      "max_bures": 0.1689168767014337,
+      "margins": {
+        "reference": 1.3711801484394592e-05,
+        "padding": 0.0006826509562802249,
+        "solver": 3.049589436568223e-10,
+        "C12": 1.8008468872810462e-07,
+        "S2": 6.8587080459536764e-12
+      },
+      "boundary_population": 1.1372083968561569e-07,
+      "criteria": {
+        "state": false,
+        "C12": false,
+        "S2": false,
+        "boundary": true
+      },
+      "all_criteria": false,
+      "wall_seconds": 0.2224314579507336
+    },
+    {
+      "route": "hybrid",
+      "r": 5,
+      "order": 1,
+      "block_orders": [
+        1,
+        1
+      ],
+      "primitive_counts": {
+        "Ry": 22,
+        "Rz": 2,
+        "CD_Z": 30,
+        "Gaussian": 0
+      },
+      "total_primitives": 54,
+      "native_waits": 6,
+      "errors": {
+        "state": 0.05159332362246153,
+        "C12": 0.005429081995960342,
+        "S2": 0.006676021982834353
+      },
+      "max_bures": 0.05129121318098356,
+      "margins": {
+        "reference": 1.3711801484390091e-05,
+        "padding": 0.00028839833503463544,
+        "solver": 3.049589436568223e-10,
+        "C12": 5.3541191150292637e-08,
+        "S2": 1.5173973189064327e-12
+      },
+      "boundary_population": 3.229412401159389e-08,
+      "criteria": {
+        "state": false,
+        "C12": true,
+        "S2": true,
+        "boundary": true
+      },
+      "all_criteria": false,
+      "wall_seconds": 17.67021175008267
+    },
+    {
+      "route": "hybrid",
+      "r": 5,
+      "order": 2,
+      "block_orders": [
+        2,
+        2
+      ],
+      "primitive_counts": {
+        "Ry": 32,
+        "Rz": 2,
+        "CD_Z": 40,
+        "Gaussian": 0
+      },
+      "total_primitives": 74,
+      "native_waits": 6,
+      "errors": {
+        "state": 0.04827514747652126,
+        "C12": 0.005297818144527404,
+        "S2": 0.006195748732607191
+      },
+      "max_bures": 0.048081903235673934,
+      "margins": {
+        "reference": 1.3711801484390091e-05,
+        "padding": 0.00017953213440398194,
+        "solver": 3.049589436568223e-10,
+        "C12": 2.318305263322039e-08,
+        "S2": 1.5336620862171912e-12
+      },
+      "boundary_population": 8.477781587909028e-09,
+      "criteria": {
+        "state": false,
+        "C12": true,
+        "S2": true,
+        "boundary": true
+      },
+      "all_criteria": false,
+      "wall_seconds": 16.598136166925542
+    },
+    {
+      "route": "gauss_block",
+      "r": 5,
+      "order": 1,
+      "block_orders": [
+        1,
+        1
+      ],
+      "primitive_counts": {
+        "Ry": 42,
+        "Rz": 2,
+        "CD_Z": 50,
+        "Gaussian": 39
+      },
+      "total_primitives": 133,
+      "native_waits": 0,
+      "errors": {
+        "state": 0.15370810035343435,
+        "C12": 0.026020003949638198,
+        "S2": 0.048237279845835944
+      },
+      "max_bures": 0.15301106920688876,
+      "margins": {
+        "reference": 1.3711801484390091e-05,
+        "padding": 0.000683319040102276,
+        "solver": 3.049589436568223e-10,
+        "C12": 2.0060289560626135e-07,
+        "S2": 6.1338573109637196e-12
+      },
+      "boundary_population": 1.2322288695875538e-07,
+      "criteria": {
+        "state": false,
+        "C12": false,
+        "S2": false,
+        "boundary": true
+      },
+      "all_criteria": false,
+      "wall_seconds": 0.2593127080472186
+    },
+    {
+      "route": "gauss_block",
+      "r": 5,
+      "order": 2,
+      "block_orders": [
+        2,
+        2
+      ],
+      "primitive_counts": {
+        "Ry": 62,
+        "Rz": 2,
+        "CD_Z": 70,
+        "Gaussian": 39
+      },
+      "total_primitives": 173,
+      "native_waits": 0,
+      "errors": {
+        "state": 0.07710022491370852,
+        "C12": 0.011300805267995226,
+        "S2": 0.017669325970880785
+      },
+      "max_bures": 0.07677743816723129,
+      "margins": {
+        "reference": 1.3711801484390091e-05,
+        "padding": 0.0003090746400338966,
+        "solver": 3.049589436568223e-10,
+        "C12": 5.541550553589495e-08,
+        "S2": 8.362338599354757e-13
+      },
+      "boundary_population": 2.388644389389724e-08,
+      "criteria": {
+        "state": false,
+        "C12": false,
+        "S2": true,
+        "boundary": true
+      },
+      "all_criteria": false,
+      "wall_seconds": 0.26145412505138665
+    },
+    {
+      "route": "gauss_block",
+      "r": 5,
+      "order": 3,
+      "block_orders": [
+        2,
+        1
+      ],
+      "primitive_counts": {
+        "Ry": 52,
+        "Rz": 2,
+        "CD_Z": 60,
+        "Gaussian": 39
+      },
+      "total_primitives": 153,
+      "native_waits": 0,
+      "errors": {
+        "state": 0.080570332541824,
+        "C12": 0.0114951026641734,
+        "S2": 0.018507052788478272
+      },
+      "max_bures": 0.08000203912049302,
+      "margins": {
+        "reference": 1.3711801484390091e-05,
+        "padding": 0.0005545813148876384,
+        "solver": 3.049589436568223e-10,
+        "C12": 1.2866141788069625e-07,
+        "S2": 9.5767838104166e-13
+      },
+      "boundary_population": 7.984605756118071e-08,
+      "criteria": {
+        "state": false,
+        "C12": false,
+        "S2": true,
+        "boundary": true
+      },
+      "all_criteria": false,
+      "wall_seconds": 0.25910166604444385
+    },
+    {
+      "route": "hybrid",
+      "r": 6,
+      "order": 2,
+      "block_orders": [
+        2,
+        2
+      ],
+      "primitive_counts": {
+        "Ry": 38,
+        "Rz": 2,
+        "CD_Z": 48,
+        "Gaussian": 0
+      },
+      "total_primitives": 88,
+      "native_waits": 7,
+      "errors": {
+        "state": 0.023437315676082378,
+        "C12": 0.002960414416197575,
+        "S2": 0.0033246146873837368
+      },
+      "max_bures": 0.02328672379814281,
+      "margins": {
+        "reference": 1.3711801484385514e-05,
+        "padding": 0.0001368797714962364,
+        "solver": 3.049589436568223e-10,
+        "C12": 5.696708746874449e-09,
+        "S2": 2.763900219804327e-13
+      },
+      "boundary_population": 8.425883375432355e-09,
+      "criteria": {
+        "state": true,
+        "C12": true,
+        "S2": true,
+        "boundary": true
+      },
+      "all_criteria": true,
+      "wall_seconds": 18.749922499991953
+    },
+    {
+      "route": "gauss_block",
+      "r": 6,
+      "order": 1,
+      "block_orders": [
+        1,
+        1
+      ],
+      "primitive_counts": {
+        "Ry": 50,
+        "Rz": 2,
+        "CD_Z": 60,
+        "Gaussian": 45
+      },
+      "total_primitives": 157,
+      "native_waits": 0,
+      "errors": {
+        "state": 0.0993445266839228,
+        "C12": 0.015456118357825482,
+        "S2": 0.023210538503669345
+      },
+      "max_bures": 0.09890901136627163,
+      "margins": {
+        "reference": 1.3711801484385514e-05,
+        "padding": 0.000421803211207829,
+        "solver": 3.049589436568223e-10,
+        "C12": 9.05648166989722e-08,
+        "S2": 1.6014967130217883e-12
+      },
+      "boundary_population": 4.411093669122085e-08,
+      "criteria": {
+        "state": false,
+        "C12": false,
+        "S2": false,
+        "boundary": true
+      },
+      "all_criteria": false,
+      "wall_seconds": 0.3157494170591235
+    },
+    {
+      "route": "gauss_block",
+      "r": 6,
+      "order": 2,
+      "block_orders": [
+        2,
+        2
+      ],
+      "primitive_counts": {
+        "Ry": 74,
+        "Rz": 2,
+        "CD_Z": 84,
+        "Gaussian": 45
+      },
+      "total_primitives": 205,
+      "native_waits": 0,
+      "errors": {
+        "state": 0.04164379827039883,
+        "C12": 0.006949187973417534,
+        "S2": 0.00907763746082628
+      },
+      "max_bures": 0.0414263573646171,
+      "margins": {
+        "reference": 1.3711801484385514e-05,
+        "padding": 0.00020372879933840235,
+        "solver": 3.049589436568223e-10,
+        "C12": 1.92116438028524e-08,
+        "S2": 6.778883010483128e-13
+      },
+      "boundary_population": 1.0491996619352113e-08,
+      "criteria": {
+        "state": false,
+        "C12": true,
+        "S2": true,
+        "boundary": true
+      },
+      "all_criteria": false,
+      "wall_seconds": 0.331735625048168
+    },
+    {
+      "route": "gauss_block",
+      "r": 6,
+      "order": 3,
+      "block_orders": [
+        2,
+        1
+      ],
+      "primitive_counts": {
+        "Ry": 62,
+        "Rz": 2,
+        "CD_Z": 72,
+        "Gaussian": 45
+      },
+      "total_primitives": 181,
+      "native_waits": 0,
+      "errors": {
+        "state": 0.04402624632525863,
+        "C12": 0.007036772061709312,
+        "S2": 0.00948548035792475
+      },
+      "max_bures": 0.04363263184210543,
+      "margins": {
+        "reference": 1.3711801484385514e-05,
+        "padding": 0.00037990237670986843,
+        "solver": 3.049589436568223e-10,
+        "C12": 9.125609946374433e-08,
+        "S2": 8.202327705930657e-13
+      },
+      "boundary_population": 4.185154230154258e-08,
+      "criteria": {
+        "state": false,
+        "C12": true,
+        "S2": true,
+        "boundary": true
+      },
+      "all_criteria": false,
+      "wall_seconds": 0.31902558298315853
+    },
+    {
+      "route": "hybrid",
+      "r": 7,
+      "order": 1,
+      "block_orders": [
+        1,
+        1
+      ],
+      "primitive_counts": {
+        "Ry": 30,
+        "Rz": 2,
+        "CD_Z": 42,
+        "Gaussian": 0
+      },
+      "total_primitives": 74,
+      "native_waits": 8,
+      "errors": {
+        "state": 0.01636829390984685,
+        "C12": 0.0020065042677911743,
+        "S2": 0.002336820298365426
+      },
+      "max_bures": 0.01624159158735805,
+      "margins": {
+        "reference": 1.3711801484389468e-05,
+        "padding": 0.0001129902160454671,
+        "solver": 3.049589436568223e-10,
+        "C12": 6.5954037784296444e-09,
+        "S2": 9.858433513976195e-13
+      },
+      "boundary_population": 4.236438139499446e-09,
+      "criteria": {
+        "state": true,
+        "C12": true,
+        "S2": true,
+        "boundary": true
+      },
+      "all_criteria": true,
+      "wall_seconds": 20.222381709027104
+    },
+    {
+      "route": "hybrid",
+      "r": 7,
+      "order": 2,
+      "block_orders": [
+        2,
+        2
+      ],
+      "primitive_counts": {
+        "Ry": 44,
+        "Rz": 2,
+        "CD_Z": 56,
+        "Gaussian": 0
+      },
+      "total_primitives": 102,
+      "native_waits": 8,
+      "errors": {
+        "state": 0.013460478759825525,
+        "C12": 0.0019662924649283884,
+        "S2": 0.0022092716226348105
+      },
+      "max_bures": 0.013378000507454666,
+      "margins": {
+        "reference": 1.3711801484389468e-05,
+        "padding": 6.876614592752686e-05,
+        "solver": 3.049589436568223e-10,
+        "C12": 2.312338007458771e-09,
+        "S2": 1.1416215195403367e-12
+      },
+      "boundary_population": 1.8664553009070597e-09,
+      "criteria": {
+        "state": true,
+        "C12": true,
+        "S2": true,
+        "boundary": true
+      },
+      "all_criteria": true,
+      "wall_seconds": 20.763506958959624
+    },
+    {
+      "route": "gauss_block",
+      "r": 7,
+      "order": 1,
+      "block_orders": [
+        1,
+        1
+      ],
+      "primitive_counts": {
+        "Ry": 58,
+        "Rz": 2,
+        "CD_Z": 70,
+        "Gaussian": 51
+      },
+      "total_primitives": 181,
+      "native_waits": 0,
+      "errors": {
+        "state": 0.07423085434695074,
+        "C12": 0.010597548533224439,
+        "S2": 0.014449898355679433
+      },
+      "max_bures": 0.0739503882056271,
+      "margins": {
+        "reference": 1.3711801484389468e-05,
+        "padding": 0.00026675403488030065,
+        "solver": 3.049589436568223e-10,
+        "C12": 3.9784196532099874e-08,
+        "S2": 2.603472992745992e-13
+      },
+      "boundary_population": 2.0419291339209864e-08,
+      "criteria": {
+        "state": false,
+        "C12": false,
+        "S2": true,
+        "boundary": true
+      },
+      "all_criteria": false,
+      "wall_seconds": 0.39807504194322973
+    },
+    {
+      "route": "gauss_block",
+      "r": 7,
+      "order": 2,
+      "block_orders": [
+        2,
+        2
+      ],
+      "primitive_counts": {
+        "Ry": 86,
+        "Rz": 2,
+        "CD_Z": 98,
+        "Gaussian": 51
+      },
+      "total_primitives": 237,
+      "native_waits": 0,
+      "errors": {
+        "state": 0.028638148344236922,
+        "C12": 0.004951169973381816,
+        "S2": 0.005937482207190911
+      },
+      "max_bures": 0.028522615248612097,
+      "margins": {
+        "reference": 1.3711801484389468e-05,
+        "padding": 0.00010182098918149183,
+        "solver": 3.049589436568223e-10,
+        "C12": 5.6869106911603555e-09,
+        "S2": 1.7284784714632906e-13
+      },
+      "boundary_population": 2.7306221668589336e-09,
+      "criteria": {
+        "state": true,
+        "C12": true,
+        "S2": true,
+        "boundary": true
+      },
+      "all_criteria": true,
+      "wall_seconds": 0.39739775005728006
+    },
+    {
+      "route": "hybrid",
+      "r": 8,
+      "order": 1,
+      "block_orders": [
+        1,
+        1
+      ],
+      "primitive_counts": {
+        "Ry": 34,
+        "Rz": 2,
+        "CD_Z": 48,
+        "Gaussian": 0
+      },
+      "total_primitives": 84,
+      "native_waits": 9,
+      "errors": {
+        "state": 0.011195427575596892,
+        "C12": 0.0014324491924048396,
+        "S2": 0.001689504814527669
+      },
+      "max_bures": 0.011101568258179739,
+      "margins": {
+        "reference": 1.3711801484394592e-05,
+        "padding": 8.014721097381497e-05,
+        "solver": 3.049589436568223e-10,
+        "C12": 2.757385684889902e-09,
+        "S2": 2.835717771709767e-13
+      },
+      "boundary_population": 2.5816669291863434e-09,
+      "criteria": {
+        "state": true,
+        "C12": true,
+        "S2": true,
+        "boundary": true
+      },
+      "all_criteria": true,
+      "wall_seconds": 23.929152541910298
+    },
+    {
+      "route": "hybrid",
+      "r": 8,
+      "order": 2,
+      "block_orders": [
+        2,
+        2
+      ],
+      "primitive_counts": {
+        "Ry": 50,
+        "Rz": 2,
+        "CD_Z": 64,
+        "Gaussian": 0
+      },
+      "total_primitives": 116,
+      "native_waits": 9,
+      "errors": {
+        "state": 0.00985665106888459,
+        "C12": 0.0014072036237899777,
+        "S2": 0.0016238214817797247
+      },
+      "max_bures": 0.009798698201843023,
+      "margins": {
+        "reference": 1.3711801484394592e-05,
+        "padding": 4.424076059823024e-05,
+        "solver": 3.049589436568223e-10,
+        "C12": 6.040582985483065e-10,
+        "S2": 1.9539925233402755e-13
+      },
+      "boundary_population": 7.789526226148977e-10,
+      "criteria": {
+        "state": true,
+        "C12": true,
+        "S2": true,
+        "boundary": true
+      },
+      "all_criteria": true,
+      "wall_seconds": 21.06645041704178
+    },
+    {
+      "route": "gauss_block",
+      "r": 8,
+      "order": 1,
+      "block_orders": [
+        1,
+        1
+      ],
+      "primitive_counts": {
+        "Ry": 66,
+        "Rz": 2,
+        "CD_Z": 80,
+        "Gaussian": 57
+      },
+      "total_primitives": 205,
+      "native_waits": 0,
+      "errors": {
+        "state": 0.06033085999595786,
+        "C12": 0.007898064623576034,
+        "S2": 0.010168455837007984
+      },
+      "max_bures": 0.06010187587622774,
+      "margins": {
+        "reference": 1.3711801484394592e-05,
+        "padding": 0.00021527201328678,
+        "solver": 3.049589436568223e-10,
+        "C12": 3.0918376747804156e-08,
+        "S2": 2.1443957720634899e-13
+      },
+      "boundary_population": 1.4787819493257001e-08,
+      "criteria": {
+        "state": false,
+        "C12": true,
+        "S2": true,
+        "boundary": true
+      },
+      "all_criteria": false,
+      "wall_seconds": 0.3937499589519575
+    },
+    {
+      "route": "gauss_block",
+      "r": 8,
+      "order": 2,
+      "block_orders": [
+        2,
+        2
+      ],
+      "primitive_counts": {
+        "Ry": 98,
+        "Rz": 2,
+        "CD_Z": 112,
+        "Gaussian": 57
+      },
+      "total_primitives": 269,
+      "native_waits": 0,
+      "errors": {
+        "state": 0.020984071730616984,
+        "C12": 0.0037405550076287752,
+        "S2": 0.004490809259761988
+      },
+      "max_bures": 0.020909528535117,
+      "margins": {
+        "reference": 1.3711801484394592e-05,
+        "padding": 6.0831089056646004e-05,
+        "solver": 3.049589436568223e-10,
+        "C12": 2.139909706321685e-09,
+        "S2": 2.0218549057204882e-13
+      },
+      "boundary_population": 1.0306770836685223e-09,
+      "criteria": {
+        "state": true,
+        "C12": true,
+        "S2": true,
+        "boundary": true
+      },
+      "all_criteria": true,
+      "wall_seconds": 0.3780486669857055
+    },
+    {
+      "route": "gauss_block",
+      "r": 8,
+      "order": 3,
+      "block_orders": [
+        2,
+        1
+      ],
+      "primitive_counts": {
+        "Ry": 82,
+        "Rz": 2,
+        "CD_Z": 96,
+        "Gaussian": 57
+      },
+      "total_primitives": 237,
+      "native_waits": 0,
+      "errors": {
+        "state": 0.02152225224788817,
+        "C12": 0.003759613541953648,
+        "S2": 0.00458499282304374
+      },
+      "max_bures": 0.02135822838400502,
+      "margins": {
+        "reference": 1.3711801484394592e-05,
+        "padding": 0.0001503117574398127,
+        "solver": 3.049589436568223e-10,
+        "C12": 1.2196278892482189e-08,
+        "S2": 2.097488849273077e-13
+      },
+      "boundary_population": 6.502087657461943e-09,
+      "criteria": {
+        "state": true,
+        "C12": true,
+        "S2": true,
+        "boundary": true
+      },
+      "all_criteria": true,
+      "wall_seconds": 0.3550322080263868
+    },
+    {
+      "route": "hybrid",
+      "r": 9,
+      "order": 1,
+      "block_orders": [
+        1,
+        1
+      ],
+      "primitive_counts": {
+        "Ry": 38,
+        "Rz": 2,
+        "CD_Z": 54,
+        "Gaussian": 0
+      },
+      "total_primitives": 94,
+      "native_waits": 10,
+      "errors": {
+        "state": 0.008387976924085919,
+        "C12": 0.001109877614527208,
+        "S2": 0.0012892241339883329
+      },
+      "max_bures": 0.008315686387628012,
+      "margins": {
+        "reference": 1.3711801484389446e-05,
+        "padding": 5.857843001457421e-05,
+        "solver": 3.049589436568223e-10,
+        "C12": 1.7238656595436234e-09,
+        "S2": 3.9690473130349346e-13
+      },
+      "boundary_population": 1.419591198185239e-09,
+      "criteria": {
+        "state": true,
+        "C12": true,
+        "S2": true,
+        "boundary": true
+      },
+      "all_criteria": true,
+      "wall_seconds": 23.03807854198385
+    },
+    {
+      "route": "hybrid",
+      "r": 9,
+      "order": 2,
+      "block_orders": [
+        2,
+        2
+      ],
+      "primitive_counts": {
+        "Ry": 56,
+        "Rz": 2,
+        "CD_Z": 72,
+        "Gaussian": 0
+      },
+      "total_primitives": 130,
+      "native_waits": 10,
+      "errors": {
+        "state": 0.007652178256290258,
+        "C12": 0.0010837622366856043,
+        "S2": 0.0012528396840945852
+      },
+      "max_bures": 0.007612841258084909,
+      "margins": {
+        "reference": 1.3711801484389446e-05,
+        "padding": 2.562489176201591e-05,
+        "solver": 3.049589436568223e-10,
+        "C12": 2.841292094892287e-10,
+        "S2": 3.8605230123778256e-13
+      },
+      "boundary_population": 3.3902645428768954e-10,
+      "criteria": {
+        "state": true,
+        "C12": true,
+        "S2": true,
+        "boundary": true
+      },
+      "all_criteria": true,
+      "wall_seconds": 22.026532749994658
+    },
+    {
+      "route": "gauss_block",
+      "r": 9,
+      "order": 1,
+      "block_orders": [
+        1,
+        1
+      ],
+      "primitive_counts": {
+        "Ry": 74,
+        "Rz": 2,
+        "CD_Z": 90,
+        "Gaussian": 63
+      },
+      "total_primitives": 229,
+      "native_waits": 0,
+      "errors": {
+        "state": 0.05176093516427228,
+        "C12": 0.006148114986448905,
+        "S2": 0.007718782177834088
+      },
+      "max_bures": 0.05157852336314092,
+      "margins": {
+        "reference": 1.3711801484389446e-05,
+        "padding": 0.00016869969468801796,
+        "solver": 3.049589436568223e-10,
+        "C12": 2.1022116089161297e-08,
+        "S2": 1.9824419883462951e-13
+      },
+      "boundary_population": 8.931314710939134e-09,
+      "criteria": {
+        "state": false,
+        "C12": true,
+        "S2": true,
+        "boundary": true
+      },
+      "all_criteria": false,
+      "wall_seconds": 0.40995437500532717
+    },
+    {
+      "route": "gauss_block",
+      "r": 9,
+      "order": 2,
+      "block_orders": [
+        2,
+        2
+      ],
+      "primitive_counts": {
+        "Ry": 110,
+        "Rz": 2,
+        "CD_Z": 126,
+        "Gaussian": 63
+      },
+      "total_primitives": 301,
+      "native_waits": 0,
+      "errors": {
+        "state": 0.016040363632778463,
+        "C12": 0.0029236301930090293,
+        "S2": 0.0035333556582130277
+      },
+      "max_bures": 0.015991710025190627,
+      "margins": {
+        "reference": 1.3711801484389446e-05,
+        "padding": 3.4941501144504844e-05,
+        "solver": 3.049589436568223e-10,
+        "C12": 6.843303907492602e-10,
+        "S2": 1.9144408280880043e-13
+      },
+      "boundary_population": 4.2517578917383675e-10,
+      "criteria": {
+        "state": true,
+        "C12": true,
+        "S2": true,
+        "boundary": true
+      },
+      "all_criteria": true,
+      "wall_seconds": 0.4561055831145495
+    },
+    {
+      "route": "gauss_block",
+      "r": 9,
+      "order": 3,
+      "block_orders": [
+        2,
+        1
+      ],
+      "primitive_counts": {
+        "Ry": 92,
+        "Rz": 2,
+        "CD_Z": 108,
+        "Gaussian": 63
+      },
+      "total_primitives": 265,
+      "native_waits": 0,
+      "errors": {
+        "state": 0.01656747806948844,
+        "C12": 0.0029321858788821952,
+        "S2": 0.003576542393085601
+      },
+      "max_bures": 0.016432173807613568,
+      "margins": {
+        "reference": 1.3711801484389446e-05,
+        "padding": 0.00012159215543154015,
+        "solver": 3.049589436568223e-10,
+        "C12": 9.699645481686306e-09,
+        "S2": 1.917979663978997e-13
+      },
+      "boundary_population": 4.849729208974397e-09,
+      "criteria": {
+        "state": true,
+        "C12": true,
+        "S2": true,
+        "boundary": true
+      },
+      "all_criteria": true,
+      "wall_seconds": 0.447510041994974
+    }
+  ],
+  "independent_checks": {
+    "hamiltonian_error": 5.319100436282261e-15,
+    "native_action_error": 5.623989933484928e-16,
+    "symplectic_error": 2.867807998391998e-16,
+    "zero_shunt_generators_error": 8.881784197001252e-16
+  },
+  "solver_check": {
+    "margins": {
+      "state": 3.049589436568223e-10,
+      "C12": 2.0130453698750835e-13,
+      "S2": 1.1669831767591177e-13
+    },
+    "method": "DOP853",
+    "cutoff": 160,
+    "rtol": 1e-11,
+    "atol": 1e-13,
+    "sampled_times": [
+      0.0,
+      0.3335801555317838,
+      0.37527767497325676,
+      0.42888877139800774,
+      0.5003702332976757,
+      0.6004442799572108,
+      0.6671603110635675,
+      0.7505553499465135,
+      0.8577775427960155,
+      1.0007404665953512,
+      1.0007404665953514,
+      1.1258330249197703,
+      1.2008885599144217,
+      1.286666314194023,
+      1.334320622127135,
+      1.501110699893027,
+      1.5011106998930273,
+      1.667900777658919,
+      1.715555085592031,
+      1.8013328398716326,
+      1.8763883748662837,
+      2.0014809331907024,
+      2.001480933190703,
+      2.144443856990039,
+      2.2516660498395407,
+      2.3350610887224863,
+      2.4017771198288433,
+      2.5018511664883785,
+      2.573332628388046,
+      2.626943724812797,
+      2.66864124425427,
+      3.002221399786054
+    ],
+    "function_evaluations": 4841,
+    "norm_drift": 8.104628079763643e-15
+  },
+  "cheapest_passing": {
+    "hybrid": {
+      "route": "hybrid",
+      "r": 6,
+      "order": 1,
+      "block_orders": [
+        1,
+        1
+      ],
+      "primitive_counts": {
+        "Ry": 26,
+        "Rz": 2,
+        "CD_Z": 36,
+        "Gaussian": 0
+      },
+      "total_primitives": 64,
+      "native_waits": 7,
+      "errors": {
+        "state": 0.02700687119164617,
+        "C12": 0.003034068020571383,
+        "S2": 0.0035726048269046906
+      },
+      "max_bures": 0.026810917860673463,
+      "margins": {
+        "reference": 1.3711801484385514e-05,
+        "padding": 0.00018224122452937673,
+        "solver": 3.049589436568223e-10,
+        "C12": 1.18662443041462e-08,
+        "S2": 2.383787611748289e-13
+      },
+      "boundary_population": 1.5633270480878506e-08,
+      "criteria": {
+        "state": true,
+        "C12": true,
+        "S2": true,
+        "boundary": true
+      },
+      "all_criteria": true,
+      "wall_seconds": 18.66608970798552
+    },
+    "gauss_block": {
+      "route": "gauss_block",
+      "r": 7,
+      "order": 3,
+      "block_orders": [
+        2,
+        1
+      ],
+      "primitive_counts": {
+        "Ry": 72,
+        "Rz": 2,
+        "CD_Z": 84,
+        "Gaussian": 51
+      },
+      "total_primitives": 209,
+      "native_waits": 0,
+      "errors": {
+        "state": 0.029408836110258067,
+        "C12": 0.004991569265714959,
+        "S2": 0.0061503249691163
+      },
+      "max_bures": 0.02917516664965871,
+      "margins": {
+        "reference": 1.3711801484389468e-05,
+        "padding": 0.0002199573541560251,
+        "solver": 3.049589436568223e-10,
+        "C12": 2.2830540890485986e-08,
+        "S2": 1.7959245202092688e-13
+      },
+      "boundary_population": 1.4307090452307902e-08,
+      "criteria": {
+        "state": true,
+        "C12": true,
+        "S2": true,
+        "boundary": true
+      },
+      "all_criteria": true,
+      "wall_seconds": 0.35337083402555436
+    }
+  },
+  "wall_seconds": 527.4078141659265
+}

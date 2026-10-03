@@ -1,0 +1,35 @@
+F
+======================================================================
+FAIL: test_gaussian_readouts_match_the_counted_interval_sequence (common_code.test_e0.RepresentationChecks.test_gaussian_readouts_match_the_counted_interval_sequence)
+Appendix J counts merged intervals, not repeated finite half steps.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/zhen002/GitHub/nonlinear-PDE-simulator/common_code/test_e0.py", line 87, in test_gaussian_readouts_match_the_counted_interval_sequence
+    np.testing.assert_allclose(actual[k].ravel(), expected, atol=3e-12, rtol=0)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/zhen002/miniconda3/envs/cvdv/lib/python3.13/site-packages/numpy/testing/_private/utils.py", line 1718, in assert_allclose
+    assert_array_compare(compare, actual, desired, err_msg=str(err_msg),
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                         verbose=verbose, header=header, equal_nan=equal_nan,
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                         strict=strict)
+                         ^^^^^^^^^^^^^^
+  File "/Users/zhen002/miniconda3/envs/cvdv/lib/python3.13/site-packages/numpy/testing/_private/utils.py", line 926, in assert_array_compare
+    raise AssertionError(msg)
+AssertionError: 
+Not equal to tolerance rtol=0, atol=3e-12
+
+Mismatched elements: 32 / 32 (100%)
+Max absolute difference among violations: 0.11812606
+Max relative difference among violations: 7.0759324
+ ACTUAL: array([-7.439351e-01+0.279385j, -9.256594e-03+0.011145j,
+       -1.543165e-02+0.289281j,  4.683091e-02+0.034427j,
+        4.439609e-02+0.077823j, -1.059815e-02-0.001654j,...
+ DESIRED: array([-0.742   +0.250238j, -0.008227+0.003807j, -0.041498+0.279186j,
+        0.044942+0.037219j,  0.087497+0.018486j, -0.005478-0.006824j,
+       -0.020487+0.079453j, -0.041398-0.018327j,  0.389497+0.059566j,...
+
+----------------------------------------------------------------------
+Ran 1 test in 0.040s
+
+FAILED (failures=1)

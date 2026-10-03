@@ -1,0 +1,75 @@
+{
+  "compared_cutoffs": [
+    128,
+    160
+  ],
+  "records": [
+    {
+      "lambda2": 0.3,
+      "N": 128,
+      "name": "E4_reference_lambda0.3_N128",
+      "routes": {
+        "target": {
+          "max_distance": 0.0
+        },
+        "native": {
+          "max_distance": 0.4107805902893494
+        },
+        "retuned_native": {
+          "max_distance": 0.5283042037078555
+        },
+        "exact_split": {
+          "max_distance": 0.006028430168556559
+        }
+      },
+      "solver": {
+        "state_distance": 2.683275150530903e-09,
+        "C12": 5.279019983839439e-12,
+        "S2": 5.7211423099001735e-12
+      },
+      "comparator_solver": {
+        "native": {
+          "state_distance": 5.322717752206665e-09,
+          "C12": 7.889373884340796e-12,
+          "S2": 7.320670762298032e-12
+        },
+        "retuned_native": {
+          "state_distance": 4.040939270470317e-09,
+          "C12": 6.262958599070018e-12,
+          "S2": 6.544817639231315e-12
+        }
+      },
+      "mean_field_crossing": {
+        "crossed": true,
+        "time": 0.7030028604745047,
+        "bracket": [
+          0.6919182132319421,
+          0.7036456405748565
+        ],
+        "right_censored_at": null
+      },
+      "classical_amplitude": 0.911092892657328
+    },
+    {
+      "N": 160,
+      "lambda2": 0.3,
+      "solver": {
+        "state_distance": 6.850423817979153e-09,
+        "C12": 6.40067722469277e-12,
+        "S2": 6.767145871444669e-12
+      }
+    }
+  ],
+  "empirical_cutoff_estimates": {
+    "state_distance": 0.00023012114188835695,
+    "C12": 3.620842398607868e-08,
+    "S2": 1.338235078307548e-13
+  },
+  "resolution_ok": true,
+  "provenance": {
+    "python": "/Users/zhen002/miniconda3/envs/cvdv/bin/python",
+    "python_version": "3.13.0",
+    "numpy": "2.3.4",
+    "scipy": "1.16.3"
+  }
+}

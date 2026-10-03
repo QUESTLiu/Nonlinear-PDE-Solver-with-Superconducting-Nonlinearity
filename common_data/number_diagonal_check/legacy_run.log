@@ -1,0 +1,13 @@
+
+=== W = 0.3: building reference cutoff 16 ===
+Reference evolution done in 0.31 s
+--- cutoff = 6 ---
+cutoff= 6, W=0.3, native max infid=1.976e-01, hybrid max infid=9.340e-03, cutoff floor=9.341e-03, hybrid-vs-finite-target=2.842e-09
+--- cutoff = 8 ---
+cutoff= 8, W=0.3, native max infid=2.023e-01, hybrid max infid=4.835e-04, cutoff floor=4.844e-04, hybrid-vs-finite-target=7.234e-09
+--- cutoff = 10 ---
+cutoff=10, W=0.3, native max infid=2.029e-01, hybrid max infid=1.502e-05, cutoff floor=1.512e-05, hybrid-vs-finite-target=7.304e-09
+--- cutoff = 12 ---
+cutoff=12, W=0.3, native max infid=2.029e-01, hybrid max infid=2.993e-07, cutoff floor=2.989e-07, hybrid-vs-finite-target=6.853e-09
+
+Done. Results written to: /Users/zhen002/GitHub/nonlinear-PDE-simulator/common_data/number_diagonal_check

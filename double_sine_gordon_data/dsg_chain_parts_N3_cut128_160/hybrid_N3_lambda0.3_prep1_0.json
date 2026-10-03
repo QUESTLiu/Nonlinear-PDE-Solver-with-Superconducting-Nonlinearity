@@ -1,0 +1,127 @@
+{
+ "environment": {
+  "python": "/Users/zhen002/miniconda3/envs/cvdv/bin/python",
+  "python_version": "3.13.0",
+  "numpy": "2.3.4",
+  "scipy": "1.16.3",
+  "threads": "4"
+ },
+ "rows": [
+  {
+   "sites": 3,
+   "lambda2": 0.3,
+   "route": "hybrid",
+   "r": 5,
+   "order": 1,
+   "block_orders": [
+    1,
+    1
+   ],
+   "s": 1,
+   "preparation": [
+    1.0,
+    0.0
+   ],
+   "cutoffs": [
+    128,
+    160
+   ],
+   "primitive_counts": {
+    "Ry": 32,
+    "Rz": 2,
+    "CD_Z": 45,
+    "Gaussian": 0
+   },
+   "total_programmable_primitives": 79,
+   "native_waits": 6,
+   "state_error": 0.060917822405077496,
+   "max_bures": 0.06082344312923876,
+   "margins": {
+    "reference": 1.725320252482121e-06,
+    "solver": 2.9802322387695312e-08,
+    "padding": 9.26241532638597e-05,
+    "C12": 2.451865604465033e-09,
+    "S2": 1.2918902059233517e-12
+   },
+   "C12_error": 0.004975833815936791,
+   "S2_error": 0.006950072037483164,
+   "boundary_population": 3.4921209257632313e-09,
+   "boundary_low": 3.4921209257632313e-09,
+   "boundary_high": 1.5989520818493475e-10,
+   "max_ancilla_excited": 0.00047273019227728744,
+   "acceptance": {
+    "state": false,
+    "boundary": true,
+    "C12": true,
+    "S2": true
+   },
+   "all_criteria": false,
+   "wall_seconds": 3535.5273932499986,
+   "primitive_counts_conjugated": {
+    "Ry": 62,
+    "CD_Z": 45,
+    "Rz": 30,
+    "Gaussian": 0
+   },
+   "total_programmable_primitives_conjugated": 137
+  },
+  {
+   "sites": 3,
+   "lambda2": 0.3,
+   "route": "hybrid",
+   "r": 6,
+   "order": 1,
+   "block_orders": [
+    1,
+    1
+   ],
+   "s": 1,
+   "preparation": [
+    1.0,
+    0.0
+   ],
+   "cutoffs": [
+    128,
+    160
+   ],
+   "primitive_counts": {
+    "Ry": 38,
+    "Rz": 2,
+    "CD_Z": 54,
+    "Gaussian": 0
+   },
+   "total_programmable_primitives": 94,
+   "native_waits": 7,
+   "state_error": 0.03151313857954955,
+   "max_bures": 0.03145837633391318,
+   "margins": {
+    "reference": 1.725320252482121e-06,
+    "solver": 2.9802322387695312e-08,
+    "padding": 5.300712306149623e-05,
+    "C12": 9.844729865559716e-10,
+    "S2": 1.2475784294530001e-12
+   },
+   "C12_error": 0.002578256411645205,
+   "S2_error": 0.0031798930735962364,
+   "boundary_population": 1.0526207683270172e-09,
+   "boundary_low": 1.0526207683270172e-09,
+   "boundary_high": 5.528122404285796e-11,
+   "max_ancilla_excited": 0.0002412038108350949,
+   "acceptance": {
+    "state": true,
+    "boundary": true,
+    "C12": true,
+    "S2": true
+   },
+   "all_criteria": true,
+   "wall_seconds": 3549.6669255000015,
+   "primitive_counts_conjugated": {
+    "Ry": 74,
+    "CD_Z": 54,
+    "Rz": 36,
+    "Gaussian": 0
+   },
+   "total_programmable_primitives_conjugated": 164
+  }
+ ]
+}

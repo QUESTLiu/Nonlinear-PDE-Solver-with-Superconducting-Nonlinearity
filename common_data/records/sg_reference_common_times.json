@@ -1,0 +1,47 @@
+{
+  "rows": [
+    {
+      "cutoffs": [
+        96,
+        128
+      ],
+      "common_11_times": {
+        "C12": 1.336535833802429e-06,
+        "S2": 1.416332329196024e-11
+      },
+      "archived_257_times": {
+        "C12": 1.3365358451073455e-06,
+        "S2": 1.4172704676518322e-11
+      },
+      "common_grid_exceeds_archived": {
+        "C12": false,
+        "S2": false
+      }
+    },
+    {
+      "cutoffs": [
+        128,
+        160
+      ],
+      "common_11_times": {
+        "C12": 3.620842183054597e-08,
+        "S2": 1.1650402864660236e-13
+      },
+      "archived_257_times": {
+        "C12": 3.620842398607868e-08,
+        "S2": 1.338235078307548e-13
+      },
+      "common_grid_exceeds_archived": {
+        "C12": false,
+        "S2": false
+      }
+    }
+  ],
+  "provenance": {
+    "python": "/Users/zhen002/miniconda3/envs/cvdv/bin/python",
+    "python_version": "3.13.0",
+    "numpy": "2.3.4",
+    "scipy": "1.16.3"
+  },
+  "scope": "Contractions of existing exact step states only. No trajectory or independent-solver rerun. Original solver observable differences remain empirical estimates on their archived 257-point grid."
+}

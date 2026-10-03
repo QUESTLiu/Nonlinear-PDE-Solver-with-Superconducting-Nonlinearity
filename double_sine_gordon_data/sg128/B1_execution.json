@@ -1,0 +1,29 @@
+{
+  "batch": "B1",
+  "results": [
+    {
+      "id": "E4_reference128",
+      "status": "completed",
+      "returncode": 0,
+      "reason": null,
+      "wall_seconds": 358.0576692910108,
+      "peak_rss_bytes": 2165932032,
+      "command": [
+        "/Users/zhen002/miniconda3/envs/cvdv/bin/python",
+        "-m",
+        "pra.run_pilot",
+        "e4-reference128",
+        "--previous-reference",
+        "/Users/zhen002/GitHub/nonlinear-PDE-simulator/pra/results/stage1_continuation/E4_reference64",
+        "--outdir",
+        "/Users/zhen002/GitHub/nonlinear-PDE-simulator/pra/results/sg128/reference"
+      ]
+    }
+  ],
+  "provenance": {
+    "python": "/Users/zhen002/miniconda3/envs/cvdv/bin/python",
+    "python_version": "3.13.0",
+    "numpy": "2.3.4",
+    "scipy": "1.16.3"
+  }
+}

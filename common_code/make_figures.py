@@ -1,0 +1,1137 @@
+"""Figures for the hardware-native simulation manuscript.
+
+All data come from the archived records in the *_data folders.
+No simulation is run here. Usage, from the repository root:
+
+    python common_code/make_figures.py [--preview DIR]
+"""
+
+import argparse
+import json
+import sys
+from pathlib import Path
+
+import matplotlib
+
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt  # noqa: E402
+import numpy as np  # noqa: E402
+from matplotlib.colors import LogNorm  # noqa: E402
+from matplotlib.lines import Line2D  # noqa: E402
+
+REPO = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(REPO))
+from double_sine_gordon_code.gaussian_evidence import updated_row
+
+SG_DATA = REPO / "sine_gordon_data"
+DF_DATA = REPO / "duffing_data"
+DSG_DATA = REPO / "double_sine_gordon_data"
+COMMON_DATA = REPO / "common_data"
+FIG = REPO / "paper" / "figures"
+
+COL1, COL2 = 3.375, 7.0  # PRA single- and double-column widths (in)
+
+# Route colours are shared by every figure (Okabe-Ito palette).
+C_TARGET = "#000000"
+C_NATIVE = "#666666"
+C_RETUNED = "#009E73"
+C_GAUSS = "#A64D8B"
+C_HYBRID = "#0072B2"
+C_HYBRID_RET = "#009E73"
+C_PROG = "#D55E00"
+C_SNAP = "#E69F00"
+C_DW = "#009E73"
+C_FIXED = "#CC79A7"
+
+plt.rcParams.update(
+    {
+        "font.family": "serif",
+        "font.serif": ["cmr10"],
+        "mathtext.fontset": "cm",
+        "axes.formatter.use_mathtext": True,
+        "axes.unicode_minus": False,
+        "font.size": 9,
+        "axes.labelsize": 9,
+        "legend.fontsize": 8.5,
+        "xtick.labelsize": 8.5,
+        "ytick.labelsize": 8.5,
+        "axes.linewidth": 0.7,
+        "axes.spines.top": False,
+        "axes.spines.right": False,
+        "xtick.major.width": 0.6,
+        "ytick.major.width": 0.6,
+        "xtick.minor.width": 0.45,
+        "ytick.minor.width": 0.45,
+        "xtick.major.size": 3.0,
+        "ytick.major.size": 3.0,
+        "xtick.minor.size": 1.6,
+        "ytick.minor.size": 1.6,
+        "xtick.direction": "out",
+        "ytick.direction": "out",
+        "xtick.top": False,
+        "ytick.right": False,
+        "lines.linewidth": 1.4,
+        "lines.markersize": 4.2,
+        "legend.frameon": False,
+        "legend.handlelength": 1.8,
+        "legend.borderaxespad": 0.3,
+        "pdf.fonttype": 42,
+        "savefig.dpi": 300,
+    }
+)
+
+
+def panel(ax, label, x=0.0, y=1.05, **kw):
+    ax.text(
+        x, y, label, transform=ax.transAxes, ha="left", va="bottom", fontsize=9, **kw
+    )
+
+
+def save(fig, name, preview):
+    # Keep the physical column width, so a long legend cannot shrink the type.
+    fig.savefig(FIG / f"{name}.pdf", metadata={"Creator": None, "Producer": None})
+    if preview:
+        fig.savefig(Path(preview) / f"{name}.png", dpi=220, metadata={"Software": None})
+    plt.close(fig)
+
+
+# ---------------------------------------------------------------- SG classical
+def e3(ej, prep, n=80):
+    for d in (SG_DATA / "formal" / "E3", SG_DATA / "stage1" / "E3"):
+        p = d / f"E3_EJ{ej:g}_{prep}_N{n}"
+        if Path(str(p) + ".npz").exists():
+            meta = json.loads(Path(str(p) + ".json").read_text())
+            with np.load(str(p) + ".npz") as a:
+                arrays = {k: a[k] for k in a.files}
+            return meta, arrays
+    raise FileNotFoundError(ej, prep, n)
+
+
+def fig_sg_classical(preview):
+    ejs = [0.25, 0.5, 1, 2, 4, 8, 16, 32]
+    fig, axes = plt.subplots(2, 2, figsize=(COL2, 4.8))
+    fig.subplots_adjust(
+        left=0.09, right=0.98, bottom=0.10, top=0.93, wspace=0.30, hspace=0.52
+    )
+    axes = axes.ravel()
+
+    meta, a = e3(1, "primary")
+    amp = meta["oscillation_amplitude"]
+    tau = a["tau"]
+    d_cl = np.max(np.abs(a["mean_phi"] - a["phi_cl"]), axis=1) / amp
+    d_dw = np.max(np.abs(a["mean_phi"] - a["phi_dw"]), axis=1) / amp
+    ax = axes[0]
+    ax.axhline(0.1, color="0.55", lw=0.6, ls=":")
+    ax.plot(tau, d_cl, color=C_TARGET, label="bare classical")
+    ax.plot(tau, d_dw, color=C_DW, ls="--", label="DW reference")
+    for t_e, c in (
+        (meta["tau_ehrenfest_classical"], C_TARGET),
+        (meta["tau_ehrenfest_dw"], C_DW),
+    ):
+        ax.plot([t_e], [0.1], marker="v", ms=4, color=c, clip_on=False)
+        ax.annotate(
+            f"{t_e:.2f}", (t_e, 0.1), xytext=(0, -13),
+            textcoords="offset points", ha="center", va="top", color=c, fontsize=8.5,
+        )
+    ax.set(
+        xlim=(0, 5.2),
+        ylim=(0, 0.27),
+        xlabel=r"$\tau=\Omega t$",
+        ylabel=r"$d_{\rm MF}(\tau)$",
+    )
+    ax.text(
+        0.15,
+        0.108,
+        r"$\varepsilon^\star_{\rm MF}=0.1$",
+        fontsize=8,
+        color="0.35",
+        va="bottom",
+    )
+    ax.legend(loc="upper left")
+    panel(ax, r"(a) First-moment deviation, $E_J=1$")
+
+    rows = [e3(ej, "primary") for ej in ejs]
+    dmax = np.array(
+        [
+            np.max(np.abs(x["mean_phi"] - x["phi_cl"])) / m["oscillation_amplitude"]
+            for m, x in rows
+        ]
+    )
+    dmean = np.array(
+        [
+            np.mean(np.abs(x["mean_phi"] - x["phi_cl"])) / m["oscillation_amplitude"]
+            for m, x in rows
+        ]
+    )
+    wmax = np.array(
+        [
+            np.max(np.abs(x["mean_phi"] - x["phi_dw"])) / m["oscillation_amplitude"]
+            for m, x in rows
+        ]
+    )
+    wmean = np.array(
+        [
+            np.mean(np.abs(x["mean_phi"] - x["phi_dw"])) / m["oscillation_amplitude"]
+            for m, x in rows
+        ]
+    )
+    ax = axes[1]
+    ax.plot(ejs, dmax, "o-", color=C_TARGET, label=r"$D_{\max}$, bare")
+    ax.plot(ejs, dmean, "o:", color=C_TARGET, mfc="white", label=r"$\bar D$, bare")
+    ax.plot(ejs, wmax, "s-", color=C_DW, label=r"$D_{\max}$, DW")
+    ax.plot(ejs, wmean, "s:", color=C_DW, mfc="white", label=r"$\bar D$, DW")
+    ax.axhline(0.1, color="0.55", lw=0.6, ls=":")
+    ax.set(
+        xscale="log",
+        yscale="log",
+        ylim=(8e-4, 2.0),
+        xlabel=r"$E_J$",
+        ylabel="normalized deviation",
+    )
+    ax.set_xticks([0.25, 1, 4, 16], labels=["0.25", "1", "4", "16"])
+    ax.legend(
+        loc="lower left", ncol=2, handlelength=1.6, labelspacing=0.3, columnspacing=0.8
+    )
+    panel(ax, "(b) Maximum and mean deviations")
+
+    ax = axes[2]
+    tau_p = np.array([m["tau_ehrenfest_classical"] for m, _ in rows])
+    tau_w = [m["tau_ehrenfest_dw"] for m, _ in rows]
+    ax.axhline(5.2, color="0.55", lw=0.6, ls=":")
+    ax.plot(ejs, tau_p, "o-", color=C_TARGET, label="bare")
+    fixed = [(1, rows[2][0]["tau_ehrenfest_classical"])] + [
+        (ej, e3(ej, "fixed_variance")[0]["tau_ehrenfest_classical"]) for ej in (8, 32)
+    ]
+    ax.plot(
+        [f[0] for f in fixed],
+        [f[1] for f in fixed],
+        "^--",
+        color=C_FIXED,
+        label="fixed variance",
+    )
+    crossed = [(ej, t) for ej, t in zip(ejs, tau_w) if t is not None]
+    censored = [ej for ej, t in zip(ejs, tau_w) if t is None]
+    ax.plot(
+        [c[0] for c in crossed], [c[1] for c in crossed], "s", color=C_DW, label="DW"
+    )
+    ax.plot(
+        censored, [5.2] * len(censored), "s", color=C_DW, mfc="white",
+        clip_on=False, label="DW: no crossing",
+    )
+    ax.set(
+        xscale="log",
+        ylim=(0.0, 6.4),
+        xlabel=r"$E_J$",
+        ylabel=r"first crossing $\tau_{\rm E}$",
+    )
+    ax.set_xticks([0.25, 1, 4, 16], labels=["0.25", "1", "4", "16"])
+    ax.legend(loc="lower left", labelspacing=0.3, handlelength=1.8)
+    ax.text(0.32, 5.43, r"window end: $\tau=5.2$", fontsize=8, color="0.35")
+    panel(ax, "(c) Mean-field validity time")
+
+    # (d) terms of the momentum equation at E_J = 1: closure residual, its non-Gaussian part, and the
+    # finite-commutator residual of the cutoff (sine_gordon_code.native_correction.moment_diagnostics)
+    ax = axes[3]
+    floor = 1e-16
+    series = (
+        ("closure_momentum", 1.0, C_TARGET, "-", "closure", (3.6, 0.9)),
+        ("delta_NG_1", meta["E_J"], C_DW, "--", "non-Gaussian part", (0.35, 2e-6)),
+        ("cutoff_momentum", 1.0, C_NATIVE, ":", "finite cutoff", (3.5, 2e-8)),
+    )
+    for key, scale, color, ls, label, (x_text, y_text) in series:
+        values = np.maximum(scale * np.max(np.abs(a[key]), axis=1), floor)
+        ax.plot(tau, values, color=color, ls=ls)
+        ax.text(x_text, y_text, label, color=color, fontsize=8.5, ha="left", va="center")
+    ax.set(
+        xlim=(0, 5.2),
+        yscale="log",
+        ylim=(floor, 3),
+        xlabel=r"$\tau=\Omega t$",
+        ylabel="momentum residual",
+    )
+    ax.set_yticks([1e-16, 1e-12, 1e-8, 1e-4, 1])
+    panel(ax, r"(d) Momentum residuals, $E_J=1$")
+    save(fig, "fig_sg_classical", preview)
+
+
+# ----------------------------------------------------------------- polynomial
+def fig_sg_polynomial(preview):
+    fig, axes = plt.subplots(2, 1, figsize=(COL1, 4.55))
+    fig.subplots_adjust(left=0.19, right=0.97, bottom=0.10, top=0.80, hspace=0.56)
+    styles = {
+        "taylor": ("Taylor", C_TARGET, "o"),
+        "chebyshev_spectral": ("Chebyshev, spectral", "#0072B2", "s"),
+        "chebyshev_accessed": ("Chebyshev, accessed", "#E69F00", "^"),
+    }
+    with np.load(SG_DATA / "formal" / "polynomial" / "E3_poly_phi3_N64.npz") as a:
+        degs = a["degrees"]
+        ax = axes[0]
+        for key, (lab, c, mk) in styles.items():
+            y = a[f"{key}_max"]
+            lim = a[f"{key}_cutoff_limited"]
+            ax.plot(degs, y, "-", color=c)
+            ax.plot(degs[~lim], y[~lim], mk, color=c, label=lab)
+            if lim.any():
+                ax.plot(degs[lim], y[lim], mk, color=c, mfc="white")
+    ax.axhline(1e-3, color="0.55", lw=0.6, ls=":")
+    ax.set(
+        yscale="log",
+        ylim=(1e-16, 2),
+        xlabel="polynomial degree $d$",
+        ylabel=r"maximum infidelity $\mathcal{I}_d$",
+    )
+    ax.set_yticks([1, 1e-4, 1e-8, 1e-12, 1e-16])
+    ax.set_xticks([4, 8, 12, 16, 20, 24])
+    panel(ax, r"(a) Approximation error, $\phi_0=3$")
+
+    ax = axes[1]
+    phis = [0.5, 1, 2, 3]
+    for key, (lab, c, mk) in styles.items():
+        ds = []
+        for phi in ("0.5", "1", "2", "3"):
+            with np.load(
+                SG_DATA / "formal" / "polynomial" / f"E3_poly_phi{phi}_N64.npz"
+            ) as a:
+                ok = (a[f"{key}_max"] < 1e-3) & (~a[f"{key}_cutoff_limited"])
+                ds.append(int(a["degrees"][ok][0]))
+        ax.plot(phis, ds, mk + "-", color=c, label=lab)
+    ax.set(
+        xlabel=r"initial displacement $\phi_0$",
+        ylabel=r"minimum degree $d^\star$",
+        ylim=(2, 16),
+    )
+    ax.set_xticks(phis, labels=["0.5", "1", "2", "3"])
+    ax.set_yticks([4, 8, 12, 16])
+    panel(ax, "(b) Degree required at $10^{-3}$")
+    h = [
+        Line2D([], [], color=c, marker=mk, lw=0.8, label=lab)
+        for lab, c, mk in styles.values()
+    ]
+    fig.legend(
+        handles=h,
+        loc="upper center",
+        bbox_to_anchor=(0.55, 0.995),
+        ncol=1,
+        labelspacing=0.3,
+    )
+    save(fig, "fig_sg_polynomial", preview)
+
+
+# ------------------------------------------------------------------- Duffing
+def fig_duffing_native(preview):
+    scan = json.loads((DF_DATA / "duffing_amplitude_scan.json").read_text())
+    rows = scan["rows"]
+    xi = np.array([r["xi"] for r in rows])
+    fig, axes = plt.subplots(
+        1, 3, figsize=(COL2, 3.45), gridspec_kw=dict(width_ratios=[1.1, 0.9, 1.15])
+    )
+    fig.subplots_adjust(left=0.085, right=0.985, bottom=0.24, top=0.76, wspace=0.40)
+
+    ax = axes[0]
+    for x0 in (1.75, 2.0):
+        ax.vlines(x0, 5e-4, 1.6, color="0.85", lw=0.8, zorder=0)
+    ax.plot(
+        xi,
+        [r["max_native_infidelity"] for r in rows],
+        color=C_TARGET,
+        label=r"${\rm max}_t\,\mathcal{I}_{\rm K}$",
+    )
+    ax.plot(
+        xi,
+        np.minimum(1, [r["duhamel_infidelity_bound"] for r in rows]),
+        color=C_NATIVE,
+        ls="--",
+        label="uncentered bound",
+    )
+    ax.plot(
+        xi,
+        np.minimum(1, [r["centered_infidelity_bound"] for r in rows]),
+        color=C_HYBRID,
+        ls="-.",
+        label=r"residual bound $B_\psi^2$",
+    )
+    ax.plot(
+        xi,
+        [1 - r["diagonal_ceiling_T"] for r in rows],
+        color=C_RETUNED,
+        ls=":",
+        lw=1.3,
+        label=r"$1-F^{\max}_{\rm diag}(T)$",
+    )
+    ax.axhline(1e-3, color="0.55", lw=0.6, ls=":")
+    ax.set(
+        yscale="log",
+        xlim=(0.25, 2.5),
+        ylim=(5e-4, 1.6),
+        xlabel=r"$\xi$",
+        ylabel=r"infidelity $1-F$ or bound",
+    )
+    ax.set_xticks([0.5, 1, 1.5, 2, 2.5], labels=["0.5", "1", "1.5", "2", "2.5"])
+    handles, labels = ax.get_legend_handles_labels()
+    fig.legend(
+        handles,
+        labels,
+        loc="upper left",
+        bbox_to_anchor=(0.07, 1.0),
+        ncol=2,
+        labelspacing=0.35,
+        columnspacing=1.4,
+    )
+    panel(ax, "(a) Native error and bounds")
+
+    ax = axes[1]
+    for key, c, mk in (("1.75", C_HYBRID, "o"), ("2.0", C_PROG, "s")):
+        e = scan["cutoff_convergence"][key]
+        ax.plot(
+            [x["N"] for x in e],
+            [x["max_infidelity"] for x in e],
+            mk + "-",
+            color=c,
+            label=rf"$\xi={float(key):.2f}$",
+        )
+    ax.set(
+        yscale="log",
+        xlabel=r"cutoff $N$",
+        ylabel=r"cutoff infidelity $\epsilon_N$",
+        ylim=(1e-9, 3e-2),
+    )
+    ax.legend(loc="upper right")
+    panel(ax, "(b) Cutoff convergence")
+
+    ax = axes[2]
+    grid = json.loads((DF_DATA / "formal" / "E1_retry" / "summary.json").read_text())[
+        "points"
+    ]
+    betas, xis = [0.02, 0.05, 0.1, 0.2], [0.5, 1.0, 1.75, 2.0, 2.5]
+    val = np.full((len(betas), len(xis)), np.nan)
+    certified = {}
+    for p in grid:
+        if p["T"] != 1.0 or p["beta"] == 0:
+            continue
+        i, j = betas.index(p["beta"]), xis.index(p["xi"])
+        val[i, j] = p["max_native_infidelity"]
+        certified[(i, j)] = [
+            v["verdict"] for v in p["verdicts"]
+        ]  # thresholds 1e-3, 1e-2, 1e-4
+    im = ax.imshow(
+        val.T, origin="lower", cmap="Greys", norm=LogNorm(1e-4, 1), aspect="auto"
+    )
+    for (i, j), v in np.ndenumerate(val):
+        txt = np.format_float_positional(
+            v, precision=2, fractional=False, unique=False, trim="k"
+        )
+        ax.text(
+            i,
+            j,
+            txt,
+            ha="center",
+            va="center",
+            fontsize=8,
+            color="white" if im.cmap(im.norm(v))[0] < 0.46 else "black",
+        )
+        verdicts = certified[(i, j)]
+        if verdicts[0] == "sufficient":
+            ax.add_patch(
+                plt.Rectangle(
+                    (i - 0.47, j - 0.45), 0.94, 0.9, fill=False, ec=C_HYBRID, lw=1.3
+                )
+            )
+        elif verdicts[1] == "sufficient":
+            ax.add_patch(
+                plt.Rectangle(
+                    (i - 0.47, j - 0.45),
+                    0.94,
+                    0.9,
+                    fill=False,
+                    ec=C_HYBRID,
+                    lw=0.9,
+                    ls="--",
+                )
+            )
+    ax.set_xticks(range(len(betas)), labels=["0.02", "0.05", "0.1", "0.2"])
+    ax.set_yticks(range(len(xis)), labels=["0.5", "1", "1.75", "2", "2.5"])
+    ax.tick_params(which="both", top=False, right=False, length=0)
+    ax.set(xlabel=r"$\beta$", ylabel=r"$\xi$")
+    panel(ax, "(c) Native infidelity across inputs")
+    cax = fig.add_axes([0.735, 0.91, 0.23, 0.035])
+    bar = fig.colorbar(im, cax=cax, orientation="horizontal", ticks=[1e-4, 1e-2, 1])
+    bar.ax.minorticks_off()
+    bar.ax.tick_params(labelsize=8, length=2)
+    bound_handles = [
+        plt.Rectangle((0, 0), 1, 1, fill=False, ec=C_HYBRID, lw=1.1, ls=ls, label=lab)
+        for ls, lab in [("-", r"$10^{-3}$"), ("--", r"$10^{-2}$")]
+    ]
+    ax.legend(
+        handles=bound_handles,
+        title="Bound certifies sufficiency",
+        title_fontsize=8,
+        loc="upper center",
+        bbox_to_anchor=(0.5, -0.24),
+        ncol=2,
+        handlelength=1.1,
+        columnspacing=1.2,
+        labelspacing=0.25,
+    )
+    save(fig, "fig_duffing_native", preview)
+
+
+def fig_duffing_correction(preview):
+    s = json.loads(
+        (
+            DF_DATA
+            / "duffing_refinement"
+            / "comparison"
+            / "evaluation_phase_coverage"
+            / "summary.json"
+        ).read_text()
+    )
+    routes = {}
+    for r in s["rows"]:
+        routes.setdefault(r["route"], {})[r["input"]] = r
+    inputs = list(routes["native"].keys())
+    dev = [k for k in inputs if routes["native"][k]["input_role"] == "development"]
+    new = [k for k in inputs if routes["native"][k]["input_role"] != "development"]
+    order = sorted(
+        dev, key=lambda k: routes["native"][k]["max_common_distance"]
+    ) + sorted(new, key=lambda k: routes["native"][k]["max_common_distance"])
+    x = np.arange(len(order)) + np.array([0] * len(dev) + [1] * len(new))
+    fig, ax = plt.subplots(figsize=(COL1, 3.5))
+    fig.subplots_adjust(left=0.19, right=0.97, bottom=0.20, top=0.76)
+    spec = [
+        ("native", "native Kerr", C_NATIVE, "x", {}),
+        ("gaussian", "Kerr + squeezing", C_NATIVE, "+", {}),
+        (
+            "exact_split",
+            "exact split",
+            C_TARGET,
+            "D",
+            dict(mfc="white", ms=3.0, mew=0.7),
+        ),
+        ("hybrid", r"hybrid $U_{\rm hyb}$", C_HYBRID, "o", dict(ms=3.5)),
+        (
+            "replacement",
+            r"SNAP replacement $U_{\rm rep}$",
+            C_PROG,
+            "o",
+            dict(mfc="none", ms=5.5, mew=0.9),
+        ),
+    ]
+    for key, lab, c, mk, kw in spec:
+        y = [routes[key][k]["max_common_distance"] for k in order]
+        ax.plot(x, y, mk, color=c, label=lab, ls="", **kw)
+    ax.axhline(np.sqrt(1e-3), color="0.4", lw=0.7, ls=":")
+    ax.text(
+        x[-1] + 0.6,
+        np.sqrt(1e-3) * 1.12,
+        r"$\sqrt{10^{-3}}$",
+        ha="right",
+        va="bottom",
+        fontsize=8,
+        color="0.35",
+    )
+    ax.axvline(len(dev), color="0.8", lw=0.6)
+    ax.set(
+        yscale="log",
+        ylim=(6e-5, 1.5),
+        xlim=(-0.8, x[-1] + 0.8),
+        ylabel=r"projective distance $\max_j\, d_{\rm pr}(t_j)$",
+    )
+    ax.set_xticks(
+        [np.mean(x[: len(dev)]), np.mean(x[len(dev) :])],
+        labels=["Development\n(10 inputs)", "Held-out\n(12 coherent states)"],
+    )
+    ax.tick_params(axis="x", which="both", length=0)
+    ax.text(
+        0.5, -0.24, "Inputs ranked by native Kerr error", transform=ax.transAxes,
+        ha="center", va="top", fontsize=8,
+    )
+    fig.text(
+        0.55, 0.81, r"SNAP replacement: $|\Delta d_{\rm pr}|\leq 2.1\times10^{-5}$",
+        ha="center", fontsize=8,
+    )
+    handles, labels = ax.get_legend_handles_labels()
+    fig.legend(
+        handles,
+        labels,
+        loc="upper center",
+        bbox_to_anchor=(0.52, 0.99),
+        ncol=2,
+        columnspacing=0.9,
+        handletextpad=0.4,
+    )
+    save(fig, "fig_duffing_correction", preview)
+
+
+def fig_duffing_training(preview):
+    """Earlier real-amplitude training against the phase-covering training (appendix)."""
+    e2 = json.loads((DF_DATA / "formal" / "E2" / "summary.json").read_text())
+    new = json.loads(
+        (
+            DF_DATA
+            / "duffing_refinement"
+            / "comparison"
+            / "evaluation_phase_coverage"
+            / "summary.json"
+        ).read_text()
+    )
+    fig, ax = plt.subplots(figsize=(COL1, 3.9))
+    fig.subplots_adjust(left=0.38, right=0.97, bottom=0.14, top=0.78)
+    names = [
+        "real1.75",
+        "real2",
+        "diagonal1.75",
+        "diagonal2",
+        "imag1.75",
+        "imag2",
+        "vacuum",
+        "one",
+        "zero_plus_one",
+        "zero_plus_i_two",
+    ]
+    labels = [
+        r"$\xi=1.75$",
+        r"$\xi=2$",
+        r"$\xi=1.75e^{i\pi/4}$",
+        r"$\xi=2e^{i\pi/4}$",
+        r"$\xi=1.75i$",
+        r"$\xi=2i$",
+        r"$|0\rangle$",
+        r"$|1\rangle$",
+        r"$(|0\rangle+|1\rangle)/\sqrt{2}$",
+        r"$(|0\rangle+i|2\rangle)/\sqrt{2}$",
+    ]
+    comp = [c for c in e2["comparisons"] if c["r"] == 10 and c["layers"] == 12][0]
+    old = {
+        r["input"]: r["max_common_distance"]
+        for r in comp["rows"]
+        if r["route"] == "hybrid"
+    }
+    nat = {
+        r["input"]: r["max_common_distance"]
+        for r in new["rows"]
+        if r["route"] == "native"
+    }
+    hyb = {
+        r["input"]: r["max_common_distance"]
+        for r in new["rows"]
+        if r["route"] == "hybrid"
+    }
+    x = np.arange(len(names))
+    ax.plot([nat[k] for k in names], x, "x", color=C_NATIVE, label="native Kerr")
+    if old:
+        ax.plot(
+            [old[k] for k in names],
+            x,
+            "s",
+            color=C_SNAP,
+            mfc="white",
+            label="trained on real amplitudes",
+        )
+    ax.plot(
+        [hyb[k] for k in names], x, "o", color=C_HYBRID, label="trained on eight phases"
+    )
+    ax.axvline(np.sqrt(1e-3), color="0.4", lw=0.9, ls=":")
+    ax.axhline(5.5, color="0.65", lw=0.7)
+    ax.text(
+        np.sqrt(1e-3), -0.75, r"$\sqrt{10^{-3}}$", ha="center", va="bottom",
+        fontsize=8.5, color="0.3",
+    )
+    ax.set(
+        xscale="log",
+        xlim=(5e-4, 2),
+        ylim=(9.6, -0.6),
+        xlabel=r"projective distance $\max_j\,d_{\rm pr}(t_j)$",
+    )
+    ax.set_yticks(x, labels=labels, fontsize=8)
+    ax.tick_params(axis="y", which="both", length=0)
+    ax.grid(axis="y", color="0.91", lw=0.5)
+    ax.set_axisbelow(True)
+    handles, labs = ax.get_legend_handles_labels()
+    fig.legend(
+        handles,
+        labs,
+        loc="upper center",
+        bbox_to_anchor=(0.54, 0.99),
+        ncol=1,
+        labelspacing=0.3,
+    )
+    save(fig, "fig_duffing_training", preview)
+
+
+# ------------------------------------------------------------ double sine-Gordon
+def _scan():
+    data = json.loads((DSG_DATA / "dsg_step_scan.json").read_text())
+    data["rows"] = [updated_row(row) for row in data["rows"]]
+    return data
+
+
+def _cheapest(scan, route, prep=(1.0, 0.0)):
+    rows = [
+        r
+        for r in scan["rows"]
+        if r["route"] == route and tuple(r["preparation"]) == prep and r["all_criteria"]
+    ]
+    return min(
+        rows, key=lambda r: (r["total_programmable_primitives"], r["state_error"])
+    )
+
+
+ROUTE_STYLE = {
+    "hybrid": (C_HYBRID, "hybrid", "o"),
+    "gauss_block": (C_GAUSS, "Gaussian block", "D"),
+    "kin_pot": (C_PROG, "kinetic-potential", "s"),
+}
+
+
+def fig_dsg_dynamics(preview):
+    with np.load(
+        DSG_DATA / "sg128" / "reference" / "E4_reference_lambda0.3_N128.npz"
+    ) as a:
+        ref = {k: a[k] for k in a.files}
+    t = ref["t"]
+    summ = json.loads((DSG_DATA / "sg128" / "reference" / "summary.json").read_text())
+    t_e = [r for r in summ["records"] if r["lambda2"] == 0.3 and r["N"] == 128][0][
+        "mean_field_crossing"
+    ]["time"]
+    scan = _scan()
+    best = {route: _cheapest(scan, route) for route in ROUTE_STYLE}
+    mod = lambda re, im: np.abs(np.asarray(re) + 1j * np.asarray(im))
+
+    fig, axes = plt.subplots(1, 3, figsize=(COL2, 3.1))
+    fig.subplots_adjust(left=0.075, right=0.985, bottom=0.17, top=0.71, wspace=0.42)
+    for ax in axes:
+        ax.axvspan(0, t_e, color="0.92", lw=0, zorder=0)
+        ax.set_xlim(0, t[-1])
+        ax.set_xlabel(r"$t$")
+    hyb = best["hybrid"]["series"]
+    ax = axes[0]
+    ax.plot(t, mod(ref["target_C12_real"], ref["target_C12_imag"]), color=C_TARGET)
+    ax.plot(
+        t, mod(ref["native_C12_real"], ref["native_C12_imag"]), color=C_NATIVE, ls="--"
+    )
+    ax.plot(
+        t,
+        mod(ref["retuned_native_C12_real"], ref["retuned_native_C12_imag"]),
+        color=C_RETUNED,
+        ls="-.",
+    )
+    ax.plot(
+        hyb["t"], mod(hyb["C12_real"], hyb["C12_imag"]), "o", color=C_HYBRID, ms=3.2
+    )
+    ax.set(ylabel=r"$|C_{12}|$", ylim=(-0.01, 0.32))
+    panel(ax, "(a) Vertex correlation")
+    ax.text(t_e / 2, 0.303, r"$t<t_{\rm E}$", fontsize=8, ha="center", color="0.35")
+    ax = axes[1]
+    ax.plot(t, ref["target_S2"], color=C_TARGET)
+    ax.plot(t, ref["native_S2"], color=C_NATIVE, ls="--")
+    ax.plot(t, ref["retuned_native_S2"], color=C_RETUNED, ls="-.")
+    ax.plot(hyb["t"], hyb["S2"], "o", color=C_HYBRID, ms=3.2)
+    ax.set(ylabel=r"$S_2$", ylim=(-0.01, 0.27))
+    panel(ax, r"(b) R$\acute{\mathrm{e}}$nyi entropy")
+    ax = axes[2]
+    ax.plot(t[1:], ref["native_distance"][1:], color=C_NATIVE, ls="--")
+    ax.plot(t[1:], ref["retuned_native_distance"][1:], color=C_RETUNED, ls="-.")
+    for route, (c, lab, mk) in ROUTE_STYLE.items():
+        ser = best[route]["series"]
+        ax.plot(
+            ser["t"][1:],
+            ser["bures"][1:],
+            mk + "-",
+            color=c,
+            ms=2.8 if mk != "o" else 3.2,
+            lw=0.8,
+        )
+    ax.axhline(np.sqrt(1e-3), color="0.4", lw=0.6, ls=":")
+    ax.set(yscale="log", ylim=(1e-3, 1), ylabel=r"state distance $d_{\rm pr}$ or $d_B$")
+    ax.text(
+        0.05, 0.10, "GB: upper bound", transform=ax.transAxes,
+        fontsize=8, color=C_GAUSS,
+    )
+    panel(ax, "(c) State distance")
+    h = [
+        Line2D([], [], color=C_TARGET, label="target"),
+        Line2D([], [], color=C_NATIVE, ls="--", label="native only"),
+        Line2D(
+            [], [], color=C_RETUNED, ls="-.", label=r"retuned native, $E_J+4\lambda_2$"
+        ),
+    ]
+    for route, (c, lab, mk) in ROUTE_STYLE.items():
+        b = best[route]
+        h.append(
+            Line2D(
+                [],
+                [],
+                color=c,
+                marker=mk,
+                ms=3.0,
+                lw=0.8,
+                label=rf"{lab}: $r={b['r']}$, {b['total_programmable_primitives']} primitives",
+            )
+        )
+    fig.legend(
+        handles=h,
+        loc="upper center",
+        bbox_to_anchor=(0.53, 0.99),
+        ncol=2,
+        columnspacing=2.0,
+        handlelength=2.0,
+        labelspacing=0.3,
+    )
+    save(fig, "fig_dsg_dynamics", preview)
+
+
+def fig_dsg_resources(preview):
+    scan = _scan()
+    split = json.loads((DSG_DATA / "splitting_baselines.json").read_text())
+    sweep = json.loads((DSG_DATA / "splitting_sweep.json").read_text())
+    fig, axes = plt.subplots(2, 2, figsize=(COL2, 5.6))
+    fig.subplots_adjust(
+        left=0.09, right=0.98, bottom=0.09, top=0.83, wspace=0.34, hspace=0.55
+    )
+    axes = axes.ravel()
+
+    ax = axes[0]
+    for route, (c, lab, mk) in ROUTE_STYLE.items():
+        for order, fill, fs in ((1, "white", "full"), (2, c, "full"), (3, c, "left")):
+            rows = sorted(
+                [
+                    r
+                    for r in scan["rows"]
+                    if r["route"] == route
+                    and r["order"] == order
+                    and r["s"] == 1
+                    and tuple(r["preparation"]) == (1.0, 0.0)
+                ],
+                key=lambda r: r["r"],
+            )
+            if not rows:
+                continue
+            xs = [r["total_programmable_primitives"] for r in rows]
+            ys = [r["state_error"] for r in rows]
+            ax.plot(xs, ys, "-", color=c, lw=0.9, alpha=0.75)
+            ax.plot(
+                xs,
+                ys,
+                mk,
+                color=c,
+                mfc=fill,
+                mfcalt="white",
+                fillstyle=fs,
+                ms=4.0,
+                mew=0.8,
+                ls="",
+            )
+            for r, x, y in zip(rows, xs, ys):
+                if not r["all_criteria"] and r["acceptance"]["state"]:
+                    ax.plot(x, y, "x", color="k", ms=3.0, mew=0.6)
+        best = _cheapest(scan, route)
+        ax.plot(
+            best["total_programmable_primitives"],
+            best["state_error"],
+            "*",
+            color="k",
+            mfc=c,
+            ms=8,
+            mew=0.5,
+            zorder=5,
+        )
+        offset, ha, va = {
+            "hybrid": ((0, -9), "center", "top"),
+            "gauss_block": ((-8, -6), "right", "top"),
+            "kin_pot": ((13, 9), "left", "bottom"),
+        }[route]
+        ax.annotate(
+            f"{best['total_programmable_primitives']}\n$r={best['r']}$",
+            (best["total_programmable_primitives"], best["state_error"]),
+            xytext=offset,
+            textcoords="offset points",
+            fontsize=8.5,
+            ha=ha,
+            va=va,
+            color=c,
+        )
+    ax.axhline(np.sqrt(1e-3), color="0.4", lw=0.7, ls=":")
+    ax.set(
+        xscale="log",
+        yscale="log",
+        ylim=(0.005, 0.18),
+        xlabel="ideal programmable primitives",
+        ylabel=r"state error $e_B$ incl. margins",
+    )
+    ax.set_xticks([60, 100, 200, 400], labels=["60", "100", "200", "400"])
+    ax.set_xticks([], minor=True)
+    order_handles = [
+        Line2D(
+            [],
+            [],
+            color="0.2",
+            marker="o",
+            ls="",
+            mfc=fill,
+            mfcalt="white",
+            fillstyle=fs,
+            label=label,
+        )
+        for fill, fs, label in [
+            ("white", "full", "1st"),
+            ("0.2", "full", "2nd"),
+            ("0.2", "left", "mixed"),
+        ]
+    ]
+    ax.legend(
+        handles=order_handles,
+        loc="upper right",
+        ncol=3,
+        handlelength=0.8,
+        columnspacing=0.7,
+        handletextpad=0.3,
+    )
+    ax.text(0.98, 0.03, "GB: upper bound", transform=ax.transAxes,
+            ha="right", fontsize=8, color=C_GAUSS)
+    panel(ax, r"(a) Compiled cost, $\lambda_2=0.3$")
+
+    ax = axes[1]
+    T = split["T"]
+    sc = split["scan"]
+    hs = [T / r for r in sc["r"]]
+    styles = [
+        ("hybrid", C_HYBRID, "o-", r"$H_{\rm SG}|\Delta H$"),
+        ("hybrid_ret", C_HYBRID_RET, "^-", "retuned"),
+        ("gauss_cos", C_GAUSS, "D-", "Gaussian block"),
+        ("kin_pot", C_PROG, "s-", "kinetic-potential"),
+        ("gauss_harm", "0.55", "v:", "harmonic block"),
+    ]
+    for key, c, st, lab in styles:
+        ax.plot(hs, sc["errors"][key], st, color=c, ms=3.8, lw=1.1)
+    hh = np.array([0.075, 0.45])
+    ax.plot(hh, 1.2e-3 * (hh / 0.1) ** 2, color="0.5", lw=0.6, ls="--")
+    ax.text(0.085, 2.9e-4, r"$\propto h^2$", fontsize=8, color="0.4")
+    ax.set(
+        xscale="log",
+        yscale="log",
+        xlabel=r"outer step $h=T/r$",
+        ylabel=r"splitting distance $d_{\rm pr}$",
+        ylim=(2e-4, 0.4),
+    )
+    ax.set_xticks([0.1, 0.2, 0.4], labels=["0.1", "0.2", "0.4"])
+    ax.set_xticks([], minor=True)
+    panel(ax, "(b) Exact-block splitting error")
+
+    ax = axes[2]
+    lam = sorted({p["lambda2"] for p in sweep["points"]})
+    for kappa, ls in ((0.5, ":"), (1.0, "-"), (2.0, "--")):
+        pts = sorted(
+            [p for p in sweep["points"] if p["kappa"] == kappa],
+            key=lambda p: p["lambda2"],
+        )
+        g = [p["errors"]["gauss_cos"][1] / p["errors"]["hybrid"][1] for p in pts]
+        k = [p["errors"]["kin_pot"][1] / p["errors"]["hybrid"][1] for p in pts]
+        ax.plot([p["lambda2"] for p in pts], g, "D" + ls, color=C_GAUSS, ms=3.0, lw=1.1)
+        ax.plot([p["lambda2"] for p in pts], k, "s" + ls, color=C_PROG, ms=3.0, lw=1.1)
+    ax.set(
+        xscale="log",
+        yscale="log",
+        xlabel=r"$\lambda_2$ ($E_J=1$)",
+        ylabel="splitting error / hybrid error",
+        ylim=(1, 90),
+    )
+    ax.set_xticks(lam, labels=[f"{x:g}" for x in lam])
+    ax.set_xticks([], minor=True)
+    kappa_handles = [
+        Line2D([], [], color="0.3", ls=ls, label=rf"$\kappa={kappa:g}$")
+        for kappa, ls in [(0.5, ":"), (1, "-"), (2, "--")]
+    ]
+    ax.legend(handles=kappa_handles, loc="upper right", labelspacing=0.25)
+    panel(ax, "(c) Splitting-error ratio")
+
+    ax = axes[3]
+    # compiled ratios at the original threshold, including the lambda2 = 0.6 Gaussian-block circuit that is resolved
+    # at cutoffs 160/192 (dsg_thresholds.py, Table III)
+    thresholds = json.loads((DSG_DATA / "dsg_thresholds.json").read_text())["results"]
+    compiled = [
+        (e["lambda2"], e["saving_gauss_block"], e["saving_kin_pot"])
+        for e in thresholds
+        if e["infidelity"] == 1e-3
+    ]
+    for j, c, mk in [(1, C_GAUSS, "D"), (2, C_PROG, "s")]:
+        ax.plot([p[0] for p in compiled], [p[j] for p in compiled], mk + "-", color=c)
+        for p in compiled:
+            ax.annotate(
+                f"{p[j]:.2f}",
+                (p[0], p[j]),
+                xytext=(0, 7 if j == 2 else -12),
+                textcoords="offset points",
+                fontsize=8,
+                ha="center",
+                color=c,
+            )
+    ax.axhline(1, color="0.6", ls=":", lw=0.8)
+    ax.text(0.58, 1.12, "equal counts", fontsize=8, ha="right", color="0.4")
+    ax.set(
+        xlim=(0.055, 0.645),
+        ylim=(0, 7),
+        xlabel=r"$\lambda_2$ ($E_J=\kappa=1$)",
+        ylabel="programmable / hybrid primitives",
+    )
+    ax.set_xticks([p[0] for p in compiled])
+    panel(ax, "(d) Compiled primitive ratio")
+
+    h = [
+        Line2D([], [], color=c, marker=mk, lw=1.1, ms=4, label=lab)
+        for c, lab, mk in [
+            (C_HYBRID, "hybrid", "o"),
+            (C_HYBRID_RET, "retuned hybrid", "^"),
+            (C_GAUSS, "Gaussian block", "D"),
+            (C_PROG, "kinetic-potential", "s"),
+        ]
+    ]
+    h += [
+        Line2D([], [], color="0.55", marker="v", ls=":", ms=4, label="harmonic block"),
+        Line2D(
+            [],
+            [],
+            color="k",
+            marker="*",
+            ls="",
+            ms=8,
+            mfc="0.6",
+            mew=0.5,
+            label="cheapest passing circuit (a)",
+        ),
+    ]
+    fig.legend(
+        handles=h,
+        loc="upper center",
+        bbox_to_anchor=(0.53, 0.985),
+        ncol=3,
+        columnspacing=1.5,
+        handlelength=2.0,
+        labelspacing=0.5,
+    )
+    save(fig, "fig_dsg_resources", preview)
+
+
+def fig_dsg_subdivisions(preview):
+    """Archived r = 10, 20 comparison with s = 1..32 at cutoffs 96/128 (appendix)."""
+    agg = json.loads((COMMON_DATA / "analysis_summary.json").read_text())["E4_compiled"]
+    fig, axes = plt.subplots(2, 1, figsize=(COL1, 5.05), sharex=True, sharey=True)
+    fig.subplots_adjust(left=0.19, right=0.97, bottom=0.11, top=0.75, hspace=0.40)
+    style = {
+        "H_trig": (C_HYBRID, "hybrid", "o"),
+        "H_trig_ret": (C_HYBRID_RET, "retuned hybrid", "^"),
+        "G_trig": (C_PROG, "kinetic-potential", "s"),
+        "H_SNAP": (C_SNAP, "SNAP+D hybrid", "v"),
+    }
+    for ax, r_steps in zip(axes, [10, 20]):
+        for route, (c, lab, mk) in style.items():
+            for order, fill in ((1, "white"), (2, c)):
+                if route == "H_SNAP" and order == 1:
+                    continue
+                cfg = sorted(
+                    [
+                        k
+                        for k in agg["rows"]
+                        if k["route"] == route
+                        and k["r"] == r_steps
+                        and (k["order"] == order or route == "H_SNAP")
+                    ],
+                    key=lambda k: k["total_programmable_primitives"]
+                    - k["primitive_counts"].get("Ry", 0),
+                )
+                if not cfg:
+                    continue
+                # archived counts conjugate every trigonometric factor by R_y(+-pi/2); with the qubit basis change
+                # applied once per circuit (trig_counts.py) a circuit needs CD + Rz + Gaussian + SNAP + D + 4 primitives
+                xs = [
+                    k["total_programmable_primitives"]
+                    - (
+                        k["primitive_counts"].get("Ry", 0) - 4
+                        if route != "H_SNAP"
+                        else 0
+                    )
+                    for k in cfg
+                ]
+                ys = [k["amplitude"] for k in cfg]
+                ax.plot(xs, ys, "--" if order == 1 else "-", color=c, lw=1.0, alpha=0.8)
+                ax.plot(xs, ys, mk, color=c, mfc=fill, ms=4.0, mew=0.8)
+                failed = [(x, y) for x, y, row in zip(xs, ys, cfg)
+                          if row["boundary_population"] > 1e-6]
+                if failed:
+                    ax.plot(*zip(*failed), "x", color="0.15", ms=4.5, mew=0.8)
+        ax.axhline(np.sqrt(1e-3), color="0.4", lw=0.8, ls=":")
+        ax.set(
+            xscale="log",
+            yscale="log",
+            xlim=(60, 2e4),
+            ylim=(3e-3, 0.35),
+            ylabel=r"state error $e_B$ incl. margins",
+        )
+        panel(ax, rf"({'a' if r_steps == 10 else 'b'}) $r={r_steps}$ outer steps")
+    axes[1].set_xlabel("ideal programmable primitives")
+    h = [
+        Line2D([], [], color=c, marker=mk, lw=1.0, ms=4, label=lab)
+        for c, lab, mk in style.values()
+    ]
+    fig.legend(
+        handles=h,
+        loc="upper center",
+        bbox_to_anchor=(0.54, 0.995),
+        ncol=2,
+        columnspacing=0.7,
+        handletextpad=0.4,
+    )
+    order_h = [
+        Line2D([], [], color="0.25", marker="o", mfc=fill, ls=ls, label=lab)
+        for fill, ls, lab in [
+            ("white", "--", "first order"),
+            ("0.25", "-", "second order"),
+        ]
+    ]
+    fig.legend(
+        handles=order_h,
+        title="Trigonometric block order",
+        title_fontsize=8,
+        loc="upper center",
+        bbox_to_anchor=(0.54, 0.895),
+        ncol=2,
+        columnspacing=0.8,
+        handletextpad=0.4,
+        labelspacing=0.2,
+    )
+    fig.text(0.54, 0.812, r"$\times$: boundary population $>10^{-6}$",
+             ha="center", va="bottom", fontsize=8)
+    save(fig, "fig_dsg_subdivisions", preview)
+
+
+def fig_dsg_convergence(preview):
+    """Reference cutoff convergence for the double sine-Gordon instance (appendix)."""
+    pairs = ["32→48", "48→64", "64→96", "96→128", "128→160"]
+    state = [0.04253, 0.01676, 0.006886064923459318, 0.0013148548922630218, 2.30e-4]
+    # values quoted from double_sine_gordon_data records: stage1 E4_reference, stage1_continuation, sg128/reference, sg160
+    fig, ax = plt.subplots(figsize=(COL1, 1.7))
+    ax.plot(range(len(pairs)), state, "o-", color=C_TARGET, label="state distance")
+    ax.axhline(np.sqrt(1e-3) / 10, color="0.4", lw=0.7, ls=":")
+    ax.set(yscale="log", ylabel="adjacent-cutoff change", ylim=(1e-4, 0.1))
+    ax.set_xticks(range(len(pairs)), labels=pairs)
+    save(fig, "fig_dsg_convergence", preview)
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--preview", default=None)
+    args = ap.parse_args()
+    FIG.mkdir(exist_ok=True)
+    if args.preview:
+        Path(args.preview).mkdir(parents=True, exist_ok=True)
+    fig_sg_classical(args.preview)
+    fig_sg_polynomial(args.preview)
+    fig_duffing_native(args.preview)
+    fig_duffing_correction(args.preview)
+    fig_duffing_training(args.preview)
+    fig_dsg_dynamics(args.preview)
+    fig_dsg_resources(args.preview)
+    fig_dsg_subdivisions(args.preview)
+
+
+if __name__ == "__main__":
+    main()

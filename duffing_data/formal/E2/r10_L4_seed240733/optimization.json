@@ -1,0 +1,16 @@
+{
+  "status": "solver_terminated",
+  "message": "Iteration limit reached",
+  "iterations": 1200,
+  "evaluations": 1206,
+  "objective": 0.0001671388615027606,
+  "elapsed_seconds": 13.164184666005895,
+  "cpu_seconds": 8.871776999999998,
+  "constraint_violation": 0.0,
+  "seed": 240733,
+  "method": "SLSQP",
+  "maxiter": 1200,
+  "ftol": 1e-12,
+  "common_phase": 1.920330947853867,
+  "regularization": 1e-08
+}

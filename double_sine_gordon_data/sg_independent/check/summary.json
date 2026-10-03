@@ -1,0 +1,254 @@
+{
+  "protocol": {
+    "protocol": "Fixed second-input SG validation after completion of development refinements",
+    "declaration_file": "pra/sg_refinement_protocol.json",
+    "preparation": [
+      0.75,
+      0.25
+    ],
+    "excited_site": 0,
+    "groups": [
+      {
+        "r": 10,
+        "layers": 1,
+        "training_dimensions": [
+          48,
+          24,
+          16
+        ],
+        "parameter_file": null,
+        "configurations": [
+          [
+            "H_trig",
+            2,
+            1
+          ]
+        ]
+      },
+      {
+        "r": 20,
+        "layers": 1,
+        "training_dimensions": [
+          48,
+          24,
+          16
+        ],
+        "parameter_file": null,
+        "configurations": [
+          [
+            "G_trig",
+            1,
+            1
+          ],
+          [
+            "G_trig",
+            2,
+            1
+          ]
+        ]
+      }
+    ],
+    "SNAP_selection": "No development SNAP circuit passes all criteria, including the completed larger fit and continuation. None enters the independently evaluated set under the previously specified rule.",
+    "target": "EJ1,lambda2=0.3,kappa1,omega_b=Omega_time=sqrt(3),T=5.2/sqrt(3),open two-site spectral model",
+    "validation_cutoffs": [
+      128,
+      160
+    ],
+    "wall_cap_seconds": 1200,
+    "reference_checks": "Cutoff state difference covers the 21 outer-step times. Cutoff C12/S2 differences and all DOP853 differences cover the union of the 257 diagnostic times and 21 outer-step times. Original thresholds.",
+    "stopping_rule": "Evaluate these three fixed circuits once. No retuning or additional preparation selection follows."
+  },
+  "provenance": {
+    "python": "/Users/zhen002/miniconda3/envs/cvdv/bin/python",
+    "python_version": "3.13.0",
+    "numpy": "2.3.4",
+    "scipy": "1.16.3"
+  },
+  "preparation": [
+    0.75,
+    0.25
+  ],
+  "configurations": [
+    {
+      "name": "E4_H_trig_o2_s1_r10_N128",
+      "route": "H_trig",
+      "r": 10,
+      "layers": null,
+      "order": 2,
+      "subdivisions": 1,
+      "cutoff": 128,
+      "max_bures_distance": 0.00580078373583403,
+      "max_endpoint_bures_distance": 0.00580078373583403,
+      "max_C12_error": 0.0006510234855250992,
+      "max_S2_error": 0.0006801650121851244,
+      "action_sum": 0.04798002461155169,
+      "max_population_at_monitored_locations": {
+        "outside_joint_access": 0.003766467620646141,
+        "outside_local_active_max": 0.0018065429550610254,
+        "boundary_band_population": 3.9766965223697543e-08
+      },
+      "population_scope": "native-half and potential-block endpoints; SNAP route also each local SNAP and displacement",
+      "empirical_margins": {
+        "reference": 0.000245550636355652,
+        "solver": 3.183571361145256e-09,
+        "padding_joint_distance": 0.00028508834035401664,
+        "C12": 9.843907696617718e-08,
+        "S2": 4.508268541467131e-12
+      },
+      "numerical_acceptance": {
+        "state": true,
+        "C12": true,
+        "S2": true,
+        "amplitude_total": 0.0063314258961150605,
+        "boundary_population_both_cutoffs": 3.9766965223697543e-08
+      }
+    },
+    {
+      "name": "E4_H_trig_o2_s1_r10_N160",
+      "route": "H_trig",
+      "r": 10,
+      "layers": null,
+      "order": 2,
+      "subdivisions": 1,
+      "cutoff": 160,
+      "max_bures_distance": 0.005800783736886686,
+      "max_endpoint_bures_distance": 0.005800783736886686,
+      "max_C12_error": 0.0006510234855090318,
+      "max_S2_error": 0.000680165012339834,
+      "action_sum": 0.0479800251195164,
+      "max_population_at_monitored_locations": {
+        "outside_joint_access": 0.003766467620813674,
+        "outside_local_active_max": 0.0018065429542351613,
+        "boundary_band_population": 1.2001199590738952e-09
+      },
+      "population_scope": "native-half and potential-block endpoints; SNAP route also each local SNAP and displacement"
+    },
+    {
+      "name": "E4_G_trig_o1_s1_r20_N128",
+      "route": "G_trig",
+      "r": 20,
+      "layers": null,
+      "order": 1,
+      "subdivisions": 1,
+      "cutoff": 128,
+      "max_bures_distance": 0.01960910657308804,
+      "max_endpoint_bures_distance": 0.01960910657308804,
+      "max_C12_error": 0.002845313831426152,
+      "max_S2_error": 0.0026340074476222664,
+      "action_sum": 0.12951517474635127,
+      "max_population_at_monitored_locations": {
+        "outside_joint_access": 0.0038350419718466977,
+        "outside_local_active_max": 0.0018077498742651787,
+        "boundary_band_population": 4.756926785021698e-08
+      },
+      "population_scope": "native-half and potential-block endpoints; SNAP route also each local SNAP and displacement",
+      "empirical_margins": {
+        "reference": 0.000245550636355652,
+        "solver": 3.183571361145256e-09,
+        "padding_joint_distance": 0.0003050167553825223,
+        "C12": 1.1954452241720673e-07,
+        "S2": 5.752981207737817e-12
+      },
+      "numerical_acceptance": {
+        "state": true,
+        "C12": true,
+        "S2": true,
+        "amplitude_total": 0.020159677148397576,
+        "boundary_population_both_cutoffs": 4.756926785021698e-08
+      }
+    },
+    {
+      "name": "E4_G_trig_o2_s1_r20_N128",
+      "route": "G_trig",
+      "r": 20,
+      "layers": null,
+      "order": 2,
+      "subdivisions": 1,
+      "cutoff": 128,
+      "max_bures_distance": 0.00971356225720412,
+      "max_endpoint_bures_distance": 0.009847120553777124,
+      "max_C12_error": 0.002376091598653969,
+      "max_S2_error": 0.0023299103285066153,
+      "action_sum": 0.04766317955795237,
+      "max_population_at_monitored_locations": {
+        "outside_joint_access": 0.003732298253479427,
+        "outside_local_active_max": 0.0017817681240769614,
+        "boundary_band_population": 4.06532464925258e-08
+      },
+      "population_scope": "native-half and potential-block endpoints; SNAP route also each local SNAP and displacement",
+      "empirical_margins": {
+        "reference": 0.000245550636355652,
+        "solver": 3.183571361145256e-09,
+        "padding_joint_distance": 0.0002771052806842607,
+        "C12": 1.0952488320328766e-07,
+        "S2": 5.694243470841243e-12
+      },
+      "numerical_acceptance": {
+        "state": true,
+        "C12": true,
+        "S2": true,
+        "amplitude_total": 0.010236221357815394,
+        "boundary_population_both_cutoffs": 4.06532464925258e-08
+      }
+    },
+    {
+      "name": "E4_G_trig_o1_s1_r20_N160",
+      "route": "G_trig",
+      "r": 20,
+      "layers": null,
+      "order": 1,
+      "subdivisions": 1,
+      "cutoff": 160,
+      "max_bures_distance": 0.019607840323549397,
+      "max_endpoint_bures_distance": 0.019607840323549397,
+      "max_C12_error": 0.0028453098851573704,
+      "max_S2_error": 0.0026340074475566383,
+      "action_sum": 0.12951226353810052,
+      "max_population_at_monitored_locations": {
+        "outside_joint_access": 0.0038350419718607975,
+        "outside_local_active_max": 0.0018077498815359822,
+        "boundary_band_population": 1.7787275516061078e-09
+      },
+      "population_scope": "native-half and potential-block endpoints; SNAP route also each local SNAP and displacement"
+    },
+    {
+      "name": "E4_G_trig_o2_s1_r20_N160",
+      "route": "G_trig",
+      "r": 20,
+      "layers": null,
+      "order": 2,
+      "subdivisions": 1,
+      "cutoff": 160,
+      "max_bures_distance": 0.009713402034599774,
+      "max_endpoint_bures_distance": 0.009847095685403942,
+      "max_C12_error": 0.0023760885873894697,
+      "max_S2_error": 0.0023299103284334655,
+      "action_sum": 0.04765439275926765,
+      "max_population_at_monitored_locations": {
+        "outside_joint_access": 0.003732298253494193,
+        "outside_local_active_max": 0.001781768124210914,
+        "boundary_band_population": 1.108724817375376e-09
+      },
+      "population_scope": "native-half and potential-block endpoints; SNAP route also each local SNAP and displacement"
+    }
+  ],
+  "reference": {
+    "state_distance": 0.000245550636355652,
+    "C12": 4.327361242729827e-08,
+    "S2": 1.5931700403370996e-13
+  },
+  "solver": {
+    "state_distance": 3.183571361145256e-09,
+    "C12": 4.1078725103462085e-12,
+    "S2": 4.186206719811181e-12
+  },
+  "validation_cutoffs": [
+    128,
+    160
+  ],
+  "wall_seconds": 219.9399708750134,
+  "cpu_seconds": 217.185041,
+  "peak_memory_bytes": 2434580480,
+  "evidence_scope": "One second coherent preparation declared before refinement, evaluated after fixed circuit selection without retuning. This does not establish uniform input-family accuracy.",
+  "metadata_scope_correction": "See pra/results/sg_independent/check/grid_scope_erratum.json. Numerical arrays, values and acceptance are unchanged."
+}

@@ -1,0 +1,67 @@
+{
+  "frozen_utc": "2026-09-25T00:44:39.446433+00:00",
+  "authorization": "The user approved all subsequent computations in the final implementation plan and explicitly approved the higher-cutoff comparison.",
+  "parameters": {
+    "E_J": 1,
+    "lambda2": 0.3,
+    "kappa": 1,
+    "omega_b": "sqrt(3)",
+    "Omega_time": "sqrt(3)",
+    "T": "5.2/sqrt(3)",
+    "requested_phi": [
+      1,
+      0
+    ],
+    "requested_pi": [
+      0,
+      0
+    ],
+    "training_cutoff": 48,
+    "active_snap_levels": 24,
+    "training_columns": 16,
+    "validation_cutoffs": [
+      96,
+      128
+    ],
+    "r": [
+      10,
+      20
+    ],
+    "L": [
+      2,
+      4,
+      6
+    ],
+    "seeds": [
+      20260729,
+      20260730,
+      20260731
+    ],
+    "orders": [
+      1,
+      2
+    ],
+    "subdivisions": [
+      1,
+      2,
+      4,
+      8,
+      16,
+      32
+    ]
+  },
+  "selection": "minimum training objective within r,L before full circuit evaluation",
+  "acceptance": "unchanged E4 state/observable thresholds, reference and solver resolution, and boundary threshold at both cutoffs",
+  "caps": {
+    "optimizer_total_seconds": 16200,
+    "one_restart_seconds": 900,
+    "validation_seconds": 3600,
+    "memory_bytes": 4294967296,
+    "storage_bytes": 2147483648
+  },
+  "pilot_reuse": "Reuse the completed r10 L4 seed20260729 training checkpoint and 12 r10 trigonometric configurations, including failed outcomes. Validation changes from CSR to exact tensor action have two completed N96 differential witnesses and small dense-exponential tests.",
+  "decision": "The pilot resolves the deformation signal and shows useful H_trig accuracy; G_trig fails the state criterion at r10, so the predefined r20 comparison discriminates matched accuracy from a fixed-depth ranking. H_SNAP remains in all predefined candidate groups.",
+  "input_scope": "The single physical input was used in development. Formal protocol does not make it independent validation.",
+  "exact_physics_scope": "The manuscript claim is restricted to the EJ1 lambda2=0.3 instance and zero-deformation consistency control. The additional proposed EJ/lambda exact-physics grid is not used for a robustness claim.",
+  "implementation": "SLSQP maxiter1200 ftol1e-12, common phase, nu1e-8, same seeds/initialization roles and bounds as the final plan."
+}

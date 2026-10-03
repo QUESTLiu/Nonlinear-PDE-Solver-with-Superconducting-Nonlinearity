@@ -1,0 +1,85 @@
+{
+  "scope": "E0 finite algebra and implementation checks; no scientific pilot",
+  "provenance": {
+    "python": "/Users/zhen002/miniconda3/envs/cvdv/bin/python",
+    "python_version": "3.13.0",
+    "numpy": "2.3.4",
+    "scipy": "1.16.3"
+  },
+  "dimensions": [
+    8,
+    12,
+    16
+  ],
+  "passed": true,
+  "tests": 16,
+  "failures": 0,
+  "errors": 0,
+  "checks": {
+    "finite_gradient_max_absolute_error": 3.546840599000234e-11,
+    "old_weyl_boundary_derivative_error": 1.236283616833601,
+    "family_bound": {
+      "action_sum": 0.09999833334166677,
+      "actual": 0.09995833854135677
+    },
+    "fixed_variance_public_driver": {
+      "omega_b": 1.7320508075688772,
+      "Omega_time": 3.1622776601683795,
+      "tau_actual": 0.2,
+      "steps": 16,
+      "cutoff": 8
+    },
+    "paired_frame_gradient": {
+      "zero_norm": 1.5384581737026947e-17,
+      "paired_norm": 0.003728293177898618,
+      "finite_difference_error": 2.3835447504616525e-13
+    },
+    "sandwich_residuals": [
+      4.664681426226684e-15,
+      8.932343010688398e-15,
+      1.2316507360130417e-14
+    ],
+    "trig_local_order_checks": [
+      {
+        "order": 1,
+        "u": [
+          0.04,
+          0.02,
+          0.01
+        ],
+        "action_error": [
+          0.0003891060527835417,
+          9.728374890373399e-05,
+          2.432138947637625e-05
+        ]
+      },
+      {
+        "order": 2,
+        "u": [
+          0.04,
+          0.02,
+          0.01
+        ],
+        "action_error": [
+          3.1573397686199532e-06,
+          3.9468986271814934e-07,
+          4.933693260037611e-08
+        ]
+      }
+    ],
+    "pulse_counts": {
+      "unmerged": 84,
+      "merged": 43
+    },
+    "route_generator_residuals": {
+      "exact_split": 1.626225880477084e-05,
+      "H_SNAP": 1.626225880477084e-05,
+      "H_trig": 1.6262089088118553e-05,
+      "G_trig": 1.6260487179015554e-05,
+      "H_trig_ret": 1.6261598482338163e-05
+    }
+  },
+  "wall_seconds": 0.47311995801283047,
+  "cpu_seconds": 0.349366,
+  "peak_memory_bytes": 87769088
+}

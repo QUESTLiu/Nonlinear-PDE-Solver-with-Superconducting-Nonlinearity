@@ -1,0 +1,23 @@
+{
+  "r": 20,
+  "rows": [
+    {
+      "N": 96,
+      "max_common_distance": 0.0014200724135037329
+    },
+    {
+      "N": 128,
+      "max_common_distance": 0.0014200724135042786
+    }
+  ],
+  "padding_distance": 0.0013426156033532913,
+  "wall_seconds": 11.831492958008312,
+  "cpu_seconds": 11.773487000000001,
+  "peak_memory_bytes": 1178599424,
+  "provenance": {
+    "python": "/Users/zhen002/miniconda3/envs/cvdv/bin/python",
+    "python_version": "3.13.0",
+    "numpy": "2.3.4",
+    "scipy": "1.16.3"
+  }
+}

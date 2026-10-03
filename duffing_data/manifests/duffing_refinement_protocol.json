@@ -1,0 +1,46 @@
+{
+  "protocol": "Duffing bounded search after the original ten-input negative result",
+  "authorization": "The user authorized subsequent computation and quality refinements on 2026-09-24.",
+  "arms": [
+    {
+      "name": "iteration_only",
+      "layers": 8,
+      "training_phases": [
+        0.0
+      ],
+      "seeds": [
+        240732
+      ],
+      "initialization": "original_seed_rule"
+    },
+    {
+      "name": "phase_coverage",
+      "layers": 12,
+      "training_phases": [
+        0.0,
+        0.7853981633974483,
+        1.5707963267948966,
+        2.356194490192345,
+        3.141592653589793,
+        3.9269908169872414,
+        4.71238898038469,
+        5.497787143782138
+      ],
+      "seeds": [
+        240731,
+        240732,
+        240733
+      ],
+      "initialization": "paired_frames"
+    }
+  ],
+  "optimizer": "SLSQP maxiter=5000, ftol=1e-12, unchanged objective, regularizer and bounds. Each start at most 900 seconds. Iteration history includes the 1200-iteration value without extra objective evaluations.",
+  "dimensions": "Training N96 and d48; reference 64/80 and circuit padding 96/112; r10 and T1 with beta0.1.",
+  "selection": "Minimum training objective within each arm before evaluating either arm. All original ten inputs are development for this refinement.",
+  "independent_inputs_file": "duffing_data/manifests/duffing_refinement_inputs.json",
+  "optimizer_cap_seconds": 3600,
+  "validation_cap_seconds": 600,
+  "stopping_rule": "Complete these four starts and two selected-pair evaluations, then stop. The twelve fresh inputs are used once and do not trigger another training adjustment.",
+  "interpretation": "The original-seed arm isolates a larger iteration allowance. The second arm is a broader-fit feasibility check and cannot isolate the separate effects of coverage, depth and initialization. Failure under the budget is not a capacity proof.",
+  "boundary_assessment": "Apply the unchanged 1e-6 threshold to max(N96,N112) boundary populations. Archive both and the original N96 field. This is a stricter new assessment than the archived N96-only verdict, and any resulting verdict change is not attributed to training iterations."
+}

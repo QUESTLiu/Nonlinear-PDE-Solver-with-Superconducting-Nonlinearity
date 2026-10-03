@@ -1,0 +1,18 @@
+........E........
+======================================================================
+ERROR: test_gaussian_readouts_match_the_counted_interval_sequence (common_code.test_e0.RepresentationChecks.test_gaussian_readouts_match_the_counted_interval_sequence)
+Appendix J counts merged intervals, not repeated finite half steps.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/zhen002/GitHub/nonlinear-PDE-simulator/common_code/test_e0.py", line 89, in test_gaussian_readouts_match_the_counted_interval_sequence
+    counts, _ = scan.primitive_counts('gauss_block', r, order, 1)
+                ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/zhen002/GitHub/nonlinear-PDE-simulator/double_sine_gordon_code/dsg_step_scan.py", line 229, in primitive_counts
+    import trig_counts  # noqa: E402
+    ^^^^^^^^^^^^^^^^^^
+ModuleNotFoundError: No module named 'trig_counts'
+
+----------------------------------------------------------------------
+Ran 17 tests in 0.427s
+
+FAILED (errors=1)

@@ -1,0 +1,182 @@
+{
+  "status": "PASS",
+  "required_candidates": 92,
+  "groups": {
+    "two_site": 75,
+    "common": 12,
+    "chain": 5
+  },
+  "criterion_changes": [],
+  "selected_counts_unchanged": true,
+  "tighter_threshold_choices_unchanged": true,
+  "timing_curves_unchanged": true,
+  "required_selection_intervals_resolved": true,
+  "excluded_candidates": [
+    "g080",
+    "g081",
+    "g082"
+  ],
+  "error_semantics": "Gaussian errors are propagated finite-metric upper/lower bounds with empirical reference and solver margins.",
+  "readout_statistics": "selected_readout_statistics.json",
+  "wall_seconds_total": 810.4975450818893,
+  "budget_seconds": 1800,
+  "peak_rss_bytes": 3880992768,
+  "execution_receipts": {
+    "01_pre_fix_execution.json": [
+      {
+        "id": "pre_fix_dense_oracle",
+        "status": "failed",
+        "returncode": 1,
+        "reason": null,
+        "wall_seconds": 4.083413749933243,
+        "peak_rss_bytes": 90030080,
+        "command": [
+          "/Users/zhen002/miniconda3/envs/cvdv/bin/python",
+          "-m",
+          "unittest",
+          "common_code.test_e0.RepresentationChecks.test_gaussian_readouts_match_the_counted_interval_sequence"
+        ]
+      }
+    ],
+    "02_sequence_checks_execution.json": [
+      {
+        "id": "post_fix_suite",
+        "status": "failed",
+        "returncode": 1,
+        "reason": null,
+        "wall_seconds": 2.560379375005141,
+        "peak_rss_bytes": 87015424,
+        "command": [
+          "/Users/zhen002/miniconda3/envs/cvdv/bin/python",
+          "-m",
+          "unittest",
+          "common_code.test_e0"
+        ]
+      }
+    ],
+    "03_sequence_checks_execution.json": [
+      {
+        "id": "post_fix_suite_complete",
+        "status": "completed",
+        "returncode": 0,
+        "reason": null,
+        "wall_seconds": 1.0192775409668684,
+        "peak_rss_bytes": 86310912,
+        "command": [
+          "/Users/zhen002/miniconda3/envs/cvdv/bin/python",
+          "-m",
+          "unittest",
+          "common_code.test_e0"
+        ]
+      }
+    ],
+    "04_two_site_execution.json": [
+      {
+        "id": "two_site_candidates",
+        "status": "completed",
+        "returncode": 0,
+        "reason": null,
+        "wall_seconds": 133.81330783304293,
+        "peak_rss_bytes": 3776462848,
+        "command": [
+          "/Users/zhen002/miniconda3/envs/cvdv/bin/python",
+          "-m",
+          "double_sine_gordon_code.audit_gaussian_sequence",
+          "run",
+          "--group",
+          "two_site"
+        ]
+      }
+    ],
+    "05_chain_execution.json": [
+      {
+        "id": "chain_candidates",
+        "status": "completed",
+        "returncode": 0,
+        "reason": null,
+        "wall_seconds": 532.8108227499761,
+        "peak_rss_bytes": 3338911744,
+        "command": [
+          "/Users/zhen002/miniconda3/envs/cvdv/bin/python",
+          "-m",
+          "double_sine_gordon_code.audit_gaussian_sequence",
+          "run",
+          "--group",
+          "chain"
+        ]
+      }
+    ],
+    "06_common_execution.json": [
+      {
+        "id": "common_candidates",
+        "status": "completed",
+        "returncode": 0,
+        "reason": null,
+        "wall_seconds": 103.57387570803985,
+        "peak_rss_bytes": 3880992768,
+        "command": [
+          "/Users/zhen002/miniconda3/envs/cvdv/bin/python",
+          "-m",
+          "double_sine_gordon_code.audit_gaussian_sequence",
+          "run",
+          "--group",
+          "common"
+        ]
+      }
+    ],
+    "07_final_checks_execution.json": [
+      {
+        "id": "selected_readout_statistics",
+        "status": "completed",
+        "returncode": 0,
+        "reason": null,
+        "wall_seconds": 29.062182415975258,
+        "peak_rss_bytes": 2781495296,
+        "command": [
+          "/Users/zhen002/miniconda3/envs/cvdv/bin/python",
+          "-m",
+          "double_sine_gordon_code.audit_gaussian_sequence",
+          "statistics"
+        ]
+      },
+      {
+        "id": "final_small_suite",
+        "status": "completed",
+        "returncode": 0,
+        "reason": null,
+        "wall_seconds": 1.5308192500378937,
+        "peak_rss_bytes": 84344832,
+        "command": [
+          "/Users/zhen002/miniconda3/envs/cvdv/bin/python",
+          "-m",
+          "unittest",
+          "common_code.test_e0"
+        ]
+      }
+    ],
+    "08_final_suite_execution.json": [
+      {
+        "id": "final_suite_with_bounds",
+        "status": "completed",
+        "returncode": 0,
+        "reason": null,
+        "wall_seconds": 2.0434664589120075,
+        "peak_rss_bytes": 89276416,
+        "command": [
+          "/Users/zhen002/miniconda3/envs/cvdv/bin/python",
+          "-m",
+          "unittest",
+          "common_code.test_e0"
+        ]
+      }
+    ]
+  },
+  "abstract_characters": 1456,
+  "abstract_file_characters": 1457,
+  "tests": {
+    "pre_fix_dense_oracle": "expected numerical FAIL, max absolute discrepancy 0.11812606",
+    "intermediate_suite": "count import failed after state comparison; package-qualified imports corrected",
+    "final_suite": "19 tests PASS (08_final_suite_execution.json)"
+  },
+  "prose_review": "Independent review completed; common-time bound, scope wording and abstract color corrected."
+}

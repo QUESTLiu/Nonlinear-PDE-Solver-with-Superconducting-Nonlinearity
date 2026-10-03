@@ -1,0 +1,509 @@
+{
+ "description": "Cheapest double sine-Gordon circuits when the state threshold is tightened.",
+ "results": [
+  {
+   "lambda2": 0.1,
+   "infidelity": 0.001,
+   "hybrid": {
+    "r": 5,
+    "order": 1,
+    "primitives": 54,
+    "state_error": 0.014148985762249407,
+    "cutoffs": [
+     128,
+     160
+    ],
+    "previous_step_evaluated": true,
+    "error_evidence": "direct numerical estimate"
+   },
+   "gauss_block": {
+    "r": 6,
+    "order": 3,
+    "primitives": 181,
+    "state_error": 0.02802146682666484,
+    "cutoffs": [
+     128,
+     160
+    ],
+    "previous_step_evaluated": true,
+    "error_evidence": "upper bounds propagated from archived raw errors"
+   },
+   "kin_pot": {
+    "r": 12,
+    "order": 3,
+    "primitives": 330,
+    "state_error": 0.029116376774351638,
+    "cutoffs": [
+     128,
+     160
+    ],
+    "previous_step_evaluated": true,
+    "error_evidence": "direct numerical estimate"
+   },
+   "saving_gauss_block": 3.3518518518518516,
+   "saving_kin_pot": 6.111111111111111
+  },
+  {
+   "lambda2": 0.1,
+   "infidelity": 0.0005,
+   "hybrid": {
+    "r": 5,
+    "order": 1,
+    "primitives": 54,
+    "state_error": 0.014148985762249407,
+    "cutoffs": [
+     128,
+     160
+    ],
+    "previous_step_evaluated": true,
+    "error_evidence": "direct numerical estimate"
+   },
+   "gauss_block": {
+    "r": 7,
+    "order": 3,
+    "primitives": 209,
+    "state_error": 0.01976586431151908,
+    "cutoffs": [
+     128,
+     160
+    ],
+    "previous_step_evaluated": true,
+    "error_evidence": "upper bounds propagated from archived raw errors"
+   },
+   "kin_pot": {
+    "r": 14,
+    "order": 3,
+    "primitives": 384,
+    "state_error": 0.021274596611258717,
+    "cutoffs": [
+     128,
+     160
+    ],
+    "previous_step_evaluated": true,
+    "error_evidence": "direct numerical estimate"
+   },
+   "saving_gauss_block": 3.8703703703703702,
+   "saving_kin_pot": 7.111111111111111
+  },
+  {
+   "lambda2": 0.1,
+   "infidelity": 0.00025,
+   "hybrid": {
+    "r": 5,
+    "order": 1,
+    "primitives": 54,
+    "state_error": 0.014148985762249407,
+    "cutoffs": [
+     128,
+     160
+    ],
+    "previous_step_evaluated": true,
+    "error_evidence": "direct numerical estimate"
+   },
+   "gauss_block": {
+    "r": 8,
+    "order": 3,
+    "primitives": 237,
+    "state_error": 0.014773594929737127,
+    "cutoffs": [
+     128,
+     160
+    ],
+    "previous_step_evaluated": true,
+    "error_evidence": "upper bounds propagated from archived raw errors"
+   },
+   "kin_pot": {
+    "r": 17,
+    "order": 3,
+    "primitives": 465,
+    "state_error": 0.014577563259849612,
+    "cutoffs": [
+     128,
+     160
+    ],
+    "previous_step_evaluated": true,
+    "error_evidence": "direct numerical estimate"
+   },
+   "saving_gauss_block": 4.388888888888889,
+   "saving_kin_pot": 8.61111111111111
+  },
+  {
+   "lambda2": 0.1,
+   "infidelity": 0.0001,
+   "hybrid": {
+    "r": 6,
+    "order": 1,
+    "primitives": 64,
+    "state_error": 0.007235314843300577,
+    "cutoffs": [
+     128,
+     160
+    ],
+    "previous_step_evaluated": true,
+    "error_evidence": "direct numerical estimate"
+   },
+   "gauss_block": {
+    "r": 10,
+    "order": 3,
+    "primitives": 293,
+    "state_error": 0.009509416276708154,
+    "cutoffs": [
+     128,
+     160
+    ],
+    "previous_step_evaluated": true,
+    "error_evidence": "upper bounds propagated from archived raw errors"
+   },
+   "kin_pot": {
+    "r": 21,
+    "order": 3,
+    "primitives": 573,
+    "state_error": 0.009619975254010088,
+    "cutoffs": [
+     128,
+     160
+    ],
+    "previous_step_evaluated": true,
+    "error_evidence": "direct numerical estimate"
+   },
+   "saving_gauss_block": 4.578125,
+   "saving_kin_pot": 8.953125
+  },
+  {
+   "lambda2": 0.3,
+   "infidelity": 0.001,
+   "hybrid": {
+    "r": 6,
+    "order": 1,
+    "primitives": 64,
+    "state_error": 0.027115514892715038,
+    "cutoffs": [
+     128,
+     160
+    ],
+    "previous_step_evaluated": true,
+    "error_evidence": "direct numerical estimate"
+   },
+   "gauss_block": {
+    "r": 7,
+    "order": 3,
+    "primitives": 209,
+    "state_error": 0.029772630910219044,
+    "cutoffs": [
+     128,
+     160
+    ],
+    "previous_step_evaluated": true,
+    "error_evidence": "upper bounds propagated from archived raw errors"
+   },
+   "kin_pot": {
+    "r": 12,
+    "order": 3,
+    "primitives": 330,
+    "state_error": 0.030722054803020298,
+    "cutoffs": [
+     128,
+     160
+    ],
+    "previous_step_evaluated": true,
+    "error_evidence": "direct numerical estimate"
+   },
+   "saving_gauss_block": 3.265625,
+   "saving_kin_pot": 5.15625
+  },
+  {
+   "lambda2": 0.3,
+   "infidelity": 0.0005,
+   "hybrid": {
+    "r": 7,
+    "order": 1,
+    "primitives": 74,
+    "state_error": 0.01658323566316292,
+    "cutoffs": [
+     128,
+     160
+    ],
+    "previous_step_evaluated": true,
+    "error_evidence": "direct numerical estimate"
+   },
+   "gauss_block": {
+    "r": 8,
+    "order": 3,
+    "primitives": 237,
+    "state_error": 0.0219633129547965,
+    "cutoffs": [
+     128,
+     160
+    ],
+    "previous_step_evaluated": true,
+    "error_evidence": "upper bounds propagated from archived raw errors"
+   },
+   "kin_pot": {
+    "r": 15,
+    "order": 3,
+    "primitives": 411,
+    "state_error": 0.01948362697896148,
+    "cutoffs": [
+     128,
+     160
+    ],
+    "previous_step_evaluated": true,
+    "error_evidence": "direct numerical estimate"
+   },
+   "saving_gauss_block": 3.2027027027027026,
+   "saving_kin_pot": 5.554054054054054
+  },
+  {
+   "lambda2": 0.3,
+   "infidelity": 0.00025,
+   "hybrid": {
+    "r": 8,
+    "order": 1,
+    "primitives": 84,
+    "state_error": 0.011511878180143391,
+    "cutoffs": [
+     128,
+     160
+    ],
+    "previous_step_evaluated": true,
+    "error_evidence": "direct numerical estimate"
+   },
+   "gauss_block": {
+    "r": 10,
+    "order": 3,
+    "primitives": 293,
+    "state_error": 0.01390093547375777,
+    "cutoffs": [
+     128,
+     160
+    ],
+    "previous_step_evaluated": true,
+    "error_evidence": "upper bounds propagated from archived raw errors"
+   },
+   "kin_pot": {
+    "r": 17,
+    "order": 3,
+    "primitives": 465,
+    "state_error": 0.015233000400128264,
+    "cutoffs": [
+     128,
+     160
+    ],
+    "previous_step_evaluated": true,
+    "error_evidence": "direct numerical estimate"
+   },
+   "saving_gauss_block": 3.488095238095238,
+   "saving_kin_pot": 5.535714285714286
+  },
+  {
+   "lambda2": 0.3,
+   "infidelity": 0.0001,
+   "hybrid": {
+    "r": 9,
+    "order": 1,
+    "primitives": 94,
+    "state_error": 0.008743961202120815,
+    "cutoffs": [
+     128,
+     160
+    ],
+    "previous_step_evaluated": true,
+    "error_evidence": "direct numerical estimate"
+   },
+   "gauss_block": {
+    "r": 12,
+    "order": 3,
+    "primitives": 349,
+    "state_error": 0.009613597330270313,
+    "cutoffs": [
+     128,
+     160
+    ],
+    "previous_step_evaluated": true,
+    "error_evidence": "upper bounds propagated from archived raw errors"
+   },
+   "kin_pot": {
+    "r": 22,
+    "order": 3,
+    "primitives": 600,
+    "state_error": 0.009248071838484837,
+    "cutoffs": [
+     128,
+     160
+    ],
+    "previous_step_evaluated": true,
+    "error_evidence": "direct numerical estimate"
+   },
+   "saving_gauss_block": 3.7127659574468086,
+   "saving_kin_pot": 6.382978723404255
+  },
+  {
+   "lambda2": 0.6,
+   "infidelity": 0.001,
+   "hybrid": {
+    "r": 9,
+    "order": 1,
+    "primitives": 94,
+    "state_error": 0.027242684384651168,
+    "cutoffs": [
+     128,
+     160
+    ],
+    "previous_step_evaluated": true,
+    "error_evidence": "direct numerical estimate"
+   },
+   "gauss_block": {
+    "r": 10,
+    "order": 3,
+    "primitives": 293,
+    "state_error": 0.02506706036604185,
+    "cutoffs": [
+     160,
+     192
+    ],
+    "previous_step_evaluated": true,
+    "error_evidence": "upper bounds propagated from archived raw errors"
+   },
+   "kin_pot": {
+    "r": 13,
+    "order": 3,
+    "primitives": 357,
+    "state_error": 0.030233126411002693,
+    "cutoffs": [
+     128,
+     160
+    ],
+    "previous_step_evaluated": true,
+    "error_evidence": "direct numerical estimate"
+   },
+   "saving_gauss_block": 3.117021276595745,
+   "saving_kin_pot": 3.797872340425532
+  },
+  {
+   "lambda2": 0.6,
+   "infidelity": 0.0005,
+   "hybrid": {
+    "r": 10,
+    "order": 1,
+    "primitives": 104,
+    "state_error": 0.021830472269892116,
+    "cutoffs": [
+     128,
+     160
+    ],
+    "previous_step_evaluated": true,
+    "error_evidence": "direct numerical estimate"
+   },
+   "gauss_block": {
+    "r": 11,
+    "order": 3,
+    "primitives": 321,
+    "state_error": 0.019470753936022815,
+    "cutoffs": [
+     160,
+     192
+    ],
+    "previous_step_evaluated": true,
+    "error_evidence": "upper bounds propagated from archived raw errors"
+   },
+   "kin_pot": {
+    "r": 15,
+    "order": 3,
+    "primitives": 411,
+    "state_error": 0.022217061916001164,
+    "cutoffs": [
+     128,
+     160
+    ],
+    "previous_step_evaluated": true,
+    "error_evidence": "direct numerical estimate"
+   },
+   "saving_gauss_block": 3.0865384615384617,
+   "saving_kin_pot": 3.951923076923077
+  },
+  {
+   "lambda2": 0.6,
+   "infidelity": 0.00025,
+   "hybrid": {
+    "r": 13,
+    "order": 1,
+    "primitives": 134,
+    "state_error": 0.014684102443456257,
+    "cutoffs": [
+     128,
+     160
+    ],
+    "previous_step_evaluated": true,
+    "error_evidence": "direct numerical estimate"
+   },
+   "gauss_block": {
+    "r": 12,
+    "order": 3,
+    "primitives": 349,
+    "state_error": 0.01577306597023391,
+    "cutoffs": [
+     160,
+     192
+    ],
+    "previous_step_evaluated": true,
+    "error_evidence": "upper bounds propagated from archived raw errors"
+   },
+   "kin_pot": {
+    "r": 18,
+    "order": 3,
+    "primitives": 492,
+    "state_error": 0.015598690602350862,
+    "cutoffs": [
+     128,
+     160
+    ],
+    "previous_step_evaluated": true,
+    "error_evidence": "direct numerical estimate"
+   },
+   "saving_gauss_block": 2.6044776119402986,
+   "saving_kin_pot": 3.671641791044776
+  },
+  {
+   "lambda2": 0.6,
+   "infidelity": 0.0001,
+   "hybrid": {
+    "r": 12,
+    "order": 2,
+    "primitives": 172,
+    "state_error": 0.009107271687532526,
+    "cutoffs": [
+     128,
+     160
+    ],
+    "previous_step_evaluated": true,
+    "error_evidence": "direct numerical estimate"
+   },
+   "gauss_block": {
+    "r": 16,
+    "order": 3,
+    "primitives": 461,
+    "state_error": 0.00989075155618069,
+    "cutoffs": [
+     128,
+     160
+    ],
+    "previous_step_evaluated": true,
+    "error_evidence": "upper bounds propagated from archived raw errors"
+   },
+   "kin_pot": {
+    "r": 23,
+    "order": 3,
+    "primitives": 627,
+    "state_error": 0.009935260175416186,
+    "cutoffs": [
+     128,
+     160
+    ],
+    "previous_step_evaluated": true,
+    "error_evidence": "direct numerical estimate"
+   },
+   "saving_gauss_block": 2.6802325581395348,
+   "saving_kin_pot": 3.645348837209302
+  }
+ ]
+}

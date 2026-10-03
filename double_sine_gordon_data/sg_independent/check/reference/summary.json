@@ -1,0 +1,38 @@
+{
+  "preparation": [
+    0.75,
+    0.25
+  ],
+  "compared_cutoffs": [
+    128,
+    160
+  ],
+  "records": [
+    {
+      "N": 128,
+      "lambda2": 0.3,
+      "solver": null
+    },
+    {
+      "N": 160,
+      "lambda2": 0.3,
+      "solver": {
+        "state_distance": 3.183571361145256e-09,
+        "C12": 4.1078725103462085e-12,
+        "S2": 4.186206719811181e-12
+      }
+    }
+  ],
+  "empirical_cutoff_estimates": {
+    "state_distance": 0.000245550636355652,
+    "C12": 4.327361242729827e-08,
+    "S2": 1.5931700403370996e-13
+  },
+  "resolution_ok": true,
+  "provenance": {
+    "python": "/Users/zhen002/miniconda3/envs/cvdv/bin/python",
+    "python_version": "3.13.0",
+    "numpy": "2.3.4",
+    "scipy": "1.16.3"
+  }
+}

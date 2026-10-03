@@ -1,0 +1,38 @@
+[setup] sites=1 cutoff=80 dimension=80 omega=1
+[setup] conservative split-memory estimate ~0.50 GiB
+[polydeg] reference done; max leakage 7.225e-21
+[polydeg] phi_max spectral=11.888  accessed=2.713
+[polydeg] taylor                 d= 2  max_infid=1.7290e-02  potential_err=7.044e+01  leak=8.315e-30
+[polydeg] taylor                 d= 4  max_infid=2.9666e-03  potential_err=7.617e+02  leak=4.284e-06
+[polydeg] taylor                 d= 6  max_infid=1.0059e-04  potential_err=3.158e+03  leak=5.993e-20
+[polydeg] taylor                 d= 8  max_infid=9.2221e-06  potential_err=6.734e+03  leak=2.113e-08
+[polydeg] taylor                 d=10  max_infid=2.9029e-07  potential_err=8.799e+03  leak=2.053e-19
+[polydeg] taylor                 d=12  max_infid=1.2389e-08  potential_err=7.831e+03  leak=1.683e-11
+[polydeg] taylor                 d=14  max_infid=2.7556e-10  potential_err=5.082e+03  leak=4.033e-19
+[polydeg] taylor                 d=16  max_infid=5.6262e-12  potential_err=2.522e+03  leak=2.126e-15
+[polydeg] taylor                 d=20  max_infid=8.8818e-16  potential_err=3.159e+02  leak=1.531e-19
+[polydeg] taylor                 d=24  max_infid=8.8818e-16  potential_err=1.867e+01  leak=7.036e-21
+[polydeg] taylor: d* (infid < 0.001) = 6
+[polydeg] chebyshev_spectral     d= 2  max_infid=1.0814e-01  potential_err=1.971e+00  leak=2.047e-28
+[polydeg] chebyshev_spectral     d= 4  max_infid=1.1515e-01  potential_err=1.955e+00  leak=6.100e-28
+[polydeg] chebyshev_spectral     d= 6  max_infid=1.0957e-01  potential_err=1.847e+00  leak=6.959e-29
+[polydeg] chebyshev_spectral     d= 8  max_infid=3.7929e-02  potential_err=1.428e+00  leak=5.904e-26
+[polydeg] chebyshev_spectral     d=10  max_infid=4.6393e-03  potential_err=6.625e-01  leak=1.832e-22
+[polydeg] chebyshev_spectral     d=12  max_infid=2.3795e-04  potential_err=2.001e-01  leak=5.833e-21
+[polydeg] chebyshev_spectral     d=14  max_infid=5.9754e-06  potential_err=4.362e-02  leak=8.436e-21
+[polydeg] chebyshev_spectral     d=16  max_infid=8.5536e-08  potential_err=6.772e-03  leak=7.531e-21
+[polydeg] chebyshev_spectral     d=20  max_infid=5.8051e-12  potential_err=7.235e-05  leak=7.251e-21
+[polydeg] chebyshev_spectral     d=24  max_infid=8.8818e-16  potential_err=3.296e-07  leak=7.225e-21
+[polydeg] chebyshev_spectral: d* (infid < 0.001) = 12
+[polydeg] chebyshev_accessed     d= 2  max_infid=4.2536e-03  potential_err=4.336e+01  leak=1.728e-29
+[polydeg] chebyshev_accessed     d= 4  max_infid=2.2670e-04  potential_err=5.404e+02  leak=4.042e-07
+[polydeg] chebyshev_accessed     d= 6  max_infid=1.2300e-05  potential_err=2.364e+03  leak=1.627e-21
+[polydeg] chebyshev_accessed     d= 8  max_infid=1.3892e-06  potential_err=5.121e+03  leak=3.235e-09
+[polydeg] chebyshev_accessed     d=10  max_infid=5.1466e-08  potential_err=6.689e+03  leak=3.087e-19
+[polydeg] chebyshev_accessed     d=12  max_infid=2.2180e-09  potential_err=5.902e+03  leak=2.966e-12
+[polydeg] chebyshev_accessed     d=14  max_infid=5.0929e-11  potential_err=3.779e+03  leak=3.890e-19
+[polydeg] chebyshev_accessed     d=16  max_infid=1.0432e-12  potential_err=1.847e+03  leak=4.178e-16
+[polydeg] chebyshev_accessed     d=20  max_infid=1.2916e-12  potential_err=7.947e+03  leak=3.471e-15
+[polydeg] chebyshev_accessed     d=24  max_infid=5.2101e-08  potential_err=5.055e+07  leak=8.488e-10
+[polydeg] chebyshev_accessed: d* (infid < 0.001) = 4
+[save] wrote /Users/zhen002/GitHub/nonlinear-PDE-simulator/pra/results/formal/polynomial/E3_poly_phi0.5_N80.npz

@@ -1,0 +1,94 @@
+{
+  "scope": "B0 scaling sample only, not scientific pilot evidence",
+  "rows": [
+    {
+      "cutoff": 16,
+      "route": "H_trig",
+      "order": 1,
+      "infidelity": 4.853814626681885e-05,
+      "bures_distance": 0.006966974613783965,
+      "ancilla_excited_population": 2.097190258078011e-05,
+      "system_purity": 0.9999595338094103
+    },
+    {
+      "cutoff": 16,
+      "route": "H_trig",
+      "order": 2,
+      "infidelity": 2.8440067738166874e-05,
+      "bures_distance": 0.005332941960157997,
+      "ancilla_excited_population": 2.7218685569334085e-08,
+      "system_purity": 0.9999999525843525
+    },
+    {
+      "cutoff": 16,
+      "route": "G_trig",
+      "order": 1,
+      "infidelity": 0.012910079887836101,
+      "bures_distance": 0.11380693557155194,
+      "ancilla_excited_population": 0.00238635189792612,
+      "system_purity": 0.996017741839955
+    },
+    {
+      "cutoff": 16,
+      "route": "G_trig",
+      "order": 2,
+      "infidelity": 0.010949833766084605,
+      "bures_distance": 0.10478536978899998,
+      "ancilla_excited_population": 1.1931880755611016e-05,
+      "system_purity": 0.9999797605988641
+    },
+    {
+      "cutoff": 16,
+      "wall_seconds": 0.07935558300232515,
+      "cpu_seconds": 0.074772
+    },
+    {
+      "cutoff": 24,
+      "route": "H_trig",
+      "order": 1,
+      "infidelity": 4.361796254015449e-05,
+      "bures_distance": 0.006604425651200546,
+      "ancilla_excited_population": 1.9296420096381353e-05,
+      "system_purity": 0.9999629802782786
+    },
+    {
+      "cutoff": 24,
+      "route": "H_trig",
+      "order": 2,
+      "infidelity": 2.5270756135786776e-05,
+      "bures_distance": 0.005027018578703651,
+      "ancilla_excited_population": 1.7369200257280404e-08,
+      "system_purity": 0.9999999723542059
+    },
+    {
+      "cutoff": 24,
+      "route": "G_trig",
+      "order": 1,
+      "infidelity": 0.005933904109346022,
+      "bures_distance": 0.07708912458061444,
+      "ancilla_excited_population": 0.0023863159387190213,
+      "system_purity": 0.9960042396607011
+    },
+    {
+      "cutoff": 24,
+      "route": "G_trig",
+      "order": 2,
+      "infidelity": 0.00388886483444717,
+      "bures_distance": 0.06239112934811516,
+      "ancilla_excited_population": 1.1946529035659751e-05,
+      "system_purity": 0.9999796551101924
+    },
+    {
+      "cutoff": 24,
+      "wall_seconds": 0.30085983299068175,
+      "cpu_seconds": 0.29981800000000003
+    }
+  ],
+  "provenance": {
+    "python": "/Users/zhen002/miniconda3/envs/cvdv/bin/python",
+    "python_version": "3.13.0",
+    "numpy": "2.3.4",
+    "scipy": "1.16.3"
+  },
+  "peak_memory_bytes": 100564992
+}

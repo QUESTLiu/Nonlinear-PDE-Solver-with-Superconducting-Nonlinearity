@@ -3,4 +3,10 @@ __pycache__
 */.lake
 .DS_Store
 */.DS_Store
-manuscript
+*/*/.DS_Store
+*/*/*/.DS_Store
+
+# diagnostic figures written by common_code/plot_results.py
+common_data/diagnostic_figures/
+# LaTeX intermediate files
+paper/*

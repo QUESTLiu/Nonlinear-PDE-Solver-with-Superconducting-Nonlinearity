@@ -1,0 +1,69 @@
+{
+  "status": "PASS",
+  "metric_trace_checks": [
+    {
+      "cutoff": 6,
+      "saved_time_count": 81,
+      "maximum_summary_difference": 0.0
+    },
+    {
+      "cutoff": 8,
+      "saved_time_count": 81,
+      "maximum_summary_difference": 0.0
+    },
+    {
+      "cutoff": 10,
+      "saved_time_count": 81,
+      "maximum_summary_difference": 0.0
+    },
+    {
+      "cutoff": 12,
+      "saved_time_count": 81,
+      "maximum_summary_difference": 0.0
+    }
+  ],
+  "refinement_trace_matches_summary": true,
+  "matplotlib_version": "3.10.7",
+  "total_archived_bytes_before_audit": 305480,
+  "files": {
+    "legacy_run.log": {
+      "bytes": 795
+    },
+    "plots/cutoff_convergence_at_largest_W.png": {
+      "bytes": 66257
+    },
+    "plots/max_infid_cutoff_floor_vs_W.png": {
+      "bytes": 47505
+    },
+    "plots/max_infid_hybrid_vs_W.png": {
+      "bytes": 47598
+    },
+    "plots/max_infid_native_vs_W.png": {
+      "bytes": 51217
+    },
+    "reference_W_0.3.npz": {
+      "bytes": 65333
+    },
+    "refinement_cutoff12_steps320.npz": {
+      "bytes": 1002
+    },
+    "summary.csv": {
+      "bytes": 1432
+    },
+    "trace_cutoff_10_W_0.3.npz": {
+      "bytes": 3877
+    },
+    "trace_cutoff_12_W_0.3.npz": {
+      "bytes": 3778
+    },
+    "trace_cutoff_6_W_0.3.npz": {
+      "bytes": 4067
+    },
+    "trace_cutoff_8_W_0.3.npz": {
+      "bytes": 3952
+    },
+    "validation.json": {
+      "bytes": 8667
+    }
+  }
+}

@@ -1,0 +1,195 @@
+{
+  "configurations": [
+    {
+      "name": "E4_H_trig_o2_s1_r10_N128",
+      "route": "H_trig",
+      "r": 10,
+      "layers": null,
+      "order": 2,
+      "subdivisions": 1,
+      "cutoff": 128,
+      "max_bures_distance": 0.0060219810313030635,
+      "max_endpoint_bures_distance": 0.0060219810313030635,
+      "max_C12_error": 0.000819103482469409,
+      "max_S2_error": 0.0010673742747815407,
+      "action_sum": 0.05121715931366095,
+      "max_population_at_monitored_locations": {
+        "outside_joint_access": 0.004324457801282877,
+        "outside_local_active_max": 0.0019996718166365095,
+        "boundary_band_population": 3.419366162073618e-08
+      },
+      "population_scope": "native-half and potential-block endpoints; SNAP route also each local SNAP and displacement",
+      "reused_pilot": true,
+      "pilot_source": "/Users/zhen002/GitHub/nonlinear-PDE-simulator/pra/results/sg128/compiled_tensor",
+      "reused_same_parameter_record": "/Users/zhen002/GitHub/nonlinear-PDE-simulator/pra/results/sg_formal/comparison",
+      "empirical_margins": {
+        "reference": 0.00023012114188835695,
+        "solver": 6.850423817979153e-09,
+        "padding_joint_distance": 0.00026512064366258795,
+        "C12": 8.043985258212362e-08,
+        "S2": 7.058690437711235e-12
+      },
+      "numerical_acceptance": {
+        "state": true,
+        "C12": true,
+        "S2": true,
+        "amplitude_total": 0.006517229667277826,
+        "boundary_population_both_cutoffs": 3.419366162073618e-08
+      }
+    },
+    {
+      "name": "E4_H_trig_o2_s1_r10_N160",
+      "route": "H_trig",
+      "r": 10,
+      "layers": null,
+      "order": 2,
+      "subdivisions": 1,
+      "cutoff": 160,
+      "max_bures_distance": 0.0060219810327042135,
+      "max_endpoint_bures_distance": 0.0060219810327042135,
+      "max_C12_error": 0.0008191034294745264,
+      "max_S2_error": 0.001067374274933225,
+      "action_sum": 0.05121715965149694,
+      "max_population_at_monitored_locations": {
+        "outside_joint_access": 0.004324457801252457,
+        "outside_local_active_max": 0.001999671815243715,
+        "boundary_band_population": 1.0574485921759747e-09
+      },
+      "population_scope": "native-half and potential-block endpoints; SNAP route also each local SNAP and displacement"
+    },
+    {
+      "name": "E4_G_trig_o1_s1_r20_N128",
+      "route": "G_trig",
+      "r": 20,
+      "layers": null,
+      "order": 1,
+      "subdivisions": 1,
+      "cutoff": 128,
+      "max_bures_distance": 0.023990632722797348,
+      "max_endpoint_bures_distance": 0.023990632722797348,
+      "max_C12_error": 0.0036799666809472363,
+      "max_S2_error": 0.003397157123001565,
+      "action_sum": 0.12950085680087034,
+      "max_population_at_monitored_locations": {
+        "outside_joint_access": 0.004441260129655844,
+        "outside_local_active_max": 0.0020156869453761303,
+        "boundary_band_population": 3.923599537108593e-08
+      },
+      "population_scope": "native-half and potential-block endpoints; SNAP route also each local SNAP and displacement",
+      "reused_same_parameter_record": "/Users/zhen002/GitHub/nonlinear-PDE-simulator/pra/results/sg_formal/comparison",
+      "empirical_margins": {
+        "reference": 0.00023012114188836975,
+        "solver": 6.850423817979153e-09,
+        "padding_joint_distance": 0.00027574972542071047,
+        "C12": 9.812583765972988e-08,
+        "S2": 7.989445910405735e-12
+      },
+      "numerical_acceptance": {
+        "state": true,
+        "C12": true,
+        "S2": true,
+        "amplitude_total": 0.024496510440530247,
+        "boundary_population_both_cutoffs": 3.923599537108593e-08
+      }
+    },
+    {
+      "name": "E4_G_trig_o2_s1_r20_N128",
+      "route": "G_trig",
+      "r": 20,
+      "layers": null,
+      "order": 2,
+      "subdivisions": 1,
+      "cutoff": 128,
+      "max_bures_distance": 0.010449392925304524,
+      "max_endpoint_bures_distance": 0.010619418039651973,
+      "max_C12_error": 0.0030606875347208226,
+      "max_S2_error": 0.0025555517815863127,
+      "action_sum": 0.05095218145385577,
+      "max_population_at_monitored_locations": {
+        "outside_joint_access": 0.004301643349146511,
+        "outside_local_active_max": 0.001986089115529244,
+        "boundary_band_population": 3.5048154591257724e-08
+      },
+      "population_scope": "native-half and potential-block endpoints; SNAP route also each local SNAP and displacement",
+      "reused_same_parameter_record": "/Users/zhen002/GitHub/nonlinear-PDE-simulator/pra/results/sg_formal/comparison",
+      "empirical_margins": {
+        "reference": 0.00023012114188836975,
+        "solver": 6.850423817979153e-09,
+        "padding_joint_distance": 0.0002575598784784114,
+        "C12": 9.183689132411421e-08,
+        "S2": 7.948561947523913e-12
+      },
+      "numerical_acceptance": {
+        "state": true,
+        "C12": true,
+        "S2": true,
+        "amplitude_total": 0.010937080796095122,
+        "boundary_population_both_cutoffs": 3.5048154591257724e-08
+      }
+    },
+    {
+      "name": "E4_G_trig_o1_s1_r20_N160",
+      "route": "G_trig",
+      "r": 20,
+      "layers": null,
+      "order": 1,
+      "subdivisions": 1,
+      "cutoff": 160,
+      "max_bures_distance": 0.02398973559721627,
+      "max_endpoint_bures_distance": 0.02398973559721627,
+      "max_C12_error": 0.003679963459224068,
+      "max_S2_error": 0.003397157122034644,
+      "action_sum": 0.1294983564375622,
+      "max_population_at_monitored_locations": {
+        "outside_joint_access": 0.004441260129641078,
+        "outside_local_active_max": 0.0020156869488084602,
+        "boundary_band_population": 1.3355093131178347e-09
+      },
+      "population_scope": "native-half and potential-block endpoints; SNAP route also each local SNAP and displacement"
+    },
+    {
+      "name": "E4_G_trig_o2_s1_r20_N160",
+      "route": "G_trig",
+      "r": 20,
+      "layers": null,
+      "order": 2,
+      "subdivisions": 1,
+      "cutoff": 160,
+      "max_bures_distance": 0.010449390396940466,
+      "max_endpoint_bures_distance": 0.01061939738742151,
+      "max_C12_error": 0.003060684814888811,
+      "max_S2_error": 0.0025555517813066753,
+      "action_sum": 0.05094471241832877,
+      "max_population_at_monitored_locations": {
+        "outside_joint_access": 0.0043016433491381845,
+        "outside_local_active_max": 0.001986089115494334,
+        "boundary_band_population": 9.252021104876393e-10
+      },
+      "population_scope": "native-half and potential-block endpoints; SNAP route also each local SNAP and displacement"
+    }
+  ],
+  "validation_cutoffs": [
+    128,
+    160
+  ],
+  "reference": {
+    "state_distance": 0.00023012114188835695,
+    "C12": 3.620842398607868e-08,
+    "S2": 1.338235078307548e-13
+  },
+  "solver": {
+    "state_distance": 6.850423817979153e-09,
+    "C12": 6.40067722469277e-12,
+    "S2": 6.767145871444669e-12
+  },
+  "scope": "User-requested same-circuit padding refinement after the fixed formal scan. Three representative configurations only; no new training or threshold changes.",
+  "wall_seconds": 163.7241210830107,
+  "cpu_seconds": 162.489893,
+  "peak_memory_bytes": 2650324992,
+  "provenance": {
+    "python": "/Users/zhen002/miniconda3/envs/cvdv/bin/python",
+    "python_version": "3.13.0",
+    "numpy": "2.3.4",
+    "scipy": "1.16.3"
+  }
+}

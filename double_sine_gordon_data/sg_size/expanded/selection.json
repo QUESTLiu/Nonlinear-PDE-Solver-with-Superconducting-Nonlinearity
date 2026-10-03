@@ -1,0 +1,10 @@
+{
+  "criterion": "minimum training objective within r,L",
+  "selected": [
+    {
+      "r": 10,
+      "L": 12,
+      "seed": 20260729
+    }
+  ]
+}

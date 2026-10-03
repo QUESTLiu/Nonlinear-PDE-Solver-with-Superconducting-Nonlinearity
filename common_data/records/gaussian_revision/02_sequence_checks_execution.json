@@ -1,0 +1,25 @@
+{
+  "batch": "B0",
+  "results": [
+    {
+      "id": "post_fix_suite",
+      "status": "failed",
+      "returncode": 1,
+      "reason": null,
+      "wall_seconds": 2.560379375005141,
+      "peak_rss_bytes": 87015424,
+      "command": [
+        "/Users/zhen002/miniconda3/envs/cvdv/bin/python",
+        "-m",
+        "unittest",
+        "common_code.test_e0"
+      ]
+    }
+  ],
+  "provenance": {
+    "python": "/Users/zhen002/miniconda3/envs/cvdv/bin/python",
+    "python_version": "3.13.0",
+    "numpy": "2.3.4",
+    "scipy": "1.16.3"
+  }
+}
