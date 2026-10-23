@@ -1,15 +1,17 @@
-# Native interactions and control costs in oscillator–qubit quantum simulation
+# Native nonlinearities and control costs in oscillator--qubit quantum simulation
 
 This repository contains the code and numerical records behind the manuscript's numbers, tables and figures, and Lean 4 experiments on selected mathematical statements. Code and data are grouped by benchmark, and each `<topic>_code/` folder writes to the matching `<topic>_data/` folder.
+
+[NUMERICS.md](NUMERICS.md) documents the finite representations, solver and optimizer settings, SNAP+D search results, and Gaussian-circuit error estimates, with links to their implementations and numerical records.
 
 | Folder | Content |
 |---|---|
 | `sine_gordon_code/`, `sine_gordon_data/` | Sine-Gordon lattice, Sec. III A. The library in `sine_gordon_code/` also serves the double sine-Gordon lattice |
-| `duffing_code/`, `duffing_data/` | Duffing oscillator, Sec. III B and Appendix E |
-| `double_sine_gordon_code/`, `double_sine_gordon_data/` | Double sine-Gordon lattice, Sec. III C and Appendices F, G and H |
+| `duffing_code/`, `duffing_data/` | Duffing oscillator and SNAP+D training coverage |
+| `double_sine_gordon_code/`, `double_sine_gordon_data/` | Double sine-Gordon lattice, circuit compilation, and convergence checks |
 | `common_code/`, `common_data/` | Pipeline infrastructure shared by the benchmarks, the figure script, and records that span several benchmarks |
 | `lean_proof/` | Optional Lean 4 formalization experiments |
-| `legacy/` | Earlier implementations, including the Kerr-lattice calculation used in Appendix I |
+| `legacy/` | Earlier implementations, including the manuscript's Kerr-lattice calculation |
 
 ## Environment
 
@@ -65,23 +67,23 @@ The pipeline modules named `*_sg_*` and the data folders `sg*` belong to this la
 
 | Code | Data | Manuscript |
 |---|---|---|
-| `common_code/run_pilot.py`, subcommands `e4-reference`, `e4-refinement`, `e4-reference128` and `e4-compiled` | `double_sine_gordon_data/stage1/E4_reference/`, `stage1_continuation/`, `sg128/reference/`, `sg128/compiled*/` | Fig. 5, Table VI |
-| `double_sine_gordon_code/run_sg_padding160.py` | `double_sine_gordon_data/sg160/` | Table VI, solver margins of the step scans |
-| `double_sine_gordon_code/run_sg_formal.py` | `double_sine_gordon_data/sg_formal/` | Fig. 9 |
-| `double_sine_gordon_code/run_sg_refinement.py`, `run_snapd.py`, `run_snapd_end_to_end.py` | `double_sine_gordon_data/sg_refinement/`, `sg_size/`, `sg_continuation/` | Table V, Appendix F |
+| `common_code/run_pilot.py`, subcommands `e4-reference`, `e4-refinement`, `e4-reference128` and `e4-compiled` | `double_sine_gordon_data/stage1/E4_reference/`, `stage1_continuation/`, `sg128/reference/`, `sg128/compiled*/` | Fig. 5 and the reference-cutoff comparison |
+| `double_sine_gordon_code/run_sg_padding160.py` | `double_sine_gordon_data/sg160/` | Reference convergence and solver margins of the step scans |
+| `double_sine_gordon_code/run_sg_formal.py` | `double_sine_gordon_data/sg_formal/` | Fig. 9 and the SNAP+D search with zero and small random displacements |
+| `double_sine_gordon_code/run_sg_refinement.py` (fits), `run_snapd_end_to_end.py` (model construction) | `double_sine_gordon_data/sg_refinement/`, `sg_size/`, `sg_continuation/` | SNAP+D compilation appendix and the paired, larger, and longer fits in the [search table](NUMERICS.md#double-sine-gordon-correction-searches) |
 | `double_sine_gordon_code/run_sg_independent.py` | `double_sine_gordon_data/sg_independent/` | second-preparation check of the r = 10 and 20 circuits |
 | `double_sine_gordon_code/run_sg_convention.py`, `check_sg_split.py`, `check_sg_reference_grid.py`, `probe_sg_stationary.py`, `run_scaling.py` | `double_sine_gordon_data/sg128/`, `stage1/B0/`, `common_data/records/` | convention, splitting and reference-grid checks |
 | `double_sine_gordon_code/dsg_step_scan.py`, `dsg_step_scan_lambda.py` | `double_sine_gordon_data/dsg_step_scan*.json`, `dsg_step_scan_parts*/` | Table III, Figs. 5 and 6 |
 | `double_sine_gordon_code/dsg_chain.py` | `double_sine_gordon_data/dsg_chain_*` | three-site rows of Table III, propagator check in Appendix D |
-| `double_sine_gordon_code/dsg_boundary_check.py` | `double_sine_gordon_data/dsg_boundary_check_*.json` | λ₂ = 0.6 entries of Tables III and VII |
-| `double_sine_gordon_code/dsg_protocol_checks.py` | `double_sine_gordon_data/dsg_common_times*`, `dsg_gauss_factor_check.json` | Appendices G and H |
-| `double_sine_gordon_code/dsg_thresholds.py` | `double_sine_gordon_data/dsg_thresholds.json` | Table VII, Fig. 6(d) |
+| `double_sine_gordon_code/dsg_boundary_check.py` | `double_sine_gordon_data/dsg_boundary_check_*.json` | λ₂ = 0.6 entries in the resource and state-tolerance tables |
+| `double_sine_gordon_code/dsg_protocol_checks.py` | `double_sine_gordon_data/dsg_common_times*`, `dsg_gauss_factor_check.json` | Gaussian factor checks and common readout times |
+| `double_sine_gordon_code/dsg_thresholds.py` | `double_sine_gordon_data/dsg_thresholds.json` | State-tolerance resource table |
 | `double_sine_gordon_code/dsg_control_tradeoffs.py` | `double_sine_gordon_data/dsg_control_tradeoffs.json` | Fig. 7, circuit selection with gate durations and native switching overhead in Sec. IV B |
 | `double_sine_gordon_code/splitting_baselines.py`, `splitting_sweep.py` | `double_sine_gordon_data/splitting_*.json` | Fig. 6(b) and 6(c) |
 | `double_sine_gordon_code/dsg_curvature.py`, `dsg_fock_tail.py` | `double_sine_gordon_data/dsg_curvature.json`, `dsg_fock_tail.json` | Sec. III C, Appendix D |
-| `double_sine_gordon_code/trig_counts.py` | primitive counts inside the scan records | Tables III and VII, Appendix G |
-| `double_sine_gordon_code/joint_phase.py`, `double_sine_gordon_code/check_joint_phase.py` | `double_sine_gordon_data/joint_phase_check.json` | Joint Fourier phase compilation in Appendix G |
-| `double_sine_gordon_code/dsg_grounding_check.py` | `double_sine_gordon_data/dsg_grounding_check.json` | Grounded-target comparison in Sec. IV C and Appendix G |
+| `double_sine_gordon_code/trig_counts.py` | primitive counts inside the scan records | Resource tables and trigonometric gate construction |
+| `double_sine_gordon_code/joint_phase.py`, `double_sine_gordon_code/check_joint_phase.py` | `double_sine_gordon_data/joint_phase_check.json` | Joint Fourier phase compilation |
+| `double_sine_gordon_code/dsg_grounding_check.py` | `double_sine_gordon_data/dsg_grounding_check.json` | Grounded-target comparison in Sec. IV C and the gate-construction appendix |
 
 The double sine-Gordon scans cache reference trajectories in the directories named by `DSG_SCAN_CACHE` and `DSG_CHAIN_CACHE` (default `/tmp/dsg_scan_cache` and `/tmp/dsg_chain_cache`, about 9 GB for three sites). Each script's docstring gives its commands and cost.
 
@@ -107,7 +109,7 @@ The duration analysis in Fig. 7 is post-processing of 34 evaluated two-site cand
 
 ### Analytic correction in a Kerr lattice
 
-Appendix I uses `legacy/nlse_fock_cutoff_hybrid.py` to compare a native Kerr lattice with a target containing the local interaction W N(N−1)(N−2)/6. `common_code/check_number_diagonal.py` reruns one parameter point, checks the analytic SNAP phases independently using integer occupations, and halves the time step at the largest tested cutoff.
+The Kerr-lattice appendix uses `legacy/nlse_fock_cutoff_hybrid.py` to compare a native Kerr lattice with a target containing the local interaction W N(N−1)(N−2)/6. `common_code/check_number_diagonal.py` reruns one parameter point, checks the analytic SNAP phases independently using integer occupations, and halves the time step at the largest tested cutoff.
 
 Run from the repository root in the environment above:
 
@@ -137,13 +139,24 @@ The reported error is the maximum infidelity, 1 − |overlap|², over the 81 sto
 |---|---|---|
 | `common_code/run_pilot.py`, `metrics.py`, `records.py`, `run_batch.py` | `common_data/manifests/`, `common_data/formal/`, `common_data/stage1/` (batch execution records) | drivers and metrics for E1 to E4 |
 | `common_code/run_e0.py`, `test_e0.py` | `common_data/records/e0.json`, `e0.log` | small operator checks |
-| `common_code/plot_results.py` | `common_data/analysis_summary.json` | Tables II and V, Fig. 9 |
+| `common_code/plot_results.py` | `common_data/analysis_summary.json` | Duffing resource and SNAP+D comparisons, Fig. 9 |
 | `common_code/derived_numbers.py` | `common_data/derived_numbers.json` | numbers in Secs. III A and III B and the auxiliary polynomial comparison |
 | `common_code/class_diagnostics.py` | `common_data/class_diagnostics.json` | Table IV |
 | `common_code/make_figures.py` | `paper/figures/*.pdf` | Figs. 2–6 and 8–9, plus the auxiliary polynomial plot |
-| `legacy/nlse_fock_cutoff_hybrid.py`, `common_code/check_number_diagonal.py` | `common_data/number_diagonal_check/` | Appendix I, analytic number-diagonal correction and the cutoff check at W = 0.3 |
+| `legacy/nlse_fock_cutoff_hybrid.py`, `common_code/check_number_diagonal.py` | `common_data/number_diagonal_check/` | Kerr-lattice appendix, analytic number-diagonal correction and the cutoff check at W = 0.3 |
 | `lean_proof/` | `common_data/records/lean-build.log`, `lean-axioms.log` | Formalization experiments |
 
 `python common_code/make_figures.py` redraws the benchmark figures from the data folders in a few seconds. `python double_sine_gordon_code/dsg_control_tradeoffs.py` reads the stored two-site step scan and regenerates the conditional duration comparison in Fig. 7, including its JSON record.
 
-Figures 2–6 and 8–9 are drawn from the archived benchmark data. Their plotting script controls panel layout, labels, and visual encodings. The auxiliary polynomial plot shows the full stored infidelity range. Figure 6 separates splitting-error ratios from compiled primitive ratios, and Figure 9 separates the two outer-step counts. Redrawing these figures reads the stored results and performs no propagation or optimization.
+Figures 2–6 and 8–9 are drawn from the archived benchmark data. Their plotting script controls panel layout, labels, and visual encodings. The auxiliary polynomial plot shows the full stored infidelity range. Figure 6 compares state errors, outer splitting errors, and programmable primitive counts. Figure 9 separates the two outer-step counts. Redrawing these figures reads the stored results and performs no propagation or optimization.
+
+## Pulse-action timing
+
+The pulse-action timing calculation reuses 67 archived two-site TGIFS candidates and their accuracy evidence. It compares hybrid, Gaussian-block, and kinetic–potential circuits under serial control-rate and switching-overhead assumptions. Run the following from the repository root in the declared environment:
+
+```sh
+python -m unittest double_sine_gordon_code.test_action_time
+python double_sine_gordon_code/dsg_action_time.py
+```
+
+The calculation performs sequence summation and algebraic selection without state propagation or gate fitting. It writes `double_sine_gordon_data/dsg_action_time.json` and the PDF/PNG figures `paper/figures/fig_dsg_action_time` and `paper/figures/fig_dsg_action_components`. Generator conventions, cost assumptions, and the candidate scope are described in [NUMERICS.md](NUMERICS.md#control-times-from-pulse-actions).

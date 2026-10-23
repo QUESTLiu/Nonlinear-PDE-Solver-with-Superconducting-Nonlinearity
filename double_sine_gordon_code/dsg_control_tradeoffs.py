@@ -187,7 +187,7 @@ def make_figure(rows, gate_curve, switch_curve):
             "ytick.labelsize": 8.5,
         }
     )
-    fig, axes = plt.subplots(1, 2, figsize=(7.0, 3.2), gridspec_kw=dict(wspace=0.28))
+    fig, axes = plt.subplots(1, 2, figsize=(7.0, 3.6), gridspec_kw=dict(wspace=0.28))
     hybrid_color, gaussian_color = style.C_HYBRID, "#A64D8B"
 
     ax = axes[0]
@@ -208,22 +208,23 @@ def make_figure(rows, gate_curve, switch_curve):
         mec=hybrid_color,
         mew=1.1,
     )
-    ax.text(0, 1.16, "(a) Gaussian gate duration", transform=ax.transAxes, va="bottom")
+    ax.text(0, 1.24, "(a) Gaussian gate duration", transform=ax.transAxes, va="bottom")
     ax.text(
         0,
         1.045,
-        r"$\epsilon_{\rm add}=0.010$, $w_{\rm sw}=0$",
+        r"$\epsilon_{\rm add}=0.010$, $w_{\rm sw}=0$"
+        "\nFixed hybrid: $r=7$, order $1$",
         transform=ax.transAxes,
         va="bottom",
         fontsize=9,
         bbox=dict(facecolor="0.95", edgecolor="none", pad=2),
     )
-    ax.text(5 / 6, 404, "GB: $r=9$\norders $2/1$", ha="center", va="top", fontsize=8.5)
-    ax.text(17 / 6, 404, "GB: $r=8$\norders $2/2$", ha="center", va="top", fontsize=8.5)
+    ax.text(5 / 6, 404, "GB: $r=9$\norders (2nd, 1st)", ha="center", va="top", fontsize=8.5)
+    ax.text(17 / 6, 404, "GB: $r=8$\norders (2nd, 2nd)", ha="center", va="top", fontsize=8.5)
     ax.text(
-        1.1, 295, "Gaussian block faster", ha="center", color=gaussian_color, fontsize=8
+        0.85, 295, "Gaussian block faster", ha="center", color=gaussian_color, fontsize=8
     )
-    ax.text(2, 90, "Hybrid faster", ha="center", color=hybrid_color)
+    ax.text(2.4, 90, "Hybrid faster", ha="center", color=hybrid_color)
     ax.set(xlabel=r"Gaussian duration $w_G=\tau_G/\tau_0$", xlim=(0, 4), ylim=(0, 420))
     ax.set_xticks([0, 5 / 3, 3, 4], ["0", r"$5/3$", "3", "4"])
     ax.set_yticks([0, 100, 200, 300, 400])
@@ -235,13 +236,11 @@ def make_figure(rows, gate_curve, switch_curve):
     )
     x = np.array([point["w_sw"] for point in switch_display])
     y = np.array([point["critical_native_time"] for point in switch_display])
-    ax.axhspan(-35, 0, facecolor=".965", zorder=0)
     ax.fill_between(
         x, 0, y, where=y >= 0, color=hybrid_color, alpha=0.10, interpolate=True
     )
     ax.plot(x, y, color=hybrid_color, lw=1.7)
     ax.axvline(14, color=".55", lw=0.7, ls=":")
-    ax.axhline(0, color=".35", lw=0.7)
     ax.plot(
         14,
         timing_point(rows, 0.005, 1, 14)["critical_native_time"],
@@ -252,15 +251,22 @@ def make_figure(rows, gate_curve, switch_curve):
         mew=1.1,
     )
     ax.plot(
-        149 / 7, zero_crossing["critical_native_time"], "o", ms=3.5, color=hybrid_color
+        149 / 7,
+        zero_crossing["critical_native_time"],
+        "o",
+        ms=3.5,
+        color=hybrid_color,
+        clip_on=False,
+        zorder=4,
     )
     ax.text(
-        0, 1.16, "(b) Native switching overhead", transform=ax.transAxes, va="bottom"
+        0, 1.24, "(b) Native switching overhead", transform=ax.transAxes, va="bottom"
     )
     ax.text(
         0,
         1.045,
-        r"$\epsilon_{\rm add}=0.005$, $w_G=1$",
+        r"$\epsilon_{\rm add}=0.005$, $w_G=1$"
+        "\nFixed GB: $r=8$, orders (2nd, 1st)",
         transform=ax.transAxes,
         va="bottom",
         fontsize=9,
@@ -269,20 +275,21 @@ def make_figure(rows, gate_curve, switch_curve):
     ax.text(7, 203, "Hybrid: $r=7$\norder $1$", ha="center", va="top", fontsize=8.5)
     ax.text(19.5, 203, "Hybrid: $r=6$\norder $2$", ha="center", va="top", fontsize=8.5)
     ax.text(
-        17, 102, "Gaussian block faster", ha="center", color=gaussian_color, fontsize=8
+        19, 102, "Gaussian block faster", ha="center", color=gaussian_color, fontsize=8
     )
     ax.text(5.8, 32, "Hybrid faster", ha="center", color=hybrid_color)
     ax.set(
         xlabel=r"Native overhead $w_{\rm sw}=\tau_{\rm pair}/\tau_0$",
         xlim=(0, 25),
-        ylim=(-35, 215),
+        ylim=(0, 215),
     )
     ax.set_xticks([0, 7, 14, 149 / 7, 25], ["0", "7", "14", r"$149/7$", "25"])
-    ax.set_yticks([-25, 0, 50, 100, 150, 200])
-    ax.text(0.6, -24, r"$t_{\rm nat}<0$: outside physical domain", fontsize=8, color="0.4")
+    ax.set_yticks([0, 50, 100, 150, 200])
     for ax in axes:
         ax.set_ylabel(r"Native duration $t_{\rm nat}/\tau_0$")
-    fig.subplots_adjust(left=0.075, right=0.985, bottom=0.18, top=0.81)
+    fig.subplots_adjust(left=0.075, right=0.985, bottom=0.20, top=0.74)
+    fig.text(0.53, 0.035, "GB internal orders: (Josephson harmonic, second harmonic)",
+             ha="center", fontsize=8)
     stem = REPO / "paper" / "figures" / "fig_dsg_control_tradeoffs"
     fig.savefig(stem.with_suffix(".pdf"), metadata={"Creator": None, "Producer": None})
     fig.savefig(stem.with_suffix(".png"), dpi=220, metadata={"Software": None})
