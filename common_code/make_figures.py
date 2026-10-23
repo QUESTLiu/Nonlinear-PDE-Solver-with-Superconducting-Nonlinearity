@@ -472,7 +472,7 @@ def fig_duffing_native(preview):
     ]
     ax.legend(
         handles=bound_handles,
-        title="Residual-bound certification",
+        title="Residual-bound estimate",
         title_fontsize=8,
         loc="upper center",
         bbox_to_anchor=(0.5, -0.24),
@@ -883,7 +883,7 @@ def fig_dsg_resources(preview):
                bbox_to_anchor=(0.54, 0.995), fontsize=9, columnspacing=2.0)
     ax.text(0.98, np.sqrt(1e-3) * 1.07, r"state tolerance $\sqrt{10^{-3}}$",
             transform=ax.get_yaxis_transform(), va="bottom", ha="right", fontsize=8)
-    ax.text(0.98, 0.03, "GB: upper bound", transform=ax.transAxes,
+    ax.text(0.98, 0.03, "GB: upper estimate", transform=ax.transAxes,
             ha="right", fontsize=8, color=C_GAUSS)
     panel(ax, r"(a) Cost and accuracy, $\lambda_2=0.3$")
 
