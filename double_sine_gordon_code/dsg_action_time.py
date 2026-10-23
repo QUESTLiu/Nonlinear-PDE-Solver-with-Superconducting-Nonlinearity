@@ -239,9 +239,9 @@ def make_figures(record):
            ylabel=r"$(p_{\rm GB}^{\min}-p_{\rm KP}^{\min})/\tau_A$")
     ax.text(0.03, 0.12, "Gaussian block faster", transform=ax.transAxes,
             color=style.C_GAUSS, fontsize=8)
-    ax.text(0.56, 0.89, "Kinetic-potential faster", transform=ax.transAxes,
+    ax.text(0.56, 0.89, r"Kinetic$\mathrm{–}$potential faster", transform=ax.transAxes,
             color=style.C_PROG, fontsize=8)
-    style.panel(ax, "(a) Programmable route selection", y=1.17)
+    style.panel(ax, "(a) Programmable duration difference", y=1.17)
     ax.text(0, 1.04, r"$\epsilon_{\rm add}=0.005$, $u_0=0$", transform=ax.transAxes)
 
     ax = axes[1]
@@ -282,7 +282,7 @@ def make_figures(record):
     axes[0].legend(loc="upper left", fontsize=8)
     style.panel(axes[0], "(a) Displacement action", y=1.06)
     for route, label, color, ls in (("gauss_block", "Gaussian block", style.C_GAUSS, "-"),
-                                    ("kin_pot", "Kinetic-potential", style.C_PROG, "--")):
+                                    ("kin_pot", r"Kinetic$\mathrm{–}$potential", style.C_PROG, "--")):
         values = [sum(abs(v) for _, v in gaussian_pulses(route, r)) for r in steps]
         axes[1].plot(steps, values, color=color, ls=ls, label=label)
     axes[1].set(xlabel=r"Outer steps $r$", ylabel="Total normalized quadratic action",

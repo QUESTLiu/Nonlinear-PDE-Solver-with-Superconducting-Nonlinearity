@@ -48,6 +48,7 @@ plt.rcParams.update(
         "font.family": "serif",
         "font.serif": ["cmr10"],
         "mathtext.fontset": "cm",
+        "mathtext.fallback": "stix",
         "axes.formatter.use_mathtext": True,
         "axes.unicode_minus": False,
         "font.size": 9,
@@ -471,7 +472,7 @@ def fig_duffing_native(preview):
     ]
     ax.legend(
         handles=bound_handles,
-        title="Frames: bound certification",
+        title="Residual-bound certification",
         title_fontsize=8,
         loc="upper center",
         bbox_to_anchor=(0.5, -0.24),
@@ -504,7 +505,7 @@ def fig_duffing_correction(preview):
     ) + sorted(new, key=lambda k: routes["native"][k]["max_common_distance"])
     x = np.arange(len(order)) + np.array([0] * len(dev) + [1] * len(new))
     fig, ax = plt.subplots(figsize=(COL1, 3.5))
-    fig.subplots_adjust(left=0.19, right=0.97, bottom=0.20, top=0.76)
+    fig.subplots_adjust(left=0.23, right=0.97, bottom=0.20, top=0.76)
     spec = [
         ("native", "native Kerr", C_NATIVE, "x", {}),
         ("gaussian", "Kerr + squeezing", C_NATIVE, "+", {}),
@@ -542,11 +543,11 @@ def fig_duffing_correction(preview):
         yscale="log",
         ylim=(6e-5, 1.5),
         xlim=(-0.8, x[-1] + 0.8),
-        ylabel=r"raw projective distance $\max_j\, d_{\rm pr}(t_j)$",
+        ylabel=r"projective distance $\max_j\, d_{\rm pr}(t_j)$" + "\n(before numerical margins)",
     )
     ax.set_xticks(
         [np.mean(x[: len(dev)]), np.mean(x[len(dev) :])],
-        labels=["Development\n(10 inputs)", "Held-out\n(12 coherent states)"],
+        labels=["Diagnostic\n(10 inputs)", "Held-out\n(12 coherent states)"],
     )
     ax.tick_params(axis="x", which="both", length=0)
     ax.text(
@@ -683,7 +684,7 @@ def _cheapest(scan, route, prep=(1.0, 0.0)):
 ROUTE_STYLE = {
     "hybrid": (C_HYBRID, "hybrid", "o"),
     "gauss_block": (C_GAUSS, "Gaussian block", "D"),
-    "kin_pot": (C_PROG, "kinetic-potential", "s"),
+    "kin_pot": (C_PROG, r"kinetic$\mathrm{–}$potential", "s"),
 }
 
 
@@ -749,7 +750,7 @@ def fig_dsg_dynamics(preview):
             lw=0.8,
         )
     ax.axhline(np.sqrt(1e-3), color="0.4", lw=0.6, ls=":")
-    ax.set(yscale="log", ylim=(1e-3, 1), ylabel=r"raw distance $d_{\rm pr}$ or $d_B$")
+    ax.set(yscale="log", ylim=(1e-3, 1), ylabel=r"distance $d_{\rm pr}$ or $d_B$" + "\n(before numerical margins)")
     ax.text(
         0.05, 0.10, "GB: upper bound", transform=ax.transAxes,
         fontsize=8, color=C_GAUSS,
@@ -953,7 +954,7 @@ def fig_dsg_subdivisions(preview):
     style = {
         "H_trig": (C_HYBRID, "hybrid", "o"),
         "H_trig_ret": (C_HYBRID_RET, "retuned hybrid", "^"),
-        "G_trig": (C_PROG, "kinetic-potential", "s"),
+        "G_trig": (C_PROG, r"kinetic$\mathrm{–}$potential", "s"),
         "H_SNAP": (C_SNAP, "SNAP+D hybrid", "v"),
     }
     for ax, r_steps in zip(axes, [10, 20]):
