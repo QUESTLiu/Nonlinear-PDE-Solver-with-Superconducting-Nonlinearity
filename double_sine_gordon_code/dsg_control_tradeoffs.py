@@ -219,8 +219,8 @@ def make_figure(rows, gate_curve, switch_curve):
         fontsize=9,
         bbox=dict(facecolor="0.95", edgecolor="none", pad=2),
     )
-    ax.text(5 / 6, 404, "GB: $r=9$\norders (2nd, 1st)", ha="center", va="top", fontsize=8.5)
-    ax.text(17 / 6, 404, "GB: $r=8$\norders (2nd, 2nd)", ha="center", va="top", fontsize=8.5)
+    ax.text(5 / 6, 404, "GB: $r=9$\norders (2, 1)", ha="center", va="top", fontsize=8.5)
+    ax.text(17 / 6, 404, "GB: $r=8$\norders (2, 2)", ha="center", va="top", fontsize=8.5)
     ax.text(
         0.85, 295, "Gaussian block faster", ha="center", color=gaussian_color, fontsize=8
     )
@@ -266,7 +266,7 @@ def make_figure(rows, gate_curve, switch_curve):
         0,
         1.045,
         r"$\epsilon_{\rm add}=0.005$, $w_G=1$"
-        "\nFixed GB: $r=8$, orders (2nd, 1st)",
+        "\nFixed GB: $r=8$, orders (2, 1)",
         transform=ax.transAxes,
         va="bottom",
         fontsize=9,
