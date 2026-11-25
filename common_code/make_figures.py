@@ -48,6 +48,7 @@ plt.rcParams.update(
         "font.family": "serif",
         "font.serif": ["cmr10"],
         "mathtext.fontset": "cm",
+        "mathtext.fallback": "stix",
         "axes.formatter.use_mathtext": True,
         "axes.unicode_minus": False,
         "font.size": 9,
@@ -137,7 +138,7 @@ def fig_sg_classical(preview):
         xlim=(0, 5.2),
         ylim=(0, 0.27),
         xlabel=r"$\tau=\Omega t$",
-        ylabel=r"$d_{\rm MF}(\tau)$",
+        ylabel="Normalized deviation",
     )
     ax.text(
         0.15,
@@ -186,7 +187,7 @@ def fig_sg_classical(preview):
         yscale="log",
         ylim=(8e-4, 2.0),
         xlabel=r"$E_J$",
-        ylabel="normalized deviation",
+        ylabel="Normalized deviation",
     )
     ax.set_xticks([0.25, 1, 4, 16], labels=["0.25", "1", "4", "16"])
     ax.legend(
@@ -198,21 +199,22 @@ def fig_sg_classical(preview):
     tau_p = np.array([m["tau_ehrenfest_classical"] for m, _ in rows])
     tau_w = [m["tau_ehrenfest_dw"] for m, _ in rows]
     ax.axhline(5.2, color="0.55", lw=0.6, ls=":")
-    ax.plot(ejs, tau_p, "o-", color=C_TARGET, label="bare")
+    ax.plot(ejs, tau_p, "o-", color=C_TARGET, label=r"bare, $\omega_b=\Omega$")
     fixed = [(1, rows[2][0]["tau_ehrenfest_classical"])] + [
         (ej, e3(ej, "fixed_variance")[0]["tau_ehrenfest_classical"]) for ej in (8, 32)
     ]
     ax.plot(
         [f[0] for f in fixed],
         [f[1] for f in fixed],
-        "^--",
+        "^",
         color=C_FIXED,
-        label="fixed variance",
+        label=r"bare, $\omega_b=\sqrt{3}$",
     )
     crossed = [(ej, t) for ej, t in zip(ejs, tau_w) if t is not None]
     censored = [ej for ej, t in zip(ejs, tau_w) if t is None]
     ax.plot(
-        [c[0] for c in crossed], [c[1] for c in crossed], "s", color=C_DW, label="DW"
+        [c[0] for c in crossed], [c[1] for c in crossed], "s", color=C_DW,
+        label=r"DW, $\omega_b=\Omega$",
     )
     ax.plot(
         censored, [5.2] * len(censored), "s", color=C_DW, mfc="white",
@@ -222,32 +224,38 @@ def fig_sg_classical(preview):
         xscale="log",
         ylim=(0.0, 6.4),
         xlabel=r"$E_J$",
-        ylabel=r"first crossing $\tau_{\rm E}$",
+        ylabel=r"First crossing time $\tau$",
     )
     ax.set_xticks([0.25, 1, 4, 16], labels=["0.25", "1", "4", "16"])
-    ax.legend(loc="lower left", labelspacing=0.3, handlelength=1.8)
+    ax.legend(
+        loc="lower left", ncol=2, fontsize=8, labelspacing=0.25,
+        handlelength=1.5, columnspacing=0.7,
+    )
     ax.text(0.32, 5.43, r"window end: $\tau=5.2$", fontsize=8, color="0.35")
-    panel(ax, "(c) Mean-field validity time")
+    panel(ax, "(c) First threshold crossing")
 
-    # (d) terms of the momentum equation at E_J = 1: closure residual, its non-Gaussian part, and the
-    # finite-commutator residual of the cutoff (sine_gordon_code.native_correction.moment_diagnostics)
+    # Residuals are evaluated by sine_gordon_code.native_correction.moment_diagnostics.
     ax = axes[3]
     floor = 1e-16
     series = (
-        ("closure_momentum", 1.0, C_TARGET, "-", "closure", (3.6, 0.9)),
-        ("delta_NG_1", meta["E_J"], C_DW, "--", "non-Gaussian part", (0.35, 2e-6)),
-        ("cutoff_momentum", 1.0, C_NATIVE, ":", "finite cutoff", (3.5, 2e-8)),
+        ("closure_momentum", 1.0, C_TARGET, "-", "Mean-field closure"),
+        ("delta_NG_1", meta["E_J"], C_DW, "--", "Gaussian-relation residual"),
+        ("cutoff_momentum", 1.0, C_NATIVE, ":", "Finite cutoff"),
     )
-    for key, scale, color, ls, label, (x_text, y_text) in series:
+    for key, scale, color, ls, label in series:
         values = np.maximum(scale * np.max(np.abs(a[key]), axis=1), floor)
-        ax.plot(tau, values, color=color, ls=ls)
-        ax.text(x_text, y_text, label, color=color, fontsize=8.5, ha="left", va="center")
+        ax.plot(tau, values, color=color, ls=ls, label=label)
+    ax.legend(
+        loc="center left", bbox_to_anchor=(0.02, 0.55),
+        borderaxespad=0, fontsize=8, labelspacing=0.4,
+        handlelength=1.2, handletextpad=0.5,
+    )
     ax.set(
         xlim=(0, 5.2),
         yscale="log",
         ylim=(floor, 3),
         xlabel=r"$\tau=\Omega t$",
-        ylabel="momentum residual",
+        ylabel="Momentum residual",
     )
     ax.set_yticks([1e-16, 1e-12, 1e-8, 1e-4, 1])
     panel(ax, r"(d) Momentum residuals, $E_J=1$")
@@ -334,21 +342,21 @@ def fig_duffing_native(preview):
         xi,
         [r["max_native_infidelity"] for r in rows],
         color=C_TARGET,
-        label=r"${\rm max}_t\,\mathcal{I}_{\rm K}$",
+        label=r"Native error $\max_t\mathcal{I}_{\rm K}$",
     )
     ax.plot(
         xi,
         np.minimum(1, [r["duhamel_infidelity_bound"] for r in rows]),
         color=C_NATIVE,
         ls="--",
-        label="uncentered bound",
+        label="Upper bound (uncentered)",
     )
     ax.plot(
         xi,
         np.minimum(1, [r["centered_infidelity_bound"] for r in rows]),
         color=C_HYBRID,
         ls="-.",
-        label=r"residual bound $B_\psi^2$",
+        label=r"Upper bound $B_\psi(T)^2$",
     )
     ax.plot(
         xi,
@@ -356,7 +364,7 @@ def fig_duffing_native(preview):
         color=C_RETUNED,
         ls=":",
         lw=1.3,
-        label=r"$1-F^{\max}_{\rm diag}(T)$",
+        label=r"Diagonal error floor at $T$",
     )
     ax.axhline(1e-3, color="0.55", lw=0.6, ls=":")
     ax.set(
@@ -364,7 +372,7 @@ def fig_duffing_native(preview):
         xlim=(0.25, 2.5),
         ylim=(5e-4, 1.6),
         xlabel=r"$\xi$",
-        ylabel=r"infidelity $1-F$ or bound",
+        ylabel="infidelity or bound",
     )
     ax.set_xticks([0.5, 1, 1.5, 2, 2.5], labels=["0.5", "1", "1.5", "2", "2.5"])
     handles, labels = ax.get_legend_handles_labels()
@@ -452,9 +460,10 @@ def fig_duffing_native(preview):
     ax.set_yticks(range(len(xis)), labels=["0.5", "1", "1.75", "2", "2.5"])
     ax.tick_params(which="both", top=False, right=False, length=0)
     ax.set(xlabel=r"$\beta$", ylabel=r"$\xi$")
-    panel(ax, "(c) Native infidelity across inputs")
-    cax = fig.add_axes([0.735, 0.91, 0.23, 0.035])
+    panel(ax, r"(c) Native error over $(\beta,\xi)$")
+    cax = fig.add_axes([0.735, 0.90, 0.23, 0.035])
     bar = fig.colorbar(im, cax=cax, orientation="horizontal", ticks=[1e-4, 1e-2, 1])
+    bar.ax.set_title(r"Sampled $\max_t\mathcal{I}_{\rm K}$", fontsize=8.5, pad=5)
     bar.ax.minorticks_off()
     bar.ax.tick_params(labelsize=8, length=2)
     bound_handles = [
@@ -463,7 +472,7 @@ def fig_duffing_native(preview):
     ]
     ax.legend(
         handles=bound_handles,
-        title="Bound certifies sufficiency",
+        title="Residual-bound estimate",
         title_fontsize=8,
         loc="upper center",
         bbox_to_anchor=(0.5, -0.24),
@@ -496,13 +505,13 @@ def fig_duffing_correction(preview):
     ) + sorted(new, key=lambda k: routes["native"][k]["max_common_distance"])
     x = np.arange(len(order)) + np.array([0] * len(dev) + [1] * len(new))
     fig, ax = plt.subplots(figsize=(COL1, 3.5))
-    fig.subplots_adjust(left=0.19, right=0.97, bottom=0.20, top=0.76)
+    fig.subplots_adjust(left=0.23, right=0.97, bottom=0.20, top=0.76)
     spec = [
         ("native", "native Kerr", C_NATIVE, "x", {}),
         ("gaussian", "Kerr + squeezing", C_NATIVE, "+", {}),
         (
             "exact_split",
-            "exact split",
+            "Strang split\n(exact blocks)",
             C_TARGET,
             "D",
             dict(mfc="white", ms=3.0, mew=0.7),
@@ -534,20 +543,16 @@ def fig_duffing_correction(preview):
         yscale="log",
         ylim=(6e-5, 1.5),
         xlim=(-0.8, x[-1] + 0.8),
-        ylabel=r"projective distance $\max_j\, d_{\rm pr}(t_j)$",
+        ylabel=r"projective distance $\max_j\, d_{\rm pr}(t_j)$" + "\n(before numerical margins)",
     )
     ax.set_xticks(
         [np.mean(x[: len(dev)]), np.mean(x[len(dev) :])],
-        labels=["Development\n(10 inputs)", "Held-out\n(12 coherent states)"],
+        labels=["Diagnostic\n(10 inputs)", "Held-out\n(12 coherent states)"],
     )
     ax.tick_params(axis="x", which="both", length=0)
     ax.text(
         0.5, -0.24, "Inputs ranked by native Kerr error", transform=ax.transAxes,
         ha="center", va="top", fontsize=8,
-    )
-    fig.text(
-        0.55, 0.81, r"SNAP replacement: $|\Delta d_{\rm pr}|\leq 2.1\times10^{-5}$",
-        ha="center", fontsize=8,
     )
     handles, labels = ax.get_legend_handles_labels()
     fig.legend(
@@ -679,7 +684,7 @@ def _cheapest(scan, route, prep=(1.0, 0.0)):
 ROUTE_STYLE = {
     "hybrid": (C_HYBRID, "hybrid", "o"),
     "gauss_block": (C_GAUSS, "Gaussian block", "D"),
-    "kin_pot": (C_PROG, "kinetic-potential", "s"),
+    "kin_pot": (C_PROG, r"kinetic$\mathrm{–}$potential", "s"),
 }
 
 
@@ -720,7 +725,10 @@ def fig_dsg_dynamics(preview):
     )
     ax.set(ylabel=r"$|C_{12}|$", ylim=(-0.01, 0.32))
     panel(ax, "(a) Vertex correlation")
-    ax.text(t_e / 2, 0.303, r"$t<t_{\rm E}$", fontsize=8, ha="center", color="0.35")
+    ax.text(
+        t_e / 2, 0.309, "target\n" + r"$t<t_{\rm E}$",
+        fontsize=8, ha="center", va="top", color="0.35",
+    )
     ax = axes[1]
     ax.plot(t, ref["target_S2"], color=C_TARGET)
     ax.plot(t, ref["native_S2"], color=C_NATIVE, ls="--")
@@ -742,7 +750,7 @@ def fig_dsg_dynamics(preview):
             lw=0.8,
         )
     ax.axhline(np.sqrt(1e-3), color="0.4", lw=0.6, ls=":")
-    ax.set(yscale="log", ylim=(1e-3, 1), ylabel=r"state distance $d_{\rm pr}$ or $d_B$")
+    ax.set(yscale="log", ylim=(1e-3, 1), ylabel=r"distance $d_{\rm pr}$ or $d_B$" + "\n(before numerical margins)")
     ax.text(
         0.05, 0.10, "GB: upper bound", transform=ax.transAxes,
         fontsize=8, color=C_GAUSS,
@@ -784,11 +792,12 @@ def fig_dsg_resources(preview):
     scan = _scan()
     split = json.loads((DSG_DATA / "splitting_baselines.json").read_text())
     sweep = json.loads((DSG_DATA / "splitting_sweep.json").read_text())
-    fig, axes = plt.subplots(2, 2, figsize=(COL2, 5.6))
+    fig = plt.figure(figsize=(COL2, 6.1))
+    grid = fig.add_gridspec(2, 2, height_ratios=(1.15, 1))
+    axes = [fig.add_subplot(grid[0, :]), fig.add_subplot(grid[1, 0]), fig.add_subplot(grid[1, 1])]
     fig.subplots_adjust(
-        left=0.09, right=0.98, bottom=0.09, top=0.83, wspace=0.34, hspace=0.55
+        left=0.09, right=0.98, bottom=0.09, top=0.88, wspace=0.36, hspace=0.58
     )
-    axes = axes.ravel()
 
     ax = axes[0]
     for route, (c, lab, mk) in ROUTE_STYLE.items():
@@ -808,7 +817,7 @@ def fig_dsg_resources(preview):
                 continue
             xs = [r["total_programmable_primitives"] for r in rows]
             ys = [r["state_error"] for r in rows]
-            ax.plot(xs, ys, "-", color=c, lw=0.9, alpha=0.75)
+            ax.plot(xs, ys, {1: "--", 2: "-", 3: "-."}[order], color=c, lw=1.15, alpha=0.85)
             ax.plot(
                 xs,
                 ys,
@@ -837,8 +846,8 @@ def fig_dsg_resources(preview):
         )
         offset, ha, va = {
             "hybrid": ((0, -9), "center", "top"),
-            "gauss_block": ((-8, -6), "right", "top"),
-            "kin_pot": ((13, 9), "left", "bottom"),
+            "gauss_block": ((-12, -8), "right", "top"),
+            "kin_pot": ((10, 13), "left", "bottom"),
         }[route]
         ax.annotate(
             f"{best['total_programmable_primitives']}\n$r={best['r']}$",
@@ -854,55 +863,43 @@ def fig_dsg_resources(preview):
     ax.set(
         xscale="log",
         yscale="log",
-        ylim=(0.005, 0.18),
+        ylim=(0.005, 0.28),
         xlabel="ideal programmable primitives",
-        ylabel=r"state error $e_B$ incl. margins",
+        ylabel=r"state error $e_B$",
     )
-    ax.set_xticks([60, 100, 200, 400], labels=["60", "100", "200", "400"])
+    ax.set_xticks([60, 100, 200, 400, 600], labels=["60", "100", "200", "400", "600"])
     ax.set_xticks([], minor=True)
     order_handles = [
-        Line2D(
-            [],
-            [],
-            color="0.2",
-            marker="o",
-            ls="",
-            mfc=fill,
-            mfcalt="white",
-            fillstyle=fs,
-            label=label,
-        )
-        for fill, fs, label in [
-            ("white", "full", "1st"),
-            ("0.2", "full", "2nd"),
-            ("0.2", "left", "mixed"),
-        ]
+        Line2D([], [], color="0.25", ls=ls, lw=1.1, label=label)
+        for ls, label in [("--", "1st order"), ("-", "2nd order"),
+                          ("-.", "Josephson 2nd + second harmonic 1st")]
     ]
-    ax.legend(
-        handles=order_handles,
-        loc="upper right",
-        ncol=3,
-        handlelength=0.8,
-        columnspacing=0.7,
-        handletextpad=0.3,
-    )
-    ax.text(0.98, 0.03, "GB: upper bound", transform=ax.transAxes,
+    ax.legend(handles=order_handles, title="Internal trigonometric splitting",
+              title_fontsize=8.5, loc="upper right", ncol=3, fontsize=8,
+              columnspacing=1.2, handlelength=2.5)
+    route_handles = [Line2D([], [], color=c, marker=mk, lw=1.2, label=lab)
+                     for c, lab, mk in ROUTE_STYLE.values()]
+    fig.legend(handles=route_handles, loc="upper center", ncol=3,
+               bbox_to_anchor=(0.54, 0.995), fontsize=9, columnspacing=2.0)
+    ax.text(0.98, np.sqrt(1e-3) * 1.07, r"state tolerance $\sqrt{10^{-3}}$",
+            transform=ax.get_yaxis_transform(), va="bottom", ha="right", fontsize=8)
+    ax.text(0.98, 0.03, "GB: upper estimate", transform=ax.transAxes,
             ha="right", fontsize=8, color=C_GAUSS)
-    panel(ax, r"(a) Compiled cost, $\lambda_2=0.3$")
+    panel(ax, r"(a) Cost and accuracy, $\lambda_2=0.3$")
 
     ax = axes[1]
     T = split["T"]
     sc = split["scan"]
     hs = [T / r for r in sc["r"]]
     styles = [
-        ("hybrid", C_HYBRID, "o-", r"$H_{\rm SG}|\Delta H$"),
-        ("hybrid_ret", C_HYBRID_RET, "^-", "retuned"),
-        ("gauss_cos", C_GAUSS, "D-", "Gaussian block"),
-        ("kin_pot", C_PROG, "s-", "kinetic-potential"),
-        ("gauss_harm", "0.55", "v:", "harmonic block"),
+        ("hybrid", C_HYBRID, "o-", "hybrid"),
+        ("hybrid_ret", C_HYBRID_RET, "^-", "retuned hybrid"),
+        ("gauss_cos", C_GAUSS, "D-", "GB"),
+        ("kin_pot", C_PROG, "s-", "KP"),
+        ("gauss_harm", "0.55", "v:", "GB + quadratic"),
     ]
     for key, c, st, lab in styles:
-        ax.plot(hs, sc["errors"][key], st, color=c, ms=3.8, lw=1.1)
+        ax.plot(hs, sc["errors"][key], st, color=c, ms=3.8, lw=1.1, label=lab)
     hh = np.array([0.075, 0.45])
     ax.plot(hh, 1.2e-3 * (hh / 0.1) ** 2, color="0.5", lw=0.6, ls="--")
     ax.text(0.085, 2.9e-4, r"$\propto h^2$", fontsize=8, color="0.4")
@@ -911,11 +908,13 @@ def fig_dsg_resources(preview):
         yscale="log",
         xlabel=r"outer step $h=T/r$",
         ylabel=r"splitting distance $d_{\rm pr}$",
-        ylim=(2e-4, 0.4),
+        ylim=(2e-4, 1.0),
     )
     ax.set_xticks([0.1, 0.2, 0.4], labels=["0.1", "0.2", "0.4"])
     ax.set_xticks([], minor=True)
-    panel(ax, "(b) Exact-block splitting error")
+    ax.legend(loc="upper left", fontsize=8, labelspacing=0.25, handlelength=1.5,
+              ncol=2, columnspacing=0.8, handletextpad=0.4)
+    panel(ax, "(b) Outer splitting with exact blocks")
 
     ax = axes[2]
     lam = sorted({p["lambda2"] for p in sweep["points"]})
@@ -942,72 +941,8 @@ def fig_dsg_resources(preview):
         for kappa, ls in [(0.5, ":"), (1, "-"), (2, "--")]
     ]
     ax.legend(handles=kappa_handles, loc="upper right", labelspacing=0.25)
-    panel(ax, "(c) Splitting-error ratio")
+    panel(ax, r"(c) Dependence on $\lambda_2$ and $\kappa$")
 
-    ax = axes[3]
-    # compiled ratios at the original threshold, including the lambda2 = 0.6 Gaussian-block circuit that is resolved
-    # at cutoffs 160/192 (dsg_thresholds.py, Table III)
-    thresholds = json.loads((DSG_DATA / "dsg_thresholds.json").read_text())["results"]
-    compiled = [
-        (e["lambda2"], e["saving_gauss_block"], e["saving_kin_pot"])
-        for e in thresholds
-        if e["infidelity"] == 1e-3
-    ]
-    for j, c, mk in [(1, C_GAUSS, "D"), (2, C_PROG, "s")]:
-        ax.plot([p[0] for p in compiled], [p[j] for p in compiled], mk + "-", color=c)
-        for p in compiled:
-            ax.annotate(
-                f"{p[j]:.2f}",
-                (p[0], p[j]),
-                xytext=(0, 7 if j == 2 else -12),
-                textcoords="offset points",
-                fontsize=8,
-                ha="center",
-                color=c,
-            )
-    ax.axhline(1, color="0.6", ls=":", lw=0.8)
-    ax.text(0.58, 1.12, "equal counts", fontsize=8, ha="right", color="0.4")
-    ax.set(
-        xlim=(0.055, 0.645),
-        ylim=(0, 7),
-        xlabel=r"$\lambda_2$ ($E_J=\kappa=1$)",
-        ylabel="programmable / hybrid primitives",
-    )
-    ax.set_xticks([p[0] for p in compiled])
-    panel(ax, "(d) Compiled primitive ratio")
-
-    h = [
-        Line2D([], [], color=c, marker=mk, lw=1.1, ms=4, label=lab)
-        for c, lab, mk in [
-            (C_HYBRID, "hybrid", "o"),
-            (C_HYBRID_RET, "retuned hybrid", "^"),
-            (C_GAUSS, "Gaussian block", "D"),
-            (C_PROG, "kinetic-potential", "s"),
-        ]
-    ]
-    h += [
-        Line2D([], [], color="0.55", marker="v", ls=":", ms=4, label="harmonic block"),
-        Line2D(
-            [],
-            [],
-            color="k",
-            marker="*",
-            ls="",
-            ms=8,
-            mfc="0.6",
-            mew=0.5,
-            label="cheapest passing circuit (a)",
-        ),
-    ]
-    fig.legend(
-        handles=h,
-        loc="upper center",
-        bbox_to_anchor=(0.53, 0.985),
-        ncol=3,
-        columnspacing=1.5,
-        handlelength=2.0,
-        labelspacing=0.5,
-    )
     save(fig, "fig_dsg_resources", preview)
 
 
@@ -1019,7 +954,7 @@ def fig_dsg_subdivisions(preview):
     style = {
         "H_trig": (C_HYBRID, "hybrid", "o"),
         "H_trig_ret": (C_HYBRID_RET, "retuned hybrid", "^"),
-        "G_trig": (C_PROG, "kinetic-potential", "s"),
+        "G_trig": (C_PROG, r"kinetic$\mathrm{–}$potential", "s"),
         "H_SNAP": (C_SNAP, "SNAP+D hybrid", "v"),
     }
     for ax, r_steps in zip(axes, [10, 20]):
